@@ -1,62 +1,77 @@
 .nuevo-envio-container {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 20px;
-}
-
-.form-header {
-  background-color: #d32f2f;
-  color: white;
-  padding: 30px;
-  border-radius: 12px 12px 0 0;
-  display: flex;
-  align-items: center;
+  max-width: 1000px;
+  margin: 20px auto;
+  flex-direction: column;
   gap: 20px;
 }
 
-.header-icon {
-  background: white;
-  font-size: 2rem;
-  padding: 10px;
-  border-radius: 8px;
+.form-header {
+  background-color: #0B1120;
+  color: #F8FAF6;
+  padding: 30px;
+  padding-left: 0px;
+  padding-top: 0px;
+  border-radius: 12px 12px 0 0;
+  display: flex;
+  align-items: center;
 }
 
-.header-logo-img {
-  height: 40px;
-  width: auto;
-  object-fit: contain;
+.form-header h1 {
+  color: #F8FAF6;
+}
+
+.form-header p {
+  color: #a3b0c2;
+  font-size: large;
+}
+
+#nueva-orden {
+  font-size: 90%;
+  font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
 }
 
 .envio-form {
-  background: white;
-  padding: 30px;
-  border-radius: 0 0 12px 12px;
+  background: #1E293B;
+  padding: 20px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border-color: #1E293B;
 }
 
 .form-section {
   margin-bottom: 30px;
   border-bottom: 1px solid #eee;
   padding-bottom: 20px;
+  border-radius: 12px;
 }
 
-.form-section h3 {
+.form-section h2 {
   font-size: 1.1rem;
-  margin-bottom: 20px;
-  color: #333;
+  margin-bottom: 5px;
+  color: #F8FAF6;
 }
 
-.form-row {
-  display: flex;
+.step {
+  background: #334155;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
-  margin-bottom: 15px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
 .form-group {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
 .form-group label {
@@ -65,12 +80,28 @@
   color: #555;
 }
 
-.form-group input, .form-group select, .form-group textarea {
-  padding: 12px;
+.form-group input, .form-group select {
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
-  background-color: #fafafa;
+  background-color: #0f172a;
+  color: #F8FAF6;
+}
+
+.status {
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  background: #064e3b;
+}
+
+.status.ok {
+  background: #064e3b;
+}
+
+.status.warn {
+  background: #78350f;
 }
 
 .form-group textarea {
@@ -104,9 +135,9 @@
 }
 
 .btn-cancel {
-  background: white;
-  border: 2px solid #ddd;
-  color: #666;
+  background: red;
+  border: 2px solid #1E293B;
+  color: white;
 }
 
 .btn-cancel:disabled,
@@ -116,11 +147,13 @@
 }
 
 .btn-submit {
-  background: #d32f2f;
+  background: #F97316;
+  border: 2px solid #1E293B;
   color: white;
 }
 
-.btn-submit:hover:not(:disabled) { background: #b71c1c; }
+.btn-submit:hover:not(:disabled) { background: #F98000; }
+.btn-cancel:hover:not(:disabled) { background: #d32f2f; }
 
 .error-alert {
   background-color: #ffebee;
@@ -214,7 +247,6 @@ small {
   display: block;
   font-size: 0.8rem;
   color: #999;
-  margin-top: 5px;
   font-style: italic;
 }
 
