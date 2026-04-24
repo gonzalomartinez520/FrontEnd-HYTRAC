@@ -16,14 +16,12 @@ export default function Navbar({ user, onLogout }) {
         <div className="nav-logo">
           <img src={LogiTrackLogo} alt="LogiTrack" className="logo-img" />
           <div className="logo-text">
-            <strong>LogiTrack</strong>
-            <span>Sistema de Gestión de Envíos</span>
+            <strong>HYTRAC</strong>
           </div>
         </div>
         <div className="nav-links">
-          <Link title="Inicio" to="/dashboard"><span className="icon">🏠</span> Inicio</Link>
-          <Link title="Envíos" to="/dashboard"><span className="icon">🚚</span> Envíos</Link>
-          <Link title="Nuevo Envío" to="/nuevo-envio"><span className="icon">➕</span> Nuevo Envío</Link>
+          <Link title="Panel Control" to="/dashboard"><span className="icon">🏠</span> Panel Control</Link>
+          <Link title="Nueva Orden" to="/nuevo-envio"><span className="icon">➕</span> Nueva Orden</Link>
         </div>
       </div>
 

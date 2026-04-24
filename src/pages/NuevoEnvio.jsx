@@ -7,19 +7,23 @@ import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 export default function NuevoEnvio({ user }) {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
+    patenteCamion: "",
+    patenteAcoplado: "",
+    capacidad: "",
+    pesoMaximo: "",
+    choferAsignado: "",
+    tipoCombustible: "",
+    codigoOnu: "",
+    temperatura: "",
+    volumenACargar: "",
+    densidad: "",
+    riesgo: "",
     origen: "",
     destino: "",
-    destinatarioNombre: "",
-    destinatarioTelefono: "",
-    peso: "",
-    dimensiones: "",
-    tipoEnvio: "NORMAL",
-    notasAdicionales: "",
-    ventanaHoras: "24",
-    fragil: false,
-    frio: false,
+    remito: "",
+    cot: "",
     distanciaEstimada: "",
-    saturacion: "MEDIA"
+    etaEstimada: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -103,148 +107,147 @@ export default function NuevoEnvio({ user }) {
   return (
     <div className="nuevo-envio-container">
       <header className="form-header">
-        <div className="header-icon"><img src={LogiTrackLogo} alt="LogiTrack" className="header-logo-img" /></div>
         <div>
-          <h1>Nuevo Envío</h1>
-          <p>Sistema de Gestión LogiTrack</p>
+          <p id="nueva-orden">NUEVA ORDEN</p>
+          <h1>Crear orden de transporte</h1>
+          <p>Complete las secciones para generar el orden</p>
         </div>
       </header>
 
       <form className="envio-form card" onSubmit={handleSubmit}>
 
-        {/* 1. INFORMACION DE RUTA */}
+        {/* 01 - Unidad & Chofer */}
         <section className="form-section">
-          <h3>📍 Información de Ruta</h3>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Origen *</label>
-              <input name="origen" placeholder="Ej: Buenos Aires" value={formData.origen} required disabled={loading} onChange={handleChange} />
-            </div>
-            <div className="form-group">
-              <label>Destino *</label>
-              <input name="destino" placeholder="Ej: Córdoba" value={formData.destino} required disabled={loading} onChange={handleChange} />
-            </div>
-          </div>
-        </section>
+          <span className="step">01</span>
+          <h2>Unidad & Chofer</h2>
+          <small>Datos del vehículo y verificación documental.</small>
 
-        {/* 2. INFORMACION DESTINATARIO */}
-        <section className="form-section">
-          <h3>👤 Información del Destinatario</h3>
-          <div className="form-row">
+          <div className="grid-2">
             <div className="form-group">
-              <label>Nombre completo *</label>
-              <input name="destinatarioNombre" value={formData.destinatarioNombre} required disabled={loading} onChange={handleChange} />
+              <label>Patente Camión</label>
+              <input type="text" name="patenteCamion" placeholder="AB 432 KL" value={formData.patenteCamion} required disabled={loading} onChange={handleChange}/>
             </div>
-            <div className="form-group">
-              <label>Teléfono *</label>
-              <input name="destinatarioTelefono" value={formData.destinatarioTelefono} required disabled={loading} onChange={handleChange} />
-            </div>
-          </div>
-        </section>
 
-        {/* 3. INFORMACION PAQUETE */}
-        <section className="form-section">
-          <h3>📦 Información del Paquete</h3>
-          <div className="form-row">
             <div className="form-group">
-              <label>Peso (kg) *</label>
-              <input name="peso" type="number" step="0.1" value={formData.peso} required disabled={loading} onChange={handleChange} />
+              <label>Patente Acoplado</label>
+              <input type="text" name="patenteAcoplado" placeholder="CD 891 OP" value={formData.patenteAcoplado} required disabled={loading} onChange={handleChange} />
             </div>
+
             <div className="form-group">
-              <label>Dimensiones (cm) *</label>
-              <input name="dimensiones" placeholder="Ej: 40x30x20" value={formData.dimensiones} required disabled={loading} onChange={handleChange} />
+              <label>Capacidad (Litros)</label>
+              <input type="number" name="capacidad" placeholder="32000" value={formData.capacidad} required disabled={loading} onChange={handleChange} />
+              <small>Volumen máximo del tanque cisterna.</small>
+            </div>
+
+            <div className="form-group">
+              <label>Peso Maximo (kg)</label>
+              <input type="number" name="pesoMaximo" placeholder="45000" value={formData.pesoMaximo} required disabled={loading} onChange={handleChange}/>
             </div>
           </div>
-          <div className="form-row">
-            <div className="form-group checkbox-group">
-              <label>
-                <input name="fragil" type="checkbox" checked={formData.fragil} disabled={loading} onChange={handleChange} />
-                <span>Paquete frágil</span>
-              </label>
-            </div>
-            <div className="form-group checkbox-group">
-              <label>
-                <input name="frio" type="checkbox" checked={formData.frio} disabled={loading} onChange={handleChange} />
-                <span>Requiere refrigeración</span>
-              </label>
-            </div>
-          </div>
+
           <div className="form-group">
-            <label>Volumen auto-calculado (Litros)</label>
-            <input type="number" value={calculatedVolume} disabled className="input-disabled" />
+            <label>Chofer Asignado</label>
+            <select defaultValue="Romero">
+              <option value="Romero"> C. Romero - Lic. CL-A</option>
+            </select>
+          </div>
+
+          <div className="grid-2">
+            <div className="status ok"> LINTI - En regla</div>
+            <div className="status warn"> VTV - Por vencer</div>
           </div>
         </section>
 
-        {/* 4. INFORMACION DE ENVIO */}
+        {/* 02 - Especificaciones de la carga */}
         <section className="form-section">
-          <h3>🚚 Información de Envío</h3>
-          <div className="form-row">
+          <span className="step">02</span>
+          <h2>Especificaciones de la carga</h2>
+          <small>Combustible, código de transporte peligroso y condiciones.</small>
+
+          <div className="grid-3">
             <div className="form-group">
-              <label>Distancia estimada (km) *</label>
-              <input
-                name="distanciaEstimada"
-                type="number"
-                placeholder="Ej: 250"
-                value={formData.distanciaEstimada}
-                required
-                disabled={loading}
-                onChange={handleChange}
-              />
-              <small>Distancia aproximada entre origen y destino</small>
-            </div>
-            <div className="form-group">
-              <label>Nivel de saturación *</label>
-              <select name="saturacion" value={formData.saturacion} disabled={loading} onChange={handleChange}>
-                <option value="BAJA">Baja</option>
-                <option value="MEDIA">Media</option>
-                <option value="ALTA">Alta</option>
-              </select>
-              <small>Congestión esperada en la ruta</small>
-            </div>
-          </div>
-          <div className="form-row">
-            <div className="form-group">
-              <label>Tipo de Envío *</label>
-              <select name="tipoEnvio" value={formData.tipoEnvio} disabled={loading} onChange={handleChange}>
-                <option value="NORMAL">Normal</option>
-                <option value="EXPRESS">Express</option>
+              <label>Tipo de Combustible</label>
+              <select defaultValue= "super">
+                <option value="super">Súper</option>
               </select>
             </div>
+
             <div className="form-group">
-              <label>Ventana de entrega (horas) *</label>
-              <input 
-                name="ventanaHoras"
-                type="number" 
-                min="1"
-                placeholder="Ej: 24" 
-                value={formData.ventanaHoras}
-                required 
-                disabled={loading}
-                onChange={handleChange}
-              />
-              <small>Tiempo máximo disponible para realizar la entrega</small>
+              <label>Código ONU</label>
+              <input type="text" name="codigoOnu" placeholder="UN 1203" value={formData.codigoOnu} required disabled={loading} onChange={handleChange} />
+              <small>Código de Operación de Transporte.</small>
             </div>
-          </div>
-          <div className="form-group full-width">
-            <label>Fecha estimada de entrega (Calculada automáticamente)</label>
-            <input type="text" value={calculatedDateString} disabled className="input-disabled" style={{ fontWeight: 'bold', color: '#2c3e50' }} />
+
+            <div className="form-group">
+              <label>Temperatura (°C)</label>
+              <input type="number" name="temperatura" placeholder="22" value={formData.temperatura} required disabled={loading} onChange={handleChange}/>
+            </div>
+
+            <div className="form-group">
+              <label>Volumen a cargar (L)</label>
+              <input type="number" name="volumenACargar" placeholder="30000" value={formData.volumenACargar} required disabled={loading} onChange={handleChange}/>
+            </div>
+
+            <div className="form-group">
+              <label>Densidad (kg/m³)</label>
+              <input type="number" name="densidad" placeholder="745" value={formData.densidad} required disabled={loading} onChange={handleChange}/>
+            </div>
+
+            <div className="form-group">
+              <label>Clase de riesgo</label>
+              <input type="text" name="riesgo" placeholder="Clase 3 - Liquido inflamable" value={formData.riesgo} required disabled={loading} onChange={handleChange}/>
+            </div>
           </div>
         </section>
 
-        {/* 5. FINALIZAR */}
+        {/* 03 - Logistica & Documentacion*/}
         <section className="form-section">
-          <h3>✅ Finalizar Registro</h3>
-          <div className="form-group full-width">
-            <label>Notas adicionales (opcional)</label>
-            <textarea
-              name="notasAdicionales"
-              placeholder="Ej: Frágil - Manejar con cuidado..."
-              value={formData.notasAdicionales}
-              disabled={loading}
-              onChange={handleChange}
-            />
+          <span className="step">03</span>
+          <h2>Logistica & Documentación</h2>
+          <small>Origen, destino y comprobantes fiscales.</small>
+
+          <div className="grid-2">
+            <div className="form-group">
+              <label>Origen / Refinería</label>
+              <input type="text" name="origen" placeholder="Refinería Dock Sud - Buenos Aires" value={formData.origen} required disabled={loading} onChange={handleChange} />
+            </div>
+
+            <div className="form-group">
+              <label>Destino / Estación</label>
+              <input type="text" name="destino" placeholder="YPF Neuquén Centro" value={formData.destino} required disabled={loading} onChange={handleChange} />
+            </div>
+
+            <div className="form-group">
+              <label>Remito #</label>
+              <input type="text" name="remito" placeholder="0042-00012487" value={formData.remito} required disabled={loading} onChange={handleChange} />
+            </div>
+
+            <div className="form-group">
+              <label>COT (ARBA)</label>
+              <input type="text" name="cot" placeholder="20240419AR04823910" value={formData.cot} required disabled={loading} onChange={handleChange}/>
+              <small>Código de Operación de Transporte.</small>
+            </div>
           </div>
 
+          <div className="grid-2">
+            <div className="form-group">
+              <label>Distancia Estimada (km)</label>
+              <input type="number" name="distanciaEstimada" placeholder="500km" value={formData.distanciaEstimada} required disabled={loading} onChange={handleChange}/>
+            </div>
+            
+            <div className="form-group">
+              <label>ETA Estimada</label>
+              <input type="text" name="etaEstimada" placeholder="14:20 - 30/04/2026" value={formData.etaEstimada} required disabled={loading} onChange={handleChange}/>
+            </div>
+          </div>
+          
+          <div className="status">
+            Verificacion FIE - Validado
+          </div>
+        </section>
+
+        {/* 04 - Finalizar */}
+        <section className="form-section">
           <div className="terms-section">
             <label className="terms-checkbox">
               <input name="acceptedTerms" type="checkbox" checked={acceptedTerms} onChange={handleChange} required />
