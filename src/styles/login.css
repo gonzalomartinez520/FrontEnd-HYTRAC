@@ -1,0 +1,134 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+.login-container {
+  min-height: 100vh; /* 👈 instead of height */
+  width: 100%;
+
+  background-color: #d90000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background: #f2f2f2;
+  padding: 40px;
+  border-radius: 20px;
+  width: 350px;
+  text-align: center;
+}
+
+.logo {
+  background: #d0dce5;
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.login-logo-img {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+}
+
+h1 {
+  margin: 10px 0 5px;
+  color: black;
+}
+
+.red {
+  color: #d90000;
+}
+
+.subtitle {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+form {
+  text-align: left;
+}
+
+label {
+  font-size: 13px;
+  margin-top: 10px;
+  display: block;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.roles {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.role {
+  flex: 1;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.role.active {
+  border-color: #d90000;
+  background: #ffe5e5;
+}
+
+.role span {
+  display: block;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background: #d90000;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.footer {
+  margin-top: 20px;
+  font-size: 11px;
+  color: #777;
+  text-align: center;
+}
+
+.login-error {
+  color: #cc0000;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 8px;
+}
