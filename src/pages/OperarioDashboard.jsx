@@ -40,7 +40,7 @@ export default function OperarioDashboard({ user }) {
         setError(null);
 
         // Axios GET request
-        const response = await axios.get("http://localhost:8080/api/envios");
+        const response = await axios.get("${API_URL}/envios");
 
         const data = response.data;   // This is the array []
 
@@ -87,7 +87,7 @@ export default function OperarioDashboard({ user }) {
         // Si es supervisor, obtener métricas
         if (user?.role === "supervisor") {
           try {
-            const metricsResponse = await axios.get("http://localhost:8080/api/envios/metricas");
+            const metricsResponse = await axios.get("${API_URL}/envios/metricas");
             setMetricas(metricsResponse.data);
           } catch (err) {
             console.warn("Advertencia: No se pudieron cargar las métricas", err);
