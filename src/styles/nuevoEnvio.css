@@ -27,13 +27,13 @@
 
 #nueva-orden {
   font-size: 90%;
-  font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
 }
 
 .envio-form {
   background: #1E293B;
   padding: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-color: #1E293B;
 }
 
@@ -80,7 +80,8 @@
   color: #555;
 }
 
-.form-group input, .form-group select {
+.form-group input,
+.form-group select {
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -124,7 +125,8 @@
   gap: 20px;
 }
 
-.btn-cancel, .btn-submit {
+.btn-cancel,
+.btn-submit {
   flex: 1;
   padding: 15px;
   border-radius: 12px;
@@ -152,8 +154,13 @@
   color: white;
 }
 
-.btn-submit:hover:not(:disabled) { background: #F98000; }
-.btn-cancel:hover:not(:disabled) { background: #d32f2f; }
+.btn-submit:hover:not(:disabled) {
+  background: #F98000;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background: #d32f2f;
+}
 
 .error-alert {
   background-color: #ffebee;

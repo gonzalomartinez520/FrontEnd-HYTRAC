@@ -8,16 +8,33 @@
   height: 60px;
 }
 
-.nav-left, .nav-links {
+.nav-left,
+.nav-links {
   display: flex;
   align-items: center;
   gap: 30px;
 }
 
-.nav-logo { display: flex; align-items: center; gap: 10px; }
-.logo-text { display: flex; flex-direction: column; line-height: 1.1; }
-.logo-text strong { font-size: 1.2rem; }
-.logo-text span { font-size: 0.7rem; opacity: 0.9; }
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-text strong {
+  font-size: 1.2rem;
+}
+
+.logo-text span {
+  font-size: 0.7rem;
+  opacity: 0.9;
+}
 
 .nav-links a {
   color: #F8FAF6;
@@ -29,35 +46,38 @@
   opacity: 0.9;
   transition: opacity 0.2s;
 }
-.nav-links a:hover { opacity: 1; }
 
-.nav-right { 
-  display: flex; 
-  flex-direction: row; 
+.nav-links a:hover {
+  opacity: 1;
+}
+
+.nav-right {
+  display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: flex-end;
-  gap: 15px; 
-  height: 100%; 
+  gap: 15px;
+  height: 100%;
 }
 
 .user-profile {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   display: flex;
-  align-items: center; 
+  align-items: center;
   gap: 10px;
-  padding: 0 15px; 
-  height: 40px;    
+  padding: 0 15px;
+  height: 40px;
   box-sizing: border-box;
   min-width: fit-content;
 }
 
-.user-info { 
+.user-info {
   text-transform: capitalize;
-  display: flex; 
-  flex-direction: column; 
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center; 
+  align-items: center;
   line-height: 1.2;
 }
 
@@ -69,10 +89,10 @@
   cursor: pointer;
   font-weight: bold;
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: center;
-  padding: 0 16px; 
-  height: 40px;    
+  padding: 0 16px;
+  height: 40px;
   border-radius: 8px;
   font-size: 0.9rem;
   box-sizing: border-box;
@@ -82,7 +102,7 @@
 
 
 .logout-btn:hover {
-  border-color:  #F8FAF6;
+  border-color: #F8FAF6;
   background: #F98500;
 }
 

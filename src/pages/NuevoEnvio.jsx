@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../services/api";
 import "../styles/nuevoEnvio.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
+import { envios } from '@/api';
 
 export default function NuevoEnvio({ user }) {
   const navigate = useNavigate();
@@ -82,23 +82,38 @@ export default function NuevoEnvio({ user }) {
 
     try {
       const deliveryDate = new Date();
-      deliveryDate.setHours(deliveryDate.getHours() + parseInt(formData.ventanaHoras));
+      deliveryDate.setHours(deliveryDate.getHours() + parseInt(formData.ventanaHoras || 24));
 
       const payload = {
         ...formData,
-        peso: parseFloat(formData.peso),
+        peso: formData.peso ? parseFloat(formData.peso) : null,
         volumen: calculatedVolume,
         ventanaHoras: parseInt(formData.ventanaHoras),
         fechaEstimadaEntrega: deliveryDate.toISOString(),
-        distanciaEstimada: formData.distanciaEstimada ? parseInt(formData.distanciaEstimada) : null,
-        creadoPor: user?.username || "operario-web"
+        distanciaEstimada: formData.distanciaEstimada
+          ? parseInt(formData.distanciaEstimada)
+          : null,
+        creadoPor: user?.username || "operario-web",
+        // Add any other missing fields your backend expects
       };
 
-      const response = await api.post("/envios", payload);
-      setSuccess(`¡Envío creado exitosamente! Tracking ID: ${response.data.trackingId}`);
-      setTimeout(() => navigate("/dashboard"), 1500);
+      const newEnvio = await envios.create(payload);   // ← Returns the created object
+
+      setSuccess(`¡Envío creado exitosamente! Tracking ID: ${newEnvio.trackingId}`);
+
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1500);
+
     } catch (err) {
-      setError(err?.response?.data?.message || "Error al crear el envío.");
+      console.error(err);
+      // Improved error handling
+      const errorMessage =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Error al crear el envío.";
+
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -125,7 +140,7 @@ export default function NuevoEnvio({ user }) {
           <div className="grid-2">
             <div className="form-group">
               <label>Patente Camión</label>
-              <input type="text" name="patenteCamion" placeholder="AB 432 KL" value={formData.patenteCamion} required disabled={loading} onChange={handleChange}/>
+              <input type="text" name="patenteCamion" placeholder="AB 432 KL" value={formData.patenteCamion} required disabled={loading} onChange={handleChange} />
             </div>
 
             <div className="form-group">
@@ -141,7 +156,7 @@ export default function NuevoEnvio({ user }) {
 
             <div className="form-group">
               <label>Peso Maximo (kg)</label>
-              <input type="number" name="pesoMaximo" placeholder="45000" value={formData.pesoMaximo} required disabled={loading} onChange={handleChange}/>
+              <input type="number" name="pesoMaximo" placeholder="45000" value={formData.pesoMaximo} required disabled={loading} onChange={handleChange} />
             </div>
           </div>
 
@@ -167,7 +182,7 @@ export default function NuevoEnvio({ user }) {
           <div className="grid-3">
             <div className="form-group">
               <label>Tipo de Combustible</label>
-              <select defaultValue= "super">
+              <select defaultValue="super">
                 <option value="super">Súper</option>
               </select>
             </div>
@@ -180,22 +195,22 @@ export default function NuevoEnvio({ user }) {
 
             <div className="form-group">
               <label>Temperatura (°C)</label>
-              <input type="number" name="temperatura" placeholder="22" value={formData.temperatura} required disabled={loading} onChange={handleChange}/>
+              <input type="number" name="temperatura" placeholder="22" value={formData.temperatura} required disabled={loading} onChange={handleChange} />
             </div>
 
             <div className="form-group">
               <label>Volumen a cargar (L)</label>
-              <input type="number" name="volumenACargar" placeholder="30000" value={formData.volumenACargar} required disabled={loading} onChange={handleChange}/>
+              <input type="number" name="volumenACargar" placeholder="30000" value={formData.volumenACargar} required disabled={loading} onChange={handleChange} />
             </div>
 
             <div className="form-group">
               <label>Densidad (kg/m³)</label>
-              <input type="number" name="densidad" placeholder="745" value={formData.densidad} required disabled={loading} onChange={handleChange}/>
+              <input type="number" name="densidad" placeholder="745" value={formData.densidad} required disabled={loading} onChange={handleChange} />
             </div>
 
             <div className="form-group">
               <label>Clase de riesgo</label>
-              <input type="text" name="riesgo" placeholder="Clase 3 - Liquido inflamable" value={formData.riesgo} required disabled={loading} onChange={handleChange}/>
+              <input type="text" name="riesgo" placeholder="Clase 3 - Liquido inflamable" value={formData.riesgo} required disabled={loading} onChange={handleChange} />
             </div>
           </div>
         </section>
@@ -224,7 +239,7 @@ export default function NuevoEnvio({ user }) {
 
             <div className="form-group">
               <label>COT (ARBA)</label>
-              <input type="text" name="cot" placeholder="20240419AR04823910" value={formData.cot} required disabled={loading} onChange={handleChange}/>
+              <input type="text" name="cot" placeholder="20240419AR04823910" value={formData.cot} required disabled={loading} onChange={handleChange} />
               <small>Código de Operación de Transporte.</small>
             </div>
           </div>
@@ -232,15 +247,15 @@ export default function NuevoEnvio({ user }) {
           <div className="grid-2">
             <div className="form-group">
               <label>Distancia Estimada (km)</label>
-              <input type="number" name="distanciaEstimada" placeholder="500km" value={formData.distanciaEstimada} required disabled={loading} onChange={handleChange}/>
+              <input type="number" name="distanciaEstimada" placeholder="500km" value={formData.distanciaEstimada} required disabled={loading} onChange={handleChange} />
             </div>
-            
+
             <div className="form-group">
               <label>ETA Estimada</label>
-              <input type="text" name="etaEstimada" placeholder="14:20 - 30/04/2026" value={formData.etaEstimada} required disabled={loading} onChange={handleChange}/>
+              <input type="text" name="etaEstimada" placeholder="14:20 - 30/04/2026" value={formData.etaEstimada} required disabled={loading} onChange={handleChange} />
             </div>
           </div>
-          
+
           <div className="status">
             Verificacion FIE - Validado
           </div>

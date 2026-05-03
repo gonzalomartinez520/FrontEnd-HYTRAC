@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
 import { useState, useEffect } from "react";
-import axios from "axios";
 import "../styles/operarioDashboard.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
+import { envios } from '@/api';
 
 export default function OperarioDashboard({ user }) {
   // user viene de App.jsx con el nombre ingresado en login
@@ -39,10 +39,8 @@ export default function OperarioDashboard({ user }) {
         setLoading(true);
         setError(null);
 
-        // Axios GET request
-        const response = await axios.get("${API_URL}/envios");
-
-        const data = response.data;   // This is the array []
+        // Conseguir todos los envios
+        const data = await envios.getAll();
 
         console.log("Datos recibidos:", data); // ← Helpful for debugging
 

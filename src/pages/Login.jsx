@@ -17,7 +17,7 @@ export default function Login({ onLogin }) {
       return;
     }
     if (!password.trim()) {
-     setError("Por favor ingresá tu contraseña");
+      setError("Por favor ingresá tu contraseña");
       return;
     }
     // fake login → send data to App.jsx
