@@ -118,9 +118,19 @@ export default function NuevoEnvio({ user }) {
 
         {/* 01 - Unidad & Chofer */}
         <section className="form-section">
-          <span className="step">01</span>
-          <h2>Unidad & Chofer</h2>
-          <small>Datos del vehículo y verificación documental.</small>
+          <div className="section-title">
+            <span className="step">01</span>
+
+            <div className="section-text">
+              <h2>
+                <svg className="icon" viewBox="0 0 24 24">
+                  <path d="M3 6h11v8H3zM14 9h3l3 3v2h-6zM7 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+                </svg>
+                Unidad & Chofer</h2>
+              <p>Datos del vehículo y verificación documental.</p>
+            </div>
+          </div>
+          
 
           <div className="grid-2">
             <div className="form-group">
@@ -160,9 +170,18 @@ export default function NuevoEnvio({ user }) {
 
         {/* 02 - Especificaciones de la carga */}
         <section className="form-section">
-          <span className="step">02</span>
-          <h2>Especificaciones de la carga</h2>
-          <small>Combustible, código de transporte peligroso y condiciones.</small>
+          <div className="section-title">
+            <span className="step">02</span>
+
+            <div className="section-text">
+              <h2>
+                <svg className="icon" viewBox="0 0 24 24">
+                  <path d="M7 2h10v2H7zM7 20h10v2H7zM5 4h14v16H5zM5 10h14M5 14h14"/>
+                </svg>
+                Especificaciones de la carga</h2>
+              <p>Combustible, código de transporte peligroso y condiciones.</p>
+            </div>
+          </div>
 
           <div className="grid-3">
             <div className="form-group">
@@ -202,9 +221,18 @@ export default function NuevoEnvio({ user }) {
 
         {/* 03 - Logistica & Documentacion*/}
         <section className="form-section">
-          <span className="step">03</span>
-          <h2>Logistica & Documentación</h2>
-          <small>Origen, destino y comprobantes fiscales.</small>
+          <div className="section-title">
+            <span className="step">03</span>
+
+            <div className="section-text">
+              <h2>
+                <svg className="icon" viewBox="0 0 24 24">
+                  <path d="M6 2h9l5 5v15H6zM15 2v6h6M8 13h8M8 17h8M8 9h4"/>
+                </svg>
+                Logistica & Documentación</h2>
+              <p>Origen, destino y comprobantes fiscales.</p>
+            </div>
+          </div>
 
           <div className="grid-2">
             <div className="form-group">
