@@ -45,9 +45,17 @@
 }
 
 .form-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 2px;
   font-size: 1.1rem;
-  margin-bottom: 5px;
   color: #F8FAF6;
+}
+
+.icon {
+  width: 25px;
+  height: 25px;
+  fill: #f97316;
 }
 
 .step {
@@ -55,6 +63,19 @@
   padding: 10px 14px;
   border-radius: 10px;
   font-weight: bold;
+  color: #F8FAF6;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-text p {
+  color: #999;
+  font-style: italic;
+  font-size: 0.8rem;
 }
 
 .grid-2 {
@@ -77,7 +98,7 @@
 .form-group label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #555;
+  color: #F8FAF6;
 }
 
 .form-group input,
@@ -255,6 +276,7 @@ small {
   font-size: 0.8rem;
   color: #999;
   font-style: italic;
+  margin-top: 3px;
 }
 
 @media (max-width: 768px) {
