@@ -11,7 +11,7 @@ Instalar las siguientes dependencias:
 
 ```bash
 git clone https://github.com/dmelhado/PP1-TPI-2026-1.git
-cd PP1-TPI-2026-1.git
+cd PP1-TPI-2026-1
 ```
 
 ### 3. Preparar variable de Vite para desarrollo local
