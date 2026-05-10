@@ -17,12 +17,13 @@ export default function EnvioDetail({ user }) {
   const [updatingEstado, setUpdatingEstado] = useState(false);
   const [estadoMsg, setEstadoMsg] = useState("");
 
-  // Helper to calculate Estimated Delivery based on Creation + Window Hours
+  /* QUEDARA COMENTADO HASTA NUEVO AVISO
   const calculateEstimatedDelivery = (creationDate, windowHours) => {
     const date = new Date(creationDate);
     date.setHours(date.getHours() + windowHours);
     return date.toLocaleString();
   };
+  */
 
   const formatearEstado = (estado) => {
     if (!estado) return "";
@@ -90,105 +91,120 @@ export default function EnvioDetail({ user }) {
 
   return (
     <div className="details-page">
-      <div className="back-link" onClick={() => navigate("/dashboard")}>
-        ← Volver al listado
+      <div className="details-left">
+        <div className="back-link" onClick={() => navigate("/dashboard")}>
+          ← Volver al Panel
+        </div>
+
+        <div className="card">
+          <div className="card-header">
+            📍 <span>Resumen del Trayecto</span>
+          </div>
+
+          <div className="card-body">
+            <div className="row">
+              <div>
+                <smal>Distancia Estimada</smal>
+                <h2>{shipment.distanciaEstimada}</h2>
+              </div>
+              <div>
+                <small>Fecha Estimada</small>
+                <h2>⏱ 15:30</h2>
+              </div>
+            </div>
+
+            <div className="dates">
+              <div>
+                <small>Fecha Salida</small>
+                <h2>⏱ 09:30</h2>
+              </div>
+              <div>
+                <small>Fecha Llegada</small>
+                <h2>⏱ 16:00</h2>
+              </div>
+            </div>
+
+            <div className="info">
+              <p><strong>Origen:</strong>{shipment.origen}</p>
+              <p><strong>Destino:</strong>{shipment.destino}</p>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="details-header card">
-        <div>
-          <h1>{shipment.trackingId}</h1>
-          <p className="subtitle">Detalles del envío</p>
-        </div>
-        <div className="header-badges">
+
+      <div className="details-right">
+        <div className="details-header-right">
+          <h1>Órden {shipment.id}</h1>
+          <small>Creado: {shipment.fechaCreacion}</small>
           <span className={`badge status-${shipment.estadoEnvio.toLowerCase()}`}>
             {formatearEstado(shipment.estadoEnvio)}
           </span>
-          <span className={`badge priority-${shipment.prioridadEnvio.toLowerCase()}`}>
-            Prioridad: {shipment.prioridadEnvio}
-          </span>
-          <span className={`badge saturation-${shipment.saturacion.toLowerCase()}`}>
-            Saturación: {shipment.saturacion}
-          </span>
         </div>
-      </div>
 
-      <div className="details-grid">
-        <div className="column-main">
-          <section className="card info-section">
-            <h3>📍 Información de Ruta</h3>
-            <div className="route-container">
-              <div className="route-step origen">
-                <label>Origen</label>
-                <p>{shipment.origen}</p>
-              </div>
-              <div className="route-step destino">
-                <label>Destino</label>
-                <p>{shipment.destino}</p>
-              </div>
-            </div>
-            <div className="distancia-info">
-              <span className="distancia-text">
-                🛣️ <strong>{shipment.distanciaEstimada} km</strong> de trayecto total
-              </span>
-            </div>
-          </section>
+        <div className="details-info-right">
+          <h3 className="section-title">👤 INFORMACIÓN DEL CONDUCTOR</h3>
 
-          <section className="card info-section">
-            <h3>👤 Información del Destinatario</h3>
-            <div className="info-grid">
-              <div className="data-item">
-                <label>Nombre completo</label>
-                <p>{shipment.destinatarioNombre}</p>
-              </div>
-              <div className="data-item">
-                <label>Teléfono</label>
-                <p>📞 {shipment.destinatarioTelefono}</p>
-              </div>
+          <div className="driver-card">
+            <div>
+              <h4>Ricardo Gómez</h4>
+              <p>DNI: 28.455.901 / ID: HY-DRV-102</p>
             </div>
-          </section>
+          </div>
 
-          <section className="card info-section">
-            <h3>📦 Información del Paquete</h3>
-            <div className="package-grid">
-              <div className="stat-box">
-                <span className="icon">📦</span>
-                <div>
-                  <label>Volumen</label>
-                  <p>{shipment.volumen}</p>
-                </div>
+          <div className="grid-info">
+            <div>
+              <h4 className="sub-title">🚛 UNIDAD DE TRANSPORTE</h4>
+              <div className="info-row">
+                <span>Patente Camion</span>
+                <strong>AF 455 YH</strong>
               </div>
-              <div className="stat-box">
-                <span className="icon">❄️</span>
-                <div>
-                  <label>Cadena de Frío</label>
-                  <p>{shipment.frio ? "Requerido" : "No requiere"}</p>
-                </div>
+
+              <div className="info-row">
+                <span>Patente Acoplado</span>
+                <strong>RY 902 KK</strong>
               </div>
-              <div className="stat-box">
-                <span className="icon">💎</span>
-                <div>
-                  <label>Frágil</label>
-                  <p>{shipment.fragil ? "Sí" : "No"}</p>
-                </div>
+
+              <div className="info-row">
+                <span>Capacidad Total</span>
+                <strong>35.000 Lts</strong>
+              </div>
+
+              <div className="info-row">
+                <span>Peso Máximo</span>
+                <strong>45.000 Kgs</strong>
               </div>
             </div>
 
-            {/* If you wanted to show the equivalent in cubic meters for very large shipments */}
-            {shipment.volumen >= 1000 && (
-              <div className="volume-conversion">
-                <small>Equivalente a {(shipment.volumen / 1000).toFixed(2)} m³</small>
-              </div>
-            )}
+            <div>
+              <h4 className="sub-title">💧 ESPECIFICACIONES DE CARGA</h4>
 
-            {shipment.notasAdicionales && (
-              <div className="notes-box">
-                <p><strong>📝 Notas:</strong> {shipment.notasAdicionales}</p>
+              <div className="info-row">
+                <span>Combustible</span>
+                <strong>Diesel Premium</strong>
               </div>
-            )}
-          </section>
+
+              <div className="info-row">
+                <span>Código ONU</span>
+                <strong>1202</strong>
+              </div>
+
+              <div className="info-row">
+                <span>Clase Peligro</span>
+                <strong>3 (Inflamable)</strong>
+              </div>
+
+              <div className="info-row">
+                <span>Temperatura</span>
+                <strong>18 °C</strong>
+              </div>
+
+              {/*Base para el detalle del envio, luego se cambio con los datos reales*/}
+            </div>
+          </div>
 
           <section className="card info-section">
-            <h3>🔄 Actualización de Estado</h3>
+            <h4 className="sub-title">🔄 Actualización de Estado</h4>
             <form className="status-form" onSubmit={handleUpdateEstado}>
               <label>Nuevo estado</label>
               <select
@@ -216,45 +232,12 @@ export default function EnvioDetail({ user }) {
               </button>
             </form>
             {estadoMsg && (
-              <p className={`status-msg ${estadoMsg.includes("correctamente") ? "success" : "error"}`}>
-                {estadoMsg}
-              </p>
+            <p className={`status-msg ${estadoMsg.includes("correctamente") ? "success" : "error"}`}>
+            {estadoMsg}
+            </p>
             )}
           </section>
-        </div>
 
-        <div className="column-side">
-          <section className="card info-section">
-            <h3>⏰ Tiempos</h3>
-            <div className="control-list">
-              <div className="control-item">
-                <label>Fecha de creación</label>
-                <p>{new Date(shipment.fechaCreacion).toLocaleString()}</p>
-              </div>
-              <div className="control-item">
-                <label>Entrega estimada (Límite)</label>
-                <p>
-                  {calculateEstimatedDelivery(shipment.fechaCreacion, shipment.ventanaHoras)}
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <section className="card info-section">
-            <h3>🛠️ Información de Control</h3>
-            <div className="control-list">
-              <div className="control-item">
-                <label>Operario</label>
-                <p>{shipment.creadoPor}</p>
-              </div>
-              <div className="control-item">
-                <label>Tipo de Envío</label>
-                <p>{shipment.tipoEnvio}</p>
-              </div>
-            </div>
-          </section>
-
-          {/* Only show the history section if the user role is supervisor */}
           {user?.role === "supervisor" && (
             <section className="card info-section">
               <h3>🕘 Historial</h3>
