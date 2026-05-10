@@ -129,7 +129,7 @@ export default function NuevoEnvio({ user }) {
         </div>
       </header>
 
-      <form className="envio-form card" onSubmit={handleSubmit}>
+      <form className="envio-form-card" onSubmit={handleSubmit}>
 
         {/* 01 - Unidad & Chofer */}
         <section className="form-section">
