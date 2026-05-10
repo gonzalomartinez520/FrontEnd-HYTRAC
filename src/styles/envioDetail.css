@@ -154,28 +154,28 @@
   text-transform: uppercase;
 }
 
-.status-pendiente { 
-  background: #fff3cd; 
-  color: #8b6f47; 
-  border: 1.5px solid #ffc107; 
+.status-pendiente {
+  background: #fff3cd;
+  color: #8b6f47;
+  border: 1.5px solid #ffc107;
 }
 
-.status-en_viaje  { 
-  background: #e6d8ff; 
-  color: #7b1fa2; 
-  border: 1.5px solid #9c27b0; 
+.status-en_viaje {
+  background: #e6d8ff;
+  color: #7b1fa2;
+  border: 1.5px solid #9c27b0;
 }
 
-.status-entregado { 
-  background: #d4f5df; 
-  color: #1b5e20; 
-  border: 1.5px solid #4caf50; 
+.status-entregado {
+  background: #d4f5df;
+  color: #1b5e20;
+  border: 1.5px solid #4caf50;
 }
 
-.status-cancelado { 
-  background: #ffcdd2; 
-  color: #b71c1c; 
-  border: 1.5px solid #f44336; 
+.status-cancelado {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border: 1.5px solid #f44336;
 }
 
 /* Form Elements inside Details */
@@ -220,19 +220,37 @@
 }
 
 /* History List */
-.history-list { list-style: none; padding: 0; }
+.history-list {
+  list-style: none;
+  padding: 0;
+}
+
 .history-list li {
   background: #fff;
-  border-left: 3px solid #d32f2f; 
+  border-left: 3px solid #d32f2f;
   border-radius: 0 8px 8px 0;
   padding: 12px 15px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
 }
 
-.history-list li strong { display: block; font-size: 0.9rem; color: #2d3748; }
-.history-list li span { font-size: 0.85rem; color: #718096; display: block; margin: 4px 0; }
-.history-list li small { color: #a0aec0; font-style: italic; }
+.history-list li strong {
+  display: block;
+  font-size: 0.9rem;
+  color: #2d3748;
+}
+
+.history-list li span {
+  font-size: 0.85rem;
+  color: #718096;
+  display: block;
+  margin: 4px 0;
+}
+
+.history-list li small {
+  color: #a0aec0;
+  font-style: italic;
+}
 
 
 /* texto de estado actualizado*/
@@ -240,10 +258,10 @@
   margin-top: 15px;
   padding: 12px;
   border-radius: 8px;
-  text-align: center; 
+  text-align: center;
   font-size: 0.9rem;
   font-weight: 600;
-  animation: fadeIn 0.3s ease-in-out; 
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 

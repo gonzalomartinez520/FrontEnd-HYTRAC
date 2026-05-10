@@ -17,34 +17,34 @@ function App() {
 
   return (
     <>
-    {user && <Navbar user={user} onLogout={setUser} />}
+      {user && <Navbar user={user} onLogout={setUser} />}
 
-    <Routes>
-      {/* 1. LOGIN ROUTE: If already logged in, skip login screen */}
-      <Route 
-        path="/login" 
-        element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />} 
-      />
+      <Routes>
+        {/* 1. LOGIN ROUTE: If already logged in, skip login screen */}
+        <Route
+          path="/login"
+          element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />}
+        />
 
-      {/* 2. PROTECTED ROUTES: Only show if user exists */}
-      <Route 
-        path="/dashboard" 
-        element={user ? <OperarioDashboard user={user} /> : <Navigate to="/login" />} 
-      />
+        {/* 2. PROTECTED ROUTES: Only show if user exists */}
+        <Route
+          path="/dashboard"
+          element={user ? <OperarioDashboard user={user} /> : <Navigate to="/login" />}
+        />
 
-      <Route 
-        path="/shipment/:id" 
-        element={user ? <EnvioDetail user={user} /> : <Navigate to="/login" />} 
-      />
+        <Route
+          path="/shipment/:id"
+          element={user ? <EnvioDetail user={user} /> : <Navigate to="/login" />}
+        />
 
-      <Route 
-      path="/nuevo-envio" 
-      element={user ? <NuevoEnvio user={user} /> : <Navigate to="/login" />} 
-      />
+        <Route
+          path="/nuevo-envio"
+          element={user ? <NuevoEnvio user={user} /> : <Navigate to="/login" />}
+        />
 
-      {/* 3. FALLBACK: Send everything else to login */}
-      <Route path="*" element={<Navigate to="/login" />} />
-    </Routes>
+        {/* 3. FALLBACK: Send everything else to login */}
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
     </>
   );
 }

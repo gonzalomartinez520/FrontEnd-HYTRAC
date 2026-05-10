@@ -1,16 +1,57 @@
-# React + Vite
+## ¿Como ejecutar esto?
+### 1. Requisitos
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Instalar las siguientes dependencias:
 
-Currently, two official plugins are available:
+* **Node.js 24 (LTS)**
+* **npm** (incluido con Node.js, en linux puede que haga falta ser instalado)
+* **Git**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 2. Clonar el repositorio
 
-## React Compiler
+```bash
+git clone https://github.com/gonzalomartinez520/FrontEnd-HYTRAC.git
+cd FrontEnd-HYTRAC
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 3. Preparar variable de Vite para desarrollo local
 
-## Expanding the ESLint configuration
+Es necesario indicarle a Vite dónde pegarle a la API. Crear el archivo `.env.development.local` en la raíz del proyecto.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Si se desea pegarle a una instancia local de la API, debe contener:
+```
+VITE_API_URL=http://localhost:8080/api
+```
+
+Si se desea pegarle a la API de producción, debe contener:
+```
+VITE_API_URL=http://hytrac.dmelhado.com/api
+```
+
+Este archivo es ignorado por git, por lo que no se subirán sus cambios.
+
+NOTA: Puede ser que falle pegarle a la API de producción por temas de CORS. Falta hacer pruebas de esto. Quejarse con Dante en ese caso.
+
+### 4. Ejecutar el Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## Como llamar a la API
+
+Todos los llamados a api deben hacerse utilizando la frase `${API_URL}/<llamado>`. Por ejemplo, si se quiere verificar si la API esta funcionando:
+
+```jsx
+const checkBackend = async () => {
+  try {
+    const res = await fetch(`${API_URL}/health`) 
+    if (!res.ok) throw new Error("Bad response")
+    setStatus("ok")
+  } catch (err) {
+    setStatus("error")
+  }
+}
+```
