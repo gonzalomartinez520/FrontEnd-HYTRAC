@@ -10,8 +10,8 @@ Instalar las siguientes dependencias:
 ### 2. Clonar el repositorio
 
 ```bash
-git clone https://github.com/dmelhado/PP1-TPI-2026-1.git
-cd PP1-TPI-2026-1
+git clone https://github.com/gonzalomartinez520/FrontEnd-HYTRAC.git
+cd FrontEnd-HYTRAC
 ```
 
 ### 3. Preparar variable de Vite para desarrollo local
