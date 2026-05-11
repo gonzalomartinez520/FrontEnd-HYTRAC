@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import api from "../services/api";
 import "../styles/envioDetail.css";
+import { envios } from '@/api';
 
 const ESTADOS_DISPONIBLES = ["PENDIENTE", "EN_VIAJE", "ENTREGADO", "CANCELADO"];
 
@@ -36,17 +36,17 @@ export default function EnvioDetail({ user }) {
         setLoading(true);
         setError(null);
 
-        const [shipmentResponse, historyResponse] = await Promise.all([
-          api.get(`/envios/${id}`),
-          // Only fetch history if user is supervisor
+        const [shipment, history] = await Promise.all([
+          envios.getById(id),
+
           user?.role === "supervisor"
-            ? api.get(`/envios/${id}/historial`).catch(() => ({ data: [] }))
-            : Promise.resolve({ data: [] }),
+            ? envios.getHistorial(id).catch(() => [])
+            : Promise.resolve([]),
         ]);
 
-        setShipment(shipmentResponse.data);
-        setSelectedEstado(shipmentResponse.data.estadoEnvio || "PENDIENTE");
-        setHistory(Array.isArray(historyResponse.data) ? historyResponse.data : []);
+        setShipment(shipment);
+        setSelectedEstado(shipment.estadoEnvio || "PENDIENTE");
+        setHistory(Array.isArray(history) ? history : []);
       } catch (err) {
         setError(err?.response?.data?.message || err.message || "Error al cargar el envío");
       } finally {
@@ -221,7 +221,7 @@ export default function EnvioDetail({ user }) {
 
               <label>Motivo del cambio</label>
               <textarea
-                value={motivo}
+                value={motivo}  
                 onChange={(e) => setMotivo(e.target.value)}
                 placeholder="Ej: Entregado al destinatario"
                 disabled={updatingEstado}
@@ -232,10 +232,28 @@ export default function EnvioDetail({ user }) {
               </button>
             </form>
             {estadoMsg && (
-            <p className={`status-msg ${estadoMsg.includes("correctamente") ? "success" : "error"}`}>
-            {estadoMsg}
-            </p>
+              <p className={`status-msg ${estadoMsg.includes("correctamente") ? "success" : "error"}`}>
+                {estadoMsg}
+              </p>
             )}
+          </section>
+        </div>
+
+        <div className="column-side">
+          <section className="card info-section">
+            <h3>⏰ Tiempos</h3>
+            <div className="control-list">
+              <div className="control-item">
+                <label>Fecha de creación</label>
+                <p>{new Date(shipment.fechaCreacion).toLocaleString()}</p>
+              </div>
+              <div className="control-item">
+                <label>Entrega estimada (Límite)</label>
+                <p>
+                  {calculateEstimatedDelivery(shipment.fechaCreacion, shipment.ventanaHoras)}
+                </p>
+              </div>
+            </div>
           </section>
 
           {user?.role === "supervisor" && (

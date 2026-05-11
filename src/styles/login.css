@@ -1,4 +1,6 @@
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
 }
@@ -13,7 +15,8 @@ body {
 }
 
 .login-container {
-  min-height: 100vh; /* 👈 instead of height */
+  min-height: 100vh;
+  /* 👈 instead of height */
   width: 100%;
 
   background-color: #d90000;
