@@ -11,7 +11,6 @@
   padding: 30px;
   padding-left: 0px;
   padding-top: 0px;
-  border-radius: 12px 12px 0 0;
   display: flex;
   align-items: center;
 }
@@ -30,11 +29,12 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
 }
 
-.envio-form {
+.envio-form-card {
   background: #1E293B;
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-color: #1E293B;
+  border-radius: 12px 12px 0 0;
 }
 
 .form-section {
