@@ -221,7 +221,7 @@ export default function EnvioDetail({ user }) {
 
               <label>Motivo del cambio</label>
               <textarea
-                value={motivo}
+                value={motivo}  
                 onChange={(e) => setMotivo(e.target.value)}
                 placeholder="Ej: Entregado al destinatario"
                 disabled={updatingEstado}
