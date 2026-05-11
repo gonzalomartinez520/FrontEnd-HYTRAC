@@ -221,7 +221,7 @@ export default function EnvioDetail({ user }) {
 
               <label>Motivo del cambio</label>
               <textarea
-                value={motivo}
+                value={motivo}  
                 onChange={(e) => setMotivo(e.target.value)}
                 placeholder="Ej: Entregado al destinatario"
                 disabled={updatingEstado}
@@ -232,7 +232,6 @@ export default function EnvioDetail({ user }) {
               </button>
             </form>
             {estadoMsg && (
-<<<<<<< HEAD
               <p className={`status-msg ${estadoMsg.includes("correctamente") ? "success" : "error"}`}>
                 {estadoMsg}
               </p>
@@ -255,12 +254,6 @@ export default function EnvioDetail({ user }) {
                 </p>
               </div>
             </div>
-=======
-            <p className={`status-msg ${estadoMsg.includes("correctamente") ? "success" : "error"}`}>
-            {estadoMsg}
-            </p>
-            )}
->>>>>>> develop
           </section>
 
           {user?.role === "supervisor" && (
