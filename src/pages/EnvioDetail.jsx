@@ -232,28 +232,10 @@ export default function EnvioDetail({ user }) {
               </button>
             </form>
             {estadoMsg && (
-              <p className={`status-msg ${estadoMsg.includes("correctamente") ? "success" : "error"}`}>
-                {estadoMsg}
-              </p>
+            <p className={`status-msg ${estadoMsg.includes("correctamente") ? "success" : "error"}`}>
+            {estadoMsg}
+            </p>
             )}
-          </section>
-        </div>
-
-        <div className="column-side">
-          <section className="card info-section">
-            <h3>⏰ Tiempos</h3>
-            <div className="control-list">
-              <div className="control-item">
-                <label>Fecha de creación</label>
-                <p>{new Date(shipment.fechaCreacion).toLocaleString()}</p>
-              </div>
-              <div className="control-item">
-                <label>Entrega estimada (Límite)</label>
-                <p>
-                  {calculateEstimatedDelivery(shipment.fechaCreacion, shipment.ventanaHoras)}
-                </p>
-              </div>
-            </div>
           </section>
 
           {user?.role === "supervisor" && (
