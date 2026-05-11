@@ -1,273 +1,232 @@
-import { Link } from "react-router-dom";
 
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/operarioDashboard.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
-import { envios } from '@/api';
+
+const mockShipments = [
+  {
+    id: "#HYT-8291",
+    origen: "Refinería Campana",
+    destino: "Estación Norte Rosario",
+    chofer: "Carlos Gomez",
+    status: "EN TRANSITO",
+    prioridad: "ALTA",
+    ultima: "Hace 15 min",
+  },
+  {
+    id: "#HYT-7742",
+    origen: "Planta Dock Sud",
+    destino: "Logística Córdoba Center",
+    chofer: "Roberto Paez",
+    status: "ENTREGADO",
+    prioridad: "MEDIA",
+    ultima: "Hace 2 horas",
+  },
+  {
+    id: "#HYT-9104",
+    origen: "Terminal San Lorenzo",
+    destino: "Estación Mendoza Este",
+    chofer: "Mario Luz",
+    status: "EN TRANSITO",
+    prioridad: "ALTA",
+    ultima: "Hace 5 min",
+  },
+  {
+    id: "#HYT-6623",
+    origen: "Refinería Campana",
+    destino: "Depósito Neuquén",
+    chofer: "Esteban Quito",
+    status: "CANCELADO",
+    prioridad: "ALTA",
+    ultima: "Ayer 18:30",
+  },
+  {
+    id: "#HYT-5512",
+    origen: "Planta Bahía Blanca",
+    destino: "Estación Santa Fe",
+    chofer: "Lucas Rin",
+    status: "EN TRANSITO",
+    prioridad: "MEDIA",
+    ultima: "Justo ahora",
+  },
+];
 
 export default function OperarioDashboard({ user }) {
-  // user viene de App.jsx con el nombre ingresado en login
-
-  const [stats, setStats] = useState({
-    total: 0,
-    pendientes: 0,
-    enTransito: 0,
-    entregados: 0,
-    cancelados: 0,
-    altaPrioridad: 0,
-    mediaPrioridad: 0,
-    bajaPrioridad: 0,
-  });
-
-  const [metricas, setMetricas] = useState(null);
-  const [shipments, setShipments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [searchTrackingId, setSearchTrackingId] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("todas");
-
-  // Filtrar envíos según búsqueda y estado
-  const filteredShipments = shipments.filter((s) => {
-    const matchesSearch = s.id.toLowerCase().includes(searchTrackingId.toLowerCase());
-    const matchesStatus = selectedStatus === "todas" || s.status.toLowerCase().replace(/[^a-z]/g, "") === selectedStatus.toLowerCase();
-    return matchesSearch && matchesStatus;
-  });
+  const [shipments, setShipments] = useState([]);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
-    const fetchEnvios = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+    const timer = setTimeout(() => {
+      setShipments(mockShipments);
+      setLoading(false);
+    }, 1000);
 
-        // Conseguir todos los envios
-        const data = await envios.getAll();
+    return () => clearTimeout(timer);
+  }, []);
 
-        console.log("Datos recibidos:", data); // ← Helpful for debugging
+  const filteredShipments = shipments.filter((shipment) =>
+    shipment.id.toLowerCase().includes(search.toLowerCase())
+  );
 
-        if (!Array.isArray(data)) {
-          throw new Error("La respuesta no es un array");
-        }
-
-        // Transform data for the UI
-        const transformedShipments = data.map((envio) => ({
-          id: envio.trackingId || `LT-${envio.id}`,
-          name: envio.destinatarioNombre || "Sin nombre",
-          route: `${envio.origen} → ${envio.destino}`,
-          status: (envio.estadoEnvio || "PENDIENTE").replace(/_/g, " "),
-        }));
-
-        setShipments(transformedShipments);
-
-        // Calculate stats
-        const total = data.length;
-        const pendientes = data.filter((e) =>
-          ["PENDIENTE", "Pendiente"].includes(e.estadoEnvio)
-        ).length;
-
-        const enTransito = data.filter((e) =>
-          ["EN VIAJE", "EN_VIAJE"].includes(e.estadoEnvio)
-        ).length;
-
-        const entregados = data.filter((e) =>
-          ["ENTREGADO", "Entregado"].includes(e.estadoEnvio)
-        ).length;
-
-        const cancelados = data.filter((e) =>
-          ["CANCELADO", "Cancelado"].includes(e.estadoEnvio)
-        ).length;
-
-        const altaPrioridad = data.filter((e) => e.prioridadEnvio === "ALTA").length;
-        const mediaPrioridad = data.filter((e) => e.prioridadEnvio === "MEDIA").length;
-        const bajaPrioridad = data.filter((e) => e.prioridadEnvio === "BAJA").length;
-
-        setStats({ total, pendientes, enTransito, entregados, cancelados, altaPrioridad, mediaPrioridad, bajaPrioridad });
-
-        // Si es supervisor, obtener métricas
-        if (user?.role === "supervisor") {
-          try {
-            const metricsResponse = await axios.get("${API_URL}/envios/metricas");
-            setMetricas(metricsResponse.data);
-          } catch (err) {
-            console.warn("Advertencia: No se pudieron cargar las métricas", err);
-          }
-        }
-
-      } catch (err) {
-        console.error("Error completo:", err);
-        setError(err.message || "Error al cargar los envíos");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEnvios();
-  }, [user?.role]);
-
-  // Loading Screen
   if (loading) {
     return (
-      <div className="dashboard">
-        <div className="topbar">
-          <div className="brand"><img src={LogiTrackLogo} alt="LogiTrack" className="topbar-logo" /> <span>LogiTrack</span></div>
-          <div className="user-box">{user?.username}<span>Operario</span></div>
-        </div>
-        <div style={{ textAlign: "center", padding: "80px" }}>
-          <p>Cargando envíos...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Error Screen
-  if (error) {
-    return (
-      <div className="dashboard">
-        <div className="topbar">
-          <div className="brand"><img src={LogiTrackLogo} alt="LogiTrack" className="topbar-logo" /> <span>LogiTrack</span></div>
-          <div className="user-box">{user?.username}<span>Operario</span></div>
-        </div>
-        <div style={{ textAlign: "center", padding: "80px", color: "red" }}>
-          <p>{error}</p>
-          <button onClick={() => window.location.reload()}>Reintentar</button>
-        </div>
+      <div className="loading-screen">
+        <div className="loader"></div>
+        <h2>Cargando panel HYTRAC...</h2>
       </div>
     );
   }
 
   return (
-    <div className="dashboard">
-      <div className="dashboard-container">
+    <div className="hytrac-layout">
+      {/* TOPBAR */}
 
-        {/* HERO */}
-        <div className="hero">
+      <main className="dashboard-content">
+        {/* HEADER */}
+        <section className="dashboard-header">
           <div>
-            <h2>Bienvenido, {user?.username}</h2>
-            <p>Panel de Operaciones - {user?.role === "supervisor" ? "Gestión y Análisis de envíos" : "Gestión de Envios"}</p>
+            <h1>Panel de Control de Logística</h1>
+            <p>
+              Monitoreo en tiempo real de la flota y despachos de
+              hidrocarburos.
+            </p>
           </div>
-          <div className="date-box">
-            <span>Fecha: </span>
-            <strong>{new Date().toLocaleDateString("es-AR")}</strong>
-          </div>
-        </div>
 
-        {/* MÉTRICAS PARA SUPERVISORES */}
-        {user?.role === "supervisor" && metricas && (
-          <div className="metrics-section">
-            <h3>📊 Métricas de Envíos ({stats.total} {stats.total === 1 ? "envío" : "envíos totales"})</h3>
-            <div className="metrics-grid">
-              <div className="metric-card">
-                <div className="metric-label">Envíos Pendientes</div>
-                <div className="metric-value">{stats.pendientes}</div>
-              </div>
-              <div className="metric-card">
-                <div className="metric-label">En Tránsito</div>
-                <div className="metric-value">{stats.enTransito}</div>
-              </div>
-              <div className="metric-card">
-                <div className="metric-label">Entregados</div>
-                <div className="metric-value">{stats.entregados}</div>
-              </div>
-              <div className="metric-card">
-                <div className="metric-label">Cancelados</div>
-                <div className="metric-value">{stats.cancelados}</div>
-              </div>
+          <div className="header-actions">
+            <button className="secondary-btn">Exportar Reporte</button>
+            <button className="primary-btn">Crear Envío</button>
+          </div>
+        </section>
+
+        {/* METRICS */}
+        <section className="metrics-grid">
+          <div className="metric-card">
+            <div>
+              <span>ENVÍOS ACTIVOS</span>
+              <h2>24</h2>
+              <p>+3 desde la última hora</p>
             </div>
-            <div className="metrics-grid metrics-priority">
-              <div className="metric-card alta-card">
-                <div className="metric-label">Alta Prioridad</div>
-                <div className="metric-value">{stats.altaPrioridad}</div>
-              </div>
-              <div className="metric-card media-card">
-                <div className="metric-label">Media Prioridad</div>
-                <div className="metric-value">{stats.mediaPrioridad}</div>
-              </div>
-              <div className="metric-card baja-card">
-                <div className="metric-label">Baja Prioridad</div>
-                <div className="metric-value">{stats.bajaPrioridad}</div>
-              </div>
+
+            <div className="metric-icon blue">🚛</div>
+          </div>
+
+          <div className="metric-card">
+            <div>
+              <span>ENTREGADOS HOY</span>
+              <h2>156</h2>
+              <p>Cumplimiento del 98.2%</p>
+            </div>
+
+            <div className="metric-icon">✔</div>
+          </div>
+
+          <div className="metric-card">
+            <div>
+              <span>ALERTAS CRÍTICAS</span>
+              <h2>03</h2>
+              <p>Requiere atención inmediata</p>
+            </div>
+
+            <div className="metric-icon red">⚠</div>
+          </div>
+        </section>
+
+        {/* TABLE */}
+        <section className="table-card">
+          <div className="table-top">
+            <div>
+              <h2>Historial de Envíos Recientes</h2>
+              <span>Total: 428</span>
+            </div>
+
+            <div className="table-actions">
+              <input
+                type="text"
+                placeholder="Buscar ID, Origen..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+
+              <button>⏷</button>
             </div>
           </div>
-        )}
 
-        {/* BUSQUEDA - PARA TODOS */}
-        <div className="search-filter">
-          <div className="search-box">
-            <input
-              type="text"
-              placeholder="🔍 Buscar por Tracking ID..."
-              value={searchTrackingId}
-              onChange={(e) => setSearchTrackingId(e.target.value)}
-              className="search-input"
-            />
-          </div>
-          {/* FILTRO POR ESTADO - SOLO SUPERVISORES */}
-          {user?.role === "supervisor" && (
-            <div className="filter-box">
-              <select
-                value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
-                className="filter-select"
-              >
-                <option value="todas">Todos ({stats.total})</option>
-                <option value="pendiente">Pendiente ({stats.pendientes})</option>
-                <option value="enviaje">En Viaje ({stats.enTransito})</option>
-                <option value="entregado">Entregados ({stats.entregados})</option>
-                <option value="cancelado">Cancelados ({stats.cancelados})</option>
-              </select>
-            </div>
-          )}
-        </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Tracking ID</th>
+                <th>Origen / Refinería</th>
+                <th>Destino / Estación</th>
+                <th>Estado</th>
+                <th>Chofer</th>
+                <th>Última Act.</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
 
-        <div className="table">
-          <div className="table-header">
-            <h3>
-              📦 Listado de Envíos
-              <span style={{ fontSize: '0.9rem', color: '#888', fontWeight: 'normal' }}>
-                ({filteredShipments.length} encontrados)
-              </span>
-            </h3>
-            <button>Ver todos →</button>
-          </div>
-
-          {filteredShipments.length > 0 ? (
-            <table>
-              <thead>
-                <tr>
-                  <th>N° Seguimiento</th>
-                  <th>Destinatario</th>
-                  <th>Origen → Destino</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
+            <tbody>
+              {filteredShipments.map((shipment) => (
+                <tr key={shipment.id}>
+                  <td className="tracking">{shipment.id}</td>
+                  <td>
+                    <strong>{shipment.origen}</strong>
+                    <p>Terminal Regional</p>
+                  </td>
+                  <td>
+                    <strong>{shipment.destino}</strong>
+                    <p>Punto de Entrega B2B</p>
+                  </td>
+                  <td>
+                    <span
+                      className={`status ${shipment.status
+                        .toLowerCase()
+                        .replace(/\s/g, "")}`}
+                    >
+                      {shipment.status}
+                    </span>
+                  </td>
+                  <td>{shipment.chofer}</td>
+                  <td>{shipment.ultima}</td>
+                  <td>
+                    <Link to={`/shipment/${shipment.id}`}>
+                      Detalle
+                    </Link>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {filteredShipments.map((s) => (
-                  <tr key={s.id}>
-                    <td>{s.id}</td>
-                    <td>{s.name}</td>
-                    <td>{s.route}</td>
-                    <td>
-                      <span className={`status ${s.status.toLowerCase().replace(/[^a-z]/g, "")}`}>
-                        {s.status}
-                      </span>
-                    </td>
-                    <td className="action">
-                      <Link to={`/shipment/${s.id}`} className="ver-detalle">
-                        Ver detalle →
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <div className="empty-state">
-              <h3>📦 No hay envíos disponibles</h3>
-              <p>{searchTrackingId ? "No se encontraron envíos que coincidan con tu búsqueda" : "Comienza registrando un nuevo envío"}</p>
-            </div>
-          )}
-        </div>
-      </div>
+              ))}
+            </tbody>
+          </table>
+
+          <div className="pagination">
+            <button>Anterior</button>
+            <button className="active-page">1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>Siguiente</button>
+          </div>
+        </section>
+
+        {/* ALERTS */}
+        <section className="bottom-alerts">
+          <div className="alert-card">
+            <h3>Sugerencia del Sistema</h3>
+            <p>
+              Hay congestión reportada en la Refinería Campana.
+              Se recomienda priorizar rutas alternativas.
+            </p>
+          </div>
+
+          <div className="alert-card">
+            <h3>Estado de Servidores</h3>
+            <p>
+              Todos los sistemas GPS y telemetría están operando con
+              normalidad.
+            </p>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
