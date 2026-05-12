@@ -163,17 +163,7 @@ export default function NuevoEnvio({ user }) {
         estacionDestino: null,
       }));
       setEstacionesDestino([]);
-    } /* else if (name === "refineriaOrigen") {
-      setFormData((prev) => ({
-        ...prev,
-        refineriaOrigen: value,
-      }));
-    } else if (name === "estacionDestino") {
-      setFormData((prev) => ({
-        ...prev,
-        estacionDestino: value,
-      }));
-    } */ else if (name === "patenteCamion") {
+    } else if (name === "patenteCamion") {
       const camionSeleccionado = camiones.find((camion) => camion.patente === value);
       setFormData((prev) => ({
         ...prev,
@@ -267,33 +257,32 @@ export default function NuevoEnvio({ user }) {
     try {
 
       const payload = {
-        numero_remito: formData.remito,
+        numeroRemito: formData.remito,
         cot: formData.cot,
-        camion_id: formData.camion?.id || null,
-        acoplado_id: formData.acoplado?.id || null,
-        transportista_id: formData.transportista?.id || null,
-        planta_despacho_id: formData.refineriaOrigen?.id || null,
-        estacion_destino_id: formData.estacionDestino?.id || null,
-        operador_id: 1, // Hardcoded for now, replace with actual user ID if available
-        combustible_id: formData.combustible?.id || null,
-        estado_id: 1, //PENDIENTE
-        fecha_creacion: new Date().toISOString(),
-        fecha_salida_planta: null,
-        fecha_entrega_estimada: null,
-        temperatura_carga: formData.temperatura ? parseFloat(formData.temperatura) : null,
-        densidad_carga: formData.densidad ? parseFloat(formData.densidad) : null,
-        litros_cargados: formData.volumenACargar ? parseFloat(formData.volumenACargar) : null,
-        litros_entregados: null,
-        fie_adjunta: true,
+        camionId: formData.camion?.id || null,
+        acopladoId: formData.acoplado?.id || null,
+        transportistaId: formData.transportista?.id || null,
+        plantaDespachoId: formData.refineriaOrigen?.id || null,
+        estacionDestinoId: formData.estacionDestino?.id || null,
+        operadorId: 1, // Hardcoded for now, replace with actual user ID if available
+        combustibleId: formData.combustible?.id || null,
+        estadoId: 1, //PENDIENTE
+        fechaCreacion: new Date().toISOString(),
+        fechaSalidaPlanta: null,
+        fechaEntrega: null,
+        temperaturaCarga: formData.temperatura ? parseFloat(formData.temperatura) : null,
+        densidadCarga: formData.densidad ? parseFloat(formData.densidad) : null,
+        litrosCargados: formData.volumenACargar ? parseFloat(formData.volumenACargar) : null,
+        litrosEntregados: null,
+        fieAdjunta: true,
         observaciones: "",
+        confirmado: false,
         // Add any other missing fields your backend expects
       };
 
-      console.log("Payload a enviar:", payload);
-
       const newEnvio = await envios.create(payload);   // ← Returns the created object
 
-      setSuccess(`¡Envío creado exitosamente! Tracking ID: ${newEnvio.trackingId}`);
+      setSuccess(`¡Envío creado exitosamente! Tracking ID: ${newEnvio.id}`);
 
       setTimeout(() => {
         navigate("/dashboard");
