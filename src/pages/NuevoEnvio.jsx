@@ -134,7 +134,7 @@ export default function NuevoEnvio({ user }) {
     } else if (name === "provinciaOrigen") {
       setFormData((prev) => ({
         ...prev,
-        provinciaOrigen: Number(value),
+        provinciaOrigen: value,
         localidadOrigen: null,
         refineriaOrigen: null,
       }));
@@ -143,14 +143,14 @@ export default function NuevoEnvio({ user }) {
     } else if (name === "localidadOrigen") {
       setFormData((prev) => ({
         ...prev,
-        localidadOrigen: Number(value),
+        localidadOrigen: value,
         refineriaOrigen: null,
       }));
       setPlantasOrigen([]);
     } else if (name === "provinciaDestino") {
       setFormData((prev) => ({
         ...prev,
-        provinciaDestino: Number(value),
+        provinciaDestino: value,
         localidadDestino: null,
         estacionDestino: null,
       }));
@@ -159,21 +159,21 @@ export default function NuevoEnvio({ user }) {
     } else if (name === "localidadDestino") {
       setFormData((prev) => ({
         ...prev,
-        localidadDestino: Number(value),
+        localidadDestino: value,
         estacionDestino: null,
       }));
       setEstacionesDestino([]);
-    } else if (name === "refineriaOrigen") {
+    } /* else if (name === "refineriaOrigen") {
       setFormData((prev) => ({
         ...prev,
-        refineriaOrigen: Number(value),
+        refineriaOrigen: value,
       }));
     } else if (name === "estacionDestino") {
       setFormData((prev) => ({
         ...prev,
-        estacionDestino: Number(value),
+        estacionDestino: value,
       }));
-    } else if (name === "patenteCamion") {
+    } */ else if (name === "patenteCamion") {
       const camionSeleccionado = camiones.find((camion) => camion.patente === value);
       setFormData((prev) => ({
         ...prev,
@@ -211,21 +211,25 @@ export default function NuevoEnvio({ user }) {
         cuitTransportista: transportistaSeleccionado ? transportistaSeleccionado.cuit : "",
         tipoVinculoTransportista: transportistaSeleccionado ? transportistaSeleccionado.tipoVinculo : "",
       }));
-    } else if (name === "refineriaOrigen") {
-      const refineriaSeleccionada = plantasOrigen.find((p) => p.id === Number(value));
-      setFormData((prev) => ({
-        ...prev,
-        provinciaOrigen: refineriaSeleccionada ? refineriaSeleccionada.provinciaId : null,
-        localidadOrigen: refineriaSeleccionada ? refineriaSeleccionada.localidadId : null,
-        refineriaOrigen: refineriaSeleccionada,
-      }));
     } else if (name === "estacionDestino") {
-      const estacionSeleccionada = estacionesDestino.find((e) => e.id === Number(value));
+      const estacionSeleccionada = estacionesDestino.find(
+        (e) => Number(e.id) === Number(value)
+      );
       setFormData((prev) => ({
         ...prev,
-        provinciaDestino: estacionSeleccionada ? estacionSeleccionada.provinciaId : null,
-        localidadDestino: estacionSeleccionada ? estacionSeleccionada.localidadId : null,
-        estacionDestino: estacionSeleccionada,
+        provinciaDestino: estacionSeleccionada?.provinciaId || null,
+        localidadDestino: estacionSeleccionada?.localidadId || null,
+        estacionDestino: estacionSeleccionada || null,
+      }));
+    } else if (name === "refineriaOrigen") {
+      const refineriaSeleccionada = plantasOrigen.find(
+        (e) => Number(e.id) === Number(value)
+      );
+      setFormData((prev) => ({
+        ...prev,
+        provinciaOrigen: refineriaSeleccionada?.provinciaId || null,
+        localidadOrigen: refineriaSeleccionada?.localidadId || null,
+        refineriaOrigen: refineriaSeleccionada || null,
       }));
     }
       else {
@@ -270,7 +274,7 @@ export default function NuevoEnvio({ user }) {
         transportista_id: formData.transportista?.id || null,
         planta_despacho_id: formData.refineriaOrigen?.id || null,
         estacion_destino_id: formData.estacionDestino?.id || null,
-        operador_id: user?.id || null,
+        operador_id: 1, // Hardcoded for now, replace with actual user ID if available
         combustible_id: formData.combustible?.id || null,
         estado_id: 1, //PENDIENTE
         fecha_creacion: new Date().toISOString(),
@@ -284,6 +288,8 @@ export default function NuevoEnvio({ user }) {
         observaciones: "",
         // Add any other missing fields your backend expects
       };
+
+      console.log("Payload a enviar:", payload);
 
       const newEnvio = await envios.create(payload);   // ← Returns the created object
 
@@ -547,7 +553,7 @@ export default function NuevoEnvio({ user }) {
 
               <div className="form-group">
                 <label>Refinería de origen</label>
-                <select name="refineriaOrigen" value={formData.refineriaOrigen} disabled={!formData.localidadOrigen || loading} onChange={handleChange}>
+                <select name="refineriaOrigen" value={formData.refineriaOrigen?.id || ""} disabled={!formData.localidadOrigen || loading} onChange={handleChange}>
                   <option value="">Seleccione una refinería</option>
                   {plantasOrigen.map((ref) => (
                     <option key={ref.id} value={ref.id}>{ref.nombre}</option>
@@ -579,7 +585,7 @@ export default function NuevoEnvio({ user }) {
 
               <div className="form-group">
                 <label>Estación de servicio destino</label>
-                <select name="estacionDestino" value={formData.estacionDestino} disabled={!formData.localidadDestino || loading} onChange={handleChange}>
+                <select name="estacionDestino" value={formData.estacionDestino?.id || ""} disabled={!formData.localidadDestino || loading} onChange={handleChange}>
                   <option value="">Seleccione una estación</option>
                   {estacionesDestino.map((est) => (
                     <option key={est.id} value={est.id}>{est.nombre}</option>
