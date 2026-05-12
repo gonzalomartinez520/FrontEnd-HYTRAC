@@ -1,198 +1,129 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/nuevoEnvio.css";
-import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 import { envios } from '@/api';
-
-const mockCombustibles = [
-  {
-    nombre: "Súper",
-    numeroOnu: "1203",
-    claseRiesgo: "3",
-    densidad: "0.7450",
-    temperatura: "15"
-  },
-  {
-    nombre: "Diesel",
-    numeroOnu: "1202",
-    claseRiesgo: "3",
-    densidad: "0.8320",
-    temperatura: "15"
-  }
-];
-
-const mockCamiones = [
-  {
-    patente: "AA123BB",
-    marca: "Stania",
-    modelo: "R450",
-    pesoMaximo: "45000"
-  },
-  {
-    patente: "AB321CC",
-    marca: "Mercedez",
-    modelo: "B60",
-    pesoMaximo: "50000"
-  }
-];
-
-const mockAcoplados = [
-  {
-    patente: "AC987ZX",
-    capacidadMaxima: "45000"
-  },
-  {
-    patente: "AB678SA",
-    capacidadMaxima: "40000"
-  }
-];
-
-const mockTransportista = [
-  {
-    nombre: "Cristian Romero",
-    cuit: "20-44556677-8",
-    tipoVinculo: "Monotributista",
-    licenciaConducir: "2026-12-01",
-    examenPsicofisico: "2026-08-15",
-    VTV: "2026-11-10",
-    seguroCargaPeligrosa: true,
-    ART: true,
-    certificadoAntecedentesPenales: true,
-  },
-  {
-    nombre: "Fabian García",
-    cuit: "20-46892274-8",
-    tipoVinculo: "De dependencia",
-    licenciaConducir: "2026-07-20",
-    examenPsicofisico: "2026-09-30",
-    VTV: "2026-12-15",
-    seguroCargaPeligrosa: false,
-    ART: true,
-    certificadoAntecedentesPenales: false,
-  }
-];
-
-const mockProvincia = [
-  {
-    id: "ba",
-    nombre: "Buenos Aires",
-  },
-  {
-    id: "co",
-    nombre: "Córdoba",
-  },
-  {
-    id: "sf",
-    nombre: "Santa Fe",
-  }
-];
-
-const mockLocalidades = [
-  { id: "ba1", provinciaId: "ba", nombre: "La Plata" },
-  { id: "ba2", provinciaId: "ba", nombre: "Quilmes" },
-  { id: "co1", provinciaId: "co", nombre: "Córdoba Capital" },
-  { id: "co2", provinciaId: "co", nombre: "Villa Carlos Paz" },
-  { id: "sf1", provinciaId: "sf", nombre: "Rosario" },
-  { id: "sf2", provinciaId: "sf", nombre: "Santa Fe" },
-];
-
-const mockRefinerias = [
-  { id: "ba1a", localidadId: "ba1", nombre: "Refinería Dock Sud" },
-  { id: "ba1b", localidadId: "ba1", nombre: "Refinería La Plata" },
-  { id: "ba2a", localidadId: "ba2", nombre: "Refinería Quilmes Norte" },
-  { id: "ba2b", localidadId: "ba2", nombre: "Refinería Quilmes Sur" },
-  { id: "co1a", localidadId: "co1", nombre: "Refinería Córdoba Centro" },
-  { id: "co1b", localidadId: "co1", nombre: "Refinería Córdoba Oeste" },
-  { id: "co2a", localidadId: "co2", nombre: "Refinería Carlos Paz" },
-  { id: "co2b", localidadId: "co2", nombre: "Refinería Villa Carlos Paz" },
-  { id: "sf1a", localidadId: "sf1", nombre: "Refinería Rosario Puerto" },
-  { id: "sf1b", localidadId: "sf1", nombre: "Refinería Rosario Este" },
-  { id: "sf2a", localidadId: "sf2", nombre: "Refinería Santa Fe Norte" },
-  { id: "sf2b", localidadId: "sf2", nombre: "Refinería Santa Fe Sur" },
-];
-
-const mockEstaciones = [
-  { id: "ba1s1", localidadId: "ba1", nombre: "YPF La Plata" },
-  { id: "ba1s2", localidadId: "ba1", nombre: "Shell La Plata" },
-  { id: "ba2s1", localidadId: "ba2", nombre: "Axion Quilmes" },
-  { id: "ba2s2", localidadId: "ba2", nombre: "Shell Quilmes" },
-  { id: "co1s1", localidadId: "co1", nombre: "YPF Córdoba Capital" },
-  { id: "co1s2", localidadId: "co1", nombre: "Shell Córdoba" },
-  { id: "co2s1", localidadId: "co2", nombre: "Axion Villa Carlos Paz" },
-  { id: "co2s2", localidadId: "co2", nombre: "YPF Villa Carlos Paz" },
-  { id: "sf1s1", localidadId: "sf1", nombre: "YPF Rosario Centro" },
-  { id: "sf1s2", localidadId: "sf1", nombre: "Shell Rosario Puerto" },
-  { id: "sf2s1", localidadId: "sf2", nombre: "YPF Santa Fe" },
-  { id: "sf2s2", localidadId: "sf2", nombre: "Axion Santa Fe" },
-];
+import { datos } from '@/api';
 
 export default function NuevoEnvio({ user }) {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    patenteCamion: "",
-    marcaCamion: "",
-    modeloCamion: "",
-    patenteAcoplado: "",
-    capacidad: "",
-    pesoMaximo: "",
-    choferAsignado: "",
-    cuitTransportista: "",
-    tipoVinculoTransportista: "",
-    licenciaConducir: "",
-    examenPsicofisico: "",
-    vtv: "",
-    seguroCargaPeligrosa: false,
-    art: false,
-    certificadoAntecedentesPenales: false,
-    tipoCombustible: "",
-    codigoOnu: "",
-    temperatura: "",
-    volumenACargar: "",
-    densidad: "",
-    riesgo: "",
-    provinciaOrigen: "",
-    localidadOrigen: "",
-    refineriaOrigen: "",
-    origen: "",
-    provinciaDestino: "",
-    localidadDestino: "",
-    estacionDestino: "",
-    destino: "",
-    remito: "",
-    cot: "",
-    distanciaEstimada: "",
-    etaEstimada: "",
-  });
+
+
+  const [combustibles, setCombustibles] = useState([]);
+  const [provincias, setProvincias] = useState([]);
+  const [localidadesOrigen, setLocalidadesOrigen] = useState([]);
+  const [localidadesDestino, setLocalidadesDestino] = useState([]);
+  const [camiones, setCamiones] = useState([]);
+  const [acoplados, setAcoplados] = useState([]);
+  const [transportistas, setTransportistas] = useState([]);
+  const [plantasOrigen, setPlantasOrigen] = useState([]);
+  const [estacionesDestino, setEstacionesDestino] = useState([]);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
-  // Logic: Volume Calculation
-  const calculateVolume = () => {
-    if (!formData.dimensiones) return 0;
-    const dims = formData.dimensiones.split("x");
-    if (dims.length !== 3) return 0;
-    const [largo, ancho, alto] = dims.map(d => parseFloat(d.trim()));
-    if (isNaN(largo) || isNaN(ancho) || isNaN(alto)) return 0;
-    return Math.round((largo * ancho * alto) / 1000);
+  const [formData, setFormData] = useState({
+    // Vehículo
+    camion: null,
+    patenteCamion: "",
+    marcaCamion: "",
+    modeloCamion: "",
+    pesoMaximo: "",
+    acoplado: null,
+    patenteAcoplado: "",
+    capacidad: "",
+    // Chofer
+    transportista: null,
+    choferAsignado: "",
+    cuitTransportista: "",
+    tipoVinculoTransportista: "",
+    // Carga
+    combustible: null,
+    tipoCombustible: null,
+    codigoOnu: "",
+    temperatura: "",
+    densidad: "",
+    riesgo: "",
+    volumenACargar: "",
+    peso: "",
+    // Logística
+    provinciaOrigen: null,
+    localidadOrigen: null,
+    refineriaOrigen: null,
+    provinciaDestino: null,
+    localidadDestino: null,
+    estacionDestino: null,
+    remito: "",
+    cot: "",
+  });
+
+  useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const [
+        combustiblesData,
+        provinciasData,
+        camionesData,
+        acopladosData,
+        transportistasData,
+      ] = await Promise.all([
+        datos.getCombustibles(),
+        datos.getProvincias(),
+        datos.getCamiones(),
+        datos.getAcoplados(),
+        datos.getTransportistas(),
+      ]);
+
+      setCombustibles(combustiblesData);
+      setProvincias(provinciasData);
+      setCamiones(camionesData);
+      setAcoplados(acopladosData);
+      setTransportistas(transportistasData);
+
+    } catch (error) {
+      console.error("Error cargando datos:", error);
+    }
   };
 
-  // Logic: Date Calculation
-  const calculateEstimatedDate = () => {
-    const hours = parseInt(formData.ventanaHoras);
-    if (isNaN(hours)) return "Esperando horas...";
-    const date = new Date();
-    date.setHours(date.getHours() + hours);
-    return date.toLocaleString('es-AR', {
-      day: '2-digit', month: '2-digit', year: 'numeric',
-      hour: '2-digit', minute: '2-digit'
-    });
-  };
+  fetchData();
+  }, []);
 
-  const calculatedVolume = calculateVolume();
-  const calculatedDateString = calculateEstimatedDate();
+  useEffect(() => {
+    const fetchLocalidadesOrigen = async () => {
+      if (!formData.provinciaOrigen) return;
+      const data = await datos.getLocalidades(formData.provinciaOrigen);
+      setLocalidadesOrigen(data);
+    };
+    fetchLocalidadesOrigen();
+  }, [formData.provinciaOrigen]);
+
+  useEffect(() => {
+    const fetchLocalidadesDestino = async () => {
+      if (!formData.provinciaDestino) return;
+      const data = await datos.getLocalidades(formData.provinciaDestino);
+      setLocalidadesDestino(data);
+    };
+    fetchLocalidadesDestino();
+  }, [formData.provinciaDestino]);
+
+  useEffect(() => {
+    const fetchPlantasOrigen = async () => {
+      if (!formData.localidadOrigen) return;
+      const data = await datos.getPlantas(formData.localidadOrigen);
+      setPlantasOrigen(data);
+    };
+    fetchPlantasOrigen();
+  }, [formData.localidadOrigen]);
+
+  useEffect(() => {
+    const fetchEstacionesDestino = async () => {
+      if (!formData.localidadDestino) return;
+      const data = await datos.getEstaciones(formData.localidadDestino);
+      setEstacionesDestino(data);
+    };
+    fetchEstacionesDestino();
+  }, [formData.localidadDestino]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -203,101 +134,108 @@ export default function NuevoEnvio({ user }) {
     } else if (name === "provinciaOrigen") {
       setFormData((prev) => ({
         ...prev,
-        provinciaOrigen: value,
-        localidadOrigen: "",
-        refineriaOrigen: "",
+        provinciaOrigen: Number(value),
+        localidadOrigen: null,
+        refineriaOrigen: null,
       }));
+      setLocalidadesOrigen([]);
+      setPlantasOrigen([]);
     } else if (name === "localidadOrigen") {
       setFormData((prev) => ({
         ...prev,
-        localidadOrigen: value,
-        refineriaOrigen: "",
+        localidadOrigen: Number(value),
+        refineriaOrigen: null,
       }));
-    } else if (name === "patenteCamion") {
-      const camionSeleccionado = mockCamiones.find((camion) => camion.patente === value);
-      setFormData((prev) => ({
-        ...prev,
-        patenteCamion: value,
-        marcaCamion: camionSeleccionado?.marca || "",
-        modeloCamion: camionSeleccionado?.modelo || "",
-        pesoMaximo: camionSeleccionado?.pesoMaximo || "",
-      }));
-    } else if (name === "patenteAcoplado") {
-      const acopladoSeleccionado = mockAcoplados.find((acoplado) => acoplado.patente === value);
-      setFormData((prev) => ({
-        ...prev,
-        patenteAcoplado: value,
-        capacidad: acopladoSeleccionado?.capacidadMaxima || "",
-      }));
-    } else if (name === "tipoCombustible") {
-      const combustibleSeleccionado = mockCombustibles.find((combustible) => combustible.nombre === value);
-      setFormData((prev) => ({
-        ...prev,
-        tipoCombustible: value,
-        codigoOnu: combustibleSeleccionado?.numeroOnu || "",
-        temperatura: combustibleSeleccionado?.temperatura || "",
-        densidad: combustibleSeleccionado?.densidad || "",
-        riesgo: combustibleSeleccionado ? `Clase ${combustibleSeleccionado.claseRiesgo}` : "",
-      }));
-    } else if (name === "choferAsignado") {
-      const transportistaSeleccionado = mockTransportista.find((t) => t.nombre === value);
-      setFormData((prev) => ({
-        ...prev,
-        choferAsignado: value,
-        cuitTransportista: transportistaSeleccionado?.cuit || "",
-        tipoVinculoTransportista: transportistaSeleccionado?.tipoVinculo || "",
-        licenciaConducir: transportistaSeleccionado?.licenciaConducir || "",
-        examenPsicofisico: transportistaSeleccionado?.examenPsicofisico || "",
-        vtv: transportistaSeleccionado?.VTV || "",
-        seguroCargaPeligrosa: transportistaSeleccionado?.seguroCargaPeligrosa || false,
-        art: transportistaSeleccionado?.ART || false,
-        certificadoAntecedentesPenales: transportistaSeleccionado?.certificadoAntecedentesPenales || false,
-      }));
+      setPlantasOrigen([]);
     } else if (name === "provinciaDestino") {
       setFormData((prev) => ({
         ...prev,
-        provinciaDestino: value,
-        localidadDestino: "",
-        estacionDestino: "",
-        destino: "",
+        provinciaDestino: Number(value),
+        localidadDestino: null,
+        estacionDestino: null,
       }));
+      setLocalidadesDestino([]);
+      setEstacionesDestino([]);
     } else if (name === "localidadDestino") {
       setFormData((prev) => ({
         ...prev,
-        localidadDestino: value,
-        estacionDestino: "",
-        destino: "",
+        localidadDestino: Number(value),
+        estacionDestino: null,
       }));
-    } else if (name === "estacionDestino") {
-      const estacionSeleccionada = mockEstaciones.find((est) => est.id === value);
+      setEstacionesDestino([]);
+    } else if (name === "refineriaOrigen") {
       setFormData((prev) => ({
         ...prev,
-        estacionDestino: value,
-        destino: estacionSeleccionada?.nombre || "",
+        refineriaOrigen: Number(value),
       }));
-    } else {
+    } else if (name === "estacionDestino") {
+      setFormData((prev) => ({
+        ...prev,
+        estacionDestino: Number(value),
+      }));
+    } else if (name === "patenteCamion") {
+      const camionSeleccionado = camiones.find((camion) => camion.patente === value);
+      setFormData((prev) => ({
+        ...prev,
+        camion: camionSeleccionado,
+        patenteCamion: camionSeleccionado ? camionSeleccionado.patente : "",
+        marcaCamion: camionSeleccionado ? camionSeleccionado.marca : "",
+        modeloCamion: camionSeleccionado ? camionSeleccionado.modelo : "",
+        pesoMaximo: camionSeleccionado ? camionSeleccionado.peso_maximo_carga : "",
+      }));
+    } else if (name === "patenteAcoplado") {
+      const acopladoSeleccionado = acoplados.find((acoplado) => acoplado.patente === value);
+      setFormData((prev) => ({
+        ...prev,
+        acoplado: acopladoSeleccionado,
+        patenteAcoplado: acopladoSeleccionado ? acopladoSeleccionado.patente : "",
+        capacidad: acopladoSeleccionado ? acopladoSeleccionado.capacidadMaximaLitros : "",
+      }));
+    } else if (name === "tipoCombustible") {
+      const combustibleSeleccionado = combustibles.find((combustible) => combustible.id === Number(value));
+      setFormData((prev) => ({
+        ...prev,
+        combustible: combustibleSeleccionado,
+        tipoCombustible: combustibleSeleccionado ? combustibleSeleccionado.id : "",
+        codigoOnu: combustibleSeleccionado ? combustibleSeleccionado.numeroOnu : "",
+        temperatura: combustibleSeleccionado ? combustibleSeleccionado.temperaturaReferencia: "",
+        densidad: combustibleSeleccionado ? combustibleSeleccionado.densidad : "",
+        riesgo: combustibleSeleccionado ? combustibleSeleccionado.claseRiesgo : "",
+      }));
+    } else if (name === "choferAsignado") {
+      const transportistaSeleccionado = transportistas.find((t) => t.nombre === value);
+      setFormData((prev) => ({
+        ...prev,
+        transportista: transportistaSeleccionado,
+        choferAsignado: transportistaSeleccionado ? transportistaSeleccionado.nombre : "",
+        cuitTransportista: transportistaSeleccionado ? transportistaSeleccionado.cuit : "",
+        tipoVinculoTransportista: transportistaSeleccionado ? transportistaSeleccionado.tipoVinculo : "",
+      }));
+    } else if (name === "refineriaOrigen") {
+      const refineriaSeleccionada = plantasOrigen.find((p) => p.id === Number(value));
+      setFormData((prev) => ({
+        ...prev,
+        provinciaOrigen: refineriaSeleccionada ? refineriaSeleccionada.provinciaId : null,
+        localidadOrigen: refineriaSeleccionada ? refineriaSeleccionada.localidadId : null,
+        refineriaOrigen: refineriaSeleccionada,
+      }));
+    } else if (name === "estacionDestino") {
+      const estacionSeleccionada = estacionesDestino.find((e) => e.id === Number(value));
+      setFormData((prev) => ({
+        ...prev,
+        provinciaDestino: estacionSeleccionada ? estacionSeleccionada.provinciaId : null,
+        localidadDestino: estacionSeleccionada ? estacionSeleccionada.localidadId : null,
+        estacionDestino: estacionSeleccionada,
+      }));
+    }
+      else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
     setError("");
   };
 
-  const localidadesFiltradas = mockLocalidades.filter(
-    (loc) => loc.provinciaId === formData.provinciaOrigen
-  );
 
-  const refineriasFiltradas = mockRefinerias.filter(
-    (ref) => ref.localidadId === formData.localidadOrigen
-  );
-
-  const localidadesDestinoFiltradas = mockLocalidades.filter(
-    (loc) => loc.provinciaId === formData.provinciaDestino
-  );
-
-  const estacionesFiltradas = mockEstaciones.filter(
-    (est) => est.localidadId === formData.localidadDestino
-  );
-
-  const isFutureDate = (dateString) => {
+/*   const isFutureDate = (dateString) => {
     if (!dateString) return false;
     const date = new Date(dateString);
     return !Number.isNaN(date.getTime()) && date > new Date();
@@ -308,7 +246,7 @@ export default function NuevoEnvio({ user }) {
     return isFutureDate(dateString) ? "En regla" : "Vencido";
   };
 
-  const booleanStatus = (value) => (value ? "Correcto" : "Incorrecto");
+  const booleanStatus = (value) => (value ? "Correcto" : "Incorrecto"); */
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -323,19 +261,27 @@ export default function NuevoEnvio({ user }) {
     }
 
     try {
-      const deliveryDate = new Date();
-      deliveryDate.setHours(deliveryDate.getHours() + parseInt(formData.ventanaHoras || 24));
 
       const payload = {
-        ...formData,
-        peso: formData.peso ? parseFloat(formData.peso) : null,
-        volumen: calculatedVolume,
-        ventanaHoras: parseInt(formData.ventanaHoras),
-        fechaEstimadaEntrega: deliveryDate.toISOString(),
-        distanciaEstimada: formData.distanciaEstimada
-          ? parseInt(formData.distanciaEstimada)
-          : null,
-        creadoPor: user?.username || "operario-web",
+        numero_remito: formData.remito,
+        cot: formData.cot,
+        camion_id: formData.camion?.id || null,
+        acoplado_id: formData.acoplado?.id || null,
+        transportista_id: formData.transportista?.id || null,
+        planta_despacho_id: formData.refineriaOrigen?.id || null,
+        estacion_destino_id: formData.estacionDestino?.id || null,
+        operador_id: user?.id || null,
+        combustible_id: formData.combustible?.id || null,
+        estado_id: 1, //PENDIENTE
+        fecha_creacion: new Date().toISOString(),
+        fecha_salida_planta: null,
+        fecha_entrega_estimada: null,
+        temperatura_carga: formData.temperatura ? parseFloat(formData.temperatura) : null,
+        densidad_carga: formData.densidad ? parseFloat(formData.densidad) : null,
+        litros_cargados: formData.volumenACargar ? parseFloat(formData.volumenACargar) : null,
+        litros_entregados: null,
+        fie_adjunta: true,
+        observaciones: "",
         // Add any other missing fields your backend expects
       };
 
@@ -395,7 +341,7 @@ export default function NuevoEnvio({ user }) {
                 <label>Patente Camión</label>
                 <select name="patenteCamion" value={formData.patenteCamion} disabled={loading} onChange={handleChange} required>
                   <option value="">Seleccione una patente</option>
-                  {mockCamiones.map((camion) => (
+                  {camiones.map((camion) => (
                     <option key={camion.patente} value={camion.patente}>{camion.patente}</option>
                   ))}
                 </select>
@@ -410,11 +356,6 @@ export default function NuevoEnvio({ user }) {
                 <label>Modelo</label>
                 <input type="text" value={formData.modeloCamion} disabled={true} />
               </div>
-
-              <div className="form-group">
-                <label>Peso Maximo (kg)</label>
-                <input type="number" name="pesoMaximo" value={formData.pesoMaximo} disabled={true} />
-              </div>
             </div>
 
             <div>
@@ -422,7 +363,7 @@ export default function NuevoEnvio({ user }) {
                 <label>Patente Acoplado</label>
                 <select name="patenteAcoplado" value={formData.patenteAcoplado} disabled={loading} onChange={handleChange} required>
                   <option value="">Seleccione una patente</option>
-                  {mockAcoplados.map((acoplado) => (
+                  {acoplados.map((acoplado) => (
                     <option key={acoplado.patente} value={acoplado.patente}>{acoplado.patente}</option>
                   ))}
                 </select>
@@ -431,7 +372,11 @@ export default function NuevoEnvio({ user }) {
               <div className="form-group">
                 <label>Capacidad Máxima Acoplado (L)</label>
                 <input type="text" name="capacidad" value={formData.capacidad} disabled={true} />
-                <small>Se completa automáticamente con la capacidad del acoplado seleccionado.</small>
+              </div>
+
+              <div className="form-group">
+                <label>Peso Maximo (kg)</label>
+                <input type="number" name="pesoMaximo" value={formData.pesoMaximo} disabled={true} />
               </div>
             </div>
           </div>
@@ -441,8 +386,8 @@ export default function NuevoEnvio({ user }) {
               <label>Chofer Asignado</label>
               <select name="choferAsignado" value={formData.choferAsignado} disabled={loading} onChange={handleChange} required>
                 <option value="">Seleccione un transportista</option>
-                {mockTransportista.map((trans) => (
-                  <option key={trans.cuit} value={trans.nombre}>{trans.nombre}</option>
+                {transportistas.map((trans) => (
+                  <option key={trans.cuit} value={trans.nombre}>{trans.nombre} {trans.apellido}</option>
                 ))}
               </select>
             </div>
@@ -458,7 +403,7 @@ export default function NuevoEnvio({ user }) {
             </div>
           </div>
 
-          {formData.tipoVinculoTransportista === "Monotributista" && (
+{/*           {formData.tipoVinculoTransportista === "Monotributista" && (
             <section className="transportista-documents">
               <div className="section-title section-title--transportista">
                 <span className="step">01B</span>
@@ -505,7 +450,7 @@ export default function NuevoEnvio({ user }) {
                 </div>
               </div>
             </section>
-          )}
+          )} */}
         </section>
 
         {/* 02 - Especificaciones de la carga */}
@@ -528,8 +473,8 @@ export default function NuevoEnvio({ user }) {
               <label>Tipo de Combustible</label>
               <select name="tipoCombustible" value={formData.tipoCombustible} disabled={loading} onChange={handleChange} required>
                 <option value="">Seleccione un combustible</option>
-                {mockCombustibles.map((combustible) => (
-                  <option key={combustible.nombre} value={combustible.nombre}>
+                {combustibles.map((combustible) => (
+                  <option key={combustible.id} value={combustible.id}>
                     {combustible.nombre}
                   </option>
                 ))}
@@ -548,7 +493,7 @@ export default function NuevoEnvio({ user }) {
 
             <div className="form-group">
               <label>Volumen a cargar (L)</label>
-              <input type="number" name="volumenACargar" placeholder="30000" value={formData.volumenACargar} required disabled={loading} onChange={handleChange} />
+              <input type="number" name="volumenACargar" placeholder="30000" min="0" value={formData.volumenACargar} required disabled={loading} onChange={handleChange} />
             </div>
 
             <div className="form-group">
@@ -584,7 +529,7 @@ export default function NuevoEnvio({ user }) {
                 <label>Provincia de origen</label>
                 <select name="provinciaOrigen" value={formData.provinciaOrigen} disabled={loading} onChange={handleChange}>
                   <option value="">Seleccione una provincia</option>
-                  {mockProvincia.map((prov) => (
+                  {provincias.map((prov) => (
                     <option key={prov.id} value={prov.id}>{prov.nombre}</option>
                   ))}
                 </select>
@@ -594,7 +539,7 @@ export default function NuevoEnvio({ user }) {
                 <label>Localidad de origen</label>
                 <select name="localidadOrigen" value={formData.localidadOrigen} disabled={!formData.provinciaOrigen || loading} onChange={handleChange}>
                   <option value="">Seleccione una localidad</option>
-                  {localidadesFiltradas.map((loc) => (
+                  {localidadesOrigen.map((loc) => (
                     <option key={loc.id} value={loc.id}>{loc.nombre}</option>
                   ))}
                 </select>
@@ -604,7 +549,7 @@ export default function NuevoEnvio({ user }) {
                 <label>Refinería de origen</label>
                 <select name="refineriaOrigen" value={formData.refineriaOrigen} disabled={!formData.localidadOrigen || loading} onChange={handleChange}>
                   <option value="">Seleccione una refinería</option>
-                  {refineriasFiltradas.map((ref) => (
+                  {plantasOrigen.map((ref) => (
                     <option key={ref.id} value={ref.id}>{ref.nombre}</option>
                   ))}
                 </select>
@@ -616,7 +561,7 @@ export default function NuevoEnvio({ user }) {
                 <label>Provincia de destino</label>
                 <select name="provinciaDestino" value={formData.provinciaDestino} disabled={loading} onChange={handleChange}>
                   <option value="">Seleccione una provincia</option>
-                  {mockProvincia.map((prov) => (
+                  {provincias.map((prov) => (
                     <option key={prov.id} value={prov.id}>{prov.nombre}</option>
                   ))}
                 </select>
@@ -626,7 +571,7 @@ export default function NuevoEnvio({ user }) {
                 <label>Localidad de destino</label>
                 <select name="localidadDestino" value={formData.localidadDestino} disabled={!formData.provinciaDestino || loading} onChange={handleChange}>
                   <option value="">Seleccione una localidad</option>
-                  {localidadesDestinoFiltradas.map((loc) => (
+                  {localidadesDestino.map((loc) => (
                     <option key={loc.id} value={loc.id}>{loc.nombre}</option>
                   ))}
                 </select>
@@ -636,7 +581,7 @@ export default function NuevoEnvio({ user }) {
                 <label>Estación de servicio destino</label>
                 <select name="estacionDestino" value={formData.estacionDestino} disabled={!formData.localidadDestino || loading} onChange={handleChange}>
                   <option value="">Seleccione una estación</option>
-                  {estacionesFiltradas.map((est) => (
+                  {estacionesDestino.map((est) => (
                     <option key={est.id} value={est.id}>{est.nombre}</option>
                   ))}
                 </select>

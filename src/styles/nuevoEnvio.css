@@ -6,7 +6,6 @@
 }
 
 .form-header {
-  background-color: #0B1120;
   color: #F8FAF6;
   padding: 30px;
   padding-left: 0px;
@@ -193,6 +192,12 @@
 
 .form-group input {
   margin-top: 0px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .remito-cot-centered .form-group {

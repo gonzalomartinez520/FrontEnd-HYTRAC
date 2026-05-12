@@ -11,4 +11,5 @@
  */
 
 export { default as envios } from './envios';
+export { default as datos } from './datos';
 export { default as apiClient } from './apiClient';   // optional
