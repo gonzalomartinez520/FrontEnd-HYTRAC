@@ -72,6 +72,22 @@
   gap: 10px;
 }
 
+.section-title--transportista {
+  margin-top: 20px;
+}
+
+.section-title--transportista h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-icon--orange {
+  width: 24px;
+  height: 24px;
+  fill: #f97316;
+}
+
 .section-text p {
   color: #999;
   font-style: italic;
@@ -84,9 +100,28 @@
   gap: 20px;
 }
 
+.grid-2 > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.remito-cot-centered {
+  max-width: 600px;
+  margin: 30px auto 0;
+  margin-top: 10px;
+}
+
+.chofer-full-width {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
 .grid-3 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
 }
 
@@ -95,10 +130,55 @@
   flex-direction: column;
 }
 
+.document-card {
+  background: #0f766e;
+  border: 1px solid #0f766e;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+}
+
+.document-card--green {
+  background: #054f45;
+  border-color: #054f45;
+}
+
+.document-card--red {
+  background: #7f1d1d;
+  border-color: #7f1d1d;
+}
+
+.document-card__label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.document-card__status {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #f8fafc;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-align: center;
+  min-width: 100px;
+}
+
+.document-card__value {
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
 .form-group label {
   font-size: 0.85rem;
   font-weight: 600;
   color: #F8FAF6;
+  margin-bottom: 4px;
 }
 
 .form-group input,
@@ -109,6 +189,22 @@
   font-size: 1rem;
   background-color: #0f172a;
   color: #F8FAF6;
+}
+
+.form-group input {
+  margin-top: 0px;
+}
+
+.remito-cot-centered .form-group {
+  gap: 4px;
+}
+
+.remito-cot-centered label {
+  margin-bottom: 0px;
+}
+
+.remito-cot-centered small {
+  margin-top: 0px;
 }
 
 .status {
