@@ -1,7 +1,7 @@
 /* --- Standardized Details Page --- */
 .details-page {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   font-family: Arial, sans-serif;       
 }
 
@@ -37,6 +37,50 @@
 }
 
 .back-link:hover { transform: scale(1.02); }
+
+.summary-toggle-btn {
+  display: none;
+  width: 100%;
+  margin-top: 16px;
+  padding: 12px 16px;
+  color: #F8FAF6;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: #1E293B;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.summary-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.details-left {
+  position: relative;
+  z-index: 0;
+}
+
+.details-left .map-placeholder {
+  margin-top: 20px;
+  min-height: 220px;
+  border-radius: 18px;
+  background: rgba(248, 250, 246, 0.08);
+  border: 1px dashed rgba(248, 250, 246, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+}
+
+.route-summary {
+  transition: max-height 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.route-summary.open {
+  display: block;
+}
 
 .details-header-right {
   display: flex;
@@ -122,6 +166,10 @@
 
 .info strong {
   font-size: small;
+}
+
+.route-summary {
+  display: block;
 }
 
 .details-info-right {
@@ -536,6 +584,78 @@
   .status-msg {
     font-size: 0.8rem;
     padding: 10px;
+  }
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+  .summary-toggle-btn {
+    display: block;
+  }
+
+  .route-summary {
+    display: none;
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  .route-summary.open {
+    display: block;
+    max-height: 2000px;
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .details-page {
+    flex-direction: row;
+    height: auto;
+  }
+
+  .details-left,
+  .details-right {
+    min-height: 100vh;
+  }
+
+  .details-left {
+    width: 40%;
+    padding: 20px;
+    background-color: #f5f5f5;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+  }
+
+  .details-left .card,
+  .details-left .map-placeholder {
+    background: #1E293B;
+    color: #F8FAF6;
+  }
+
+  .details-left .card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .details-right {
+    width: 60%;
+    padding: 20px;
+    background-color: #0B1120;
+  }
+
+  .summary-toggle-btn {
+    display: none;
+  }
+
+  .route-summary {
+    display: block;
+    max-height: none;
+  }
+
+  .details-header-right {
+    margin-bottom: 20px;
+  }
+
+  .details-left-placeholder {
+    margin-top: 20px;
   }
 }
 

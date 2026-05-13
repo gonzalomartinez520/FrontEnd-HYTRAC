@@ -124,19 +124,19 @@ export default function OperarioDashboard({ user }) {
             <tbody>
               {filteredShipments.map((shipment) => (
                 <tr key={shipment.id}>
-                  <td className="tracking">{shipment.id}</td>
-                  <td>
+                      <td className="tracking" data-label="ID">{shipment.id}</td>
+                  <td data-label="Origen">
                     <strong>{shipment.plantaDespachoNombre}</strong>
                   </td>
-                  <td>
+                  <td data-label="Destino">
                     <strong>{shipment.estacionDestinoNombre}</strong>
                   </td>
-                  <td>
+                  <td data-label="Estado">
                     <StatusBadge estado={shipment.estado} />
                   </td>
-                  <td>{shipment.transportistaNombre}</td>
-                  <td>{formatearFecha(shipment.fechaCreacion)}</td>
-                  <td>
+                  <td data-label="Chofer">{shipment.transportistaNombre}</td>
+                  <td data-label="Fecha Creación">{formatearFecha(shipment.fechaCreacion)}</td>
+                  <td data-label="Acciones">
                     <Link to={`/ordenes/${shipment.id}`}>
                       Detalle
                     </Link>
