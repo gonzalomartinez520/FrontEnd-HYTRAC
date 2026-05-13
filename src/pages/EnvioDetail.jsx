@@ -18,6 +18,7 @@ export default function EnvioDetail({ user }) {
   const [motivo, setMotivo] = useState("");
   const [updatingEstado, setUpdatingEstado] = useState(false);
   const [estadoMsg, setEstadoMsg] = useState("");
+  const [summaryOpen, setSummaryOpen] = useState(false);
 
   /* QUEDARA COMENTADO HASTA NUEVO AVISO
   const calculateEstimatedDelivery = (creationDate, windowHours) => {
@@ -109,7 +110,15 @@ export default function EnvioDetail({ user }) {
           ← Volver al Panel
         </div>
 
-        <div className="card">
+        <button
+          type="button"
+          className="summary-toggle-btn"
+          onClick={() => setSummaryOpen((prev) => !prev)}
+        >
+          Resumen del Trayecto
+        </button>
+
+        <div className={`card route-summary ${summaryOpen ? "open" : ""}`}>
           <div className="card-header">
             📍 <span>Resumen del Trayecto</span>
           </div>
@@ -142,6 +151,10 @@ export default function EnvioDetail({ user }) {
               <p><strong>Destino:</strong>{shipment.estacionDestino}</p>
             </div>
           </div>
+        </div>
+
+        <div className="details-left-placeholder">
+          <div className="map-placeholder">Espacio para mapa o visualización del trayecto</div>
         </div>
       </div>
 
