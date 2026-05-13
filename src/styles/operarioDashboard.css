@@ -5,11 +5,9 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-
-
 .hytrac-layout {
   min-height: 100vh;
-  background: #f5f6f8;
+  background: #0B1120;
 }
 
 .dashboard-content {
@@ -25,101 +23,17 @@
 
 .dashboard-header h1 {
   font-size: 2.5rem;
-  color: #1d1d1d;
+  color: #F8FAF6;
   margin-bottom: 10px;
 }
 
 .dashboard-header p {
-  color: #777;
+  color: #a3b0c2;
   font-size: 1.1rem;
 }
 
-.header-actions {
-  display: flex;
-  gap: 15px;
-}
-
-.primary-btn,
-.secondary-btn {
-  border: none;
-  padding: 14px 22px;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s ease;
-}
-
-.primary-btn {
-  background: #ff7b00;
-  color: white;
-}
-
-.primary-btn:hover {
-  background: #e96f00;
-}
-
-.secondary-btn {
-  background: white;
-  border: 1px solid #ddd;
-}
-
-.secondary-btn:hover {
-  background: #f3f3f3;
-}
-
-.metrics-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
-  margin-bottom: 35px;
-}
-
-.metric-card {
-  background: white;
-  border-radius: 18px;
-  padding: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
-
-.metric-card span {
-  color: #777;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-}
-
-.metric-card h2 {
-  font-size: 3rem;
-  margin: 10px 0;
-}
-
-.metric-card p {
-  color: #888;
-}
-
-.metric-icon {
-  width: 65px;
-  height: 65px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f1f1f1;
-  font-size: 1.8rem;
-}
-
-.metric-icon.blue {
-  background: #e7eefc;
-}
-
-.metric-icon.red {
-  background: #fdeaea;
-}
-
 .table-card {
-  background: white;
+  background: #1E293B;
   border-radius: 20px;
   padding: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -134,10 +48,11 @@
 
 .table-top h2 {
   margin-bottom: 6px;
+  color: #F8FAF6;
 }
 
 .table-top span {
-  color: #888;
+  color: #a3b0c2;
 }
 
 .table-actions {
@@ -167,7 +82,7 @@ table {
 }
 
 thead {
-  background: #f8f8f8;
+  background: #1E293B;
 }
 
 th,
@@ -177,43 +92,22 @@ td {
   border-bottom: 1px solid #eee;
 }
 
-th {
-  color: #777;
-  font-weight: 600;
+td {
+  color: #F8FAF6;
 }
 
-td p {
-  color: #999;
-  margin-top: 4px;
-  font-size: 0.85rem;
+th {
+  color: #F8FAF6;
+  font-weight: 600;
 }
 
 .tracking {
-  color: #295ec9;
+  text-align: center;
+  color: #ff7b00;
   font-weight: bold;
 }
 
-.status {
-  padding: 8px 14px;
-  border-radius: 30px;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.status.entransito {
-  background: #e7efff;
-  color: #2d5bcc;
-}
-
-.status.entregado {
-  background: #edf8ef;
-  color: #2d8b57;
-}
-
-.status.cancelado {
-  background: #fdecec;
-  color: #c44444;
-}
+/* Status styles imported from statusBadge.css */
 
 .pagination {
   display: flex;
@@ -231,31 +125,8 @@ td p {
 }
 
 .active-page {
-  background: #295ec9 !important;
+  background: #ff7b00 !important;
   color: white;
-}
-
-.bottom-alerts {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 25px;
-  margin-top: 30px;
-}
-
-.alert-card {
-  background: white;
-  border-radius: 18px;
-  padding: 25px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
-
-.alert-card h3 {
-  margin-bottom: 12px;
-}
-
-.alert-card p {
-  color: #777;
-  line-height: 1.6;
 }
 
 .loading-screen {
@@ -280,7 +151,7 @@ td p {
 
 a {
   text-decoration: none;
-  color: #295ec9;
+  color: #ff7b00;
   font-weight: 600;
 }
 

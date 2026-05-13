@@ -33,7 +33,7 @@ function App() {
         />
 
         <Route
-          path="/shipment/:id"
+          path="/ordenes/:id"
           element={user ? <EnvioDetail user={user} /> : <Navigate to="/login" />}
         />
 

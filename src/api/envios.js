@@ -38,7 +38,7 @@ const envios = {
 
   // Obtener un envío por su ID
   getById: async (id) => {
-    const { data } = await apiClient.get(`/envios/${id}`);
+    const { data } = await apiClient.get(`/ordenes/${id}`);
     return data; // devuelve solo losdatos
   },
 
@@ -46,7 +46,7 @@ const envios = {
   // Devuelve siempre un array para evitar errores al hacer .map() o similar
   getHistorial: async (id) => {
     try {
-      const { data } = await apiClient.get(`/envios/${id}/historial`);
+      const { data } = await apiClient.get(`/ordenes/${id}/historial`);
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.warn(`No se pudo obtener historial del envío ${id}`);
