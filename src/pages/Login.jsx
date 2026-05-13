@@ -5,8 +5,8 @@ import "../styles/login.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 
 export default function Login({ onLogin }) {
-  const [username, setUsername] = useState("LEG-04821");
-  const [password, setPassword] = useState("********");
+  const [username, setUsername] = useState([]);
+  const [password, setPassword] = useState([]);
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
@@ -41,13 +41,9 @@ export default function Login({ onLogin }) {
 
             <div>
               <h2>HYTRAC</h2>
-              <span>HYDROCARBON LOGISTICS</span>
+              <span>BLACK MESA RESEARCH</span>
             </div>
           </div>
-
-          <p className="platform-tag">
-            // PLATAFORMA OPERATIVA v4.2
-          </p>
 
           <div className="hero-text">
             <h1>
@@ -99,7 +95,7 @@ export default function Login({ onLogin }) {
 
           <form onSubmit={handleSubmit}>
             <div className="input-group">
-              <label>LEG AJO / USUARIO</label>
+              <label>LEGAJO / USUARIO</label>
 
               <div className="input-wrapper">
                 <span>⌘</span>
@@ -108,7 +104,6 @@ export default function Login({ onLogin }) {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="LEG-04821"
                 />
               </div>
             </div>
@@ -116,13 +111,6 @@ export default function Login({ onLogin }) {
             <div className="input-group">
               <div className="password-top">
                 <label>CONTRASEÑA</label>
-
-                <button
-                  type="button"
-                  className="forgot-btn"
-                >
-                  ¿Olvidó su contraseña?
-                </button>
               </div>
 
               <div className="input-wrapper">
@@ -132,7 +120,6 @@ export default function Login({ onLogin }) {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="********"
                 />
               </div>
             </div>
@@ -149,8 +136,7 @@ export default function Login({ onLogin }) {
           </form>
 
           <div className="login-footer">
-            <span>v4.2.1 - build 2024.11</span>
-
+            <span>BLACK MESA RESEARCH</span>
             <span>© HYTRAC Argentina</span>
           </div>
         </div>

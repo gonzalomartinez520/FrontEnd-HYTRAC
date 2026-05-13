@@ -1,0 +1,38 @@
+/* Unified Status Badge Styles */
+
+.badge {
+  padding: 8px 14px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+/* Unified status colors for all states */
+.badge.status-pendiente {
+  background: #fdecec;
+  color: #ff7b00;
+}
+
+.badge.status-en-viaje,
+.badge.status-en-transito,
+.badge.status-en-curso {
+  background: #e7efff;
+  color: #2d5bcc;
+}
+
+.badge.status-entregada {
+  background: #edf8ef;
+  color: #2d8b57;
+}
+
+.badge.status-cancelada {
+  background: #fdecec;
+  color: #c44444;
+}
+
+.badge.status-unknown {
+  background: #f0f0f0;
+  color: #666;
+}

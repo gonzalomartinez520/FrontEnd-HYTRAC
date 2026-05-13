@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/envioDetail.css";
-import { envios } from '@/api';
+import "../styles/statusBadge.css";
+import StatusBadge from "@/components/StatusBadge";
+import { envios, apiClient as api } from '@/api';
 
-const ESTADOS_DISPONIBLES = ["PENDIENTE", "EN_VIAJE", "ENTREGADO", "CANCELADO"];
+const ESTADOS_DISPONIBLES = ["PENDIENTE", "EN_CURSO", "ENTREGADA", "CANCELADA"];
 
 export default function EnvioDetail({ user }) {
   const { id } = useParams();
@@ -38,14 +40,13 @@ export default function EnvioDetail({ user }) {
 
         const [shipment, history] = await Promise.all([
           envios.getById(id),
-
           user?.role === "supervisor"
             ? envios.getHistorial(id).catch(() => [])
             : Promise.resolve([]),
         ]);
 
         setShipment(shipment);
-        setSelectedEstado(shipment.estadoEnvio || "PENDIENTE");
+        setSelectedEstado(shipment.estado || "PENDIENTE");
         setHistory(Array.isArray(history) ? history : []);
       } catch (err) {
         setError(err?.response?.data?.message || err.message || "Error al cargar el envío");
@@ -104,8 +105,8 @@ export default function EnvioDetail({ user }) {
           <div className="card-body">
             <div className="row">
               <div>
-                <smal>Distancia Estimada</smal>
-                <h2>{shipment.distanciaEstimada}</h2>
+                <small>Distancia Estimada</small>
+                <h2>300 km</h2>
               </div>
               <div>
                 <small>Fecha Estimada</small>
@@ -125,8 +126,8 @@ export default function EnvioDetail({ user }) {
             </div>
 
             <div className="info">
-              <p><strong>Origen:</strong>{shipment.origen}</p>
-              <p><strong>Destino:</strong>{shipment.destino}</p>
+              <p><strong>Origen:</strong>{shipment.plantaDespacho}</p>
+              <p><strong>Destino:</strong>{shipment.estacionDestino}</p>
             </div>
           </div>
         </div>
@@ -135,10 +136,12 @@ export default function EnvioDetail({ user }) {
 
       <div className="details-right">
         <div className="details-header-right">
-          <h1>Órden {shipment.id}</h1>
-          <small>Creado: {shipment.fechaCreacion}</small>
-          <span className={`badge status-${shipment.estadoEnvio.toLowerCase()}`}>
-            {formatearEstado(shipment.estadoEnvio)}
+          <div className="details-header-right__info">
+            <h1>Órden {shipment.id}</h1>
+            <small>Creado: {shipment.fechaCreacion}</small>
+          </div>
+          <span>
+            <StatusBadge estado={shipment.estado} />
           </span>
         </div>
 
@@ -147,7 +150,7 @@ export default function EnvioDetail({ user }) {
 
           <div className="driver-card">
             <div>
-              <h4>Ricardo Gómez</h4>
+              <h4>{shipment.transportista}</h4>
               <p>DNI: 28.455.901 / ID: HY-DRV-102</p>
             </div>
           </div>
@@ -157,12 +160,12 @@ export default function EnvioDetail({ user }) {
               <h4 className="sub-title">🚛 UNIDAD DE TRANSPORTE</h4>
               <div className="info-row">
                 <span>Patente Camion</span>
-                <strong>AF 455 YH</strong>
+                <strong>{shipment.camionPatente}</strong>
               </div>
 
               <div className="info-row">
                 <span>Patente Acoplado</span>
-                <strong>RY 902 KK</strong>
+                <strong>{shipment.acopladoPatente}</strong>
               </div>
 
               <div className="info-row">
@@ -181,30 +184,28 @@ export default function EnvioDetail({ user }) {
 
               <div className="info-row">
                 <span>Combustible</span>
-                <strong>Diesel Premium</strong>
-              </div>
-
-              <div className="info-row">
-                <span>Código ONU</span>
-                <strong>1202</strong>
+                <strong>{shipment.combustible}</strong>
               </div>
 
               <div className="info-row">
                 <span>Clase Peligro</span>
-                <strong>3 (Inflamable)</strong>
+                <strong>{shipment.claseRiesgo}</strong>
               </div>
 
               <div className="info-row">
                 <span>Temperatura</span>
-                <strong>18 °C</strong>
+                <strong>{shipment.temperaturaReferencia}</strong>
               </div>
 
-              {/*Base para el detalle del envio, luego se cambio con los datos reales*/}
+              <div className="info-row">
+                <span>Litros Cargados</span>
+                <strong>{shipment.litrosCargados}</strong>
+              </div>
             </div>
           </div>
 
           <section className="card info-section">
-            <h4 className="sub-title">🔄 Actualización de Estado</h4>
+            <h4 className="sub-title">🔄 ACTUALIZACION DE ESTADO</h4>
             <form className="status-form" onSubmit={handleUpdateEstado}>
               <label>Nuevo estado</label>
               <select

@@ -21,24 +21,24 @@ const envios = {
 
   // Obtener todos los envíos (con filtros opcionales)
   getAll: async (params) => {
-    const { data } = await apiClient.get('/envios', { params });
+    const { data } = await apiClient.get('/ordenes/get', { params });
     return data;
   },
 
   // Crear un nuevo envío
   create: async (payload) => {
-    const { data } = await apiClient.post('/envios', payload);
+    const { data } = await apiClient.post('/ordenes/crear', payload);
     return data;
   },
 
   // Crear un nuevo envío pero con respuesta completa
   createWithResponse: async (payload) => {
-    return await apiClient.post('/envios', payload);
+    return await apiClient.post('/ordenes/crear', payload);
   },
 
   // Obtener un envío por su ID
   getById: async (id) => {
-    const { data } = await apiClient.get(`/envios/${id}`);
+    const { data } = await apiClient.get(`/ordenes/${id}`);
     return data; // devuelve solo losdatos
   },
 
@@ -46,7 +46,7 @@ const envios = {
   // Devuelve siempre un array para evitar errores al hacer .map() o similar
   getHistorial: async (id) => {
     try {
-      const { data } = await apiClient.get(`/envios/${id}/historial`);
+      const { data } = await apiClient.get(`/ordenes/${id}/historial`);
       return Array.isArray(data) ? data : [];
     } catch (error) {
       console.warn(`No se pudo obtener historial del envío ${id}`);
