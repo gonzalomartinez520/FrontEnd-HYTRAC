@@ -598,6 +598,7 @@
     overflow: hidden;
     width: 100%;
     margin-top: 10px;
+    padding: 12px;
   }
 
   .details-left .card {
@@ -611,15 +612,16 @@
     margin-top: 10px;
   }
 
-  .route-summary.open {
-    display: block;
-    max-height: 2000px;
+  .route-summary .card-body .row,
+  .route-summary .card-body .dates {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
   }
 
-  .card-body .row, .dates {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
+  .route-summary .card-body .row h2,
+  .route-summary .card-body .dates h2 {
+    font-size: 1.15rem;
   }
 }
 
