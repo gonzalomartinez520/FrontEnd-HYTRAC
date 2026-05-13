@@ -600,6 +600,10 @@
     margin-top: 10px;
   }
 
+  .details-left .card {
+    width: 100%;
+  }
+
   .route-summary.open {
     display: block;
     max-height: 2000px;
@@ -610,6 +614,12 @@
   .route-summary.open {
     display: block;
     max-height: 2000px;
+  }
+
+  .card-body .row, .dates {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
   }
 }
 
