@@ -610,11 +610,13 @@
     max-height: 2000px;
     width: 100%;
     margin-top: 10px;
+    margin-left: 55px;
   }
 
   .route-summary .card-body .row,
   .route-summary .card-body .dates {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
     gap: 10px;
     margin-bottom: 12px;
   }
