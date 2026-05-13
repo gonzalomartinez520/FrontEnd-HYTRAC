@@ -72,10 +72,13 @@
   backdrop-filter: blur(10px);
   border-radius: 15px;
   padding: 20px;
-  width: 350px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   font-family: Arial, sans-serif;
   background-color: #1E293B;
+}
+
+.details-left .card {
+  width: 350px;
 }
 
 .card-header {
@@ -237,7 +240,6 @@
   display: center;
   margin-top: 20px;
   background-color: #1E293B;
-  width: 100%;
 }
 
 .info-section label {
@@ -301,5 +303,239 @@
   background-color: #e8f5e9;
   color: #2e7d32;
   border: 1px solid #c8e6c9;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1366px) {
+  .details-left {
+    width: 55%;
+    padding: 15px;
+  }
+
+  .details-right {
+    width: 45%;
+    padding: 15px;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .details-left .card {
+    max-width: 320px;
+  }
+
+  .grid-info {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+
+  .driver-card {
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .details-header-right h1 {
+    font-size: 1.8rem;
+  }
+
+  .info-section {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1100px) {
+  .details-left {
+    width: 50%;
+    padding: 12px;
+  }
+
+  .details-right {
+    width: 50%;
+    padding: 12px;
+  }
+
+  .card {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .details-left .card {
+    max-width: 280px;
+  }
+
+  .grid-info {
+    gap: 25px;
+  }
+
+  .details-header-right {
+    gap: 15px;
+  }
+
+  .details-header-right h1 {
+    font-size: 1.6rem;
+  }
+
+  .driver-card {
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 15px;
+  }
+
+  .driver-card h4 {
+    font-size: 0.95rem;
+  }
+
+  .driver-card p {
+    font-size: 0.85rem;
+  }
+
+  .info-row {
+    padding: 6px 0;
+  }
+
+  .info-row span,
+  .info-row strong {
+    font-size: 0.85rem;
+  }
+
+  .info-section {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .details-page {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .details-left {
+    width: 100%;
+    padding: 15px;
+    background-color: #0B1120;
+  }
+
+  .details-right {
+    width: 100%;
+    padding: 15px;
+    background-color: #0B1120;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 15px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  .details-header-right {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .details-header-right h1 {
+    font-size: 1.4rem;
+  }
+
+  .details-header-right small {
+    font-size: 0.8rem;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 10px;
+    padding: 12px;
+  }
+
+  .card-header {
+    font-size: 1rem;
+  }
+
+  .grid-info {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .row,
+  .dates {
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+
+  .row h2 {
+    font-size: 1.1rem;
+  }
+
+  .info-row {
+    flex-direction: column;
+    padding: 5px 0;
+    gap: 3px;
+  }
+
+  .info-row span,
+  .info-row strong {
+    font-size: 0.8rem;
+  }
+
+  .driver-card {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .driver-card h4 {
+    font-size: 0.9rem;
+  }
+
+  .driver-card p {
+    font-size: 0.8rem;
+  }
+
+  .section-title {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+  }
+
+  .status-form {
+    gap: 10px;
+  }
+
+  .status-form label {
+    font-size: 0.8rem;
+  }
+
+  .status-form select,
+  .status-form textarea {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .status-form button {
+    padding: 10px 15px;
+    font-size: 0.85rem;
+  }
+
+  .history-list li {
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+
+  .history-list li strong {
+    font-size: 0.85rem;
+  }
+
+  .history-list li span {
+    font-size: 0.8rem;
+  }
+
+  .status-msg {
+    font-size: 0.8rem;
+    padding: 10px;
+  }
 }
 

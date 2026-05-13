@@ -5,53 +5,6 @@ import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
 import { envios } from '@/api';
 
-/* const mockShipments = [
-  {
-    id: "#HYT-8291",
-    origen: "Refinería Campana",
-    destino: "Estación Norte Rosario",
-    chofer: "Carlos Gomez",
-    status: "EN TRANSITO",
-    prioridad: "ALTA",
-    ultima: "Hace 15 min",
-  },
-  {
-    id: "#HYT-7742",
-    origen: "Planta Dock Sud",
-    destino: "Logística Córdoba Center",
-    chofer: "Roberto Paez",
-    status: "ENTREGADO",
-    prioridad: "MEDIA",
-    ultima: "Hace 2 horas",
-  },
-  {
-    id: "#HYT-9104",
-    origen: "Terminal San Lorenzo",
-    destino: "Estación Mendoza Este",
-    chofer: "Mario Luz",
-    status: "EN TRANSITO",
-    prioridad: "ALTA",
-    ultima: "Hace 5 min",
-  },
-  {
-    id: "#HYT-6623",
-    origen: "Refinería Campana",
-    destino: "Depósito Neuquén",
-    chofer: "Esteban Quito",
-    status: "CANCELADO",
-    prioridad: "ALTA",
-    ultima: "Ayer 18:30",
-  },
-  {
-    id: "#HYT-5512",
-    origen: "Planta Bahía Blanca",
-    destino: "Estación Santa Fe",
-    chofer: "Lucas Rin",
-    status: "EN TRANSITO",
-    prioridad: "MEDIA",
-    ultima: "Justo ahora",
-  },
-]; */
 
 export default function OperarioDashboard({ user }) {
   const navigate = useNavigate();
@@ -79,6 +32,19 @@ export default function OperarioDashboard({ user }) {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const formatearFecha = (fechaString) => {
+    const fecha = new Date(fechaString);
+
+      return fecha.toLocaleString('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+  };
 
   const filteredShipments = shipments.filter((shipment) => {
     const searchText = (search || "").toLowerCase();
@@ -150,7 +116,7 @@ export default function OperarioDashboard({ user }) {
                 <th>Destino / Estación</th>
                 <th>Estado</th>
                 <th>Chofer</th>
-                <th>Última Act.</th>
+                <th>Fecha Creación</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -169,7 +135,7 @@ export default function OperarioDashboard({ user }) {
                     <StatusBadge estado={shipment.estado} />
                   </td>
                   <td>{shipment.transportistaNombre}</td>
-                  <td>{shipment.fechaCreacion}</td>
+                  <td>{formatearFecha(shipment.fechaCreacion)}</td>
                   <td>
                     <Link to={`/ordenes/${shipment.id}`}>
                       Detalle

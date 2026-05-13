@@ -58,6 +58,18 @@ export default function EnvioDetail({ user }) {
     if (id) fetchShipmentAndHistory();
   }, [id]);
 
+  const formatearFecha = (fechaString) => {
+    const fecha = new Date(fechaString);
+
+      return fecha.toLocaleString('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+  };
   const handleUpdateEstado = async (e) => {
     e.preventDefault();
     setUpdatingEstado(true);
@@ -138,7 +150,7 @@ export default function EnvioDetail({ user }) {
         <div className="details-header-right">
           <div className="details-header-right__info">
             <h1>Orden {shipment.id}</h1>
-            <small>Creado: {shipment.fechaCreacion}</small>
+            <small>Creado: {formatearFecha(shipment.fechaCreacion)}</small>
           </div>
           <span>
             <StatusBadge estado={shipment.estado} />
@@ -170,12 +182,12 @@ export default function EnvioDetail({ user }) {
 
               <div className="info-row">
                 <span>Capacidad Total</span>
-                <strong>35.000 Lts</strong>
+                <strong>{shipment.capacidadTotalAcoplado} Lts.</strong>
               </div>
 
               <div className="info-row">
                 <span>Peso Máximo</span>
-                <strong>45.000 Kgs</strong>
+                <strong>{shipment.pesoMaximoCamion} Kgs.</strong>
               </div>
             </div>
 
@@ -194,12 +206,12 @@ export default function EnvioDetail({ user }) {
 
               <div className="info-row">
                 <span>Temperatura</span>
-                <strong>{shipment.temperaturaReferencia}</strong>
+                <strong>{shipment.temperaturaReferencia} °C</strong>
               </div>
 
               <div className="info-row">
                 <span>Litros Cargados</span>
-                <strong>{shipment.litrosCargados}</strong>
+                <strong>{shipment.litrosCargados} Lts.</strong>
               </div>
             </div>
           </div>
