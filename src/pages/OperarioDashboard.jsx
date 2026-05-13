@@ -124,7 +124,7 @@ export default function OperarioDashboard({ user }) {
             <tbody>
               {filteredShipments.map((shipment) => (
                 <tr key={shipment.id}>
-                      <td className="tracking" data-label="ID">{shipment.id}</td>
+                      <td className="tracking" data-label="ID">ID #{shipment.id}</td>
                   <td data-label="Origen">
                     <strong>{shipment.plantaDespachoNombre}</strong>
                   </td>
