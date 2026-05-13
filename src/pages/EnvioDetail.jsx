@@ -149,7 +149,7 @@ export default function EnvioDetail({ user }) {
       <div className="details-right">
         <div className="details-header-right">
           <div className="details-header-right__info">
-            <h1>Órden {shipment.id}</h1>
+            <h1>Orden {shipment.id}</h1>
             <small>Creado: {formatearFecha(shipment.fechaCreacion)}</small>
           </div>
           <span>
