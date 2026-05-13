@@ -38,6 +38,21 @@
 
 .back-link:hover { transform: scale(1.02); }
 
+.details-header-right {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.details-header-right__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .details-header-right h1 {
   margin-bottom: 2px;
   color: #F8FAF6;
@@ -45,6 +60,10 @@
 
 .details-header-right small {
   color: #a3b0c2;
+}
+
+.details-header-right .badge {
+  margin: 0;
 }
 
 .card {
@@ -56,12 +75,17 @@
   width: 350px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
   font-family: Arial, sans-serif;
+  background-color: #1E293B;
 }
 
 .card-header {
   font-weight: bold;
   margin-bottom: 15px;
   color: #333;
+}
+
+.card-header span, strong, h2 {
+  color: #F8FAF6;
 }
 
 .row, .dates {
@@ -71,17 +95,30 @@
 }
 
 .row small {
-  color: gray;
+  color: #F8FAF6;
+}
+
+.dates small {
+  color: #F8FAF6;
 }
 
 .row h2 {
   margin-top: 5px;
-  color: #1e4db7;
+  color: #f97316;
 }
 
 .info p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
   font-size: 12px;
   margin-top: 5px;
+  align-content: end;
+  color: #a3b0c2;
+}
+
+.info strong {
+  font-size: small;
 }
 
 .details-info-right {
@@ -111,7 +148,7 @@
 }
 
 .driver-card p {
-  color: #999;
+  color: #a3b0c2;
   font-size: 14px;
 }
 
@@ -137,7 +174,7 @@
 }
 
 .info-row span {
-  color: #999;
+  color: #a3b0c2;
   font-size: 14px;
 }
 
@@ -152,30 +189,6 @@
   font-size: 0.8rem;
   font-weight: bold;
   text-transform: uppercase;
-}
-
-.status-pendiente {
-  background: #fff3cd;
-  color: #8b6f47;
-  border: 1.5px solid #ffc107;
-}
-
-.status-en_viaje {
-  background: #e6d8ff;
-  color: #7b1fa2;
-  border: 1.5px solid #9c27b0;
-}
-
-.status-entregado {
-  background: #d4f5df;
-  color: #1b5e20;
-  border: 1.5px solid #4caf50;
-}
-
-.status-cancelado {
-  background: #ffcdd2;
-  color: #b71c1c;
-  border: 1.5px solid #f44336;
 }
 
 /* Form Elements inside Details */
@@ -198,8 +211,9 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
-  background-color: #fafafa;
+  background-color: #0B1120;
   box-sizing: border-box;
+  color: #F8FAF6;
 }
 
 .status-form button {
@@ -217,6 +231,17 @@
 
 .status-form button:hover:not(:disabled) {
   background: #b71c1c;
+}
+
+.info-section {
+  display: center;
+  margin-top: 20px;
+  background-color: #1E293B;
+  width: 100%;
+}
+
+.info-section label {
+  color: #a3b0c2;
 }
 
 /* History List */

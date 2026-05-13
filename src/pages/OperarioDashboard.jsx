@@ -1,10 +1,11 @@
-
-import { Link } from "react-router-dom";
+import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "../styles/operarioDashboard.css";
-import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
+import "../styles/statusBadge.css";
+import StatusBadge from "@/components/StatusBadge";
+import { envios } from '@/api';
 
-const mockShipments = [
+/* const mockShipments = [
   {
     id: "#HYT-8291",
     origen: "Refinería Campana",
@@ -50,25 +51,51 @@ const mockShipments = [
     prioridad: "MEDIA",
     ultima: "Justo ahora",
   },
-];
+]; */
 
 export default function OperarioDashboard({ user }) {
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(true);
   const [shipments, setShipments] = useState([]);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShipments(mockShipments);
-      setLoading(false);
+      const fetchData = async () => {
+        try {
+          const response = await envios.getAll();
+          console.log("Datos obtenidos de la API:", response);
+          setShipments(response);
+        } catch (error) {
+          console.error("Error al obtener envíos:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchData();
     }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  const filteredShipments = shipments.filter((shipment) =>
-    shipment.id.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredShipments = shipments.filter((shipment) => {
+    const searchText = (search || "").toLowerCase();
+
+    const fields = [
+      shipment.plantaDespachoNombre,
+      shipment.estacionDestinoNombre,
+      shipment.transportistaNombre,
+    ];
+
+    return (
+      String(shipment.id).includes(searchText) ||
+      fields.some(field =>
+        (field || "").toLowerCase().includes(searchText)
+      )
+    );
+  });
 
   if (loading) {
     return (
@@ -93,52 +120,14 @@ export default function OperarioDashboard({ user }) {
               hidrocarburos.
             </p>
           </div>
-
-          <div className="header-actions">
-            <button className="secondary-btn">Exportar Reporte</button>
-            <button className="primary-btn">Crear Envío</button>
-          </div>
-        </section>
-
-        {/* METRICS */}
-        <section className="metrics-grid">
-          <div className="metric-card">
-            <div>
-              <span>ENVÍOS ACTIVOS</span>
-              <h2>24</h2>
-              <p>+3 desde la última hora</p>
-            </div>
-
-            <div className="metric-icon blue">🚛</div>
-          </div>
-
-          <div className="metric-card">
-            <div>
-              <span>ENTREGADOS HOY</span>
-              <h2>156</h2>
-              <p>Cumplimiento del 98.2%</p>
-            </div>
-
-            <div className="metric-icon">✔</div>
-          </div>
-
-          <div className="metric-card">
-            <div>
-              <span>ALERTAS CRÍTICAS</span>
-              <h2>03</h2>
-              <p>Requiere atención inmediata</p>
-            </div>
-
-            <div className="metric-icon red">⚠</div>
-          </div>
         </section>
 
         {/* TABLE */}
         <section className="table-card">
           <div className="table-top">
             <div>
-              <h2>Historial de Envíos Recientes</h2>
-              <span>Total: 428</span>
+              <h2>Historial de Órdenes Recientes</h2>
+              <span>Órdenes encontradas: {filteredShipments.length}</span>
             </div>
 
             <div className="table-actions">
@@ -171,26 +160,18 @@ export default function OperarioDashboard({ user }) {
                 <tr key={shipment.id}>
                   <td className="tracking">{shipment.id}</td>
                   <td>
-                    <strong>{shipment.origen}</strong>
-                    <p>Terminal Regional</p>
+                    <strong>{shipment.plantaDespachoNombre}</strong>
                   </td>
                   <td>
-                    <strong>{shipment.destino}</strong>
-                    <p>Punto de Entrega B2B</p>
+                    <strong>{shipment.estacionDestinoNombre}</strong>
                   </td>
                   <td>
-                    <span
-                      className={`status ${shipment.status
-                        .toLowerCase()
-                        .replace(/\s/g, "")}`}
-                    >
-                      {shipment.status}
-                    </span>
+                    <StatusBadge estado={shipment.estado} />
                   </td>
-                  <td>{shipment.chofer}</td>
-                  <td>{shipment.ultima}</td>
+                  <td>{shipment.transportistaNombre}</td>
+                  <td>{shipment.fechaCreacion}</td>
                   <td>
-                    <Link to={`/shipment/${shipment.id}`}>
+                    <Link to={`/ordenes/${shipment.id}`}>
                       Detalle
                     </Link>
                   </td>
@@ -205,25 +186,6 @@ export default function OperarioDashboard({ user }) {
             <button>2</button>
             <button>3</button>
             <button>Siguiente</button>
-          </div>
-        </section>
-
-        {/* ALERTS */}
-        <section className="bottom-alerts">
-          <div className="alert-card">
-            <h3>Sugerencia del Sistema</h3>
-            <p>
-              Hay congestión reportada en la Refinería Campana.
-              Se recomienda priorizar rutas alternativas.
-            </p>
-          </div>
-
-          <div className="alert-card">
-            <h3>Estado de Servidores</h3>
-            <p>
-              Todos los sistemas GPS y telemetría están operando con
-              normalidad.
-            </p>
           </div>
         </section>
       </main>
