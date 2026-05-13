@@ -596,6 +596,15 @@
     display: none;
     max-height: 0;
     overflow: hidden;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .route-summary.open {
+    display: block;
+    max-height: 2000px;
+    width: 100%;
+    margin-top: 10px;
   }
 
   .route-summary.open {

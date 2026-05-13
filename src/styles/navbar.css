@@ -204,13 +204,18 @@
   }
 
   .nav-left {
-    width: 100%;
+    flex: 1;
     gap: 15px;
     justify-content: space-between;
   }
 
   .mobile-menu-btn {
     display: flex;
+  }
+
+  .nav-right {
+    flex: 0 0 auto;
+    justify-content: flex-end;
   }
 
   .nav-links {
@@ -268,8 +273,6 @@
 
   .nav-right {
     gap: 8px;
-    width: 100%;
-    justify-content: space-between;
   }
 
   .logo-img {
