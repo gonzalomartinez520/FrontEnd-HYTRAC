@@ -1,19 +1,22 @@
 // Login.jsx
 
+import axios from 'axios';
 import { useState } from "react";
 import "../styles/login.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 
 export default function Login({ onLogin }) {
-  const [username, setUsername] = useState([]);
+  const [mail, setMail] = useState([]);
   const [password, setPassword] = useState([]);
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const API_URL = import.meta.env.VITE_API_URL
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!username.trim()) {
-      setError("Por favor ingresá un usuario válido.");
+    if (!mail.trim()) {
+      setError("Por favor ingresá un mail válido.");
       return;
     }
 
@@ -24,9 +27,32 @@ export default function Login({ onLogin }) {
 
     setError("");
 
-    onLogin({
-      username,
-    });
+    try {
+      const { data } = await axios.post(`${API_URL}/auth/login`, {
+        email: mail,
+        password: password,
+      });
+
+      console.log("Login OK:", data);
+       
+       const userData = {
+        ...data,
+        role: data.roles[0],
+      };
+
+      onLogin(userData);
+
+      localStorage.setItem("token", data.token);
+
+    } catch (error) {
+      console.error(error);
+
+      if (error.response && error.response.data) {
+        setError(error.response.data.message);
+      } else {
+        setError("Error inesperado. Intentalo de nuevo.");
+      }
+    }
   };
 
   return (
@@ -95,15 +121,15 @@ export default function Login({ onLogin }) {
 
           <form onSubmit={handleSubmit}>
             <div className="input-group">
-              <label>LEGAJO / USUARIO</label>
+              <label>MAIL</label>
 
               <div className="input-wrapper">
                 <span>⌘</span>
 
                 <input
                   type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={mail}
+                  onChange={(e) => setMail(e.target.value)}
                 />
               </div>
             </div>
@@ -144,86 +170,3 @@ export default function Login({ onLogin }) {
     </div>
   );
 }
-
-// LOGICA REAL, DEPENDE DE BACKEND
-/*import { useState } from "react";
-import "./login.css";
-
-export default function Login() {
-  const [username, setUsername] = useState("");
-  const [role, setRole] = useState("operario");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const payload = {
-      username,
-      role,
-    };
-
-    try {
-      const res = await fetch("http://localhost:8080/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await res.json();
-      console.log("Login response:", data);
-    } catch (err) {
-      console.error("Error:", err);
-    }
-  };
-  
-
-  return (
-    <div className="container">
-      <div className="card">
-        <div className="logo"><img src={LogiTrackLogo} alt="LogiTrack" className="login-logo-img" /></div>
-
-        <h1>
-          <span className="red">Logi</span>Track
-        </h1>
-        <p className="subtitle">Sistema de Gestión de Envíos</p>
-
-        <form onSubmit={handleSubmit}>
-          <label>Usuario</label>
-          <input
-            type="text"
-            placeholder="Ingresa tu nombre de usuario"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-
-          <label>Selecciona tu rol</label>
-
-          <div className="roles">
-            <div
-              className={`role ${role === "operario" ? "active" : ""}`}
-              onClick={() => setRole("operario")}
-            >
-              👤
-              <span>Operario</span>
-            </div>
-
-            <div
-              className={`role ${role === "supervisor" ? "active" : ""}`}
-              onClick={() => setRole("supervisor")}
-            >
-              🛡️
-              <span>Supervisor</span>
-            </div>
-          </div>
-
-          <button type="submit">Iniciar Sesión</button>
-        </form>
-
-        <div className="footer">
-          Prototipo navegable - LogiTrack ERP © 2026
-        </div>
-      </div>
-    </div>
-  );
-}*/
