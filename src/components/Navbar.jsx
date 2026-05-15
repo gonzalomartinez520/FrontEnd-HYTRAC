@@ -8,8 +8,17 @@ export default function Navbar({ user, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
+    // 🗑️ Eliminar sesión completa
+    localStorage.removeItem("token");
+
+    // 🧠 Limpiar estado en App
     onLogout(null);
-    navigate("/login");
+
+    // 📱 Cerrar menú si está abierto
+    setMenuOpen(false);
+
+    // 🔄 Redirigir al login sin posibilidad de volver atrás
+    navigate("/login", { replace: true });
   };
 
   const toggleMenu = () => {
@@ -25,6 +34,7 @@ export default function Navbar({ user, onLogout }) {
             <strong>HYTRAC</strong>
           </div>
         </div>
+
         <button
           className="mobile-menu-btn"
           type="button"
@@ -33,14 +43,29 @@ export default function Navbar({ user, onLogout }) {
         >
           {menuOpen ? "✕" : "☰"}
         </button>
+
         <div className={`nav-links ${menuOpen ? "active" : ""}`}>
-          <Link title="Panel Control" to="/dashboard" onClick={() => setMenuOpen(false)}>
+          <Link
+            title="Panel Control"
+            to="/dashboard"
+            onClick={() => setMenuOpen(false)}
+          >
             <span className="icon">🏠</span> Panel Control
           </Link>
-          <Link title="Nueva Orden" to="/nuevo-envio" onClick={() => setMenuOpen(false)}>
+
+          <Link
+            title="Nueva Orden"
+            to="/nuevo-envio"
+            onClick={() => setMenuOpen(false)}
+          >
             <span className="icon">➕</span> Nueva Orden
           </Link>
-          <Link title="Confirmar Envío" to="/confirmar-envio" onClick={() => setMenuOpen(false)}>
+
+          <Link
+            title="Confirmar Envío"
+            to="/confirmar-envio"
+            onClick={() => setMenuOpen(false)}
+          >
             <span className="icon">✅</span> Confirmar Envío
           </Link>
         </div>
@@ -50,11 +75,16 @@ export default function Navbar({ user, onLogout }) {
         <div className="user-profile">
           <span className="user-icon">👤</span>
           <div className="user-info">
-            <strong>{user?.nombre || "Usuario"} {user?.apellido || ""}</strong>
-            <span>{user?.role?.toLowerCase() || "Operario"}</span>
+            <strong>
+              {user?.nombre || "Usuario"} {user?.apellido || ""}
+            </strong>
+            <span>{user?.role?.toLowerCase() || "operario"}</span>
           </div>
         </div>
-        <button className="logout-btn" onClick={handleLogout}>Salir</button>
+
+        <button className="logout-btn" onClick={handleLogout}>
+          Salir
+        </button>
       </div>
     </nav>
   );

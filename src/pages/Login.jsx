@@ -42,7 +42,7 @@ export default function Login({ onLogin }) {
 
       onLogin(userData);
 
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", JSON.stringify(userData));
 
     } catch (error) {
       console.error(error);
