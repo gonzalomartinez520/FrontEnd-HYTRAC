@@ -20,44 +20,50 @@ export default function EnvioDetail({ user }) {
   const [estadoMsg, setEstadoMsg] = useState("");
   const [summaryOpen, setSummaryOpen] = useState(false);
 
-  /* QUEDARA COMENTADO HASTA NUEVO AVISO
-  const calculateEstimatedDelivery = (creationDate, windowHours) => {
-    const date = new Date(creationDate);
-    date.setHours(date.getHours() + windowHours);
-    return date.toLocaleString();
-  };
-  */
 
   const formatearEstado = (estado) => {
     if (!estado) return "";
     return estado.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
   };
 
-  useEffect(() => {
-    const fetchShipmentAndHistory = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+useEffect(() => {
+  const fetchShipmentAndHistory = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        const [shipment, history] = await Promise.all([
-          envios.getById(id),
-          user?.role === "supervisor"
-            ? envios.getHistorial(id).catch(() => [])
-            : Promise.resolve([]),
-        ]);
+      // ⏱️ Timer mínimo de 1 segundo
+      const delay = new Promise((resolve) => setTimeout(resolve, 1000));
 
-        setShipment(shipment);
-        setSelectedEstado(shipment.estado || "PENDIENTE");
-        setHistory(Array.isArray(history) ? history : []);
-      } catch (err) {
-        setError(err?.response?.data?.message || err.message || "Error al cargar el envío");
-      } finally {
-        setLoading(false);
-      }
-    };
+      const fetchData = Promise.all([
+        envios.getById(id),
+        user?.role === "supervisor"
+          ? envios.getHistorial(id).catch(() => [])
+          : Promise.resolve([]),
+      ]);
 
-    if (id) fetchShipmentAndHistory();
-  }, [id]);
+      // ⛓️ Espera ambas cosas: datos + 1 segundo
+      const [[shipment, history]] = await Promise.all([
+        fetchData,
+        delay,
+      ]);
+
+      setShipment(shipment);
+      setSelectedEstado(shipment.estado || "PENDIENTE");
+      setHistory(Array.isArray(history) ? history : []);
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+        err.message ||
+        "Error al cargar el envío"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (id) fetchShipmentAndHistory();
+}, [id]);
 
   const formatearFecha = (fechaString) => {
     const fecha = new Date(fechaString);
@@ -99,7 +105,10 @@ export default function EnvioDetail({ user }) {
     }
   };
 
-  if (loading) return <div className="loading">Cargando detalles del envío...</div>;
+  if (loading) return <div className="loading-screen-detail">
+                        <h1 className="loader-detail"></h1>
+                        Cargando Orden...
+                      </div>;
   if (error) return <div className="error-msg">Error: {error} <button onClick={() => navigate("/dashboard")}>Volver</button></div>;
   if (!shipment) return null;
 

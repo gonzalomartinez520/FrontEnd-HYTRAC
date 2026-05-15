@@ -102,7 +102,6 @@ th {
 }
 
 .tracking {
-  text-align: center;
   color: #ff7b00;
   font-weight: bold;
 }
@@ -136,7 +135,7 @@ th {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background: #132a57;
+  background: #0B1120;
   color: white;
 }
 

@@ -40,6 +40,9 @@ export default function Navbar({ user, onLogout }) {
           <Link title="Nueva Orden" to="/nuevo-envio" onClick={() => setMenuOpen(false)}>
             <span className="icon">➕</span> Nueva Orden
           </Link>
+          <Link title="Confirmar Envío" to="/confirmar-envio" onClick={() => setMenuOpen(false)}>
+            <span className="icon">✅</span> Confirmar Envío
+          </Link>
         </div>
       </div>
 
@@ -47,8 +50,8 @@ export default function Navbar({ user, onLogout }) {
         <div className="user-profile">
           <span className="user-icon">👤</span>
           <div className="user-info">
-            <strong>{user?.username || "Usuario"}</strong>
-            <span>{user?.role || "Operario"}</span>
+            <strong>{user?.nombre || "Usuario"} {user?.apellido || ""}</strong>
+            <span>{user?.role?.toLowerCase() || "Operario"}</span>
           </div>
         </div>
         <button className="logout-btn" onClick={handleLogout}>Salir</button>

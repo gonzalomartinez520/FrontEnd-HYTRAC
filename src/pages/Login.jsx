@@ -6,8 +6,8 @@ import "../styles/login.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 
 export default function Login({ onLogin }) {
-  const [mail, setMail] = useState([]);
-  const [password, setPassword] = useState([]);
+  const [mail, setMail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
   const API_URL = import.meta.env.VITE_API_URL
@@ -15,12 +15,12 @@ export default function Login({ onLogin }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!mail.trim()) {
+    if (!mail || typeof mail !== "string" || !mail.trim()) {
       setError("Por favor ingresá un mail válido.");
       return;
     }
 
-    if (!password.trim()) {
+    if (!password || typeof password !== "string" || !password.trim()) {
       setError("Por favor ingresá tu contraseña.");
       return;
     }

@@ -111,7 +111,7 @@ export default function OperarioDashboard({ user }) {
           <table>
             <thead>
               <tr>
-                <th>Tracking ID</th>
+                <th>ID</th>
                 <th>Origen / Refinería</th>
                 <th>Destino / Estación</th>
                 <th>Estado</th>
@@ -134,7 +134,7 @@ export default function OperarioDashboard({ user }) {
                   <td data-label="Estado">
                     <StatusBadge estado={shipment.estado} />
                   </td>
-                  <td data-label="Chofer">{shipment.transportistaNombre}</td>
+                  <td data-label="Chofer">{shipment.transportistaNombre} {shipment.transportistaApellido}</td>
                   <td data-label="Fecha Creación">{formatearFecha(shipment.fechaCreacion)}</td>
                   <td data-label="Acciones">
                     <Link to={`/ordenes/${shipment.id}`}>

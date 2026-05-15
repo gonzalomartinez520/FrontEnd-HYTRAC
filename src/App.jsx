@@ -2,9 +2,33 @@ import { useState } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import OperarioDashboard from "./pages/OperarioDashboard.jsx";
-import EnvioDetail from "./pages/EnvioDetail.jsx"; // Make sure this is imported!
+import EnvioDetail from "./pages/EnvioDetail.jsx";
 import NuevoEnvio from "./pages/NuevoEnvio.jsx";
 import Navbar from "./components/Navbar.jsx";
+import ConfirmarEnvio from "./pages/ConfirmarEnvio.jsx";
+
+// 🆕 Página acceso denegado inline (Si es necesario, se mueve como componente)
+const AccesoDenegado = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div style={{ padding: "2rem", textAlign: "center" }}>
+      <h2>⛔ Acceso denegado</h2>
+      <p>No tenés permisos para acceder a esta sección.</p>
+
+      <button
+        onClick={() => navigate("/dashboard")}
+        style={{
+          marginTop: "1rem",
+          padding: "10px 20px",
+          cursor: "pointer"
+        }}
+      >
+        Volver al inicio
+      </button>
+    </div>
+  );
+};
 
 function App() {
   const [user, setUser] = useState(null);
@@ -15,35 +39,87 @@ function App() {
     navigate("/dashboard");
   };
 
+  // 🔐 Protección por rol
+  const ProtectedRoute = ({ user, allowedRoles, children }) => {
+    // ❌ No logueado
+    if (!user) return <Navigate to="/login" />;
+
+    // ⛔ Sin permisos
+    if (allowedRoles && !allowedRoles.includes(user.role)) {
+      return <Navigate to="/acceso-denegado" />;
+    }
+
+    // ✅ Permitido
+    return children;
+  };
+
   return (
     <>
       {user && <Navbar user={user} onLogout={setUser} />}
 
       <Routes>
-        {/* 1. LOGIN ROUTE: If already logged in, skip login screen */}
+        {/* LOGIN */}
         <Route
           path="/login"
-          element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />}
+          element={
+            !user ? (
+              <Login onLogin={handleLogin} />
+            ) : (
+              <Navigate to="/dashboard" />
+            )
+          }
         />
 
-        {/* 2. PROTECTED ROUTES: Only show if user exists */}
+        {/* ACCESO DENEGADO */}
+        <Route path="/acceso-denegado" element={<AccesoDenegado />} />
+
+        {/* DASHBOARD */}
         <Route
           path="/dashboard"
-          element={user ? <OperarioDashboard user={user} /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute user={user} allowedRoles={["OPERADOR", "SUPERVISOR", "ADMIN"]}>
+              <OperarioDashboard user={user} />
+            </ProtectedRoute>
+          }
         />
 
+        {/* DETALLE */}
         <Route
           path="/ordenes/:id"
-          element={user ? <EnvioDetail user={user} /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute user={user} allowedRoles={["OPERADOR", "SUPERVISOR", "ADMIN"]}>
+              <EnvioDetail user={user} />
+            </ProtectedRoute>
+          }
         />
 
+        {/* NUEVO ENVIO */}
         <Route
           path="/nuevo-envio"
-          element={user ? <NuevoEnvio user={user} /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute user={user} allowedRoles={["OPERADOR", "ADMIN"]}>
+              <NuevoEnvio user={user} />
+            </ProtectedRoute>
+          }
         />
 
-        {/* 3. FALLBACK: Send everything else to login */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        {/* CONFIRMAR ENVIO */}
+        <Route
+          path="/confirmar-envio"
+          element={
+            <ProtectedRoute user={user} allowedRoles={["SUPERVISOR", "ADMIN"]}>
+              <ConfirmarEnvio user={user} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* FALLBACK INTELIGENTE */}
+        <Route
+          path="*"
+          element={
+            user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />
+          }
+        />
       </Routes>
     </>
   );

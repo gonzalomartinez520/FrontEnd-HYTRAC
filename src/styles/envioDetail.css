@@ -11,6 +11,28 @@
   box-sizing: border-box;
 }
 
+.loading-screen-detail {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background: #0B1120;
+  color: white;
+  font-weight: bold;
+  font-size: x-large;
+}
+
+.loader-detail {
+  width: 70px;
+  height: 70px;
+  border: 6px solid rgba(255, 255, 255, 0.2);
+  border-top: 6px solid orange;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
 /* Lado izquierdo */
 .details-left {
   width: 55%;
