@@ -11,30 +11,30 @@
 
 /* Unified status colors for all states */
 .badge.status-pendiente {
-  background: #fdecec;
-  color: #ff7b00;
+  background: #ff9821;
+  color: #edf8ef;
 }
 
 .badge.status-en-viaje,
 .badge.status-en-transito,
 .badge.status-en-curso {
-  background: #e7efff;
-  color: #2d5bcc;
+  background: #2d5bcc;
+  color: #edf8ef;
 }
 
 .badge.status-entregada {
-  background: #edf8ef;
-  color: #2d8b57;
+  background: #2d8b57;
+  color: #edf8ef;
 }
 
 .badge.status-cancelada {
-  background: #fdecec;
-  color: #c44444;
+  background: #c44444;
+  color: #edf8ef;
 }
 
 .badge.status-unknown {
-  background: #f0f0f0;
-  color: #666;
+  background: #666;
+  color: #edf8ef;
 }
 
 /* Media Queries for Responsive Design */
