@@ -1,49 +1,174 @@
 import { useState } from "react";
-import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+
 import Login from "./pages/Login.jsx";
 import OperarioDashboard from "./pages/OperarioDashboard.jsx";
-import EnvioDetail from "./pages/EnvioDetail.jsx"; // Make sure this is imported!
+import EnvioDetail from "./pages/EnvioDetail.jsx";
 import NuevoEnvio from "./pages/NuevoEnvio.jsx";
 import Navbar from "./components/Navbar.jsx";
+import ConfirmarEnvio from "./pages/ConfirmarEnvio.jsx";
+
+// 🔐 Validar expiración del token
+const isTokenValid = (tokenString) => {
+  try {
+    const parsed = JSON.parse(tokenString);
+    const jwt = parsed.token;
+
+    const payload = JSON.parse(atob(jwt.split(".")[1]));
+    const currentTime = Date.now() / 1000;
+
+    return payload.exp > currentTime;
+  } catch {
+    return false;
+  }
+};
+
+// 🔐 Obtener usuario desde localStorage validado
+const getUserFromStorage = () => {
+  const data = localStorage.getItem("token");
+
+  if (!data || !isTokenValid(data)) {
+    localStorage.removeItem("token");
+    return null;
+  }
+
+  return JSON.parse(data);
+};
+
+// 🆕 Página acceso denegado
+const AccesoDenegado = () => {
+  const navigate = useNavigate();
+
+  return (
+    <div style={{ padding: "2rem", textAlign: "center" }}>
+      <h2>⛔ Acceso denegado</h2>
+      <p>No tenés permisos para acceder a esta sección.</p>
+
+      <button
+        onClick={() => navigate("/dashboard")}
+        style={{ marginTop: "1rem", padding: "10px 20px" }}
+      >
+        Volver al inicio
+      </button>
+    </div>
+  );
+};
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(getUserFromStorage());
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const parsedUser = getUserFromStorage();
 
   const handleLogin = (userData) => {
     setUser(userData);
     navigate("/dashboard");
   };
 
+  // 🔐 Protección por rol
+  const ProtectedRoute = ({ allowedRoles, children }) => {
+    const userToken = localStorage.getItem("token");
+
+    if (!userToken || !isTokenValid(userToken)) {
+      localStorage.removeItem("token");
+      return <Navigate to="/login" />;
+    }
+
+    const parsedToken = JSON.parse(userToken);
+    const userRole = parsedToken.role;
+
+    if (!allowedRoles.includes(userRole)) {
+      return <Navigate to="/acceso-denegado" />;
+    }
+
+    return children;
+  };
+
   return (
     <>
-      {user && <Navbar user={user} onLogout={setUser} />}
+      {/* ✅ Navbar visible siempre si hay sesión válida */}
+      {location.pathname !== "/login" && parsedUser && (
+        <Navbar user={parsedUser} onLogout={setUser} />
+      )}
 
       <Routes>
-        {/* 1. LOGIN ROUTE: If already logged in, skip login screen */}
+        {/* LOGIN */}
         <Route
           path="/login"
-          element={!user ? <Login onLogin={handleLogin} /> : <Navigate to="/dashboard" />}
+          element={
+            !parsedUser ? (
+              <Login onLogin={handleLogin} />
+            ) : (
+              <Navigate to="/dashboard" />
+            )
+          }
         />
 
-        {/* 2. PROTECTED ROUTES: Only show if user exists */}
+        {/* ACCESO DENEGADO */}
+        <Route path="/acceso-denegado" element={<AccesoDenegado />} />
+
+        {/* DASHBOARD */}
         <Route
           path="/dashboard"
-          element={user ? <OperarioDashboard user={user} /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute
+              allowedRoles={["OPERADOR", "SUPERVISOR", "ADMIN"]}
+            >
+              <OperarioDashboard user={parsedUser} />
+            </ProtectedRoute>
+          }
         />
 
+        {/* DETALLE */}
         <Route
           path="/ordenes/:id"
-          element={user ? <EnvioDetail user={user} /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute
+              allowedRoles={["OPERADOR", "SUPERVISOR", "ADMIN"]}
+            >
+              <EnvioDetail user={parsedUser} />
+            </ProtectedRoute>
+          }
         />
 
+        {/* NUEVO ENVIO */}
         <Route
           path="/nuevo-envio"
-          element={user ? <NuevoEnvio user={user} /> : <Navigate to="/login" />}
+          element={
+            <ProtectedRoute allowedRoles={["OPERADOR", "ADMIN"]}>
+              <NuevoEnvio user={parsedUser} />
+            </ProtectedRoute>
+          }
         />
 
-        {/* 3. FALLBACK: Send everything else to login */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        {/* CONFIRMAR ENVIO */}
+        <Route
+          path="/confirmar-envio"
+          element={
+            <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
+              <ConfirmarEnvio user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* FALLBACK */}
+        <Route
+          path="*"
+          element={
+            parsedUser ? (
+              <Navigate to="/dashboard" />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
       </Routes>
     </>
   );

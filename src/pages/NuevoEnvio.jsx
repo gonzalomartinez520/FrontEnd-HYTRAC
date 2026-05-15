@@ -264,7 +264,7 @@ export default function NuevoEnvio({ user }) {
         transportistaId: formData.transportista?.id || null,
         plantaDespachoId: formData.refineriaOrigen?.id || null,
         estacionDestinoId: formData.estacionDestino?.id || null,
-        operadorId: 1, // Hardcoded for now, replace with actual user ID if available
+        operadorId: user?.id || null, 
         combustibleId: formData.combustible?.id || null,
         estadoId: 1, //PENDIENTE
         fechaCreacion: new Date().toISOString(),
@@ -610,7 +610,7 @@ export default function NuevoEnvio({ user }) {
             </label>
           </div>
           <div className="info-alert">
-            <strong>Información:</strong> Una vez creado el envío, se generará automáticamente un número de seguimiento único (tracking ID). El estado inicial será "PENDIENTE" y será creado por el usuario: <strong>{user?.username || "operario-web"}</strong>
+            <strong>Información:</strong> Una vez creado el envío, se generará automáticamente un número de seguimiento único (tracking ID). El estado inicial será "PENDIENTE" y será creado por el usuario: <strong>{user?.nombre || "operario-web"} {user?.apellido || ""}</strong>
           </div>
         </section>
 
