@@ -25,6 +25,27 @@ export default function Navbar({ user, onLogout }) {
     setMenuOpen((prev) => !prev);
   };
 
+  const role = user?.role?.toUpperCase();
+
+
+  // Definir acciones específicas por rol, SE PUEDE ESCALAR CON LOS ROLES RESTANTES.
+  const actionByRole = {
+    OPERADOR: {
+      title: "Nueva Orden",
+      to: "/nuevo-envio",
+      icon: "➕",
+      label: "Nueva Orden",
+    },
+    ADMIN: {
+      title: "Confirmar Envío",
+      to: "/confirmar-envio",
+      icon: "✅",
+      label: "Confirmar Envío",
+    },
+  };
+
+  const action = actionByRole[role];
+
   return (
     <nav className="top-nav">
       <div className="nav-left">
@@ -53,21 +74,15 @@ export default function Navbar({ user, onLogout }) {
             <span className="icon">🏠</span> Panel Control
           </Link>
 
-          <Link
-            title="Nueva Orden"
-            to="/nuevo-envio"
-            onClick={() => setMenuOpen(false)}
-          >
-            <span className="icon">➕</span> Nueva Orden
-          </Link>
-
-          <Link
-            title="Confirmar Envío"
-            to="/confirmar-envio"
-            onClick={() => setMenuOpen(false)}
-          >
-            <span className="icon">✅</span> Confirmar Envío
-          </Link>
+          {action && (
+            <Link
+              title={action.title}
+              to={action.to}
+              onClick={() => setMenuOpen(false)}
+            >
+              <span className="icon">{action.icon}</span> {action.label}
+            </Link>
+          )}
         </div>
       </div>
 
@@ -78,7 +93,7 @@ export default function Navbar({ user, onLogout }) {
             <strong>
               {user?.nombre || "Usuario"} {user?.apellido || ""}
             </strong>
-            <span>{user?.role?.toLowerCase() || "operario"}</span>
+            <span>{user?.role?.toLowerCase() || "Operario"}</span>
           </div>
         </div>
 
