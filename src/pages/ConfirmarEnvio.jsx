@@ -1,5 +1,6 @@
 import { data, Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
+import "../styles/confirmarEnvio.css";
 import { envios } from '@/api';
 
 export default function ConfirmarEnvio({ user }) {
@@ -8,26 +9,34 @@ export default function ConfirmarEnvio({ user }) {
     const [loading, setLoading] = useState(true);
     const [shipments, setShipments] = useState([]);
     const [search, setSearch] = useState("");
+    const [expandedId, setExpandedId] = useState(null); 
 
     useEffect(() => {
-    const timer = setTimeout(() => {
-      const fetchData = async () => {
-        try {
-          const response = await envios.getAll();
-          console.log("Datos obtenidos de la API:", response);
-          setShipments(response);
-        } catch (error) {
-          console.error("Error al obtener envíos:", error);
-        } finally {
-          setLoading(false);
-        }
-      };
+        const timer = setTimeout(() => {
+            const fetchData = async () => {
+                try {
+                    const response = await envios.getAll();
+                    console.log("Datos obtenidos de la API:", response);
+                    setShipments(response);
+                } catch (error) {
+                    console.error("Error al obtener envíos:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
 
-      fetchData();
-    }, 1000);
+            fetchData();
+        }, 1000);
 
-    return () => clearTimeout(timer);
-  }, []);
+        return () => clearTimeout(timer);
+    }, []);
+
+    // Función para alternar la fila expandida
+    const toggleExpand = (id) => {
+        setExpandedId((prev) => (prev === id ? null : id));
+    };
+
+    // Agregar funciones para confirmar y rechazar envios (aún no implementadas)
 
     const formatearFecha = (fechaString) => {
         const fecha = new Date(fechaString);
@@ -46,38 +55,39 @@ export default function ConfirmarEnvio({ user }) {
         const searchText = (search || "").toLowerCase();
 
         const fields = [
-        shipment.plantaDespachoNombre,
-        shipment.estacionDestinoNombre,
-        shipment.transportistaNombre,
+            shipment.plantaDespachoNombre,
+            shipment.estacionDestinoNombre,
+            shipment.transportistaNombre,
+            shipment.combustibleTipo,
         ];
 
         return (
-        String(shipment.id).includes(searchText) ||
-        fields.some(field =>
-            (field || "").toLowerCase().includes(searchText)
-        )
+            String(shipment.id).includes(searchText) ||
+            fields.some(field =>
+                (field || "").toLowerCase().includes(searchText)
+            )
         );
     });
 
-
     if (loading) {
         return (
-        <div className="loading-screen">
-            <div className="loader"></div>
-            <h2>Cargando panel HYTRAC...</h2>
-        </div>
+            <div className="confirmar-loading-screen">
+                <div className="confirmar-loader"></div>
+                <h2>Cargando panel HYTRAC...</h2>
+            </div>
         );
     }
 
-
     return (
         <div className="confirmar-envio-container">
-            <main className="dashboard-content">
-                <section className="header">
-                    <h1>Confirmar Envío</h1>
-                    <p>
-                        Aquí podrás confirmar los envíos que has realizado. Revisa los detalles de cada envío y confirma su estado para mantener el sistema actualizado.
-                    </p>
+            <main className="confirmar-dashboard-content">
+                <section className="confirmar-header">
+                    <div>
+                        <h1>Confirmar Envío</h1>
+                        <p>
+                            Aquí podrás confirmar los envíos que has realizado. Revisa los detalles de cada envío y confirma su estado para mantener el sistema actualizado.
+                        </p>
+                    </div>
                 </section>
 
                 <section className="shipments-table">
@@ -86,10 +96,10 @@ export default function ConfirmarEnvio({ user }) {
                             <h2>Órdenes pendientes: {shipments.length}</h2>
                         </div>
 
-                        <div>
+                        <div className="confirmar-actions">
                             <input
                                 type="text"
-                                placeholder="Buscar por ID, planta, destino o transportista..."
+                                placeholder="🔎 Busqueda por ID, ruta o transportista..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -102,27 +112,123 @@ export default function ConfirmarEnvio({ user }) {
                                 <th>ID</th>
                                 <th>Planta de Despacho</th>
                                 <th>Estación Destino</th>
+                                <th>Tipo Combustible</th>
                                 <th>Transportista</th>
-                                <th>Fecha de Envío</th>
-                                <th>Estado</th>
+                                <th>Fecha de Creación</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             {filteredShipments.map((shipment) => (
-                                <tr key={shipment.id}>
-                                    <td>{shipment.id}</td>
-                                    <td>{shipment.plantaDespachoNombre}</td>
-                                    <td>{shipment.estacionDestinoNombre}</td>
-                                    <td>{shipment.transportistaNombre}</td>
-                                    <td>{formatearFecha(shipment.fechaEnvio)}</td>
-                                    <td>{shipment.estado}</td>
-                                    <td>
-                                        <button onClick={() => handleConfirmarEnvio(shipment.id)}>
-                                            Detalles
-                                        </button>
-                                    </td>
-                                </tr>
+                                <Fragment key={shipment.id}>
+                                    
+                                    {/* FILA PRINCIPAL */}
+                                    <tr>
+                                        <td className="tracking">{shipment.id}</td>
+                                        <td>
+                                            <strong>{shipment.plantaDespachoNombre}</strong>
+                                        </td>
+                                        <td>
+                                            <strong>{shipment.estacionDestinoNombre}</strong>
+                                        </td>
+                                        <td>{shipment.combustibleTipo}</td>
+                                        <td>
+                                            {shipment.transportistaNombre} {shipment.transportistaApellido}
+                                        </td>
+                                        <td>{formatearFecha(shipment.fechaCreacion)}</td>
+                                        <td>
+                                            <div className="actions-table">
+                                            <button
+                                                className="confirmar-detalles"
+                                                onClick={() => toggleExpand(shipment.id)}
+                                            >
+                                                {expandedId === shipment.id ? (
+                                                    // OJO TACHADO
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        height="24"
+                                                        viewBox="0 0 24 24"
+                                                        width="24"
+                                                        fill="currentColor"
+                                                    >
+                                                        {/* línea del ojo */}
+                                                        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z" opacity="0.3"/>
+                                                    
+                                                        {/* línea tachada */}
+                                                        <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" strokeWidth="2"/>
+
+                                                        {/* pupila */}
+                                                        <circle cx="12" cy="12" r="3"/>
+                                                    </svg>
+                                                    ) : (
+                                                    // OJO ABIERTO
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        height="24"
+                                                        viewBox="0 0 24 24"
+                                                        width="24"
+                                                        fill="currentColor"
+                                                    >
+                                                        <path d="M12 6c-4.79 0-8.73 3.11-10 6 1.27 2.89 5.21 6 10 6s8.73-3.11 10-6c-1.27-2.89-5.21-6-10-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                                                        <circle cx="12" cy="12" r="2.5"/>
+                                                    </svg>
+                                                    )}
+                                            </button>
+
+                                            <button className="confirmar-envio"> {/* Boton de confirmar orden, luego agregar funcion */}
+                                                <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                height="22"
+                                                viewBox="0 0 24 24"
+                                                width="22"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                >
+                                                <path d="M20 6L9 17l-5-5" />
+                                                </svg>
+                                            </button>
+                                            
+                                            <button className="rechazar-envio"> {/* Boton de rechazar orden, luego agregar funcion */}
+                                                <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                height="22"
+                                                viewBox="0 0 24 24"
+                                                width="22"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                >
+                                                <line x1="6" y1="6" x2="18" y2="18" />
+                                                <line x1="18" y1="6" x2="6" y2="18" />
+                                                </svg>
+                                            </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    {/* FILA EXPANDIDA: Se mostraran los datos que necesita el supervisor para confirmar el envio*/}
+                                    {expandedId === shipment.id && (
+                                        <tr className="fila-expandida">
+                                            <td colSpan="7">
+                                                <div className="detalle-envio">
+                                                    <p><strong>ID:</strong> {shipment.id}</p>
+                                                    <p><strong>Estado:</strong> {shipment.estado}</p>
+                                                    <p><strong>Combustible:</strong> {shipment.combustibleTipo}</p>
+                                                    <p><strong>Transportista:</strong> {shipment.transportistaNombre} {shipment.transportistaApellido}</p>
+                                                    <p><strong>Fecha creación:</strong> {formatearFecha(shipment.fechaCreacion)}</p>
+                                                    <p><strong>Origen:</strong> {shipment.plantaDespachoNombre}</p>
+                                                    <p><strong>Destino:</strong> {shipment.estacionDestinoNombre}</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    )}
+                                </Fragment>
                             ))}
                         </tbody>
                     </table>

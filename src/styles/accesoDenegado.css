@@ -1,0 +1,39 @@
+.denegado-layout {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0B1120;
+}
+
+.acceso-denegado {
+  background: white;
+  padding: 2rem 3rem;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.denegado-titulo {
+  color: #d32f2f;
+  margin-bottom: 1rem;
+}
+
+.denegado-texto {
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.denegado-boton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #1976d2;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.denegado-boton:hover {
+  background-color: #115293;
+}

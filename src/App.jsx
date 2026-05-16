@@ -11,8 +11,9 @@ import Login from "./pages/Login.jsx";
 import OperarioDashboard from "./pages/OperarioDashboard.jsx";
 import EnvioDetail from "./pages/EnvioDetail.jsx";
 import NuevoEnvio from "./pages/NuevoEnvio.jsx";
-import Navbar from "./components/Navbar.jsx";
 import ConfirmarEnvio from "./pages/ConfirmarEnvio.jsx";
+import AccesoDenegado from "./pages/AccesoDenegado.jsx"; 
+import Navbar from "./components/Navbar.jsx";
 
 // 🔐 Validar expiración del token
 const isTokenValid = (tokenString) => {
@@ -39,25 +40,6 @@ const getUserFromStorage = () => {
   }
 
   return JSON.parse(data);
-};
-
-// 🆕 Página acceso denegado
-const AccesoDenegado = () => {
-  const navigate = useNavigate();
-
-  return (
-    <div style={{ padding: "2rem", textAlign: "center" }}>
-      <h2>⛔ Acceso denegado</h2>
-      <p>No tenés permisos para acceder a esta sección.</p>
-
-      <button
-        onClick={() => navigate("/dashboard")}
-        style={{ marginTop: "1rem", padding: "10px 20px" }}
-      >
-        Volver al inicio
-      </button>
-    </div>
-  );
 };
 
 function App() {

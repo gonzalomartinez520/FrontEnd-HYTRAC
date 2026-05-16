@@ -37,7 +37,7 @@ export default function Login({ onLogin }) {
        
        const userData = {
         ...data,
-        role: data.roles[0],
+        role: data.rol,
       };
 
       onLogin(userData);
