@@ -12,6 +12,8 @@ import OperarioDashboard from "./pages/OperarioDashboard.jsx";
 import EnvioDetail from "./pages/EnvioDetail.jsx";
 import NuevoEnvio from "./pages/NuevoEnvio.jsx";
 import ConfirmarEnvio from "./pages/ConfirmarEnvio.jsx";
+import ConfirmarEdicion from "./pages/ConfirmarEdicion.jsx";
+import ConfirmarCambioEstado from "./pages/ConfirmarCambioEstado.jsx";
 import AccesoDenegado from "./pages/AccesoDenegado.jsx"; 
 import Navbar from "./components/Navbar.jsx";
 
@@ -136,6 +138,26 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
               <ConfirmarEnvio user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* CONFIRMAR EDICION */}
+        <Route
+          path="/confirmar-edicion"
+          element={
+            <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
+              <ConfirmarEdicion user={parsedUser} />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* CONFIRMAR CAMBIO DE ESTADO */}
+        <Route
+          path="/confirmar-cambio-estado"
+          element={
+            <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
+              <ConfirmarCambioEstado user={parsedUser} />
             </ProtectedRoute>
           }
         />
