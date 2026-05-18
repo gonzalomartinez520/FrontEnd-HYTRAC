@@ -25,6 +25,11 @@ const envios = {
     return data;
   },
 
+  getAllSupervisor: async (params) => {
+    const { data } = await apiClient.get('/supervisor/ordenes', { params });
+    return data;
+  },
+
   // Crear un nuevo envío
   create: async (payload) => {
     const { data } = await apiClient.post('/ordenes/crear', payload);
