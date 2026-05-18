@@ -1,7 +1,7 @@
 import apiClient from "./apiClient";
 
 const MOCK_ENVIOS_BY_TRANSPORTISTA_ID = {
-  3: {
+  /*3: {
     id: 3001,
     cot: "COT-2026-0148",
     nro_remito: "R-77821",
@@ -13,8 +13,8 @@ const MOCK_ENVIOS_BY_TRANSPORTISTA_ID = {
     litrosCargados: 32000,
     fechaSalida: "2026-05-18T08:30:00-03:00",
     fechaLlegada: "2026-05-18T20:15:00-03:00",
-  },
-  4: {
+  },*/
+  /*4: {
     id: 4001,
     cot: "COT-2026-0152",
     nro_remito: "R-77834",
@@ -39,7 +39,7 @@ const MOCK_ENVIOS_BY_TRANSPORTISTA_ID = {
     litrosCargados: 35000,
     fechaSalida: "2026-05-18T09:10:00-03:00",
     fechaLlegada: "2026-05-18T22:40:00-03:00",
-  },
+  },*/
 };
 
 const getMockEnvio = (transportistaId) => {
@@ -52,12 +52,17 @@ const getMockEnvio = (transportistaId) => {
   return MOCK_ENVIOS_BY_TRANSPORTISTA_ID[normalizedId] ?? null;
 };
 
+const legajo =  localStorage.getItem("legajo");
+
 const transportista = {
   getEnviosAsignados: async (transportistaId) => {
+
     try {
-    const { data } = await apiClient.get(`/transportistas/${transportistaId}/envios`);
+    const { data } = await apiClient.get(`/transportista/${legajo}/orden`);
         console.log("Respuesta de envíos asignados:", data);
-      if (data) {
+      
+    if (data) {
+     console.log(data);
         return data;
       }
     } catch (error) {

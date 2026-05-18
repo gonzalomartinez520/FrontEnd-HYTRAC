@@ -53,7 +53,7 @@ export default function TransportistaDashboard({ user }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [envios, setEnvios] = useState([]);
-
+  const legajo = localStorage.getItem("legajo")
   const transportistaId = useMemo(
     () => user?.transportistaId ?? user?.id ?? user?.usuarioId ?? null,
     [user]
@@ -120,8 +120,8 @@ export default function TransportistaDashboard({ user }) {
   const activeEnvio = envios[0];
 
   const renderEnvioDetail = (envio) => {
-    const origen = getField(envio, ["origen", "puntoOrigen", "plantaOrigen", "salida"]);
-    const destino = getField(envio, ["destino", "puntoDestino", "plantaDestino", "llegada"]);
+    const origen = getField(envio, ["plantaDespacho", "puntoOrigen", "plantaOrigen", "salida"]);
+    const destino = getField(envio, ["destino", "estacionDestino", "plantaDestino", "llegada"]);
 
     return (
       <article className="envio-detail-card" key={envio?.id ?? `${getField(envio, ["cot", "numeroCot"])}`}>
@@ -160,7 +160,7 @@ export default function TransportistaDashboard({ user }) {
           </div>
           <div className="detail-item">
             <span>Fecha estimada de llegada</span>
-            <strong>{formatDate(getField(envio, ["fechaLlegada", "fecha_llegada", "fechaEntrega", "llegada"]))}</strong>
+            <strong>{formatDate(getField(envio, ["fechaEntregaEstimada", "fecha_llegada", "fechaEntrega", "llegada"]))}</strong>
           </div>
         </div>
       </article>
@@ -205,7 +205,7 @@ export default function TransportistaDashboard({ user }) {
                 <span className="section-label">Destino</span>
                 <h2>Ruta asignada</h2>
               </div>
-              <span className="destination-pill">{getField(activeEnvio, ["destino", "puntoDestino", "plantaDestino"], "Destino pendiente")}</span>
+              <span className="destination-pill">{getField(activeEnvio, ["destino", "puntoDestino", "estacionDestino"], "Destino pendiente")}</span>
             </div>
 
             {renderEnvioDetail(activeEnvio)}

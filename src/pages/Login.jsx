@@ -5,6 +5,32 @@ import { useState } from "react";
 import "../styles/login.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 
+const decodeJwtPayload = (token) => {
+  if (!token || typeof token !== "string") {
+    return null;
+  }
+
+  try {
+    const payloadPart = token.split(".")[1];
+
+    if (!payloadPart) {
+      return null;
+    }
+
+    const normalizedPayload = payloadPart.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(normalizedPayload)
+        .split("")
+        .map((char) => `%${char.charCodeAt(0).toString(16).padStart(2, "0")}`)
+        .join("")
+    );
+
+    return JSON.parse(jsonPayload);
+  } catch {
+    return null;
+  }
+};
+
 export default function Login({ onLogin }) {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,16 +69,46 @@ export default function Login({ onLogin }) {
         data?.id ??
         null;
 
+      const tokenPayload = decodeJwtPayload(
+  data?.token ?? data?.accessToken ?? data?.jwt ?? data?.authToken
+);
+
+console.log("TOKEN PAYLOAD COMPLETO:", tokenPayload);
+
+console.log("LEGAJO DEL TOKEN:", {
+  legajo: tokenPayload?.legajo,
+  nroLegajo: tokenPayload?.nroLegajo,
+  numeroLegajo: tokenPayload?.numeroLegajo,
+  employeeId: tokenPayload?.employeeId,
+  Legajo: tokenPayload?.Legajo,
+  id_legajo: tokenPayload?.id_legajo,
+});
+
+      const legajo =
+        tokenPayload?.legajo ??
+        tokenPayload?.nroLegajo ??
+        tokenPayload?.numeroLegajo ??
+        tokenPayload?.employeeId ??
+        data?.legajo ??
+        data?.nroLegajo ??
+        data?.numeroLegajo ??
+        data?.employeeId ??
+        data?.transportista?.legajo ??
+        data?.transportista?.nroLegajo ??
+        null;
+
       const userData = {
         ...data,
         role: data.rol,
         normalizedRole: String(data.rol || data.role || "").toUpperCase(),
         transportistaId,
+        legajo,
       };
 
       onLogin(userData);
 
-      localStorage.setItem("token", JSON.stringify(userData));
+     localStorage.setItem("token", JSON.stringify(userData));
+     localStorage.setItem("legajo", String(legajo));
 
     } catch (error) {
       console.error(error);
