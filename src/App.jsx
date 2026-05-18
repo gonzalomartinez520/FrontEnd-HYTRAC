@@ -9,6 +9,8 @@ import {
 
 import Login from "./pages/Login.jsx";
 import OperarioDashboard from "./pages/OperarioDashboard.jsx";
+import TransportistaDashboard from "./pages/TransportistaDashboard.jsx";
+import ReportarIncidencia from "./pages/ReportarIncidencia.jsx";
 import EnvioDetail from "./pages/EnvioDetail.jsx";
 import NuevoEnvio from "./pages/NuevoEnvio.jsx";
 import ConfirmarEnvio from "./pages/ConfirmarEnvio.jsx";
@@ -42,6 +44,20 @@ const getUserFromStorage = () => {
   return JSON.parse(data);
 };
 
+const getNormalizedRole = (userLike) => {
+  return String(userLike?.normalizedRole || userLike?.role || "").toUpperCase();
+};
+
+const getHomePath = (userLike) => {
+  const role = getNormalizedRole(userLike);
+
+  if (role === "TRANSPORTISTA") {
+    return "/transportista";
+  }
+
+  return "/dashboard";
+};
+
 function App() {
   const [user, setUser] = useState(getUserFromStorage());
   const navigate = useNavigate();
@@ -51,7 +67,7 @@ function App() {
 
   const handleLogin = (userData) => {
     setUser(userData);
-    navigate("/dashboard");
+    navigate(getHomePath(userData));
   };
 
   // 🔐 Protección por rol
@@ -64,9 +80,10 @@ function App() {
     }
 
     const parsedToken = JSON.parse(userToken);
-    const userRole = parsedToken.role;
+    const userRole = getNormalizedRole(parsedToken);
+    const normalizedAllowedRoles = allowedRoles.map((role) => String(role).toUpperCase());
 
-    if (!allowedRoles.includes(userRole)) {
+    if (!normalizedAllowedRoles.includes(userRole)) {
       return <Navigate to="/acceso-denegado" />;
     }
 
@@ -88,7 +105,7 @@ function App() {
             !parsedUser ? (
               <Login onLogin={handleLogin} />
             ) : (
-              <Navigate to="/dashboard" />
+              <Navigate to={getHomePath(parsedUser)} />
             )
           }
         />
@@ -104,6 +121,25 @@ function App() {
               allowedRoles={["OPERADOR", "SUPERVISOR", "ADMIN"]}
             >
               <OperarioDashboard user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* TRANSPORTISTA */}
+        <Route
+          path="/transportista"
+          element={
+            <ProtectedRoute allowedRoles={["TRANSPORTISTA"]}>
+              <TransportistaDashboard user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/transportista/incidencia"
+          element={
+            <ProtectedRoute allowedRoles={["TRANSPORTISTA"]}>
+              <ReportarIncidencia user={parsedUser} />
             </ProtectedRoute>
           }
         />
@@ -145,7 +181,7 @@ function App() {
           path="*"
           element={
             parsedUser ? (
-              <Navigate to="/dashboard" />
+              <Navigate to={getHomePath(parsedUser)} />
             ) : (
               <Navigate to="/login" />
             )

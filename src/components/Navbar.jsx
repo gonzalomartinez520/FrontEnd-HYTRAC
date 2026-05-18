@@ -25,7 +25,13 @@ export default function Navbar({ user, onLogout }) {
     setMenuOpen((prev) => !prev);
   };
 
-  const role = user?.role?.toUpperCase();
+  const role = String(user?.normalizedRole || user?.role || "").toUpperCase();
+
+  const homeByRole = {
+    TRANSPORTISTA: "/transportista",
+  };
+
+  const homeTo = homeByRole[role] || "/dashboard";
 
 
   // Definir acciones específicas por rol, SE PUEDE ESCALAR CON LOS ROLES RESTANTES.
@@ -41,6 +47,12 @@ export default function Navbar({ user, onLogout }) {
       to: "/confirmar-envio",
       icon: "✅",
       label: "Confirmar Envío",
+    },
+    TRANSPORTISTA: {
+      title: "Reportar Incidencia",
+      to: "/transportista/incidencia",
+      icon: "⚠️",
+      label: "Incidencia",
     },
   };
 
@@ -68,10 +80,18 @@ export default function Navbar({ user, onLogout }) {
         <div className={`nav-links ${menuOpen ? "active" : ""}`}>
           <Link
             title="Panel Control"
-            to="/dashboard"
+            to={homeTo}
             onClick={() => setMenuOpen(false)}
           >
-            <span className="icon">🏠</span> Panel Control
+            {role === "TRANSPORTISTA" ? (
+              <>
+                <span className="route-nav-icon" aria-hidden="true">🛣️</span> Mi ruta
+              </>
+            ) : (
+              <>
+                <span className="icon">🏠</span> Panel Control
+              </>
+            )}
           </Link>
 
           {action && (
@@ -93,7 +113,7 @@ export default function Navbar({ user, onLogout }) {
             <strong>
               {user?.nombre || "Usuario"} {user?.apellido || ""}
             </strong>
-            <span>{user?.role?.toLowerCase() || "Operario"}</span>
+            <span>{(user?.normalizedRole || user?.role || "Operario").toString().toLowerCase()}</span>
           </div>
         </div>
 

@@ -34,10 +34,20 @@ export default function Login({ onLogin }) {
       });
 
       console.log("Login OK:", data);
-       
-       const userData = {
+
+      const transportistaId =
+        data?.transportistaId ??
+        data?.idTransportista ??
+        data?.transportista?.id ??
+        data?.transportista?.transportistaId ??
+        data?.id ??
+        null;
+
+      const userData = {
         ...data,
         role: data.rol,
+        normalizedRole: String(data.rol || data.role || "").toUpperCase(),
+        transportistaId,
       };
 
       onLogin(userData);
