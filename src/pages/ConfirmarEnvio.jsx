@@ -36,7 +36,42 @@ export default function ConfirmarEnvio({ user }) {
         setExpandedId((prev) => (prev === id ? null : id));
     };
 
-    // Agregar funciones para confirmar y rechazar envios (aún no implementadas)
+    const confirmarEnvio = (id) => {
+        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar el envío con ID ${id}?`);
+
+        if (confirmacion) {
+            const fetchConfirmar = async () => {
+                try {
+                    await envios.confirmarEnvio(id);
+                    console.log(`Envío confirmado con ID: ${id}`);
+
+                    // 🔄 REFRESCAR DATOS (sin recargar página)
+                    window.location.reload();
+
+                } catch (error) {
+                    console.error(`Error al confirmar envío con ID: ${id}`, error);
+                }
+            };
+
+            fetchConfirmar();
+        }
+    };
+
+    const rechazarEnvio = (id) => {
+        const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar el envío con ID ${id}?`);
+        if (confirmacion) {
+            const fetchRechazar = async () => {
+                try {
+                    await envios.rechazarEnvio(id);
+                    console.log(`Envío rechazado con ID: ${id}`);
+                } catch (error) {
+                    console.error(`Error al rechazar envío con ID: ${id}`, error);
+                }
+            };
+
+            fetchRechazar();
+        }
+    }
 
     const formatearFecha = (fechaString) => {
         const fecha = new Date(fechaString);
@@ -173,7 +208,7 @@ export default function ConfirmarEnvio({ user }) {
                                                     )}
                                             </button>
 
-                                            <button className="confirmar-envio"> {/* Boton de confirmar orden, luego agregar funcion */}
+                                            <button className="confirmar-envio" onClick={() => confirmarEnvio(shipment.id)}>
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"
@@ -189,7 +224,7 @@ export default function ConfirmarEnvio({ user }) {
                                                 </svg>
                                             </button>
                                             
-                                            <button className="rechazar-envio"> {/* Boton de rechazar orden, luego agregar funcion */}
+                                            <button className="rechazar-envio" onClick={() => rechazarEnvio(shipment.id)}>
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"
