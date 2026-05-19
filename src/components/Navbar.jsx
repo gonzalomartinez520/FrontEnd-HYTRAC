@@ -43,10 +43,10 @@ export default function Navbar({ user, onLogout }) {
       label: "Nueva Orden",
     },
     ADMIN: {
-      title: "Confirmar Envío",
-      to: "/confirmar-envio",
+      title: "Confirmaciones",
+      to: "/confirmaciones",
       icon: "✅",
-      label: "Confirmar Envío",
+      label: "Confirmaciones",
     },
     TRANSPORTISTA: {
       title: "Reportar Incidencia",
