@@ -1,0 +1,170 @@
+.iniciar-viaje-screen {
+  min-height: 100vh;
+  padding: 32px 20px 48px;
+  background:
+    radial-gradient(circle at top left, rgba(45, 91, 205, 0.18), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(38, 164, 117, 0.14), transparent 30%),
+    linear-gradient(180deg, #07111f 0%, #0b1728 45%, #0d1b31 100%);
+  color: #eef4ff;
+}
+
+.iniciar-viaje-shell {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+}
+
+.back-link {
+  border: 0;
+  background: transparent;
+  color: #b7c9ea;
+  font: inherit;
+  padding: 0;
+  margin-bottom: 18px;
+  cursor: pointer;
+}
+
+.iniciar-viaje-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.8fr);
+  gap: 20px;
+  align-items: stretch;
+  margin-bottom: 22px;
+}
+
+.iniciar-viaje-hero h1 {
+  margin: 10px 0 12px;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+}
+
+.iniciar-viaje-hero p {
+  margin: 0;
+  color: #c8d6ef;
+  line-height: 1.6;
+  max-width: 62ch;
+}
+
+.eyebrow,
+.section-label,
+.status-label {
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  color: #8bb2ff;
+}
+
+.status-card,
+.iniciar-viaje-card {
+  border: 1px solid rgba(155, 184, 242, 0.14);
+  background: rgba(8, 18, 32, 0.72);
+  backdrop-filter: blur(18px);
+  border-radius: 28px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+}
+
+.status-card {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.status-card strong {
+  font-size: 1.55rem;
+}
+
+.status-card small {
+  color: #b7c9ea;
+}
+
+.iniciar-viaje-card {
+  padding: 28px;
+}
+
+.route-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.route-grid div {
+  padding: 18px 18px 20px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.route-grid span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #86a7db;
+}
+
+.route-grid strong {
+  display: block;
+  color: #f7fbff;
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+.action-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 6px;
+}
+
+.primary-action {
+  border: 0;
+  border-radius: 999px;
+  padding: 16px 28px;
+  background: linear-gradient(135deg, #f2b95a 0%, #ef8d34 100%);
+  color: #101522;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 18px 32px rgba(239, 141, 52, 0.28);
+  cursor: pointer;
+  min-width: 220px;
+}
+
+.primary-action--alt {
+  background: linear-gradient(135deg, #4fd1a0 0%, #1f9a72 100%);
+  box-shadow: 0 18px 32px rgba(31, 154, 114, 0.25);
+}
+
+.primary-action:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.action-panel p {
+  margin: 0;
+  color: #c8d6ef;
+  font-size: 0.97rem;
+}
+
+@media (max-width: 820px) {
+  .iniciar-viaje-hero,
+  .route-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .iniciar-viaje-card {
+    padding: 22px;
+  }
+
+  .primary-action {
+    width: 100%;
+  }
+
+  .action-panel {
+    align-items: flex-start;
+  }
+}
