@@ -1,0 +1,175 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.confirmar-cambio-estado-container  {
+  min-height: 100vh;
+  background: #0B1120;
+}
+
+.cambio-estado-dashboard-content {
+  padding: 40px 60px;
+}
+
+.cambio-estado-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.cambio-estado-header h1 {
+  font-size: 2.5rem;
+  color: #F8FAF6;
+  margin-bottom: 10px;
+}
+
+.cambio-estado-header p {
+  color: #a3b0c2;
+  font-size: 1.1rem;
+}
+
+.cambio-estado-table-section {
+  background: #1E293B;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.cambio-estado-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.cambio-estado-table-header h2 {
+  margin-bottom: 6px;
+  color: #F8FAF6;
+}
+
+.confirmar-cambio-estado-buscador {
+  display: flex;
+  gap: 10px;
+}
+
+.confirmar-cambio-estado-buscador input {
+  width: 300px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #1E293B;
+}
+
+th,
+td {
+  padding: 18px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+td {
+  color: #F8FAF6;
+}
+
+th {
+  color: #F8FAF6;
+  font-weight: 600;
+}
+
+.tracking {
+  color: #ff7b00;
+  font-weight: bold;
+}
+
+.confirmar-cambio-estado-loading-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background: #0B1120;
+  color: white;
+}
+
+.confirmar-cambio-estado-loader {
+  width: 70px;
+  height: 70px;
+  border: 6px solid rgba(255, 255, 255, 0.2);
+  border-top: 6px solid orange;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.cambio-estado-detalles, .confirmar-cambio-estado, .rechazar-cambio-estado {
+    background-color: #0B1120;
+    border-radius: 8px;
+    font-size: large;
+    font-style: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.cambio-estado-detalles {
+    color: #ff7b00;
+}
+
+.confirmar-cambio-estado {
+    color: green;
+}
+
+.rechazar-cambio-estado {
+    color: red;
+}
+
+.cambio-estado-detalles svg {
+  width: 22px;
+  height: 22px;
+}
+
+.cambio-estado-actions-table {
+    display: flex;
+    gap: 10px;
+}
+
+.fila-expandida td {
+  padding: 0;
+  background: #0B1120;
+}
+
+.datos-cambio-estado {
+  padding: 15px;
+  border-left: 4px solid #ff7b00;;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */

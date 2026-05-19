@@ -22,13 +22,35 @@ const apiClient = axios.create({
   },
 });
 
+const getStoredJwt = () => {
+  const storedToken = localStorage.getItem('token');
+
+  if (!storedToken) {
+    return null;
+  }
+
+  try {
+    const parsedToken = JSON.parse(storedToken);
+
+    if (typeof parsedToken === 'string') {
+      return parsedToken;
+    }
+
+    return parsedToken?.token || null;
+  } catch {
+    return storedToken;
+  }
+};
+
 // Request Interceptor
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token'); // or better: use context / zustand / etc.
+    const token = getStoredJwt();
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => Promise.reject(error)

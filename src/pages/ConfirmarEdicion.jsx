@@ -1,34 +1,34 @@
 import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
-import "../styles/confirmarEnvio.css";
+import "../styles/confirmarEdicion.css";
 import { envios } from '@/api';
 
-export default function ConfirmarEnvio({ user }) {
-    const navigate = useNavigate();
+export default function ConfirmarEdicion( { user } ) {
+  const navigate = useNavigate();
+  
+  const [loading, setLoading] = useState(true);
+  const [shipments, setShipments] = useState([]);
+  const [search, setSearch] = useState("");
+  const [expandedId, setExpandedId] = useState(null);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+        const fetchData = async () => {
+            try {
+                const response = await envios.getAll();
+                console.log("Datos obtenidos de la API:", response);
+                setShipments(response);
+            } catch (error) {
+                console.error("Error al obtener envíos:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const [loading, setLoading] = useState(true);
-    const [shipments, setShipments] = useState([]);
-    const [search, setSearch] = useState("");
-    const [expandedId, setExpandedId] = useState(null); 
+        fetchData();
+    }, 1000);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            const fetchData = async () => {
-                try {
-                    const response = await envios.getAllSupervisor();
-                    console.log("Datos obtenidos de la API:", response);
-                    setShipments(response);
-                } catch (error) {
-                    console.error("Error al obtener envíos:", error);
-                } finally {
-                    setLoading(false);
-                }
-            };
-
-            fetchData();
-        }, 1000);
-
-        return () => clearTimeout(timer);
+    return () => clearTimeout(timer);
     }, []);
 
     // Función para alternar la fila expandida
@@ -36,42 +36,7 @@ export default function ConfirmarEnvio({ user }) {
         setExpandedId((prev) => (prev === id ? null : id));
     };
 
-    const confirmarEnvio = (id) => {
-        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar el envío con ID ${id}?`);
-
-        if (confirmacion) {
-            const fetchConfirmar = async () => {
-                try {
-                    await envios.confirmarEnvio(id);
-                    console.log(`Envío confirmado con ID: ${id}`);
-
-                    // 🔄 REFRESCAR DATOS (sin recargar página)
-                    window.location.reload();
-
-                } catch (error) {
-                    console.error(`Error al confirmar envío con ID: ${id}`, error);
-                }
-            };
-
-            fetchConfirmar();
-        }
-    };
-
-    const rechazarEnvio = (id) => {
-        const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar el envío con ID ${id}?`);
-        if (confirmacion) {
-            const fetchRechazar = async () => {
-                try {
-                    await envios.rechazarEnvio(id);
-                    console.log(`Envío rechazado con ID: ${id}`);
-                } catch (error) {
-                    console.error(`Error al rechazar envío con ID: ${id}`, error);
-                }
-            };
-
-            fetchRechazar();
-        }
-    }
+    // Agregar funciones para confirmar y rechazar ediciones con motivo (aún no implementadas)
 
     const formatearFecha = (fechaString) => {
         const fecha = new Date(fechaString);
@@ -96,43 +61,43 @@ export default function ConfirmarEnvio({ user }) {
             shipment.combustibleTipo,
         ];
 
-        const matchesSearch =
+        return (
             String(shipment.id).includes(searchText) ||
             fields.some(field =>
                 (field || "").toLowerCase().includes(searchText)
-            );
-
-        return !shipment.confirmado && matchesSearch;
+            )
+        );
     });
 
     if (loading) {
         return (
-            <div className="confirmar-loading-screen">
-                <div className="confirmar-loader"></div>
+            <div className="confirmar-edicion-loading-screen">
+                <div className="confirmar-edicion-loader"></div>
                 <h2>Cargando panel HYTRAC...</h2>
             </div>
         );
     }
 
     return (
-        <div className="confirmar-envio-container">
-            <main className="confirmar-dashboard-content">
-                <section className="confirmar-header">
+        <div className="confirmar-edicion-container">
+            <main className="edicion-dashboard-content">
+                <section className="edicion-header">
                     <div>
-                        <h1>Confirmar Envío</h1>
+                        <h1>Confirmar Edición</h1>
                         <p>
-                            Aquí podrás confirmar los envíos que has realizado. Revisa los detalles de cada envío y confirma su estado para mantener el sistema actualizado.
+                            Aquí puedes revisar los cambios realizados en los envíos antes de confirmarlos.
+                            Revisa cada envío editado y decide si deseas confirmar o rechazar los cambios.
                         </p>
                     </div>
                 </section>
 
-                <section className="shipments-table">
-                    <div className="table-header">
+                <section className="edicion-table-section">
+                    <div className="edicion-table-header">
                         <div>
-                            <h2>Órdenes pendientes: {shipments.length}</h2>
+                            <h2>Ediciones pendientes a confirmar: {shipments.length}</h2>
                         </div>
 
-                        <div className="confirmar-actions">
+                        <div className="confirmar-edicion-buscador">
                             <input
                                 type="text"
                                 placeholder="🔎 Busqueda por ID, ruta o transportista..."
@@ -147,13 +112,12 @@ export default function ConfirmarEnvio({ user }) {
                             <tr>
                                 <th>ID</th>
                                 <th>Ruta Designada</th>
-                                <th>Tipo Combustible</th>
-                                <th>Transportista</th>
-                                <th>Fecha de Creación</th>
+                                <th>Responsable</th>
+                                <th>Fecha de Edición</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-
+                        
                         <tbody>
                             {filteredShipments.map((shipment) => (
                                 <Fragment key={shipment.id}>
@@ -162,17 +126,16 @@ export default function ConfirmarEnvio({ user }) {
                                     <tr>
                                         <td className="tracking">{shipment.id}</td>
                                         <td>
-                                            <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
+                                            <strong>{shipment.plantaDespachoNombre} - {shipment.estacionDestinoNombre}</strong>
                                         </td>
-                                        <td>{shipment.combustible}</td>
                                         <td>
-                                            {shipment.transportista}
+                                            {shipment.transportistaNombre} {shipment.transportistaApellido}
                                         </td>
-                                        <td>{formatearFecha(shipment.fechaCreacion)}</td>
+                                        <td>{formatearFecha(shipment.fechaCreacion)}</td>  {/* Cambiar por fecha de edición */}
                                         <td>
-                                            <div className="actions-table">
+                                            <div className="edicion-actions-table">
                                             <button
-                                                className="confirmar-detalles"
+                                                className="edicion-detalles"
                                                 onClick={() => toggleExpand(shipment.id)}
                                             >
                                                 {expandedId === shipment.id ? (
@@ -208,7 +171,7 @@ export default function ConfirmarEnvio({ user }) {
                                                     )}
                                             </button>
 
-                                            <button className="confirmar-envio" onClick={() => confirmarEnvio(shipment.id)}>
+                                            <button className="confirmar-edicion"> {/* Boton de confirmar edicion, luego agregar funcion */}
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"
@@ -224,7 +187,7 @@ export default function ConfirmarEnvio({ user }) {
                                                 </svg>
                                             </button>
                                             
-                                            <button className="rechazar-envio" onClick={() => rechazarEnvio(shipment.id)}>
+                                            <button className="rechazar-edicion"> {/* Boton de rechazar edicion, luego agregar funcion */}
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"
@@ -244,14 +207,18 @@ export default function ConfirmarEnvio({ user }) {
                                         </td>
                                     </tr>
 
-                                    {/* FILA EXPANDIDA: Se mostraran los datos que necesita el supervisor para confirmar el envio*/}
+                                    {/* FILA EXPANDIDA: Se mostraran los cambios en los datos para que el supervisor los revise */}
                                     {expandedId === shipment.id && (
                                         <tr className="fila-expandida">
                                             <td colSpan="7">
-                                                <div className="detalle-envio">
+                                                <div className="datos-editados">
                                                     <p><strong>ID:</strong> {shipment.id}</p>
-                                                    <p><strong>Transportista:</strong> {shipment.transportista}</p>
-                                                    {/* Agregar mas datos relevantes para confirmar el envio*/}
+                                                    <p><strong>Estado:</strong> {shipment.estado}</p>
+                                                    <p><strong>Combustible:</strong> {shipment.combustibleTipo}</p>
+                                                    <p><strong>Transportista:</strong> {shipment.transportistaNombre} {shipment.transportistaApellido}</p>
+                                                    <p><strong>Fecha creación:</strong> {formatearFecha(shipment.fechaCreacion)}</p>
+                                                    <p><strong>Origen:</strong> {shipment.plantaDespachoNombre}</p>
+                                                    <p><strong>Destino:</strong> {shipment.estacionDestinoNombre}</p>
                                                 </div>
                                             </td>
                                         </tr>

@@ -1,34 +1,36 @@
 import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
-import "../styles/confirmarEnvio.css";
+import "../styles/confirmarCambioEstado.css";
+import "../styles/statusBadge.css";
+import StatusBadge from "@/components/StatusBadge";
 import { envios } from '@/api';
 
-export default function ConfirmarEnvio({ user }) {
-    const navigate = useNavigate();
+export default function ConfirmarCambioEstado( { user } ) {
+  const navigate = useNavigate();
+  
+  const [loading, setLoading] = useState(true);
+  const [shipments, setShipments] = useState([]);
+  const [search, setSearch] = useState("");
+  const [expandedId, setExpandedId] = useState(null);
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+        const fetchData = async () => {
+            try {
+                const response = await envios.getAllSupervisor();
+                console.log("Datos obtenidos de la API:", response);
+                setShipments(response);
+            } catch (error) {
+                console.error("Error al obtener envíos:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    const [loading, setLoading] = useState(true);
-    const [shipments, setShipments] = useState([]);
-    const [search, setSearch] = useState("");
-    const [expandedId, setExpandedId] = useState(null); 
+        fetchData();
+    }, 1000);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            const fetchData = async () => {
-                try {
-                    const response = await envios.getAllSupervisor();
-                    console.log("Datos obtenidos de la API:", response);
-                    setShipments(response);
-                } catch (error) {
-                    console.error("Error al obtener envíos:", error);
-                } finally {
-                    setLoading(false);
-                }
-            };
-
-            fetchData();
-        }, 1000);
-
-        return () => clearTimeout(timer);
+    return () => clearTimeout(timer);
     }, []);
 
     // Función para alternar la fila expandida
@@ -36,42 +38,24 @@ export default function ConfirmarEnvio({ user }) {
         setExpandedId((prev) => (prev === id ? null : id));
     };
 
-    const confirmarEnvio = (id) => {
-        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar el envío con ID ${id}?`);
+    const confirmarEstadoNuevo = (id) => {
+        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar cambio de estado?`);
 
         if (confirmacion) {
             const fetchConfirmar = async () => {
                 try {
-                    await envios.confirmarEnvio(id);
-                    console.log(`Envío confirmado con ID: ${id}`);
+                    await envios.confirmarEstadoNuevo(id);
+                    console.log(`Cambio de estado confirmado con ID: ${id}`);
 
-                    // 🔄 REFRESCAR DATOS (sin recargar página)
                     window.location.reload();
-
                 } catch (error) {
-                    console.error(`Error al confirmar envío con ID: ${id}`, error);
+                    console.log(`Error de cambio de estado con ID: ${id}`)
                 }
             };
 
             fetchConfirmar();
         }
     };
-
-    const rechazarEnvio = (id) => {
-        const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar el envío con ID ${id}?`);
-        if (confirmacion) {
-            const fetchRechazar = async () => {
-                try {
-                    await envios.rechazarEnvio(id);
-                    console.log(`Envío rechazado con ID: ${id}`);
-                } catch (error) {
-                    console.error(`Error al rechazar envío con ID: ${id}`, error);
-                }
-            };
-
-            fetchRechazar();
-        }
-    }
 
     const formatearFecha = (fechaString) => {
         const fecha = new Date(fechaString);
@@ -96,43 +80,43 @@ export default function ConfirmarEnvio({ user }) {
             shipment.combustibleTipo,
         ];
 
-        const matchesSearch =
+        return (
             String(shipment.id).includes(searchText) ||
             fields.some(field =>
                 (field || "").toLowerCase().includes(searchText)
-            );
-
-        return !shipment.confirmado && matchesSearch;
+            )
+        );
     });
 
     if (loading) {
         return (
-            <div className="confirmar-loading-screen">
-                <div className="confirmar-loader"></div>
+            <div className="confirmar-cambio-estado-loading-screen">
+                <div className="confirmar-cambio-estado-loader"></div>
                 <h2>Cargando panel HYTRAC...</h2>
             </div>
         );
     }
 
     return (
-        <div className="confirmar-envio-container">
-            <main className="confirmar-dashboard-content">
-                <section className="confirmar-header">
+        <div className="confirmar-cambio-estado-container">
+            <main className="cambio-estado-dashboard-content">
+                <section className="cambio-estado-header">
                     <div>
-                        <h1>Confirmar Envío</h1>
+                        <h1>Confirmar Cambio de Estado</h1>
                         <p>
-                            Aquí podrás confirmar los envíos que has realizado. Revisa los detalles de cada envío y confirma su estado para mantener el sistema actualizado.
+                            En este panel podrás revisar y confirmar los cambios de estado realizados por los transportistas
+                            y jefe de estacion segun circunstancias excepcionales.
                         </p>
                     </div>
                 </section>
 
-                <section className="shipments-table">
-                    <div className="table-header">
+                <section className="cambio-estado-table-section">
+                    <div className="cambio-estado-table-header">
                         <div>
-                            <h2>Órdenes pendientes: {shipments.length}</h2>
+                            <h2>Cambios de estado pendientes a confirmar: {shipments.length}</h2>
                         </div>
 
-                        <div className="confirmar-actions">
+                        <div className="confirmar-cambio-estado-buscador">
                             <input
                                 type="text"
                                 placeholder="🔎 Busqueda por ID, ruta o transportista..."
@@ -147,13 +131,13 @@ export default function ConfirmarEnvio({ user }) {
                             <tr>
                                 <th>ID</th>
                                 <th>Ruta Designada</th>
-                                <th>Tipo Combustible</th>
-                                <th>Transportista</th>
-                                <th>Fecha de Creación</th>
+                                <th>Responsable</th>  {/* Ademas se dice si es transportista o jefe de estacion */}
+                                <th>Fecha de Cambio de Estado</th>
+                                <th>Estado</th> {/* Buscar un nombre mejor para el campo */}
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-
+                        
                         <tbody>
                             {filteredShipments.map((shipment) => (
                                 <Fragment key={shipment.id}>
@@ -164,15 +148,16 @@ export default function ConfirmarEnvio({ user }) {
                                         <td>
                                             <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                                         </td>
-                                        <td>{shipment.combustible}</td>
                                         <td>
+                                            {/* Segun el responsable, aparece el nombre */}
                                             {shipment.transportista}
                                         </td>
-                                        <td>{formatearFecha(shipment.fechaCreacion)}</td>
+                                        <td>{formatearFecha(shipment.fechaCreacion)}</td>  {/* Cambiar por fecha de cambio de estado */}
+                                        <td><StatusBadge estado={shipment.estado} /> - {/* {shipment.nuevoEstado} */}</td> {/* Estado viejo - Estado nuevo */}
                                         <td>
-                                            <div className="actions-table">
+                                            <div className="cambio-estado-actions-table">
                                             <button
-                                                className="confirmar-detalles"
+                                                className="cambio-estado-detalles"
                                                 onClick={() => toggleExpand(shipment.id)}
                                             >
                                                 {expandedId === shipment.id ? (
@@ -208,7 +193,7 @@ export default function ConfirmarEnvio({ user }) {
                                                     )}
                                             </button>
 
-                                            <button className="confirmar-envio" onClick={() => confirmarEnvio(shipment.id)}>
+                                            <button className="confirmar-cambio-estado" onClick={() => confirmarEstadoNuevo(shipment.id)}> {/* Boton de confirmar cambio de estado, luego agregar funcion */}
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"
@@ -224,7 +209,7 @@ export default function ConfirmarEnvio({ user }) {
                                                 </svg>
                                             </button>
                                             
-                                            <button className="rechazar-envio" onClick={() => rechazarEnvio(shipment.id)}>
+                                            <button className="rechazar-cambio-estado"> {/* Boton de rechazar cambio de estado, luego agregar funcion */}
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"
@@ -244,14 +229,18 @@ export default function ConfirmarEnvio({ user }) {
                                         </td>
                                     </tr>
 
-                                    {/* FILA EXPANDIDA: Se mostraran los datos que necesita el supervisor para confirmar el envio*/}
+                                    {/* FILA EXPANDIDA: Se mostraran los cambios en los datos para que el supervisor los revise */}
                                     {expandedId === shipment.id && (
                                         <tr className="fila-expandida">
                                             <td colSpan="7">
-                                                <div className="detalle-envio">
+                                                <div className="datos-cambio-estado">
                                                     <p><strong>ID:</strong> {shipment.id}</p>
-                                                    <p><strong>Transportista:</strong> {shipment.transportista}</p>
-                                                    {/* Agregar mas datos relevantes para confirmar el envio*/}
+                                                    <p><strong>Estado:</strong> {shipment.estado}</p>
+                                                    <p><strong>Combustible:</strong> {shipment.combustibleTipo}</p>
+                                                    <p><strong>Responsable:</strong> {shipment.transportistaNombre} {shipment.transportistaApellido}</p>
+                                                    <p><strong>Fecha creación:</strong> {formatearFecha(shipment.fechaCreacion)}</p>
+                                                    <p><strong>Origen:</strong> {shipment.plantaDespachoNombre}</p>
+                                                    <p><strong>Destino:</strong> {shipment.estacionDestinoNombre}</p>
                                                 </div>
                                             </td>
                                         </tr>
