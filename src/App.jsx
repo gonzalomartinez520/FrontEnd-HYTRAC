@@ -10,6 +10,7 @@ import {
 import Login from "./pages/Login.jsx";
 import OperarioDashboard from "./pages/OperarioDashboard.jsx";
 import TransportistaDashboard from "./pages/TransportistaDashboard.jsx";
+import IniciarViaje from "./pages/IniciarViaje.jsx";
 import ReportarIncidencia from "./pages/ReportarIncidencia.jsx";
 import EnvioDetail from "./pages/EnvioDetail.jsx";
 import NuevoEnvio from "./pages/NuevoEnvio.jsx";
@@ -140,6 +141,15 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["TRANSPORTISTA"]}>
               <ReportarIncidencia user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/transportista/orden/:ordenId/iniciar-viaje"
+          element={
+            <ProtectedRoute allowedRoles={["TRANSPORTISTA"]}>
+              <IniciarViaje user={parsedUser} />
             </ProtectedRoute>
           }
         />

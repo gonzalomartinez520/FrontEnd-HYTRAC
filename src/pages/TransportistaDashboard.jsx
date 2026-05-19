@@ -53,10 +53,18 @@ export default function TransportistaDashboard({ user }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [envios, setEnvios] = useState([]);
-  const legajo = localStorage.getItem("legajo")
   const transportistaId = useMemo(
     () => user?.transportistaId ?? user?.id ?? user?.usuarioId ?? null,
     [user]
+  );
+
+  const activeEnvio = envios[0];
+  const viajeStorageKey = useMemo(
+    () => (activeEnvio?.id ? `transportista-viaje-${activeEnvio.id}` : null),
+    [activeEnvio?.id]
+  );
+  const isViajeConfirmado = Boolean(
+    viajeStorageKey && sessionStorage.getItem(viajeStorageKey) === "confirmed"
   );
 
   useEffect(() => {
@@ -100,13 +108,12 @@ export default function TransportistaDashboard({ user }) {
     };
   }, [transportistaId]);
 
-  const handleInformarAvance = () => {
-    const now = new Date().toLocaleTimeString("es-AR", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+  const handleIniciarViaje = () => {
+    if (!activeEnvio?.id) {
+      return;
+    }
 
-    window.alert(`Avance informado correctamente a las ${now}.`);
+    navigate(`/transportista/orden/${activeEnvio.id}/iniciar-viaje`);
   };
 
   const handleReportarIncidencia = () => {
@@ -116,8 +123,6 @@ export default function TransportistaDashboard({ user }) {
 
     navigate("/transportista/incidencia");
   };
-
-  const activeEnvio = envios[0];
 
   const renderEnvioDetail = (envio) => {
     const origen = getField(envio, ["plantaDespacho", "puntoOrigen", "plantaOrigen", "salida"]);
@@ -180,7 +185,7 @@ export default function TransportistaDashboard({ user }) {
           </div>
 
           <div className="route-status">
-            <span className="status-chip">En tránsito</span>
+            <span className="status-chip">{isViajeConfirmado ? "En curso" : "Pendiente de confirmar"}</span>
             <strong>{user?.nombre ? `${user.nombre} ${user.apellido || ""}` : "Transportista"}</strong>
             <span>Transportista ID: {transportistaId ?? "No disponible"}</span>
           </div>
@@ -231,9 +236,10 @@ export default function TransportistaDashboard({ user }) {
               <button
                 type="button"
                 className="action-btn action-btn--primary"
-                onClick={handleInformarAvance}
+                onClick={handleIniciarViaje}
+                disabled={!activeEnvio}
               >
-                Informar Avance
+                {isViajeConfirmado ? "Informar descarga" : "Confirmar viaje"}
               </button>
               <button
                 type="button"

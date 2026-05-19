@@ -1,7 +1,7 @@
 import apiClient from "./apiClient";
 
-const MOCK_ENVIOS_BY_TRANSPORTISTA_ID = {
-  /*3: {
+/*const MOCK_ENVIOS_BY_TRANSPORTISTA_ID = {
+  3: {
     id: 3001,
     cot: "COT-2026-0148",
     nro_remito: "R-77821",
@@ -39,9 +39,9 @@ const MOCK_ENVIOS_BY_TRANSPORTISTA_ID = {
     litrosCargados: 35000,
     fechaSalida: "2026-05-18T09:10:00-03:00",
     fechaLlegada: "2026-05-18T22:40:00-03:00",
-  },*/
+  },
 };
-
+*/
 const getMockEnvio = (transportistaId) => {
   const normalizedId = Number(transportistaId);
 
@@ -52,30 +52,67 @@ const getMockEnvio = (transportistaId) => {
   return MOCK_ENVIOS_BY_TRANSPORTISTA_ID[normalizedId] ?? null;
 };
 
-const legajo =  localStorage.getItem("legajo");
+const resolveLegajo = (transportistaId) => {
+  const legajo = localStorage.getItem("legajo") || transportistaId;
+
+  if (legajo == null || legajo === "") {
+    return null;
+  }
+
+  return String(legajo);
+};
+
+const normalizeOrdenEnCurso = (payload) => {
+  if (!payload) {
+    return null;
+  }
+
+  if (Array.isArray(payload)) {
+    return payload[0] ?? null;
+  }
+
+  if (Array.isArray(payload?.envios)) {
+    return payload.envios[0] ?? null;
+  }
+
+  if (Array.isArray(payload?.data)) {
+    return payload.data[0] ?? null;
+  }
+
+  if (Array.isArray(payload?.items)) {
+    return payload.items[0] ?? null;
+  }
+
+  if (payload?.envio || payload?.shipment) {
+    return payload.envio || payload.shipment;
+  }
+
+  return payload;
+};
 
 const transportista = {
-  getEnviosAsignados: async (transportistaId) => {
+  getOrdenEnCurso: async (transportistaId) => {
+    const resolvedLegajo = resolveLegajo(transportistaId);
 
     try {
-    const { data } = await apiClient.get(`/transportista/${legajo}/orden`);
-        console.log("Respuesta de envíos asignados:", data);
-      
-    if (data) {
-     console.log(data);
-        return data;
+      if (!resolvedLegajo) {
+        return null;
       }
+
+      const { data } = await apiClient.get(`/transportista/${resolvedLegajo}/orden-en-curso`);
+
+      return normalizeOrdenEnCurso(data);
     } catch (error) {
       console.warn("Fallback al mock de transportista:", error?.response?.data || error.message);
     }
 
-    const mockEnvio = getMockEnvio(transportistaId);
+    return getMockEnvio(transportistaId);
+  },
 
-    if (mockEnvio) {
-      return mockEnvio;
-    }
+  getEnviosAsignados: async (transportistaId) => {
+    const ordenEnCurso = await transportista.getOrdenEnCurso(transportistaId);
 
-    return [];
+    return ordenEnCurso ? [ordenEnCurso] : [];
   },
 };
 
