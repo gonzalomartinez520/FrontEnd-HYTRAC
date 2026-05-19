@@ -41,6 +41,26 @@ const envios = {
     return await apiClient.post('/ordenes/crear', payload);
   },
 
+  // Confirmar un envío
+  confirmarEnvio: async (id) => {
+    const { data } = await apiClient.put(`/supervisor/ordenes/${id}/confirmar`);
+    return data;
+  },
+
+  // Rechazar un envío
+  rechazarEnvio: async (id) => {
+    const { data } = await apiClient.put(`/supervisor/ordenes/${id}/rechazar`);
+    return data;
+  },
+
+  //Confirmar cambio de estado
+  confirmarEstadoNuevo: async (id) => {
+    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/aprobar-inicio`)
+    return data;
+  },
+
+  //Rechazar cambio de estado
+
   // Obtener un envío por su ID
   getById: async (id) => {
     const { data } = await apiClient.get(`/ordenes/${id}`);

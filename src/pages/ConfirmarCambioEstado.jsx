@@ -1,6 +1,8 @@
 import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
 import "../styles/confirmarCambioEstado.css";
+import "../styles/statusBadge.css";
+import StatusBadge from "@/components/StatusBadge";
 import { envios } from '@/api';
 
 export default function ConfirmarCambioEstado( { user } ) {
@@ -15,7 +17,7 @@ export default function ConfirmarCambioEstado( { user } ) {
     const timer = setTimeout(() => {
         const fetchData = async () => {
             try {
-                const response = await envios.getAll();
+                const response = await envios.getAllSupervisor();
                 console.log("Datos obtenidos de la API:", response);
                 setShipments(response);
             } catch (error) {
@@ -36,7 +38,24 @@ export default function ConfirmarCambioEstado( { user } ) {
         setExpandedId((prev) => (prev === id ? null : id));
     };
 
-    // Agregar funciones para confirmar y rechazar cambios de estados (aún no implementadas)
+    const confirmarEstadoNuevo = (id) => {
+        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar cambio de estado?`);
+
+        if (confirmacion) {
+            const fetchConfirmar = async () => {
+                try {
+                    await envios.confirmarEstadoNuevo(id);
+                    console.log(`Cambio de estado confirmado con ID: ${id}`);
+
+                    window.location.reload();
+                } catch (error) {
+                    console.log(`Error de cambio de estado con ID: ${id}`)
+                }
+            };
+
+            fetchConfirmar();
+        }
+    };
 
     const formatearFecha = (fechaString) => {
         const fecha = new Date(fechaString);
@@ -127,14 +146,14 @@ export default function ConfirmarCambioEstado( { user } ) {
                                     <tr>
                                         <td className="tracking">{shipment.id}</td>
                                         <td>
-                                            <strong>{shipment.plantaDespachoNombre} - {shipment.estacionDestinoNombre}</strong>
+                                            <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                                         </td>
                                         <td>
                                             {/* Segun el responsable, aparece el nombre */}
-                                            {shipment.transportistaNombre} {shipment.transportistaApellido}
+                                            {shipment.transportista}
                                         </td>
                                         <td>{formatearFecha(shipment.fechaCreacion)}</td>  {/* Cambiar por fecha de cambio de estado */}
-                                        <td>{shipment.estado} - {/* {shipment.nuevoEstado} */}</td> {/* Estado viejo - Estado nuevo */}
+                                        <td><StatusBadge estado={shipment.estado} /> - {/* {shipment.nuevoEstado} */}</td> {/* Estado viejo - Estado nuevo */}
                                         <td>
                                             <div className="cambio-estado-actions-table">
                                             <button
@@ -174,7 +193,7 @@ export default function ConfirmarCambioEstado( { user } ) {
                                                     )}
                                             </button>
 
-                                            <button className="confirmar-cambio-estado"> {/* Boton de confirmar cambio de estado, luego agregar funcion */}
+                                            <button className="confirmar-cambio-estado" onClick={() => confirmarEstadoNuevo(shipment.id)}> {/* Boton de confirmar cambio de estado, luego agregar funcion */}
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"
