@@ -14,6 +14,7 @@ import IniciarViaje from "./pages/IniciarViaje.jsx";
 import ReportarIncidencia from "./pages/ReportarIncidencia.jsx";
 import EnvioDetail from "./pages/EnvioDetail.jsx";
 import NuevoEnvio from "./pages/NuevoEnvio.jsx";
+import Confirmaciones from "./pages/Confirmaciones.jsx"
 import ConfirmarEnvio from "./pages/ConfirmarEnvio.jsx";
 import ConfirmarEdicion from "./pages/ConfirmarEdicion.jsx";
 import ConfirmarCambioEstado from "./pages/ConfirmarCambioEstado.jsx";
@@ -174,6 +175,16 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["OPERADOR", "ADMIN"]}>
               <NuevoEnvio user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* CONFIRMACIONES */}
+        <Route
+          path="/confirmaciones"
+          element={
+            <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
+              <Confirmaciones user={parsedUser} />
             </ProtectedRoute>
           }
         />
