@@ -38,7 +38,7 @@
 }
 
 /* 🔥 CARDS */
-.pendientes, .ediciones, .cambios-estado {
+.pendientes, .entregas, .cambios-estado {
     display: block;
     will-change: transform;
 
@@ -66,19 +66,19 @@
     background-color: #ff7b00;
 }
 
-.ediciones {
+.entregas {
     background-color: #2563EB;
-    margin-left: 50px;
-    margin-right: 50px;
 }
 
 .cambios-estado {
     background-color: #16a34a;
+    margin-left: 50px;
+    margin-right: 50px;
 }
 
 /* 🖱️ HOVER (ESCALA + LEVANTA) */
 .pendientes:hover, 
-.ediciones:hover, 
+.entregas:hover, 
 .cambios-estado:hover {
     transform: translateY(-6px) !important;
 }
@@ -107,14 +107,14 @@
 }
 
 /* 🔒 Para poder usar overlay */
-.pendientes, .ediciones, .cambios-estado {
+.pendientes, .entregas, .cambios-estado {
     position: relative;
     overflow: visible;
 }
 
 /* 🌑 Overlay oscuro suave */
 .pendientes::before,
-.ediciones::before,
+.entregas::before,
 .cambios-estado::before {
     content: "";
     position: absolute;
@@ -136,7 +136,7 @@
 
 /* ✨ Glow inferior */
 .pendientes::after,
-.ediciones::after,
+.entregas::after,
 .cambios-estado::after {
     content: "";
     position: absolute;
@@ -157,7 +157,7 @@
     background: rgba(255, 123, 0, 0.45);
 }
 
-.ediciones::after {
+.entregas::after {
     background: rgba(37, 99, 235, 0.45);
 }
 
@@ -167,7 +167,7 @@
 
 /* aparece en hover */
 .pendientes:hover::after,
-.ediciones:hover::after,
+.entregas:hover::after,
 .cambios-estado:hover::after {
     opacity: 1;
 }

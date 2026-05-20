@@ -103,6 +103,21 @@ export default function Navbar({ user, onLogout }) {
               <span className="icon">{action.icon}</span> {action.label}
             </Link>
           )}
+
+          <Link
+            title="Historial de Ordenes"
+            to="/historial-operador"
+            onClick={() => setMenuOpen(false)}
+          >
+            {role == "OPERADOR" ? (
+              <>
+                <span className="route-nav-icon" aria-hidden="true">🛣️</span> Historial de Órdenes
+              </>
+            ) : (
+              null
+            
+            )}
+          </Link>
         </div>
       </div>
 

@@ -14,9 +14,10 @@ import IniciarViaje from "./pages/IniciarViaje.jsx";
 import ReportarIncidencia from "./pages/ReportarIncidencia.jsx";
 import EnvioDetail from "./pages/EnvioDetail.jsx";
 import NuevoEnvio from "./pages/NuevoEnvio.jsx";
+import HistorialOperador from "./pages/HistorialOperador.jsx"
 import Confirmaciones from "./pages/Confirmaciones.jsx"
 import ConfirmarEnvio from "./pages/ConfirmarEnvio.jsx";
-import ConfirmarEdicion from "./pages/ConfirmarEdicion.jsx";
+import ConfirmarEntregas from "./pages/ConfirmarEntregas.jsx";
 import ConfirmarCambioEstado from "./pages/ConfirmarCambioEstado.jsx";
 import AccesoDenegado from "./pages/AccesoDenegado.jsx"; 
 import Navbar from "./components/Navbar.jsx";
@@ -173,8 +174,18 @@ function App() {
         <Route
           path="/nuevo-envio"
           element={
-            <ProtectedRoute allowedRoles={["OPERADOR", "ADMIN"]}>
+            <ProtectedRoute allowedRoles={["OPERADOR"]}>
               <NuevoEnvio user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* HISTORIAL DEL OPERADOR*/}
+        <Route
+          path="/historial-operador"
+          element={
+            <ProtectedRoute allowedRoles={["OPERADOR"]}>
+              <HistorialOperador user={parsedUser} />
             </ProtectedRoute>
           }
         />
@@ -201,10 +212,10 @@ function App() {
 
         {/* CONFIRMAR EDICION */}
         <Route
-          path="/confirmar-edicion"
+          path="/confirmar-entregas"
           element={
             <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
-              <ConfirmarEdicion user={parsedUser} />
+              <ConfirmarEntregas user={parsedUser} />
             </ProtectedRoute>
           } 
         />

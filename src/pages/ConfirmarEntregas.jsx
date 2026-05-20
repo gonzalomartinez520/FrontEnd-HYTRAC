@@ -1,9 +1,9 @@
 import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
-import "../styles/confirmarEdicion.css";
+import "../styles/confirmarEntregas.css";
 import { envios } from '@/api';
 
-export default function ConfirmarEdicion( { user } ) {
+export default function ConfirmarEntregas( { user } ) {
   const navigate = useNavigate();
   
   const [loading, setLoading] = useState(true);
@@ -83,11 +83,10 @@ export default function ConfirmarEdicion( { user } ) {
             <main className="edicion-dashboard-content">
                 <section className="edicion-header">
                     <div>
-                        <h1>Confirmar Edición</h1>
+                        <h1>Confirmar Entregas</h1>
                         <p>
-                            Aquí puedes revisar los cambios realizados en los envíos antes de confirmarlos.
-                            Revisa cada envío editado y decide si deseas confirmar o rechazar los cambios.
-                        </p>
+                            Aquí podrá visualizar las órdenes que necesitan verificación para su entrega.
+                            </p>
                     </div>
                 </section>
 
