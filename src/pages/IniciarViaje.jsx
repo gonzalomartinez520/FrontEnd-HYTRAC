@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { apiClient as api, envios, transportista as transportistaApi } from "@/api";
 import "../styles/iniciarViaje.css";
@@ -33,6 +33,15 @@ const getField = (envio, keys, fallback = "Pendiente") => {
   return fallback;
 };
 
+const formatEstado = (value) => {
+  if (!value) return "Sin estado";
+
+  return String(value)
+    .replace(/_/g, " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+};
+
 export default function IniciarViaje({ user }) {
   const navigate = useNavigate();
   const { ordenId } = useParams();
@@ -43,13 +52,6 @@ export default function IniciarViaje({ user }) {
   const [isTripConfirmed, setIsTripConfirmed] = useState(false);
   const [feedback, setFeedback] = useState("");
   const transportistaId = user?.transportistaId ?? user?.id ?? user?.usuarioId ?? null;
-
-  const storageKey = useMemo(() => `transportista-viaje-${ordenId}`, [ordenId]);
-
-  useEffect(() => {
-    const savedState = sessionStorage.getItem(storageKey);
-    setIsTripConfirmed(savedState === "confirmed");
-  }, [storageKey]);
 
   useEffect(() => {
     let isMounted = true;
@@ -68,7 +70,7 @@ export default function IniciarViaje({ user }) {
         let data = null;
 
         if (transportistaId) {
-          const asignados = await transportistaApi.getEnviosAsignados(transportistaId);
+          const asignados = await transportistaApi.getEnviosAsignados(transportistaId, user?.legajo);
           data = Array.isArray(asignados)
             ? asignados.find((item) => String(item?.id) === String(ordenId)) ?? null
             : null;
@@ -82,10 +84,7 @@ export default function IniciarViaje({ user }) {
           setShipment(data);
 
           const estadoActual = String(data?.estado || "").toUpperCase();
-          if (estadoActual === "EN_VIAJE") {
-            setIsTripConfirmed(true);
-            sessionStorage.setItem(storageKey, "confirmed");
-          }
+          setIsTripConfirmed(estadoActual === "EN_VIAJE" || estadoActual === "EN_CURSO");
         }
       } catch (requestError) {
         if (isMounted) {
@@ -107,16 +106,16 @@ export default function IniciarViaje({ user }) {
     return () => {
       isMounted = false;
     };
-  }, [ordenId, storageKey, transportistaId]);
+  }, [ordenId, transportistaId]);
 
   const handlePrimaryAction = async () => {
     if (!ordenId || isSubmitting) {
       return;
     }
 
-    const nextEstado = "EN_VIAJE";
+    const nextEstado = isTripConfirmed ? "EN_CURSO" : "EN_VIAJE";
     const nextMotivo = isTripConfirmed
-      ? "Descarga informada desde el panel de transportista"
+      ? "Envio informado desde el panel de transportista"
       : "Viaje confirmado desde el panel de transportista";
 
     try {
@@ -133,12 +132,13 @@ export default function IniciarViaje({ user }) {
 
       if (!isTripConfirmed) {
         setIsTripConfirmed(true);
-        sessionStorage.setItem(storageKey, "confirmed");
-        setFeedback("Viaje confirmado. Ahora podés informar descarga.");
+        setShipment((prev) => (prev ? { ...prev, estado: "EN_VIAJE" } : prev));
+        setFeedback("Viaje confirmado. Ahora podés informar envio.");
         return;
       }
 
-      setFeedback("Descarga informada correctamente.");
+      setShipment((prev) => (prev ? { ...prev, estado: "EN_CURSO" } : prev));
+      setFeedback("Envio informado correctamente.");
     } catch (requestError) {
       setFeedback(
         requestError?.response?.data?.message ||
@@ -151,9 +151,21 @@ export default function IniciarViaje({ user }) {
   };
 
   const origen = getField(shipment, ["plantaDespachoNombre", "plantaDespacho", "origen", "puntoOrigen"]);
-  const destino = getField(shipment, ["estacionDestinoNombre", "destino", "puntoDestino", "plantaDestino"]);
+  const destino = getField(shipment, [
+    "destino",
+    "puntoDestino",
+    "estacionDestino",
+    "estacionDestinoNombre",
+    "plantaDestino",
+  ]);
   const combustible = getField(shipment, ["combustibleTipo", "tipoCombustible", "combustible"]);
-  const estado = isTripConfirmed ? "EN CURSO" : "PENDIENTE DE CONFIRMAR";
+  const estadoActual = getField(
+    shipment,
+    ["estado", "status", "estadoOrden", "estadoNombre", "orderState"],
+    "Sin estado"
+  );
+  const estadoActualUpper = String(estadoActual).toUpperCase();
+  const isInTrip = estadoActualUpper === "EN_VIAJE" || estadoActualUpper === "EN_CURSO";
 
   return (
     <main className="iniciar-viaje-screen">
@@ -173,8 +185,8 @@ export default function IniciarViaje({ user }) {
 
           <div className="status-card">
             <span className="status-label">Estado actual</span>
-            <strong>{estado}</strong>
-            <small>{isTripConfirmed ? "Siguiente paso: informar descarga" : "Siguiente paso: confirmar viaje"}</small>
+            <strong>{formatEstado(estadoActual)}</strong>
+            <small>{isInTrip ? "Siguiente paso: informar envio" : "Siguiente paso: confirmar viaje"}</small>
           </div>
         </header>
 
@@ -207,7 +219,16 @@ export default function IniciarViaje({ user }) {
               </div>
               <div>
                 <span>Fecha de salida</span>
-                <strong>{formatDate(getField(shipment, ["fechaSalida", "fecha_creacion", "fechaCreacion"]))}</strong>
+                <strong>
+                  {formatDate(
+                    getField(shipment, [
+                      "fechaSalida",
+                      "fecha_salida",
+                      "fechaSalidaPlanta",
+                      "salida",
+                    ])
+                  )}
+                </strong>
               </div>
             </div>
 
@@ -218,10 +239,10 @@ export default function IniciarViaje({ user }) {
                 onClick={handlePrimaryAction}
                 disabled={isSubmitting}
               >
-                {isTripConfirmed ? "Informar descarga" : "Confirmar viaje"}
+                {isInTrip ? "Informar envio" : "Confirmar viaje"}
               </button>
 
-              <p>{feedback || (isTripConfirmed ? "El viaje ya está en curso. Podés informar descarga cuando lo necesites." : "Presioná el botón para iniciar el viaje.")}</p>
+              <p>{feedback || (isInTrip ? "El viaje ya está en curso. Podés informar envio cuando lo necesites." : "Presioná el botón para iniciar el viaje.")}</p>
             </div>
           </section>
         )}

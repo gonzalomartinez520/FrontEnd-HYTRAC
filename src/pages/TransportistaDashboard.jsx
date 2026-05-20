@@ -59,13 +59,8 @@ export default function TransportistaDashboard({ user }) {
   );
 
   const activeEnvio = envios[0];
-  const viajeStorageKey = useMemo(
-    () => (activeEnvio?.id ? `transportista-viaje-${activeEnvio.id}` : null),
-    [activeEnvio?.id]
-  );
-  const isViajeConfirmado = Boolean(
-    viajeStorageKey && sessionStorage.getItem(viajeStorageKey) === "confirmed"
-  );
+  const estadoActual = String(activeEnvio?.estado || "").toUpperCase();
+  const isViajeConfirmado = estadoActual === "EN_VIAJE" || estadoActual === "EN_CURSO";
 
   useEffect(() => {
     let isMounted = true;
@@ -82,7 +77,7 @@ export default function TransportistaDashboard({ user }) {
       setLoading(true);
 
       try {
-        const response = await transportistaApi.getEnviosAsignados(transportistaId);
+        const response = await transportistaApi.getEnviosAsignados(transportistaId, user?.legajo);
         const normalized = normalizeEnvios(response);
 
         if (isMounted) {

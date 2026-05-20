@@ -59,7 +59,7 @@ export default function ReportarIncidencia({ user }) {
       setLoading(true);
 
       try {
-        const response = await transportistaApi.getEnviosAsignados(transportistaId);
+        const response = await transportistaApi.getEnviosAsignados(transportistaId, user?.legajo);
         const normalized = normalizeEnvios(response);
 
         if (isMounted) {
