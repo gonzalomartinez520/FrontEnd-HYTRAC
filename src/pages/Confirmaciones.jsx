@@ -20,23 +20,23 @@ export default function Confirmaciones( { user } ) {
                 {/* LUEGO AGREGAR UNA IMAGEN EN CADA CARD PARA REPRESENTARLOS*/}
                 <section className="confirmaciones-card">
                     <div className="pendientes" onClick={() => navigate("/confirmar-envio")}>
-                        <h2>Pendientes</h2>
+                        <h2>Nuevas órdenes</h2>
                         <p>
-                            Validación de nuevas órdenes
-                        </p>
-                    </div>
-
-                    <div className="ediciones" onClick={() => navigate("/confirmar-edicion")}>
-                        <h2>Ediciones</h2>
-                        <p>
-                            Validación de órdenes editadas
+                            Validación de órdenes entrantes al sistema
                         </p>
                     </div>
 
                     <div className="cambios-estado" onClick={() => navigate("/confirmar-cambio-estado")}>
-                        <h2>Cambios de estado</h2>
+                        <h2>Inicio de viajes</h2>
                         <p>
-                            Validación de cambios de estado
+                            Confirmación para que el transportista inicie el viaje
+                        </p>
+                    </div>
+
+                    <div className="entregas" onClick={() => navigate("/confirmar-entregas")}>
+                        <h2>Entregas</h2>
+                        <p>
+                            Verificación de entregas completadas
                         </p>
                     </div>
                 </section>

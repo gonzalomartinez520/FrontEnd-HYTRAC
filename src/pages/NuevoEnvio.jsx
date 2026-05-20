@@ -264,7 +264,7 @@ export default function NuevoEnvio({ user }) {
         transportistaId: formData.transportista?.id || null,
         plantaDespachoId: formData.refineriaOrigen?.id || null,
         estacionDestinoId: formData.estacionDestino?.id || null,
-        operadorId: user?.id || null, 
+        operadorId: user?.legajo || null, 
         combustibleId: formData.combustible?.id || null,
         estadoId: 1, //PENDIENTE
         fechaCreacion: new Date().toISOString(),

@@ -55,12 +55,13 @@ export default function OperarioDashboard({ user }) {
       shipment.transportistaNombre,
     ];
 
-    return (
+    const matchesSearch =
       String(shipment.id).includes(searchText) ||
-      fields.some(field =>
-        (field || "").toLowerCase().includes(searchText)
-      )
-    );
+        fields.some(field =>
+            (field || "").toLowerCase().includes(searchText)
+          );
+
+      return shipment.confirmado && matchesSearch;
   });
 
   if (loading) {
@@ -126,10 +127,10 @@ export default function OperarioDashboard({ user }) {
                 <tr key={shipment.id}>
                       <td className="tracking" data-label="ID">{shipment.id}</td>
                   <td data-label="Origen">
-                    <strong>{shipment.plantaDespachoNombre}</strong>
+                    <strong>{shipment.plantaDespacho}</strong>
                   </td>
                   <td data-label="Destino">
-                    <strong>{shipment.estacionDestinoNombre}</strong>
+                    <strong>{shipment.estacionDestino}</strong>
                   </td>
                   <td data-label="Estado">
                     <StatusBadge estado={shipment.estado} />
