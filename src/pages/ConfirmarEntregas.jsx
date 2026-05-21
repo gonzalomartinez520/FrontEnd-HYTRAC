@@ -55,8 +55,8 @@ export default function ConfirmarEntregas( { user } ) {
         const searchText = (search || "").toLowerCase();
 
         const fields = [
-            shipment.plantaDespachoNombre,
-            shipment.estacionDestinoNombre,
+            shipment.plantaDespacho,
+            shipment.estacionDestino,
             shipment.transportistaNombre,
             shipment.combustibleTipo,
         ];
@@ -125,7 +125,7 @@ export default function ConfirmarEntregas( { user } ) {
                                     <tr>
                                         <td className="tracking">{shipment.id}</td>
                                         <td>
-                                            <strong>{shipment.plantaDespachoNombre} - {shipment.estacionDestinoNombre}</strong>
+                                            <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                                         </td>
                                         <td>
                                             {shipment.transportistaNombre} {shipment.transportistaApellido}

@@ -7,6 +7,7 @@ import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 export default function Navbar({ user, onLogout }) {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const role = String(user?.normalizedRole || user?.role || "").toUpperCase();
   const [transportistaAction, setTransportistaAction] = useState({
     title: "Confirmar Envío",
     to: "/transportista",
@@ -76,8 +77,6 @@ useEffect(() => {
     };
   }, [role, user]);
 
-  const action = role === "TRANSPORTISTA" ? transportistaAction : actionByRole[role];  const action = role === "TRANSPORTISTA" ? transportistaAction : actionByRole[role];
-
   const handleLogout = () => {
     // 🗑️ Eliminar sesión completa
     localStorage.removeItem("token");
@@ -95,8 +94,6 @@ useEffect(() => {
   const toggleMenu = () => {
     setMenuOpen((prev) => !prev);
   };
-
-  const role = String(user?.normalizedRole || user?.role || "").toUpperCase();
 
   const homeByRole = {
     TRANSPORTISTA: "/transportista",
@@ -127,7 +124,7 @@ useEffect(() => {
     },
   };
 
-  const action = actionByRole[role];
+   const action = role === "TRANSPORTISTA" ? transportistaAction : actionByRole[role];
 
   return (
     <nav className="top-nav">
