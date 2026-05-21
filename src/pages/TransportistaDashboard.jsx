@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { transportista as transportistaApi } from "../api";
+import { canNotificarEntrega, getPrimaryActionLabel, transportista as transportistaApi } from "../api";
 import "../styles/transportistaDashboard.css";
 
 const formatDate = (value) => {
@@ -59,13 +59,8 @@ export default function TransportistaDashboard({ user }) {
   );
 
   const activeEnvio = envios[0];
-  const viajeStorageKey = useMemo(
-    () => (activeEnvio?.id ? `transportista-viaje-${activeEnvio.id}` : null),
-    [activeEnvio?.id]
-  );
-  const isViajeConfirmado = Boolean(
-    viajeStorageKey && sessionStorage.getItem(viajeStorageKey) === "confirmed"
-  );
+  const shouldNotificarEntrega = useMemo(() => canNotificarEntrega(activeEnvio), [activeEnvio]);
+  const primaryActionLabel = useMemo(() => getPrimaryActionLabel(activeEnvio), [activeEnvio]);
 
   useEffect(() => {
     let isMounted = true;
@@ -82,7 +77,7 @@ export default function TransportistaDashboard({ user }) {
       setLoading(true);
 
       try {
-        const response = await transportistaApi.getEnviosAsignados(transportistaId);
+        const response = await transportistaApi.getEnviosAsignados(transportistaId, user?.legajo);
         const normalized = normalizeEnvios(response);
 
         if (isMounted) {
@@ -185,7 +180,7 @@ export default function TransportistaDashboard({ user }) {
           </div>
 
           <div className="route-status">
-            <span className="status-chip">{isViajeConfirmado ? "En curso" : "Pendiente de confirmar"}</span>
+            <span className="status-chip">{shouldNotificarEntrega ? "En curso" : "Pendiente de confirmar"}</span>
             <strong>{user?.nombre ? `${user.nombre} ${user.apellido || ""}` : "Transportista"}</strong>
             <span>Transportista ID: {transportistaId ?? "No disponible"}</span>
           </div>
@@ -239,7 +234,7 @@ export default function TransportistaDashboard({ user }) {
                 onClick={handleIniciarViaje}
                 disabled={!activeEnvio}
               >
-                {isViajeConfirmado ? "Informar descarga" : "Confirmar viaje"}
+                {primaryActionLabel}
               </button>
               <button
                 type="button"
