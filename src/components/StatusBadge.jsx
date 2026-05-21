@@ -13,8 +13,9 @@ export default function StatusBadge({ estado }) {
   const formatearEstado = (estado) => {
     if (!estado) return "";
     
-    // Mapeo especial para estados específicos
     let estadoMapeado = estado;
+
+    // 🔹 Estados existentes
     if (estadoMapeado.toUpperCase() === "EN_VIAJE") {
       estadoMapeado = "EN_CURSO";
     } else if (estadoMapeado.toUpperCase() === "CANCELADO") {
@@ -22,7 +23,16 @@ export default function StatusBadge({ estado }) {
     } else if (estadoMapeado.toUpperCase() === "ENTREGADO") {
       estadoMapeado = "ENTREGADA";
     }
-    
+
+    // 🔹 NUEVOS ESTADOS (sin romper lo demás)
+    else if (estadoMapeado.toUpperCase() === "CONFIRMADO") {
+      estadoMapeado = "CONFIRMADO";
+    } else if (estadoMapeado.toUpperCase() === "RECHAZADO") {
+      estadoMapeado = "RECHAZADO";
+    } else if (estadoMapeado.toUpperCase() === "PENDIENTE_CONFIRMAR") {
+      estadoMapeado = "PENDIENTE A CONFIRMAR";
+    }
+
     return estadoMapeado
       .replace(/_/g, " ")
       .toLowerCase()

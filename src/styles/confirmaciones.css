@@ -1,0 +1,173 @@
+.confirmaciones-layout {
+  min-height: 100vh;
+  background: #0B1120;      
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.confirmaciones-content {
+  padding: 40px 60px;
+}
+
+.confirmaciones-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.confirmaciones-header h1 {
+    font-size: 2.5rem;
+    color: #F8FAF6;
+    margin-bottom: 10px;
+}
+
+.confirmaciones-header p {
+    color: #a3b0c2;
+    font-size: 1.1rem;
+}
+
+.confirmaciones-card {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 25px;
+}
+
+/* 🔥 CARDS */
+.pendientes, .entregas, .cambios-estado {
+    display: block;
+    will-change: transform;
+
+    border-radius: 20px;
+    width: 350px;
+    cursor: pointer;
+
+    box-shadow: none;
+
+    /* Estado inicial */
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+
+    /* 👇 IMPORTANTE */
+    animation: aparecerCard 0.6s ease forwards;
+
+    /* 👇 CLAVE: estado final definido acá */
+    animation-fill-mode: forwards;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* COLORES */
+.pendientes {
+    background-color: #ff7b00;
+}
+
+.entregas {
+    background-color: #2563EB;
+}
+
+.cambios-estado {
+    background-color: #16a34a;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+/* 🖱️ HOVER (ESCALA + LEVANTA) */
+.pendientes:hover, 
+.entregas:hover, 
+.cambios-estado:hover {
+    transform: translateY(-6px) !important;
+}
+
+/* TEXTOS */
+.confirmaciones-card h2 {
+    color: #F8FAF6;
+    margin-bottom: 50px;
+}
+
+.confirmaciones-card p {
+    color: #F8FAF6;
+    margin-bottom: 20px;
+}
+
+/* 🎬 Animación entrada */
+@keyframes aparecerCard {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* 🔒 Para poder usar overlay */
+.pendientes, .entregas, .cambios-estado {
+    position: relative;
+    overflow: visible;
+}
+
+/* 🌑 Overlay oscuro suave */
+.pendientes::before,
+.entregas::before,
+.cambios-estado::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    border-radius: 20px;
+    transition: background 0.25s ease;
+}
+
+/* 🧠 Texto siempre por encima */
+.confirmaciones-card h2,
+.confirmaciones-card p {
+    position: relative;
+    z-index: 2;
+
+    /* ✨ mejora brutal de lectura */
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+/* ✨ Glow inferior */
+.pendientes::after,
+.entregas::after,
+.cambios-estado::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 20%;
+    width: 60%;
+    height: 22px;
+
+    border-radius: 50%;
+    filter: blur(12px);
+
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+/* colores por card */
+.pendientes::after {
+    background: rgba(255, 123, 0, 0.45);
+}
+
+.entregas::after {
+    background: rgba(37, 99, 235, 0.45);
+}
+
+.cambios-estado::after {
+    background: rgba(22, 163, 74, 0.45);
+}
+
+/* aparece en hover */
+.pendientes:hover::after,
+.entregas:hover::after,
+.cambios-estado:hover::after {
+    opacity: 1;
+}

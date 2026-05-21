@@ -37,6 +37,23 @@
   color: #edf8ef;
 }
 
+/* 🔹 NUEVOS ESTADOS */
+
+.badge.status-confirmado {
+  background: #2d8b57; /* mismo verde que entregada */
+  color: #edf8ef;
+}
+
+.badge.status-rechazado {
+  background: #c44444; /* mismo rojo que cancelada */
+  color: #edf8ef;
+}
+
+.badge.status-pendiente-a-confirmar {
+  background: #ff9821; /* mismo naranja que pendiente */
+  color: #edf8ef;
+}
+
 /* Media Queries for Responsive Design */
 @media (max-width: 1366px) {
   .badge {

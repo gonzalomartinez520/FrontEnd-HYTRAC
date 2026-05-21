@@ -107,8 +107,7 @@ console.log("LEGAJO DEL TOKEN:", {
 
       onLogin(userData);
 
-     localStorage.setItem("token", JSON.stringify(userData));
-     localStorage.setItem("legajo", String(legajo));
+    localStorage.setItem("token", JSON.stringify(userData));
 
     } catch (error) {
       console.error(error);

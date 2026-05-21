@@ -13,4 +13,11 @@
 export { default as envios } from './envios';
 export { default as datos } from './datos';
 export { default as apiClient } from './apiClient';   // optional
-export { default as transportista } from './transportista';
+export {
+  default as transportista,
+  canNotificarEntrega,
+  getOrdenEstado,
+  getPrimaryActionLabel,
+  isOrdenEnCurso,
+  normalizeEstado,
+} from './transportista';
