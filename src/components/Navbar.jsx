@@ -14,50 +14,8 @@ export default function Navbar({ user, onLogout }) {
     label: "Confirmar Envío",
   });
 
-  const handleLogout = () => {
-    // 🗑️ Eliminar sesión completa
-    localStorage.removeItem("token");
 
-    // 🧠 Limpiar estado en App
-    onLogout(null);
-
-    // 📱 Cerrar menú si está abierto
-    setMenuOpen(false);
-
-    // 🔄 Redirigir al login sin posibilidad de volver atrás
-    navigate("/login", { replace: true });
-  };
-
-  const toggleMenu = () => {
-    setMenuOpen((prev) => !prev);
-  };
-
-  const role = String(user?.normalizedRole || user?.role || "").toUpperCase();
-
-  const homeByRole = {
-    TRANSPORTISTA: "/transportista",
-  };
-
-  const homeTo = homeByRole[role] || "/dashboard";
-
-
-  // Definir acciones específicas por rol, SE PUEDE ESCALAR CON LOS ROLES RESTANTES.
-  const actionByRole = {
-    OPERADOR: {
-      title: "Nueva Orden",
-      to: "/nuevo-envio",
-      icon: "➕",
-      label: "Nueva Orden",
-    },
-    ADMIN: {
-      title: "Confirmar Envío",
-      to: "/confirmar-envio",
-      icon: "✅",
-      label: "Confirmar Envío",
-    },
-  };
-
-  useEffect(() => {
+useEffect(() => {
     let isMounted = true;
 
     const loadTransportistaAction = async () => {
@@ -118,7 +76,58 @@ export default function Navbar({ user, onLogout }) {
     };
   }, [role, user]);
 
-  const action = role === "TRANSPORTISTA" ? transportistaAction : actionByRole[role];
+  const action = role === "TRANSPORTISTA" ? transportistaAction : actionByRole[role];  const action = role === "TRANSPORTISTA" ? transportistaAction : actionByRole[role];
+
+  const handleLogout = () => {
+    // 🗑️ Eliminar sesión completa
+    localStorage.removeItem("token");
+
+    // 🧠 Limpiar estado en App
+    onLogout(null);
+
+    // 📱 Cerrar menú si está abierto
+    setMenuOpen(false);
+
+    // 🔄 Redirigir al login sin posibilidad de volver atrás
+    navigate("/login", { replace: true });
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen((prev) => !prev);
+  };
+
+  const role = String(user?.normalizedRole || user?.role || "").toUpperCase();
+
+  const homeByRole = {
+    TRANSPORTISTA: "/transportista",
+  };
+
+  const homeTo = homeByRole[role] || "/dashboard";
+
+
+  // Definir acciones específicas por rol, SE PUEDE ESCALAR CON LOS ROLES RESTANTES.
+  const actionByRole = {
+    OPERADOR: {
+      title: "Nueva Orden",
+      to: "/nuevo-envio",
+      icon: "➕",
+      label: "Nueva Orden",
+    },
+    ADMIN: {
+      title: "Confirmaciones",
+      to: "/confirmaciones",
+      icon: "✅",
+      label: "Confirmaciones",
+    },
+    TRANSPORTISTA: {
+      title: "Reportar Incidencia",
+      to: "/transportista/incidencia",
+      icon: "⚠️",
+      label: "Incidencia",
+    },
+  };
+
+  const action = actionByRole[role];
 
   return (
     <nav className="top-nav">
@@ -165,6 +174,21 @@ export default function Navbar({ user, onLogout }) {
               <span className="icon">{action.icon}</span> {action.label}
             </Link>
           )}
+
+          <Link
+            title="Historial de Ordenes"
+            to="/historial-operador"
+            onClick={() => setMenuOpen(false)}
+          >
+            {role == "OPERADOR" ? (
+              <>
+                <span className="route-nav-icon" aria-hidden="true">🛣️</span> Historial de Órdenes
+              </>
+            ) : (
+              null
+            
+            )}
+          </Link>
         </div>
       </div>
 
