@@ -10,6 +10,32 @@ const resolveLegajo = (transportistaId) => {
   return String(legajo);
 };
 
+export const getOrdenEstado = (orden) =>
+  orden?.estado ??
+  orden?.status ??
+  orden?.estadoOrden ??
+  orden?.estadoNombre ??
+  orden?.orderState ??
+  "";
+
+export const normalizeEstado = (estado) =>
+  String(estado || "")
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toUpperCase()
+    .replace(/\s+/g, "_");
+
+export const isOrdenEnCurso = (orden) => {
+  const estado = normalizeEstado(getOrdenEstado(orden));
+  return estado === "EN_CURSO" || estado === "EN_VIAJE" || estado === "ENCURSO";
+};
+
+export const canNotificarEntrega = (orden) => isOrdenEnCurso(orden);
+
+export const getPrimaryActionLabel = (orden) =>
+  canNotificarEntrega(orden) ? "Notificar Entrega" : "Confirmar Envío";
+
 const normalizeOrdenEnCurso = (payload) => {
   if (!payload) {
     return null;
@@ -61,6 +87,15 @@ const transportista = {
     const ordenEnCurso = await transportista.getOrdenEnCurso(transportistaId);
 
     return ordenEnCurso ? [ordenEnCurso] : [];
+  },
+
+  notificarEntrega: async (ordenId, payload = {}) => {
+    const { data } = await apiClient.put(
+      `/transportista/orden/${ordenId}/notificar-entrega`,
+      payload
+    );
+
+    return data;
   },
 };
 

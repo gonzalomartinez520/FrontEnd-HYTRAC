@@ -1,6 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { apiClient as api, envios, transportista as transportistaApi } from "@/api";
+import {
+  apiClient as api,
+  canNotificarEntrega,
+  envios,
+  getOrdenEstado,
+  getPrimaryActionLabel,
+  transportista as transportistaApi,
+} from "@/api";
 import "../styles/iniciarViaje.css";
 
 const formatDate = (value) => {
@@ -42,6 +49,14 @@ const formatEstado = (value) => {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
+const resolveUpdatedOrden = (response, ordenActual) => {
+  if (!response || typeof response !== "object" || Array.isArray(response)) {
+    return ordenActual;
+  }
+
+  return { ...ordenActual, ...response };
+};
+
 export default function IniciarViaje({ user }) {
   const navigate = useNavigate();
   const { ordenId } = useParams();
@@ -49,9 +64,30 @@ export default function IniciarViaje({ user }) {
   const [shipment, setShipment] = useState(null);
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isTripConfirmed, setIsTripConfirmed] = useState(false);
   const [feedback, setFeedback] = useState("");
   const transportistaId = user?.transportistaId ?? user?.id ?? user?.usuarioId ?? null;
+
+  const shouldNotificarEntrega = useMemo(() => canNotificarEntrega(shipment), [shipment]);
+  const primaryActionLabel = useMemo(() => getPrimaryActionLabel(shipment), [shipment]);
+
+  const reloadShipment = async () => {
+    if (!ordenId) {
+      return null;
+    }
+
+    if (transportistaId) {
+      const asignados = await transportistaApi.getEnviosAsignados(transportistaId, user?.legajo);
+      const orden = Array.isArray(asignados)
+        ? asignados.find((item) => String(item?.id) === String(ordenId)) ?? null
+        : null;
+
+      if (orden) {
+        return orden;
+      }
+    }
+
+    return envios.getById(ordenId);
+  };
 
   useEffect(() => {
     let isMounted = true;
@@ -67,24 +103,10 @@ export default function IniciarViaje({ user }) {
         setLoading(true);
         setError("");
 
-        let data = null;
-
-        if (transportistaId) {
-          const asignados = await transportistaApi.getEnviosAsignados(transportistaId, user?.legajo);
-          data = Array.isArray(asignados)
-            ? asignados.find((item) => String(item?.id) === String(ordenId)) ?? null
-            : null;
-        }
-
-        if (!data) {
-          data = await envios.getById(ordenId);
-        }
+        const data = await reloadShipment();
 
         if (isMounted) {
           setShipment(data);
-
-          const estadoActual = String(data?.estado || "").toUpperCase();
-          setIsTripConfirmed(estadoActual === "EN_VIAJE" || estadoActual === "EN_CURSO");
         }
       } catch (requestError) {
         if (isMounted) {
@@ -113,32 +135,37 @@ export default function IniciarViaje({ user }) {
       return;
     }
 
-    const nextEstado = isTripConfirmed ? "EN_CURSO" : "EN_VIAJE";
-    const nextMotivo = isTripConfirmed
-      ? "Envio informado desde el panel de transportista"
-      : "Viaje confirmado desde el panel de transportista";
-
     try {
       setIsSubmitting(true);
       setFeedback("");
 
+      if (shouldNotificarEntrega) {
+        const response = await transportistaApi.notificarEntrega(ordenId, {
+          usuario: user?.username || user?.nombre || "transportista-web",
+        });
+
+        const refreshed = await reloadShipment();
+
+        setShipment((prev) => resolveUpdatedOrden(response, refreshed || prev));
+        setFeedback("Entrega notificada correctamente.");
+        return;
+      }
+
       const payload = {
-        estado: nextEstado,
-        motivo: nextMotivo,
+        estado: "EN_VIAJE",
+        motivo: "Envio confirmado desde el panel de transportista",
         usuario: user?.username || user?.nombre || "transportista-web",
       };
 
       await api.put(`/transportista/orden/${ordenId}/iniciar-viaje`, payload);
 
-      if (!isTripConfirmed) {
-        setIsTripConfirmed(true);
-        setShipment((prev) => (prev ? { ...prev, estado: "EN_VIAJE" } : prev));
-        setFeedback("Viaje confirmado. Ahora podés informar envio.");
-        return;
-      }
+      const refreshed = await reloadShipment();
 
-      setShipment((prev) => (prev ? { ...prev, estado: "EN_CURSO" } : prev));
-      setFeedback("Envio informado correctamente.");
+      setShipment(
+        (prev) =>
+          resolveUpdatedOrden(refreshed, prev ? { ...prev, estado: "EN_CURSO" } : prev)
+      );
+      setFeedback("Envío confirmado. El estado pasó a en curso.");
     } catch (requestError) {
       setFeedback(
         requestError?.response?.data?.message ||
@@ -159,13 +186,7 @@ export default function IniciarViaje({ user }) {
     "plantaDestino",
   ]);
   const combustible = getField(shipment, ["combustibleTipo", "tipoCombustible", "combustible"]);
-  const estadoActual = getField(
-    shipment,
-    ["estado", "status", "estadoOrden", "estadoNombre", "orderState"],
-    "Sin estado"
-  );
-  const estadoActualUpper = String(estadoActual).toUpperCase();
-  const isInTrip = estadoActualUpper === "EN_VIAJE" || estadoActualUpper === "EN_CURSO";
+  const estadoActual = getOrdenEstado(shipment) || "Sin estado";
 
   return (
     <main className="iniciar-viaje-screen">
@@ -179,14 +200,18 @@ export default function IniciarViaje({ user }) {
             <p className="eyebrow">Transportista</p>
             <h1>Orden {ordenId}</h1>
             <p>
-              Confirmá el viaje desde esta pantalla y, una vez iniciado, el mismo botón cambia a informar descarga.
+              Si la orden está pendiente, confirmá el envío. Cuando el estado sea en curso, podés notificar la entrega.
             </p>
           </div>
 
           <div className="status-card">
             <span className="status-label">Estado actual</span>
             <strong>{formatEstado(estadoActual)}</strong>
-            <small>{isInTrip ? "Siguiente paso: informar envio" : "Siguiente paso: confirmar viaje"}</small>
+            <small>
+              {shouldNotificarEntrega
+                ? "Siguiente paso: notificar entrega"
+                : "Siguiente paso: confirmar envío"}
+            </small>
           </div>
         </header>
 
@@ -235,14 +260,19 @@ export default function IniciarViaje({ user }) {
             <div className="action-panel">
               <button
                 type="button"
-                className={`primary-action ${isTripConfirmed ? "primary-action--alt" : ""}`}
+                className={`primary-action ${shouldNotificarEntrega ? "primary-action--alt" : ""}`}
                 onClick={handlePrimaryAction}
                 disabled={isSubmitting}
               >
-                {isInTrip ? "Informar envio" : "Confirmar viaje"}
+                {primaryActionLabel}
               </button>
 
-              <p>{feedback || (isInTrip ? "El viaje ya está en curso. Podés informar envio cuando lo necesites." : "Presioná el botón para iniciar el viaje.")}</p>
+              <p>
+                {feedback ||
+                  (shouldNotificarEntrega
+                    ? "La orden está en curso. Presioná el botón para notificar la entrega."
+                    : "La orden está pendiente u otro estado. Presioná el botón para confirmar el envío.")}
+              </p>
             </div>
           </section>
         )}

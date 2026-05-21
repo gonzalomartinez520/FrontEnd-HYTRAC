@@ -1,11 +1,18 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { canNotificarEntrega, transportista as transportistaApi } from "../api";
 import "../styles/navbar.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 
 export default function Navbar({ user, onLogout }) {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [transportistaAction, setTransportistaAction] = useState({
+    title: "Confirmar Envío",
+    to: "/transportista",
+    icon: "✅",
+    label: "Confirmar Envío",
+  });
 
   const handleLogout = () => {
     // 🗑️ Eliminar sesión completa
@@ -48,15 +55,70 @@ export default function Navbar({ user, onLogout }) {
       icon: "✅",
       label: "Confirmar Envío",
     },
-    TRANSPORTISTA: {
-      title: "Reportar Incidencia",
-      to: "/transportista/incidencia",
-      icon: "⚠️",
-      label: "Incidencia",
-    },
   };
 
-  const action = actionByRole[role];
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadTransportistaAction = async () => {
+      if (role !== "TRANSPORTISTA") {
+        return;
+      }
+
+      const transportistaId =
+        user?.transportistaId ?? user?.id ?? user?.usuarioId ?? null;
+
+      if (!transportistaId) {
+        return;
+      }
+
+      try {
+        const orden = await transportistaApi.getOrdenEnCurso(transportistaId);
+
+        if (!orden?.id) {
+          if (isMounted) {
+            setTransportistaAction({
+              title: "Confirmar Envío",
+              to: "/transportista",
+              icon: "✅",
+              label: "Confirmar Envío",
+            });
+          }
+          return;
+        }
+
+        const shouldNotificarEntrega = canNotificarEntrega(orden);
+
+        if (isMounted) {
+          setTransportistaAction(
+            shouldNotificarEntrega
+              ? {
+                  title: "Notificar Entrega",
+                  to: `/transportista/orden/${orden.id}/iniciar-viaje`,
+                  icon: "📦",
+                  label: "Notificar Entrega",
+                }
+              : {
+                  title: "Confirmar Envío",
+                  to: `/transportista/orden/${orden.id}/iniciar-viaje`,
+                  icon: "✅",
+                  label: "Confirmar Envío",
+                }
+          );
+        }
+      } catch (requestError) {
+        console.error(requestError);
+      }
+    };
+
+    loadTransportistaAction();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [role, user]);
+
+  const action = role === "TRANSPORTISTA" ? transportistaAction : actionByRole[role];
 
   return (
     <nav className="top-nav">

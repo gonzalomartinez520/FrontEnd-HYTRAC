@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { transportista as transportistaApi } from "../api";
+import { canNotificarEntrega, getPrimaryActionLabel, transportista as transportistaApi } from "../api";
 import "../styles/transportistaDashboard.css";
 
 const formatDate = (value) => {
@@ -59,8 +59,8 @@ export default function TransportistaDashboard({ user }) {
   );
 
   const activeEnvio = envios[0];
-  const estadoActual = String(activeEnvio?.estado || "").toUpperCase();
-  const isViajeConfirmado = estadoActual === "EN_VIAJE" || estadoActual === "EN_CURSO";
+  const shouldNotificarEntrega = useMemo(() => canNotificarEntrega(activeEnvio), [activeEnvio]);
+  const primaryActionLabel = useMemo(() => getPrimaryActionLabel(activeEnvio), [activeEnvio]);
 
   useEffect(() => {
     let isMounted = true;
@@ -180,7 +180,7 @@ export default function TransportistaDashboard({ user }) {
           </div>
 
           <div className="route-status">
-            <span className="status-chip">{isViajeConfirmado ? "En curso" : "Pendiente de confirmar"}</span>
+            <span className="status-chip">{shouldNotificarEntrega ? "En curso" : "Pendiente de confirmar"}</span>
             <strong>{user?.nombre ? `${user.nombre} ${user.apellido || ""}` : "Transportista"}</strong>
             <span>Transportista ID: {transportistaId ?? "No disponible"}</span>
           </div>
@@ -234,7 +234,7 @@ export default function TransportistaDashboard({ user }) {
                 onClick={handleIniciarViaje}
                 disabled={!activeEnvio}
               >
-                {isViajeConfirmado ? "Informar descarga" : "Confirmar viaje"}
+                {primaryActionLabel}
               </button>
               <button
                 type="button"
