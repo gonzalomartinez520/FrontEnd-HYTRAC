@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import "../styles/jefeEstacionDashboard.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
-import { envios } from '@/api';
+import { envios } from '@/api'; 
+{/* aca tengo que pedir solo los envios de esta estacion */}
 
 
 export default function JefeEstacionDashboard({ user }) {
@@ -60,8 +61,9 @@ export default function JefeEstacionDashboard({ user }) {
         fields.some(field =>
             (field || "").toLowerCase().includes(searchText)
           );
-
-      return shipment.confirmado && matchesSearch;
+        {/* aca muestro solo los envios de la estacion del jefe (tengo que ver la locacion del jefe) */}
+        {/* puedo llamar todos los envios y despues los filtro por los que son de esta estacion */}
+      return shipment.confirmado && matchesSearch;   {/* aca muestro solo los envios de su estacion */}
   });
 
   if (loading) {
