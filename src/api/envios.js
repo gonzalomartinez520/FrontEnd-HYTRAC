@@ -67,6 +67,12 @@ const envios = {
     return data; // devuelve solo losdatos
   },
 
+  //Obtener un envío por su Remito
+  getOrdenByRemito: async (remito) => {
+    const { data } = await apiClient.get(`/ordenes/remito/${remito}`);
+    return data;
+  },
+
   // Obtener el historial de un envío por su id
   // Devuelve siempre un array para evitar errores al hacer .map() o similar
   getHistorial: async (id) => {

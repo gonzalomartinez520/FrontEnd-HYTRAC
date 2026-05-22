@@ -96,6 +96,11 @@
   cursor: pointer;
 }
 
+table th,
+table td {
+  text-align: center;
+}
+
 .historial-operador-detalles, .ver-motivo-rechazo, .editar-envio{
     background-color: #0B1120;
     border-radius: 8px;

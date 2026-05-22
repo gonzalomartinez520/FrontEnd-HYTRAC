@@ -110,7 +110,7 @@ export default function NuevoEnvio({ user }) {
   useEffect(() => {
     const fetchPlantasOrigen = async () => {
       if (!formData.localidadOrigen) return;
-      const data = await datos.getPlantas(formData.localidadOrigen);
+      const data = await datos.getPlantaLocalidad(formData.localidadOrigen);
       setPlantasOrigen(data);
     };
     fetchPlantasOrigen();
@@ -119,7 +119,7 @@ export default function NuevoEnvio({ user }) {
   useEffect(() => {
     const fetchEstacionesDestino = async () => {
       if (!formData.localidadDestino) return;
-      const data = await datos.getEstaciones(formData.localidadDestino);
+      const data = await datos.getEstacionLocalidad(formData.localidadDestino);
       setEstacionesDestino(data);
     };
     fetchEstacionesDestino();
