@@ -231,11 +231,11 @@ function App() {
           }
         />
 
-        {/* JEFES DE ESTACIÓN */}
+        {/* JEFE ESTACION DASHBOARD */}
         <Route
           path="/jefe-estacion"
           element={
-            <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <ProtectedRoute allowedRoles={["ADMIN" , "JEFE_ESTACION"]}>
               <JefeEstacionDashboard user={parsedUser} />
             </ProtectedRoute>
           }
