@@ -109,7 +109,7 @@ export default function ConfirmarEnvio({ user }) {
         return (
             <div className="confirmar-loading-screen">
                 <div className="confirmar-loader"></div>
-                <h2>Cargando panel HYTRAC...</h2>
+                <h2>Cargando nuevas órdenes a confirmar...</h2>
             </div>
         );
     }
@@ -119,9 +119,9 @@ export default function ConfirmarEnvio({ user }) {
             <main className="confirmar-dashboard-content">
                 <section className="confirmar-header">
                     <div>
-                        <h1>Confirmar Envío</h1>
+                        <h1>Confirmar nuevas órdenes</h1>
                         <p>
-                            Aquí podrás confirmar los envíos que has realizado. Revisa los detalles de cada envío y confirma su estado para mantener el sistema actualizado.
+                            Aquí podrás confirmar las órdenes entrantes al sistema. Revisa los detalles de cada orden y confirma su estado para mantener el sistema actualizado.
                         </p>
                     </div>
                 </section>
@@ -129,7 +129,7 @@ export default function ConfirmarEnvio({ user }) {
                 <section className="shipments-table">
                     <div className="table-header">
                         <div>
-                            <h2>Órdenes pendientes: {shipments.length}</h2>
+                            <h2>Órdenes pendientes: {filteredShipments.length}</h2>
                         </div>
 
                         <div className="confirmar-actions">

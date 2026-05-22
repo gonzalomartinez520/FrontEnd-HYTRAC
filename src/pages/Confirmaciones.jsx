@@ -26,17 +26,26 @@ export default function Confirmaciones( { user } ) {
                         </p>
                     </div>
 
-                    <div className="cambios-estado" onClick={() => navigate("/confirmar-cambio-estado")}>
+                    <div className="cambios-estado" onClick={() => navigate("/confirmar-inicio-viaje")}>
                         <h2>Inicio de viajes</h2>
                         <p>
                             Confirmación para que el transportista inicie el viaje
                         </p>
                     </div>
+                </section>
 
+                <section className="confirmaciones-card">
                     <div className="entregas" onClick={() => navigate("/confirmar-entregas")}>
                         <h2>Entregas</h2>
                         <p>
                             Verificación de entregas completadas
+                        </p>
+                    </div>
+
+                    <div className="incidencias" onClick={() => navigate("/confirmar-incidencias")}>
+                        <h2>Indicencias</h2>
+                        <p>
+                            Validación de incidencias registradas
                         </p>
                     </div>
                 </section>

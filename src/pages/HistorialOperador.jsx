@@ -64,8 +64,6 @@ export default function HistorialOperador( { user } ) {
     const [showModal, setShowModal] = useState(false);
     const [selectedShipment, setSelectedShipment] = useState(null);
 
-    const [legajoOperador, setlegajoOperador] = useState("");
-
     useEffect(() => {
       const timer = setTimeout(() => {
         const fetchData = async () => {
@@ -73,7 +71,6 @@ export default function HistorialOperador( { user } ) {
             const response = await envios.getAll();  //Cambiar o agregarle a este que me pase la ID del Operador que hizo el envio, asi lo filtro con eso en la tabla.
             console.log("Datos obtenidos de la API:", response);
             setShipments(response);
-            setlegajoOperador(localStorage.getItem("legajo"));
           } catch (error) {
             console.error("Error al obtener envíos:", error);
           } finally {
@@ -145,7 +142,7 @@ export default function HistorialOperador( { user } ) {
   useEffect(() => {
     const fetchPlantasOrigen = async () => {
       if (!formData.localidadOrigen) return;
-      const data = await datos.getPlantas(formData.localidadOrigen);
+      const data = await datos.getPlantaLocalidad(formData.localidadOrigen);
       setPlantasOrigen(data);
     };
     fetchPlantasOrigen();
@@ -154,7 +151,7 @@ export default function HistorialOperador( { user } ) {
   useEffect(() => {
     const fetchEstacionesDestino = async () => {
       if (!formData.localidadDestino) return;
-      const data = await datos.getEstaciones(formData.localidadDestino);
+      const data = await datos.getEstacionLocalidad(formData.localidadDestino);
       setEstacionesDestino(data);
     };
     fetchEstacionesDestino();
@@ -290,7 +287,7 @@ export default function HistorialOperador( { user } ) {
 
     const filteredShipments = shipments.filter((shipment) => {
         const searchText = (search || "").toLowerCase();
-        const legajoText = (legajoOperador || "").toLowerCase();
+        const legajoText = (localStorage.getItem("legajo") || "").toLowerCase();
 
         const fields = [
             shipment.plantaDespachoNombre,
@@ -465,7 +462,7 @@ export default function HistorialOperador( { user } ) {
 
                             const camionEdicionSeleccionado = camiones.find((c) => c.nombre === shipment.patenteCamion);
                             const acopladoEdicionSeleccionado = acoplados.find((a) => a.nombre === shipment.patenteAcoplado);
-                            /* const transportistaEdicionSeleccionado = transportistas.find((t) => t.cuit === shipment.transportistaCuit); */
+                            const transportistaEdicionSeleccionado = transportistas.find((t) => t.legajo === shipment.transportistaLegajo); 
                             const combustibleEdicionSeleccionado = combustibles.find((c) => c.nombre === shipment.combustible);
 
 
@@ -486,10 +483,10 @@ export default function HistorialOperador( { user } ) {
                                 patenteAcoplado: acopladoEdicionSeleccionado ? acopladoEdicionSeleccionado.patente : "",
                                 capacidad: acopladoEdicionSeleccionado ? acopladoEdicionSeleccionado.capacidadMaximaLitros : "",
                                 // Chofer
-                                transportista: null,  //EL TRANSPORTISTA SERA AUTOCOMPLETADO CUANDO ME PASEN DEL BACKEND SU CUIT.
-                                choferAsignado: "",
-                                cuitTransportista: "",
-                                tipoVinculoTransportista: "",
+                                transportista: transportistaEdicionSeleccionado || null,
+                                choferAsignado: transportistaEdicionSeleccionado ? transportistaEdicionSeleccionado.nombre : "",
+                                cuitTransportista: transportistaEdicionSeleccionado ? transportistaEdicionSeleccionado.cuit : "",
+                                tipoVinculoTransportista: transportistaEdicionSeleccionado ? transportistaEdicionSeleccionado.tipoVinculo : "",
                                 // Carga
                                 combustible: combustibleEdicionSeleccionado || null,
                                 tipoCombustible: combustibleEdicionSeleccionado ? combustibleEdicionSeleccionado.id : "",

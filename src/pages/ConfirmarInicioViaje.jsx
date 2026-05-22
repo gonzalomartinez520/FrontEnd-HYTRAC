@@ -1,11 +1,11 @@
 import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
-import "../styles/confirmarCambioEstado.css";
+import "../styles/confirmarInicioViaje.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
 import { envios } from '@/api';
 
-export default function ConfirmarCambioEstado( { user } ) {
+export default function ConfirmarInicioViaje( { user } ) {
   const navigate = useNavigate();
   
   const [loading, setLoading] = useState(true);
@@ -80,19 +80,23 @@ export default function ConfirmarCambioEstado( { user } ) {
             shipment.combustibleTipo,
         ];
 
-        return (
+        const matchesSearch =
             String(shipment.id).includes(searchText) ||
             fields.some(field =>
                 (field || "").toLowerCase().includes(searchText)
-            )
-        );
+            );
+
+        const isPendienteInicio = 
+            (shipment.estado || "").toLowerCase() === "pendiente de inicio de viaje";
+
+        return matchesSearch && isPendienteInicio;
     });
 
     if (loading) {
         return (
             <div className="confirmar-cambio-estado-loading-screen">
                 <div className="confirmar-cambio-estado-loader"></div>
-                <h2>Cargando panel HYTRAC...</h2>
+                <h2>Cargando inicio de viajes a confirmar...</h2>
             </div>
         );
     }
@@ -102,10 +106,10 @@ export default function ConfirmarCambioEstado( { user } ) {
             <main className="cambio-estado-dashboard-content">
                 <section className="cambio-estado-header">
                     <div>
-                        <h1>Confirmar Cambio de Estado</h1>
+                        <h1>Confirmar inicio de viajes</h1>
                         <p>
-                            En este panel podrás revisar y confirmar los cambios de estado realizados por los transportistas
-                            y jefe de estacion segun circunstancias excepcionales.
+                            En este panel podrás revisar y confirmar los inicios de viajes de cada orden
+                            y validar los datos para confirmar el inicio de la orden.
                         </p>
                     </div>
                 </section>
@@ -113,7 +117,7 @@ export default function ConfirmarCambioEstado( { user } ) {
                 <section className="cambio-estado-table-section">
                     <div className="cambio-estado-table-header">
                         <div>
-                            <h2>Cambios de estado pendientes a confirmar: {shipments.length}</h2>
+                            <h2>Inicio de viajes a confirmar: {filteredShipments.length}</h2>
                         </div>
 
                         <div className="confirmar-cambio-estado-buscador">
@@ -153,7 +157,7 @@ export default function ConfirmarCambioEstado( { user } ) {
                                             {shipment.transportista}
                                         </td>
                                         <td>{formatearFecha(shipment.fechaCreacion)}</td>  {/* Cambiar por fecha de cambio de estado */}
-                                        <td><StatusBadge estado={shipment.estado} /> - {/* {shipment.nuevoEstado} */}</td> {/* Estado viejo - Estado nuevo */}
+                                        <td><StatusBadge estado={shipment.estado}/></td>
                                         <td>
                                             <div className="cambio-estado-actions-table">
                                             <button

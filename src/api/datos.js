@@ -43,6 +43,22 @@ const datos = {
     getEstaciones: async () => {
         const { data } = await apiClient.get('/lugares-operativos/estaciones-servicio/get');
         return data;    
+    },
+
+    getPlantaLocalidad: async (localidadId) => {
+        const { data } = await apiClient.get(`/lugares-operativos/plantas/${localidadId}` , { params: { localidadId } });
+        return data;
+    },
+
+    getEstacionLocalidad: async (localidadId) => {
+        const { data } = await apiClient.get(`/lugares-operativos/estaciones/${localidadId}` , { params: { localidadId } });
+        return data;
+    },
+
+    //Incidencias
+    getIncidencias: async () => {
+        const { data } = await apiClient.get('/supervisor/incidencias');
+        return data;
     }
 };
 

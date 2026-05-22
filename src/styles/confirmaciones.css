@@ -38,7 +38,7 @@
 }
 
 /* 🔥 CARDS */
-.pendientes, .entregas, .cambios-estado {
+.pendientes, .entregas, .cambios-estado, .incidencias {
     display: block;
     will-change: transform;
 
@@ -64,22 +64,27 @@
 /* COLORES */
 .pendientes {
     background-color: #ff7b00;
+    margin-right: 50px;
 }
 
 .entregas {
     background-color: #2563EB;
+    margin-right: 50px;
 }
 
 .cambios-estado {
     background-color: #16a34a;
-    margin-left: 50px;
-    margin-right: 50px;
+}
+
+.incidencias {
+    background-color: red;
 }
 
 /* 🖱️ HOVER (ESCALA + LEVANTA) */
 .pendientes:hover, 
 .entregas:hover, 
-.cambios-estado:hover {
+.cambios-estado:hover,
+.incidencias:hover {
     transform: translateY(-6px) !important;
 }
 
@@ -107,7 +112,7 @@
 }
 
 /* 🔒 Para poder usar overlay */
-.pendientes, .entregas, .cambios-estado {
+.pendientes, .entregas, .cambios-estado, .incidencias{
     position: relative;
     overflow: visible;
 }
@@ -115,7 +120,8 @@
 /* 🌑 Overlay oscuro suave */
 .pendientes::before,
 .entregas::before,
-.cambios-estado::before {
+.cambios-estado::before,
+.incidencias::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -137,7 +143,8 @@
 /* ✨ Glow inferior */
 .pendientes::after,
 .entregas::after,
-.cambios-estado::after {
+.cambios-estado::after,
+.incidencias::after {
     content: "";
     position: absolute;
     bottom: -15px;
@@ -165,9 +172,14 @@
     background: rgba(22, 163, 74, 0.45);
 }
 
+.incidencias::after {
+    background: rgba(255, 0, 0, 0.45);
+}
+
 /* aparece en hover */
 .pendientes:hover::after,
 .entregas:hover::after,
-.cambios-estado:hover::after {
+.cambios-estado:hover::after,
+.incidencias:hover::after {
     opacity: 1;
 }
