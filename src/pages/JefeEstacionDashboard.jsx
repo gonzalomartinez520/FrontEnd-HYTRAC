@@ -1,12 +1,12 @@
 import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import "../styles/operarioDashboard.css";
+import "../styles/jefeEstacionDashboard.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
 import { envios } from '@/api';
 
 
-export default function OperarioDashboard({ user }) {
+export default function JefeEstacionDashboard({ user }) {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
@@ -83,8 +83,7 @@ export default function OperarioDashboard({ user }) {
           <div>
             <h1>Panel de Jefe de Estación</h1>
             <p>
-              Monitoreo en tiempo real de la flota y despachos de
-              hidrocarburos.
+              Aquí podrás ver todos los envios pendientes y confirmarlos o cancelarlos. 
             </p>
           </div>
         </section>
@@ -93,7 +92,7 @@ export default function OperarioDashboard({ user }) {
         <section className="table-card">
           <div className="table-top">
             <div>
-              <h2>Historial de Órdenes Recientes</h2>
+              <h2>Historial de Órdenes Pendientes</h2>
               <span>Órdenes encontradas: {filteredShipments.length}</span>
             </div>
 
@@ -123,6 +122,7 @@ export default function OperarioDashboard({ user }) {
             </thead>
 
             <tbody>
+              {/* aca tengo que filtrar solo los envios pendientes */}
               {filteredShipments.map((shipment) => (
                 <tr key={shipment.id}>
                       <td className="tracking" data-label="ID">{shipment.id}</td>
@@ -137,11 +137,72 @@ export default function OperarioDashboard({ user }) {
                   </td>
                   <td data-label="Chofer">{shipment.transportistaNombre} {shipment.transportistaApellido}</td>
                   <td data-label="Fecha Creación">{formatearFecha(shipment.fechaCreacion)}</td>
-                  <td data-label="Acciones">
-                    <Link to={`/ordenes/${shipment.id}`}>
-                      Detalle
-                    </Link>
-                  </td>
+
+                  {/* aca tengo que poner los 3 botones(el ojo tiene que seguir mostrando el detalle) */}
+                 <td data-label="Acciones">
+                  <div className="actions-table">
+
+                    {/* 👁️ VER DETALLE */}
+                    <button
+                      className="confirmar-detalles"
+                      onClick={() => navigate(`/ordenes/${shipment.id}`)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        width="22"
+                        fill="currentColor"
+                      >
+                        <path d="M12 6c-4.79 0-8.73 3.11-10 6 1.27 2.89 5.21 6 10 6s8.73-3.11 10-6c-1.27-2.89-5.21-6-10-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                        <circle cx="12" cy="12" r="2.5"/>
+                      </svg>
+                    </button>
+
+                    {/* ✅ CONFIRMAR */}
+                    <button
+                      className="confirmar-envio"
+                      onClick={() => console.log("Confirmar", shipment.id)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        width="22"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M20 6L9 17l-5-5" />
+                      </svg>
+                    </button>
+
+                    {/* ❌ CANCELAR */}
+                    <button
+                      className="rechazar-envio"
+                      onClick={() => console.log("Cancelar", shipment.id)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        width="22"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                      </svg>
+                    </button>
+
+                  </div>
+                </td>
+
                 </tr>
               ))}
             </tbody>
