@@ -22,6 +22,7 @@ import ConfirmarInicioViaje from "./pages/ConfirmarInicioViaje.jsx";
 import ConfirmarIncidencias from "./pages/ConfirmarIncidencias.jsx";
 import AccesoDenegado from "./pages/AccesoDenegado.jsx"; 
 import Navbar from "./components/Navbar.jsx";
+import JefeEstacionDashboard from "./pages/JefeEstacionDashboard.jsx"; //importo pantalla
 
 // 🔐 Validar expiración del token
 const isTokenValid = (tokenString) => {
@@ -237,6 +238,16 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
               <ConfirmarInicioViaje user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* JEFE ESTACION DASHBOARD */}
+        <Route
+          path="/jefe-estacion"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN" , "JEFE_ESTACION"]}>
+              <JefeEstacionDashboard user={parsedUser} />
             </ProtectedRoute>
           }
         />
