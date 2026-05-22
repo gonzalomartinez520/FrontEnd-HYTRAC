@@ -80,6 +80,7 @@ useEffect(() => {
   const handleLogout = () => {
     // 🗑️ Eliminar sesión completa
     localStorage.removeItem("token");
+    localStorage.removeItem("legajo");
 
     // 🧠 Limpiar estado en App
     onLogout(null);

@@ -18,9 +18,11 @@ import HistorialOperador from "./pages/HistorialOperador.jsx"
 import Confirmaciones from "./pages/Confirmaciones.jsx"
 import ConfirmarEnvio from "./pages/ConfirmarEnvio.jsx";
 import ConfirmarEntregas from "./pages/ConfirmarEntregas.jsx";
-import ConfirmarCambioEstado from "./pages/ConfirmarCambioEstado.jsx";
+import ConfirmarInicioViaje from "./pages/ConfirmarInicioViaje.jsx";
+import ConfirmarIncidencias from "./pages/ConfirmarIncidencias.jsx";
 import AccesoDenegado from "./pages/AccesoDenegado.jsx"; 
 import Navbar from "./components/Navbar.jsx";
+import JefeEstacionDashboard from "./pages/JefeEstacionDashboard.jsx"; //importo pantalla
 
 // 🔐 Validar expiración del token
 const isTokenValid = (tokenString) => {
@@ -220,12 +222,32 @@ function App() {
           } 
         />
 
+        {/* CONFIRMAR INCIDENCIAS */}
+        <Route
+        path="/confirmar-incidencias"
+        element={
+          <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
+            <ConfirmarIncidencias user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
         {/* CONFIRMAR CAMBIO DE ESTADO */}
         <Route
-          path="/confirmar-cambio-estado"
+          path="/confirmar-inicio-viaje"
           element={
             <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
-              <ConfirmarCambioEstado user={parsedUser} />
+              <ConfirmarInicioViaje user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* JEFE ESTACION DASHBOARD */}
+        <Route
+          path="/jefe-estacion"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN" , "JEFE_ESTACION"]}>
+              <JefeEstacionDashboard user={parsedUser} />
             </ProtectedRoute>
           }
         />

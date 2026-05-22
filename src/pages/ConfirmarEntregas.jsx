@@ -61,19 +61,25 @@ export default function ConfirmarEntregas( { user } ) {
             shipment.combustibleTipo,
         ];
 
-        return (
+        const matchesSearch =
             String(shipment.id).includes(searchText) ||
             fields.some(field =>
                 (field || "").toLowerCase().includes(searchText)
-            )
-        );
+            );
+
+        const isPendienteConfirmacion =
+            (shipment.estado || "")
+                .trim()
+                .toLowerCase() === "pendiente de confirmacion de entrega";
+
+        return matchesSearch && isPendienteConfirmacion;
     });
 
     if (loading) {
         return (
             <div className="confirmar-edicion-loading-screen">
                 <div className="confirmar-edicion-loader"></div>
-                <h2>Cargando panel HYTRAC...</h2>
+                <h2>Cargando entregas a confirmar...</h2>
             </div>
         );
     }
@@ -93,7 +99,7 @@ export default function ConfirmarEntregas( { user } ) {
                 <section className="edicion-table-section">
                     <div className="edicion-table-header">
                         <div>
-                            <h2>Ediciones pendientes a confirmar: {shipments.length}</h2>
+                            <h2>Entregas a confirmar: {filteredShipments.length}</h2>
                         </div>
 
                         <div className="confirmar-edicion-buscador">

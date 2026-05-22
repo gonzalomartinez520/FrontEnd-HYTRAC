@@ -5,58 +5,58 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.confirmar-cambio-estado-container  {
+.confirmar-incidencias-container  {
   min-height: 100vh;
   background: #0B1120;
 }
 
-.cambio-estado-dashboard-content {
+.incidencias-dashboard-content {
   padding: 40px 60px;
 }
 
-.cambio-estado-header {
+.incidencias-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 35px;
 }
 
-.cambio-estado-header h1 {
+.incidencias-header h1 {
   font-size: 2.5rem;
   color: #F8FAF6;
   margin-bottom: 10px;
 }
 
-.cambio-estado-header p {
+.incidencias-header p {
   color: #a3b0c2;
   font-size: 1.1rem;
 }
 
-.cambio-estado-table-section {
+.incidencias-table-section {
   background: #1E293B;
   border-radius: 20px;
   padding: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-.cambio-estado-table-header {
+.incidencias-table-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 25px;
 }
 
-.cambio-estado-table-header h2 {
+.incidencias-table-header h2 {
   margin-bottom: 6px;
   color: #F8FAF6;
 }
 
-.confirmar-cambio-estado-buscador {
+.confirmar-incidencias-buscador {
   display: flex;
   gap: 10px;
 }
 
-.confirmar-cambio-estado-buscador input {
+.confirmar-incidencias-buscador input {
   width: 300px;
   padding: 12px 16px;
   border-radius: 12px;
@@ -94,7 +94,7 @@ th {
   font-weight: bold;
 }
 
-.confirmar-cambio-estado-loading-screen {
+.confirmar-incidencias-loading-screen {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -105,7 +105,7 @@ th {
   color: white;
 }
 
-.confirmar-cambio-estado-loader {
+.confirmar-incidencias-loader {
   width: 70px;
   height: 70px;
   border: 6px solid rgba(255, 255, 255, 0.2);
@@ -114,7 +114,7 @@ th {
   animation: spin 1s linear infinite;
 }
 
-.cambio-estado-detalles, .confirmar-cambio-estado, .rechazar-cambio-estado {
+.incidencias-detalles, .confirmar-incidencias, .rechazar-incidencias {
     background-color: #0B1120;
     border-radius: 8px;
     font-size: large;
@@ -128,25 +128,27 @@ th {
     cursor: pointer;
 }
 
-.cambio-estado-detalles {
+.incidencias-detalles {
     color: #ff7b00;
 }
 
-.confirmar-cambio-estado {
+.confirmar-incidencias {
     color: green;
 }
 
-.rechazar-cambio-estado {
+.rechazar-incidencias {
     color: red;
 }
 
-.cambio-estado-detalles svg {
+.incidencias-detalles svg {
   width: 22px;
   height: 22px;
 }
 
-.cambio-estado-actions-table {
+.incidencias-actions-table {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 10px;
 }
 
@@ -155,7 +157,7 @@ th {
   background: #0B1120;
 }
 
-.datos-cambio-estado {
+.incidencias-estado {
   padding: 15px;
   border-left: 4px solid #ff7b00;;
   animation: fadeIn 0.5s ease-in-out;
