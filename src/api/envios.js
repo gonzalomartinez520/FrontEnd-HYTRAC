@@ -10,6 +10,7 @@
  *    const nuevoEnvio = await envios.create(payload);
 **/
 
+import ConfirmarIncidencias from '../pages/ConfirmarIncidencias';
 import apiClient from './apiClient';   // ← Updated import
 
 const envios = {
@@ -39,6 +40,18 @@ const envios = {
   // Crear un nuevo envío pero con respuesta completa
   createWithResponse: async (payload) => {
     return await apiClient.post('/ordenes/crear', payload);
+  },
+
+  // Editar un envío pendiente a confirmar
+  editarEnvio: async (id, payload) => {
+    const { data } = await apiClient.put(`/ordenes/${id}/editar`, payload);
+    return data;
+  },
+
+  // Cancelar un envio por incidencia
+  cancelarEnvio: async (id) => {
+    const { data } = await apiClient.put(`/ordenes/${id}/cancelar`)
+    return data;
   },
 
   // Confirmar un envío
@@ -83,6 +96,16 @@ const envios = {
       console.warn(`No se pudo obtener historial del envío ${id}`);
       return [];
     }
+  },
+
+  //Confirmar incidencia
+  confirmarIncidencias: async (remito) => {
+
+  },
+
+  //Rechazar incidencia
+  rechazarIncidencia: async (remito) => {
+
   },
 
 };

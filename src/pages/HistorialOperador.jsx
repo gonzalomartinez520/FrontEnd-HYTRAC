@@ -460,8 +460,8 @@ export default function HistorialOperador( { user } ) {
                             onClick={ async () => {
                             setSelectedShipment(shipment);
 
-                            const camionEdicionSeleccionado = camiones.find((c) => c.nombre === shipment.patenteCamion);
-                            const acopladoEdicionSeleccionado = acoplados.find((a) => a.nombre === shipment.patenteAcoplado);
+                            const camionEdicionSeleccionado = camiones.find((c) => c.patente === shipment.camionPatente);
+                            const acopladoEdicionSeleccionado = acoplados.find((a) => a.patente === shipment.acopladoPatente);
                             const transportistaEdicionSeleccionado = transportistas.find((t) => t.legajo === shipment.transportistaLegajo); 
                             const combustibleEdicionSeleccionado = combustibles.find((c) => c.nombre === shipment.combustible);
 
@@ -503,7 +503,6 @@ export default function HistorialOperador( { user } ) {
                                 localidadDestino: estacionDestinoEdicionSeleccionada?.localidadId || null,
                                 estacionDestino: estacionDestinoEdicionSeleccionada || null,
                             }));
-
                             setShowModal(true);
                           }}
                           >
@@ -560,14 +559,13 @@ export default function HistorialOperador( { user } ) {
             </div>
           </div>
           
-
           <div className="grid-2">
             <div>
               <div className="form-group">
                 <label>Patente Camión</label>
                 <select
                   name="patenteCamion"
-                  value={formData.patenteCamion || ""}
+                  value={formData.patenteCamion}
                   disabled={loading}
                   onChange={handleChange}
                   required
@@ -837,19 +835,40 @@ export default function HistorialOperador( { user } ) {
             className="guardar-edicion"
             onClick={async () => {
               try {
-                // 🔥 ACÁ conectás tu API
-                // await envios.update(selectedShipment.id, selectedShipment);
+                console.log(selectedShipment);
+                
+                    const payload = {
+                    numeroRemito: selectedShipment.numeroRemito,
+                    cot: selectedShipment.cot,
+                    camionId: formData.camion?.id || null,
+                    acopladoId: formData.acoplado?.id || null,
+                    transportistaId: formData.transportista?.id || null,
+                    plantaDespachoId: formData.refineriaOrigen?.id || null,
+                    estacionDestinoId: formData.estacionDestino?.id || null,
+                    operadorId: user?.id || null, 
+                    combustibleId: formData.combustible?.id || null,
+                    estadoId: 1, //PENDIENTE
+                    fechaCreacion: selectedShipment.fechaCreacion,
+                    temperaturaCarga: formData.temperatura ? parseFloat(formData.temperatura) : null,
+                    densidadCarga: formData.densidad ? parseFloat(formData.densidad) : null,
+                    litrosCargados: formData.volumenACargar ? parseFloat(formData.volumenACargar) : null,
+                    fieAdjunta: true,
+                    observaciones: "",
+                    confirmado: false,
+                };
+                console.log(payload);
+                const envioEditado = await envios.editarEnvio(selectedShipment.id, payload);
 
-                // actualizar SOLO ese envío en la tabla
-                setShipments(prev =>
-                  prev.map(s =>
-                    s.id === selectedShipment.id ? selectedShipment : s
-                  )
-                );
+                const confirmacion = window.confirm(`Envio con ID: ${selectedShipment.id} editado correctamente`);
+                console.log(envioEditado);
+
+                window.location.reload();
 
                 setShowModal(false);
               } catch (error) {
                 console.error("Error al editar envío:", error);
+                console.log("DATA:", error.response?.data);
+                console.log("STATUS:", error.response?.status);
               }
             }}
           >
