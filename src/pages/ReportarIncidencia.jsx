@@ -31,9 +31,16 @@ const getField = (envio, keys, fallback = "Pendiente") => {
   return fallback;
 };
 
+const INCIDENCIA_OPTIONS = [
+  { id: 1, label: "Demora" },
+  { id: 2, label: "Accidente" },
+  { id: 3, label: "Documentación" },
+];
+
 export default function ReportarIncidencia({ user }) {
   const navigate = useNavigate();
   const [motivo, setMotivo] = useState("");
+  const [tipoIncidenciaId, setTipoIncidenciaId] = useState("");
   const [error, setError] = useState("");
   const [sentMessage, setSentMessage] = useState("");
   const [loading, setLoading] = useState(true);
@@ -87,10 +94,15 @@ export default function ReportarIncidencia({ user }) {
 
   const activeEnvio = envios[0];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!activeEnvio) {
+      return;
+    }
+
+    if (!tipoIncidenciaId) {
+      setError("Seleccioná el tipo de incidencia para continuar.");
       return;
     }
 
@@ -100,7 +112,26 @@ export default function ReportarIncidencia({ user }) {
     }
 
     setError("");
-    setSentMessage("Incidencia registrada localmente. En una próxima etapa se enviará al backend.");
+
+    const payload = {
+      id: null,
+      orden_id: getField(activeEnvio, ["orden_id", "ordenId", "id", "envio_id"], null),
+      usuario_registro_id: user?.usuarioId ?? user?.id ?? transportistaId ?? null,
+      usuario_gestion_id: user?.usuarioGestionId ?? null,
+      tipo_incidencia_id: Number(tipoIncidenciaId),
+      descripcion: motivo.trim(),
+      fecha_incidente: new Date().toISOString(),
+    };
+
+    try {
+      // TODO: completar la ruta en el servicio antes de enviar.
+      // await transportistaApi.createIncidencia(payload);
+      setSentMessage("Incidencia registrada localmente. En una próxima etapa se enviará al backend.");
+    } catch (requestError) {
+      console.error(requestError);
+      setError("No se pudo enviar la incidencia. Intentá nuevamente.");
+      return;
+    }
 
     setTimeout(() => {
       navigate("/transportista");
@@ -152,7 +183,21 @@ export default function ReportarIncidencia({ user }) {
               </strong>
             </div>
 
-            <label htmlFor="motivo">Motivo de la incidencia</label>
+            <label htmlFor="tipo-incidencia">Tipo de incidencia</label>
+            <select
+              id="tipo-incidencia"
+              value={tipoIncidenciaId}
+              onChange={(e) => setTipoIncidenciaId(e.target.value)}
+            >
+              <option value="">Seleccioná una opción</option>
+              {INCIDENCIA_OPTIONS.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+
+            <label htmlFor="motivo">Descripción de la incidencia</label>
             <textarea
               id="motivo"
               value={motivo}

@@ -132,7 +132,24 @@
   outline: none;
 }
 
+.incidencia-form select {
+  width: 100%;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(7, 14, 26, 0.96);
+  color: #f2f6fb;
+  padding: 14px 18px;
+  font-size: 1rem;
+  line-height: 1.6;
+  outline: none;
+}
+
 .incidencia-form textarea:focus {
+  border-color: rgba(255, 146, 80, 0.65);
+  box-shadow: 0 0 0 4px rgba(255, 146, 80, 0.12);
+}
+
+.incidencia-form select:focus {
   border-color: rgba(255, 146, 80, 0.65);
   box-shadow: 0 0 0 4px rgba(255, 146, 80, 0.12);
 }
