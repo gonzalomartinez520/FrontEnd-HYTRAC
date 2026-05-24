@@ -98,14 +98,10 @@ const envios = {
     }
   },
 
-  //Confirmar incidencia
-  confirmarIncidencias: async (remito) => {
-
-  },
-
-  //Rechazar incidencia
-  rechazarIncidencia: async (remito) => {
-
+  //Confirmar y rechazar incidencia
+  gestionarIncidencia: async (remito, payload) => {
+    const { data } = await apiClient.put(`/ordenes/remito/${remito}/cancelar`, payload);
+    return data;
   },
 
 };

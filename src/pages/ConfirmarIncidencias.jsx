@@ -18,6 +18,7 @@ export default function ConfirmarIncidencias({ user }) {
       const fetchData = async () => {
         try {
           const response = await datos.getIncidencias();
+          console.log(response);
           setIncidencias(response);
 
           // 🔥 obtener remitos únicos
@@ -87,13 +88,13 @@ export default function ConfirmarIncidencias({ user }) {
     setExpandedId((prev) => (prev === id ? null : id));
   };
 
-  const confirmarIncidencia = (remito) => {
+  const confirmarIncidencia = (remito, payload) => {
     const confirmacion = window.confirm("¿Confirmar incidencia?");
 
     if (confirmacion) {
       const fetchConfirmar = async () => {
         try {
-          await envios.confirmarIncidencia(remito);
+          await envios.gestionarIncidencia(remito, payload);
           window.location.reload();
         } catch (error) {
           console.log(`Error al confirmar incidencia`);
@@ -104,13 +105,13 @@ export default function ConfirmarIncidencias({ user }) {
     }
   };
 
-  const rechazarIncidencia = (remito) => {
+  const rechazarIncidencia = (remito, payload) => {
     const confirmacion = window.confirm("¿Rechazar incidencia?");
 
     if (confirmacion) {
       const fetchRechazar = async () => {
         try {
-          await envios.rechazarIncidencia(remito);
+          await envios.gestionarIncidencia(remito, payload);
           window.location.reload();
         } catch (error) {
           console.log(`Error al rechazar incidencia`);
@@ -248,14 +249,42 @@ export default function ConfirmarIncidencias({ user }) {
 
                         <button
                           className="confirmar-incidencias"
-                          onClick={() => confirmarIncidencia(shipment.numeroRemito)}
+                          onClick={async () => {
+                            try {
+                              const payload = {
+                                legajo: localStorage.getItem("legajo"),
+                                motivo: null,
+                              };
+                              console.log(payload);
+                              const incidencia = confirmarIncidencia(shipment.numeroRemito, payload);
+
+                            } catch (error) {
+                              console.error("Error al confirmar incidencia:", error);
+                              console.log("DATA:", error.response?.data);
+                              console.log("STATUS:", error.response?.status);
+                            }
+                          }}
                         >
                           ✔
                         </button>
 
                         <button 
                           className="rechazar-incidencias"
-                          onClick={() => rechazarIncidencia(shipment.numeroRemito)}
+                          onClick={async () => {
+                            try {
+                              const payload = {
+                                legajo: localStorage.getItem("legajo"),
+                                motivo: "RECHAZADO",
+                              };
+                              console.log(payload);
+                              const incidencia = rechazarIncidencia(shipment.numeroRemito, payload);
+
+                            } catch (error) {
+                              console.error("Error al confirmar incidencia:", error);
+                              console.log("DATA:", error.response?.data);
+                              console.log("STATUS:", error.response?.status);
+                            }
+                          }}
                         >
                           ✖
                         </button>
