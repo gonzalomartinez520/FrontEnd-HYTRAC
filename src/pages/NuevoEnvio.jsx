@@ -130,7 +130,7 @@ export default function NuevoEnvio({ user }) {
     fetchEstacionesDestino();
   }, [formData.localidadDestino]);
 
-  // Dynamic Route Evaluator Hook
+  // Dynamic Route Evaluator Hook using Centralized API Client
   useEffect(() => {
     const fetchRoute = async () => {
       const origenId = formData.refineriaOrigen?.id;
@@ -145,10 +145,9 @@ export default function NuevoEnvio({ user }) {
 
       try {
         setIsRouteLoading(true); // Turn loading animation ON
-        const response = await fetch(`https://hytrac.dmelhado.com/api/rutas/${origenId}/${destinoId}`);
-        if (!response.ok) throw new Error("Could not parse routing points from server connection");
         
-        const data = await response.json();
+        // --- FIXED: Using Axios client module instead of hardcoded raw fetch ---
+        const data = await datos.getRuta(origenId, destinoId);
         
         setRouteData({
           rutaId: data.rutaId,
@@ -158,6 +157,8 @@ export default function NuevoEnvio({ user }) {
         });
       } catch (err) {
         console.error("Routing resolution layer engine crash: ", err);
+        // Safely clear out UI metrics on structural API errors
+        setRouteData({ rutaId: null, geometria: null, distanciaKm: null, tiempoEstimadoHoras: null });
       } finally {
         setIsRouteLoading(false); // Turn loading animation OFF
       }
@@ -237,7 +238,7 @@ export default function NuevoEnvio({ user }) {
         combustible: combustibleSeleccionado,
         tipoCombustible: combustibleSeleccionado ? combustibleSeleccionado.id : "",
         codigoOnu: combustibleSeleccionado ? combustibleSeleccionado.numeroOnu : "",
-        temperatura: combustibleSeleccionado ? combustibleSeleccionado.temperaturaReferencia: "",
+        temperatura: combustibleSeleccionado ? combustibleSeleccionado.temperaturaReferencia : "",
         densidad: combustibleSeleccionado ? combustibleSeleccionado.densidad : "",
         riesgo: combustibleSeleccionado ? combustibleSeleccionado.claseRiesgo : "",
       }));
@@ -271,7 +272,7 @@ export default function NuevoEnvio({ user }) {
         refineriaOrigen: refineriaSeleccionada || null,
       }));
     }
-      else {
+    else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
     setError("");
@@ -298,7 +299,7 @@ export default function NuevoEnvio({ user }) {
         transportistaId: formData.transportista?.id || null,
         plantaDespachoId: formData.refineriaOrigen?.id || null,
         estacionDestinoId: formData.estacionDestino?.id || null,
-        operadorId: user?.id || null, 
+        operadorId: user?.id || null,
         combustibleId: formData.combustible?.id || null,
         rutaId: routeData.rutaId,
         estadoId: 1, //PENDIENTE
@@ -349,13 +350,13 @@ export default function NuevoEnvio({ user }) {
             <div className="section-text">
               <h2>
                 <svg className="icon" viewBox="0 0 24 24">
-                  <path d="M3 6h11v8H3zM14 9h3l3 3v2h-6zM7 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+                  <path d="M3 6h11v8H3zM14 9h3l3 3v2h-6zM7 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
                 </svg>
                 Unidad & Chofer</h2>
               <p>Datos del vehículo y verificación documental.</p>
             </div>
           </div>
-          
+
 
           <div className="grid-2">
             <div>
@@ -433,7 +434,7 @@ export default function NuevoEnvio({ user }) {
             <div className="section-text">
               <h2>
                 <svg className="icon" viewBox="0 0 24 24">
-                  <path d="M7 2h10v2H7zM7 20h10v2H7zM5 4h14v16H5zM5 10h14M5 14h14"/>
+                  <path d="M7 2h10v2H7zM7 20h10v2H7zM5 4h14v16H5zM5 10h14M5 14h14" />
                 </svg>
                 Especificaciones de la carga</h2>
               <p>Combustible, código de transporte peligroso y condiciones.</p>
@@ -487,7 +488,7 @@ export default function NuevoEnvio({ user }) {
             <div className="section-text">
               <h2>
                 <svg className="icon" viewBox="0 0 24 24">
-                  <path d="M6 2h9l5 5v15H6zM15 2v6h6M8 13h8M8 17h8M8 9h4"/>
+                  <path d="M6 2h9l5 5v15H6zM15 2v6h6M8 13h8M8 17h8M8 9h4" />
                 </svg>
                 Logistica & Documentación</h2>
               <p>Origen, destino y comprobantes fiscales.</p>
@@ -564,7 +565,7 @@ export default function NuevoEnvio({ user }) {
           <div className="map-integration-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "20px", marginBottom: "20px" }}>
             <div style={{ position: "relative" }}>
               <RouteMap geometry={routeData.geometria} />
-              
+
               {/* Optional: Simple subtle blur layer over the map during live fetch */}
               {isRouteLoading && (
                 <div style={{
@@ -578,9 +579,9 @@ export default function NuevoEnvio({ user }) {
                 }} />
               )}
             </div>
-            
+
             <div className="route-telemetry-panel" style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px", borderRadius: "8px", background: "#1a2332", color: "#fff", position: "relative" }}>
-              
+
               {/* LIVE REFINERY BUFFERING INDICATOR */}
               {isRouteLoading ? (
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "12px", height: "100%" }}>
@@ -614,7 +615,7 @@ export default function NuevoEnvio({ user }) {
                   <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
                     <strong style={{ color: "#fff" }}>Tiempo Estimado:</strong> {routeData.tiempoEstimadoHoras ? formatRouteTime(routeData.tiempoEstimadoHoras) : "--"}
                   </p>
-                  
+
                   {(!formData.refineriaOrigen || !formData.estacionDestino) && (
                     <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "12px", fontStyle: "italic" }}>
                       Seleccione refinería de origen y estación de destino para calcular la ruta.

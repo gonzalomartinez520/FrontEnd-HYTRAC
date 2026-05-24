@@ -59,7 +59,12 @@ const datos = {
     getIncidencias: async () => {
         const { data } = await apiClient.get('/supervisor/incidencias');
         return data;
-    }
+    },
+
+    getRuta: async (origenId, destinoId) => {
+        const { data } = await apiClient.get(`/rutas/${origenId}/${destinoId}`);
+        return data;
+    },
 };
 
 export default datos;
