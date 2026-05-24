@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 import "../styles/nuevoEnvio.css";
 import { envios } from '@/api';
 import { datos } from '@/api';
+import RouteMap from "../components/RouteMap";
 
 export default function NuevoEnvio({ user }) {
   const navigate = useNavigate();
-
 
   const [combustibles, setCombustibles] = useState([]);
   const [provincias, setProvincias] = useState([]);
@@ -23,8 +23,18 @@ export default function NuevoEnvio({ user }) {
   const [success, setSuccess] = useState("");
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
+  // --- NEW STATE FOR ROUTE LOADING ---
+  const [isRouteLoading, setIsRouteLoading] = useState(false);
+
+  // Initializing state structured exactly to your API layout
+  const [routeData, setRouteData] = useState({
+    rutaId: null,
+    geometria: null,
+    distanciaKm: null,
+    tiempoEstimadoHoras: null
+  });
+
   const [formData, setFormData] = useState({
-    // Vehículo
     camion: null,
     patenteCamion: "",
     marcaCamion: "",
@@ -33,12 +43,10 @@ export default function NuevoEnvio({ user }) {
     acoplado: null,
     patenteAcoplado: "",
     capacidad: "",
-    // Chofer
     transportista: null,
     choferAsignado: "",
     cuitTransportista: "",
     tipoVinculoTransportista: "",
-    // Carga
     combustible: null,
     tipoCombustible: null,
     codigoOnu: "",
@@ -47,7 +55,6 @@ export default function NuevoEnvio({ user }) {
     riesgo: "",
     volumenACargar: "",
     peso: "",
-    // Logística
     provinciaOrigen: null,
     localidadOrigen: null,
     refineriaOrigen: null,
@@ -59,34 +66,32 @@ export default function NuevoEnvio({ user }) {
   });
 
   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const [
-        combustiblesData,
-        provinciasData,
-        camionesData,
-        acopladosData,
-        transportistasData,
-      ] = await Promise.all([
-        datos.getCombustibles(),
-        datos.getProvincias(),
-        datos.getCamiones(),
-        datos.getAcoplados(),
-        datos.getTransportistas(),
-      ]);
+    const fetchData = async () => {
+      try {
+        const [
+          combustiblesData,
+          provinciasData,
+          camionesData,
+          acopladosData,
+          transportistasData,
+        ] = await Promise.all([
+          datos.getCombustibles(),
+          datos.getProvincias(),
+          datos.getCamiones(),
+          datos.getAcoplados(),
+          datos.getTransportistas(),
+        ]);
 
-      setCombustibles(combustiblesData);
-      setProvincias(provinciasData);
-      setCamiones(camionesData);
-      setAcoplados(acopladosData);
-      setTransportistas(transportistasData);
-
-    } catch (error) {
-      console.error("Error cargando datos:", error);
-    }
-  };
-
-  fetchData();
+        setCombustibles(combustiblesData);
+        setProvincias(provinciasData);
+        setCamiones(camionesData);
+        setAcoplados(acopladosData);
+        setTransportistas(transportistasData);
+      } catch (error) {
+        console.error("Error cargando datos:", error);
+      }
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -124,6 +129,50 @@ export default function NuevoEnvio({ user }) {
     };
     fetchEstacionesDestino();
   }, [formData.localidadDestino]);
+
+  // Dynamic Route Evaluator Hook
+  useEffect(() => {
+    const fetchRoute = async () => {
+      const origenId = formData.refineriaOrigen?.id;
+      const destinoId = formData.estacionDestino?.id;
+
+      // If either location is removed/reset, immediately wipe out the route data
+      if (!origenId || !destinoId) {
+        setRouteData({ rutaId: null, geometria: null, distanciaKm: null, tiempoEstimadoHoras: null });
+        setIsRouteLoading(false);
+        return;
+      }
+
+      try {
+        setIsRouteLoading(true); // Turn loading animation ON
+        const response = await fetch(`https://hytrac.dmelhado.com/api/rutas/${origenId}/${destinoId}`);
+        if (!response.ok) throw new Error("Could not parse routing points from server connection");
+        
+        const data = await response.json();
+        
+        setRouteData({
+          rutaId: data.rutaId,
+          geometria: data.geometria,
+          distanciaKm: data.distanciaKm,
+          tiempoEstimadoHoras: data.tiempoEstimadoHoras
+        });
+      } catch (err) {
+        console.error("Routing resolution layer engine crash: ", err);
+      } finally {
+        setIsRouteLoading(false); // Turn loading animation OFF
+      }
+    };
+
+    fetchRoute();
+  }, [formData.refineriaOrigen, formData.estacionDestino]);
+
+  // Helper function to turn decimal hours (e.g. 5.159) into standard tracking formats (5h 09m)
+  const formatRouteTime = (decimalHours) => {
+    if (!decimalHours || isNaN(decimalHours)) return "Puntos incompletos";
+    const hours = Math.floor(decimalHours);
+    const minutes = Math.round((decimalHours - hours) * 60);
+    return `${hours}h ${minutes.toString().padStart(2, "0")}m`;
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -228,20 +277,6 @@ export default function NuevoEnvio({ user }) {
     setError("");
   };
 
-
-/*   const isFutureDate = (dateString) => {
-    if (!dateString) return false;
-    const date = new Date(dateString);
-    return !Number.isNaN(date.getTime()) && date > new Date();
-  };
-
-  const documentStatus = (dateString) => {
-    if (!dateString) return "Sin fecha";
-    return isFutureDate(dateString) ? "En regla" : "Vencido";
-  };
-
-  const booleanStatus = (value) => (value ? "Correcto" : "Incorrecto"); */
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -255,7 +290,6 @@ export default function NuevoEnvio({ user }) {
     }
 
     try {
-
       const payload = {
         numeroRemito: formData.remito,
         cot: formData.cot,
@@ -266,6 +300,7 @@ export default function NuevoEnvio({ user }) {
         estacionDestinoId: formData.estacionDestino?.id || null,
         operadorId: user?.id || null, 
         combustibleId: formData.combustible?.id || null,
+        rutaId: routeData.rutaId,
         estadoId: 1, //PENDIENTE
         fechaCreacion: new Date().toISOString(),
         fechaSalidaPlanta: null,
@@ -277,11 +312,9 @@ export default function NuevoEnvio({ user }) {
         fieAdjunta: true,
         observaciones: "",
         confirmado: false,
-        // Add any other missing fields your backend expects
       };
 
-      const newEnvio = await envios.create(payload);   // ← Returns the created object
-
+      const newEnvio = await envios.create(payload);
       setSuccess(`¡Envío creado exitosamente! Tracking ID: ${newEnvio.id}`);
 
       setTimeout(() => {
@@ -290,12 +323,7 @@ export default function NuevoEnvio({ user }) {
 
     } catch (err) {
       console.error(err);
-      // Improved error handling
-      const errorMessage =
-        err?.response?.data?.message ||
-        err?.message ||
-        "Error al crear el envío.";
-
+      const errorMessage = err?.response?.data?.message || err?.message || "Error al crear el envío.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -318,7 +346,6 @@ export default function NuevoEnvio({ user }) {
         <section className="form-section">
           <div className="section-title">
             <span className="step">01</span>
-
             <div className="section-text">
               <h2>
                 <svg className="icon" viewBox="0 0 24 24">
@@ -397,62 +424,12 @@ export default function NuevoEnvio({ user }) {
               <input type="text" value={formData.tipoVinculoTransportista} disabled />
             </div>
           </div>
-
-{/*           {formData.tipoVinculoTransportista === "Monotributista" && (
-            <section className="transportista-documents">
-              <div className="section-title section-title--transportista">
-                <span className="step">01B</span>
-                <div className="section-text">
-                  <h2>
-                    <svg className="icon" viewBox="0 0 24 24">
-                      <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.33 0-10 1.667-10 5v3h20v-3c0-3.333-6.67-5-10-5z"/>
-                    </svg>
-                    Documentación del transportista
-                  </h2>
-                  <p>Verificación de fechas y documentos obligatorios.</p>
-                </div>
-              </div>
-
-              <div className="grid-3 transportista-documents-grid">
-                <div className={`document-card ${documentStatus(formData.licenciaConducir) === "En regla" ? "document-card--green" : "document-card--red"}`}>
-                  <div className="document-card__label">Licencia de conducir</div>
-                  <div className="document-card__status">{documentStatus(formData.licenciaConducir)}</div>
-                </div>
-
-                <div className={`document-card ${documentStatus(formData.examenPsicofisico) === "En regla" ? "document-card--green" : "document-card--red"}`}>
-                  <div className="document-card__label">Examen psicofísico</div>
-                  <div className="document-card__status">{documentStatus(formData.examenPsicofisico)}</div>
-                </div>
-
-                <div className={`document-card ${documentStatus(formData.vtv) === "En regla" ? "document-card--green" : "document-card--red"}`}>
-                  <div className="document-card__label">VTV</div>
-                  <div className="document-card__status">{documentStatus(formData.vtv)}</div>
-                </div>
-
-                <div className={`document-card ${booleanStatus(formData.seguroCargaPeligrosa) === "Correcto" ? "document-card--green" : "document-card--red"}`}>
-                  <div className="document-card__label">Seguro carga peligrosa</div>
-                  <div className="document-card__status">{booleanStatus(formData.seguroCargaPeligrosa)}</div>
-                </div>
-
-                <div className={`document-card ${booleanStatus(formData.art) === "Correcto" ? "document-card--green" : "document-card--red"}`}>
-                  <div className="document-card__label">ART</div>
-                  <div className="document-card__status">{booleanStatus(formData.art)}</div>
-                </div>
-
-                <div className={`document-card ${booleanStatus(formData.certificadoAntecedentesPenales) === "Correcto" ? "document-card--green" : "document-card--red"}`}>
-                  <div className="document-card__label">Certificado antecedentes</div>
-                  <div className="document-card__status">{booleanStatus(formData.certificadoAntecedentesPenales)}</div>
-                </div>
-              </div>
-            </section>
-          )} */}
         </section>
 
         {/* 02 - Especificaciones de la carga */}
         <section className="form-section">
           <div className="section-title">
             <span className="step">02</span>
-
             <div className="section-text">
               <h2>
                 <svg className="icon" viewBox="0 0 24 24">
@@ -507,7 +484,6 @@ export default function NuevoEnvio({ user }) {
         <section className="form-section">
           <div className="section-title">
             <span className="step">03</span>
-
             <div className="section-text">
               <h2>
                 <svg className="icon" viewBox="0 0 24 24">
@@ -584,6 +560,71 @@ export default function NuevoEnvio({ user }) {
             </div>
           </div>
 
+          {/* PERSISTENT MAP GRID BLOCK WITH UPDATED LOADING STATE */}
+          <div className="map-integration-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "20px", marginBottom: "20px" }}>
+            <div style={{ position: "relative" }}>
+              <RouteMap geometry={routeData.geometria} />
+              
+              {/* Optional: Simple subtle blur layer over the map during live fetch */}
+              {isRouteLoading && (
+                <div style={{
+                  position: "absolute",
+                  top: 0, left: 0, right: 0, bottom: 0,
+                  backgroundColor: "rgba(15, 23, 42, 0.2)",
+                  backdropFilter: "blur(2px)",
+                  borderRadius: "8px",
+                  zIndex: 400,
+                  pointerEvents: "none"
+                }} />
+              )}
+            </div>
+            
+            <div className="route-telemetry-panel" style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px", borderRadius: "8px", background: "#1a2332", color: "#fff", position: "relative" }}>
+              
+              {/* LIVE REFINERY BUFFERING INDICATOR */}
+              {isRouteLoading ? (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "12px", height: "100%" }}>
+                  {/* CSS Inline Animated Spinner */}
+                  <div style={{
+                    width: "36px",
+                    height: "36px",
+                    border: "3px solid rgba(59, 130, 246, 0.2)",
+                    borderTop: "3px solid #3b82f6",
+                    borderRadius: "50%",
+                    animation: "spin 0.8s linear infinite"
+                  }} />
+                  <style>{`
+                    @keyframes spin {
+                      0% { transform: rotate(0deg); }
+                      100% { transform: rotate(360deg); }
+                    }
+                  `}</style>
+                  <span style={{ fontSize: "14px", color: "#94a3b8", fontWeight: "500", letterSpacing: "0.3px" }}>
+                    Calculando ruta óptima...
+                  </span>
+                </div>
+              ) : (
+                <>
+                  <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", color: "#3b82f6", letterSpacing: "0.5px", textTransform: "uppercase" }}>
+                    Información de Ruta Estimada
+                  </h3>
+                  <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
+                    <strong style={{ color: "#fff" }}>Distancia Total:</strong> {routeData.distanciaKm ? `${Number(routeData.distanciaKm).toFixed(1)} km` : "--"}
+                  </p>
+                  <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
+                    <strong style={{ color: "#fff" }}>Tiempo Estimado:</strong> {routeData.tiempoEstimadoHoras ? formatRouteTime(routeData.tiempoEstimadoHoras) : "--"}
+                  </p>
+                  
+                  {(!formData.refineriaOrigen || !formData.estacionDestino) && (
+                    <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "12px", fontStyle: "italic" }}>
+                      Seleccione refinería de origen y estación de destino para calcular la ruta.
+                    </span>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+
           <div className="grid-2 remito-cot-centered">
             <div className="form-group">
               <label>Remito #</label>
@@ -619,7 +660,7 @@ export default function NuevoEnvio({ user }) {
 
         <div className="form-actions">
           <button type="button" className="btn-cancel" onClick={() => navigate("/dashboard")} disabled={loading}>Cancelar</button>
-          <button type="submit" className="btn-submit" disabled={loading}>{loading ? "Procesando..." : "Crear Envío"}</button>
+          <button type="submit" className="btn-submit" disabled={loading || isRouteLoading}>{loading ? "Procesando..." : "Crear Envío"}</button>
         </div>
       </form>
     </div>
