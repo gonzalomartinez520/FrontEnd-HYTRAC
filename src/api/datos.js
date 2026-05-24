@@ -61,10 +61,16 @@ const datos = {
         return data;
     },
 
-    getRuta: async (origenId, destinoId) => {
-        const { data } = await apiClient.get(`/rutas/${origenId}/${destinoId}`);
+    //Rutas
+    calculateRuta: async (origenId, destinoId) => {
+        const { data } = await apiClient.get(`/rutas/calculate/${origenId}/${destinoId}`);
         return data;
     },
+
+    getRuta: async (rutaId) => {
+        const { data } = await apiClient.get(`/rutas/get/${rutaId}`);
+        return data;
+    }
 };
 
 export default datos;

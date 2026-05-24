@@ -69,14 +69,19 @@ export default function RouteMap({ geometry }) {
     }
 
     return (
-        <div style={{ height: "350px", width: "100%", borderRadius: "8px", overflow: "hidden", border: "1px solid #cbd5e1" }}>
+        <div className="hytrac-map-fluid-canvas" style={{
+            height: "100%",
+            width: "100%",
+            borderRadius: "8px",
+            overflow: "hidden",
+            border: "1px solid #cbd5e1"
+        }}>
             <MapContainer
                 center={defaultCenter}
                 zoom={defaultZoom}
                 style={{ height: "100%", width: "100%" }}
                 zoomControl={true}
             >
-                {/* REVERTED BACK TO LIGHT MODE ORIGINAL MAP TILES */}
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -87,7 +92,7 @@ export default function RouteMap({ geometry }) {
                         key={JSON.stringify(geometry)}
                         data={geojsonLayer}
                         style={{
-                            color: "#2563eb", // Deep professional blue line
+                            color: "#2563eb",
                             weight: 5,
                             opacity: 0.85,
                         }}
@@ -96,13 +101,8 @@ export default function RouteMap({ geometry }) {
 
                 {mapBounds && <ChangeMapView bounds={mapBounds} />}
 
-                {startCoords && (
-                    <Marker position={startCoords} icon={startIcon} />
-                )}
-
-                {finishCoords && (
-                    <Marker position={finishCoords} icon={finishIcon} />
-                )}
+                {startCoords && <Marker position={startCoords} icon={startIcon} />}
+                {finishCoords && <Marker position={finishCoords} icon={finishIcon} />}
             </MapContainer>
         </div>
     );

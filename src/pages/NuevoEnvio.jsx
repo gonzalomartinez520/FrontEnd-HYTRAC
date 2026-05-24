@@ -147,7 +147,7 @@ export default function NuevoEnvio({ user }) {
         setIsRouteLoading(true); // Turn loading animation ON
         
         // --- FIXED: Using Axios client module instead of hardcoded raw fetch ---
-        const data = await datos.getRuta(origenId, destinoId);
+        const data = await datos.calculateRuta(origenId, destinoId);
         
         setRouteData({
           rutaId: data.rutaId,
