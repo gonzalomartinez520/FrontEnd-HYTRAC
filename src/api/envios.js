@@ -10,7 +10,6 @@
  *    const nuevoEnvio = await envios.create(payload);
 **/
 
-import ConfirmarIncidencias from '../pages/ConfirmarIncidencias';
 import apiClient from './apiClient';   // ← Updated import
 
 const envios = {
@@ -70,6 +69,11 @@ const envios = {
   confirmarInicioViaje: async (id) => {
     const {data} = await apiClient.put(`/supervisor/ordenes/${id}/aprobar-inicio`)
     return data;
+  },
+
+  //Rechazar inicio de viaje
+  rechazarInicioViaje: async (id) => {
+    
   },
 
   // Obtener un envío por su ID
