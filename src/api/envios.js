@@ -66,13 +66,11 @@ const envios = {
     return data;
   },
 
-  //Confirmar cambio de estado
-  confirmarEstadoNuevo: async (id) => {
+  //Confirmar inicio de viaje
+  confirmarInicioViaje: async (id) => {
     const {data} = await apiClient.put(`/supervisor/ordenes/${id}/aprobar-inicio`)
     return data;
   },
-
-  //Rechazar cambio de estado
 
   // Obtener un envío por su ID
   getById: async (id) => {
