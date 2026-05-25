@@ -64,7 +64,52 @@ const normalizeOrdenEnCurso = (payload) => {
   return payload;
 };
 
+const normalizeOrdenPendiente = (payload) => {
+  if (!payload) {
+    return null;
+  }
+
+  if (Array.isArray(payload)) {
+    return payload[0] ?? null;
+  }
+
+  if (Array.isArray(payload?.envios)) {
+    return payload.envios[0] ?? null;
+  }
+
+  if (Array.isArray(payload?.data)) {
+    return payload.data[0] ?? null;
+  }
+
+  if (Array.isArray(payload?.items)) {
+    return payload.items[0] ?? null;
+  }
+
+  if (payload?.envio || payload?.shipment) {
+    return payload.envio || payload.shipment;
+  }
+
+  return payload;
+};
+
 const transportista = {
+  getOrdenPendiente: async (transportistaId) => {
+    const resolvedLegajo = resolveLegajo(transportistaId);
+
+    try {
+      if (!resolvedLegajo) {
+        return null;
+      }
+
+      const { data } = await apiClient.get(`/transportista/${resolvedLegajo}/orden`);
+
+      return normalizeOrdenPendiente(data);
+    } catch (error) {
+      console.warn("No se pudo obtener la orden pendiente del transportista:", error?.response?.data || error.message);
+    }
+
+    return null;
+  },
   getOrdenEnCurso: async (transportistaId) => {
     const resolvedLegajo = resolveLegajo(transportistaId);
 
@@ -84,9 +129,16 @@ const transportista = {
   },
 
   getEnviosAsignados: async (transportistaId) => {
-    const ordenEnCurso = await transportista.getOrdenEnCurso(transportistaId);
+    const [ordenPendiente, ordenEnCurso] = await Promise.all([
+      transportista.getOrdenPendiente(transportistaId),
+      transportista.getOrdenEnCurso(transportistaId),
+    ]);
 
-    return ordenEnCurso ? [ordenEnCurso] : [];
+    if (ordenEnCurso) {
+      return [ordenEnCurso];
+    }
+
+    return ordenPendiente ? [ordenPendiente] : [];
   },
 
   notificarEntrega: async (ordenId, payload = {}) => {
@@ -99,8 +151,7 @@ const transportista = {
   },
 
   createIncidencia: async (payload) => {
-    // TODO: reemplazar la ruta cuando el backend este listo.
-    const { data } = await apiClient.post("/pendiente/incidencias", payload);
+    const { data } = await apiClient.post("/api/transportistas/incidencia", payload);
 
     return data;
   },
