@@ -12,6 +12,10 @@ export default function ConfirmarInicioViaje( { user } ) {
   const [shipments, setShipments] = useState([]);
   const [search, setSearch] = useState("");
   const [expandedId, setExpandedId] = useState(null);
+
+  const [showModal, setShowModal] = useState(false);
+  const [motivo, setMotivo] = useState("");
+  const [selectedShipmentId, setSelectedShipmentId] = useState(null);
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -38,22 +42,40 @@ export default function ConfirmarInicioViaje( { user } ) {
         setExpandedId((prev) => (prev === id ? null : id));
     };
 
-    const confirmarEstadoNuevo = (id) => {
-        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar cambio de estado?`);
+    const confirmarInicioViaje = (id) => {
+        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar el inicio del viaje?`);
 
         if (confirmacion) {
             const fetchConfirmar = async () => {
                 try {
-                    await envios.confirmarEstadoNuevo(id);
-                    console.log(`Cambio de estado confirmado con ID: ${id}`);
+                    await envios.confirmarInicioViaje(id);
+                    console.log(`Inicio de viaje confirmado con ID: ${id}`);
 
                     window.location.reload();
                 } catch (error) {
-                    console.log(`Error de cambio de estado con ID: ${id}`)
+                    console.log(`Error de inicio de viaje con ID: ${id}`)
                 }
             };
 
             fetchConfirmar();
+        }
+    };
+    //Despues ver si a la notificacion se hace desde Backend o se manda a esta API para que lo mande al ROL correspondiente.
+    const rechazarInicioViaje = (id) => {
+        const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar el inicio del viaje?`);
+
+        if(confirmacion) {
+            const fetchRechazar = async () => {
+                try {
+                    await envios.rechazarInicioViaje(id);
+                    console.log(`Inicio de viaje rechazado con ID: ${id}`);
+
+                    window.location.reload();
+                } catch {
+                    console.log(`Error de rechazo de inicio de viaje con ID: ${id}`)
+                }
+            };
+            fetchRechazar();
         }
     };
 
@@ -197,7 +219,7 @@ export default function ConfirmarInicioViaje( { user } ) {
                                                     )}
                                             </button>
 
-                                            <button className="confirmar-cambio-estado" onClick={() => confirmarEstadoNuevo(shipment.id)}> {/* Boton de confirmar cambio de estado, luego agregar funcion */}
+                                            <button className="confirmar-cambio-estado" onClick={() => confirmarInicioViaje(shipment.id)}> {/* Boton de confirmar cambio de estado, luego agregar funcion */}
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"
@@ -213,7 +235,10 @@ export default function ConfirmarInicioViaje( { user } ) {
                                                 </svg>
                                             </button>
                                             
-                                            <button className="rechazar-cambio-estado"> {/* Boton de rechazar cambio de estado, luego agregar funcion */}
+                                            <button className="rechazar-cambio-estado" onClick={() => {
+                                                    setSelectedShipmentId(shipment.id);
+                                                    setShowModal(true);
+                                                }}> 
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"
@@ -255,6 +280,42 @@ export default function ConfirmarInicioViaje( { user } ) {
                     </table>
                 </section>
             </main>
+            {showModal && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                    <h2>Motivo de rechazo</h2>
+
+                    <textarea
+                        placeholder="Ingrese el motivo..."
+                        value={motivo}
+                        onChange={(e) => setMotivo(e.target.value)}
+                    />
+
+                    <div className="modal-buttons">
+                        <button
+                        className="confirmar"
+                        onClick={() => {
+                            rechazarInicioViaje(selectedShipmentId, motivo);
+                            setShowModal(false);
+                            setMotivo("");
+                        }}
+                        >
+                        Confirmar
+                        </button>
+
+                        <button
+                        className="cancelar"
+                        onClick={() => {
+                            setShowModal(false);
+                            setMotivo("");
+                        }}
+                        >
+                        Cancelar
+                        </button>
+                    </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

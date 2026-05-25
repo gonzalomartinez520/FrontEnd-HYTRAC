@@ -11,6 +11,10 @@ export default function ConfirmarEnvio({ user }) {
     const [search, setSearch] = useState("");
     const [expandedId, setExpandedId] = useState(null); 
 
+    const [showModal, setShowModal] = useState(false);
+    const [motivo, setMotivo] = useState("");
+    const [selectedShipmentId, setSelectedShipmentId] = useState(null);
+
     useEffect(() => {
         const timer = setTimeout(() => {
             const fetchData = async () => {
@@ -57,12 +61,12 @@ export default function ConfirmarEnvio({ user }) {
         }
     };
 
-    const rechazarEnvio = (id) => {
+    const rechazarEnvio = (id, motivo) => {
         const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar el envío con ID ${id}?`);
         if (confirmacion) {
             const fetchRechazar = async () => {
                 try {
-                    await envios.rechazarEnvio(id);
+                    await envios.rechazarEnvio(id, motivo);
                     console.log(`Envío rechazado con ID: ${id}`);
                 } catch (error) {
                     console.error(`Error al rechazar envío con ID: ${id}`, error);
@@ -224,7 +228,11 @@ export default function ConfirmarEnvio({ user }) {
                                                 </svg>
                                             </button>
                                             
-                                            <button className="rechazar-envio" onClick={() => rechazarEnvio(shipment.id)}>
+                                            <button className="rechazar-envio" onClick={() => {
+                                                    setSelectedShipmentId(shipment.id);
+                                                    setShowModal(true);
+                                                }}
+                                            >
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"
@@ -262,6 +270,42 @@ export default function ConfirmarEnvio({ user }) {
                     </table>
                 </section>
             </main>
+            {showModal && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                    <h2>Motivo de rechazo</h2>
+
+                    <textarea
+                        placeholder="Ingrese el motivo..."
+                        value={motivo}
+                        onChange={(e) => setMotivo(e.target.value)}
+                    />
+
+                    <div className="modal-buttons">
+                        <button
+                        className="confirmar"
+                        onClick={() => {
+                            rechazarEnvio(selectedShipmentId, motivo);
+                            setShowModal(false);
+                            setMotivo("");
+                        }}
+                        >
+                        Confirmar
+                        </button>
+
+                        <button
+                        className="cancelar"
+                        onClick={() => {
+                            setShowModal(false);
+                            setMotivo("");
+                        }}
+                        >
+                        Cancelar
+                        </button>
+                    </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

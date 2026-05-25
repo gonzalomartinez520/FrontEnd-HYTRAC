@@ -13,6 +13,10 @@ export default function ConfirmarIncidencias({ user }) {
   const [search, setSearch] = useState("");
   const [expandedId, setExpandedId] = useState(null);
 
+  const [showModal, setShowModal] = useState(false);
+  const [motivo, setMotivo] = useState("");
+  const [selectedShipment, setSelectedShipment] = useState(null);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       const fetchData = async () => {
@@ -105,13 +109,15 @@ export default function ConfirmarIncidencias({ user }) {
     }
   };
 
-  const rechazarIncidencia = (remito, payload) => {
+  const rechazarIncidencia = (remito, payload, motivo) => {
     const confirmacion = window.confirm("¿Rechazar incidencia?");
 
     if (confirmacion) {
       const fetchRechazar = async () => {
         try {
           await envios.gestionarIncidencia(remito, payload);
+          //Notificacion al Transportista con el motivo de rechazo 
+          //de Incidencia.
           window.location.reload();
         } catch (error) {
           console.log(`Error al rechazar incidencia`);
@@ -270,22 +276,10 @@ export default function ConfirmarIncidencias({ user }) {
 
                         <button 
                           className="rechazar-incidencias"
-                          onClick={async () => {
-                            try {
-                              const payload = {
-                                legajo: localStorage.getItem("legajo"),
-                                motivo: "RECHAZADO",
-                              };
-                              console.log(payload);
-                              const incidencia = rechazarIncidencia(shipment.numeroRemito, payload);
-
-                            } catch (error) {
-                              console.error("Error al confirmar incidencia:", error);
-                              console.log("DATA:", error.response?.data);
-                              console.log("STATUS:", error.response?.status);
-                            }
-                          }}
-                        >
+                          onClick={() => {
+                            setSelectedShipment(shipment);
+                            setShowModal(true);
+                          }}> 
                           ✖
                         </button>
 
@@ -314,8 +308,54 @@ export default function ConfirmarIncidencias({ user }) {
             </tbody>
           </table>
         </section>
-
       </main>
+      {showModal && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                    <h2>Motivo de rechazo</h2>
+
+                    <textarea
+                        placeholder="Ingrese el motivo..."
+                        value={motivo}
+                        onChange={(e) => setMotivo(e.target.value)}
+                    />
+
+                    <div className="modal-buttons">
+                        <button
+                        className="confirmar"
+                        onClick={async () => {
+                            try {
+                              const payload = {
+                                legajo: localStorage.getItem("legajo"),
+                                motivo: "RECHAZADO",
+                              };
+                              console.log(payload);
+                              const incidencia = rechazarIncidencia(selectedShipment.numeroRemito, payload, motivo);
+                              
+                            } catch (error) {
+                              console.error("Error al confirmar incidencia:", error);
+                              console.log("DATA:", error.response?.data);
+                              console.log("STATUS:", error.response?.status);
+                            }
+                            setMotivo("");
+                        }}
+                        >
+                        Confirmar
+                        </button>
+
+                        <button
+                        className="cancelar"
+                        onClick={() => {
+                            setShowModal(false);
+                            setMotivo("");
+                        }}
+                        >
+                        Cancelar
+                        </button>
+                    </div>
+                    </div>
+                </div>
+            )}
     </div>
   );
 }

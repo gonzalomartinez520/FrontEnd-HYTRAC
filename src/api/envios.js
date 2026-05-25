@@ -10,7 +10,6 @@
  *    const nuevoEnvio = await envios.create(payload);
 **/
 
-import ConfirmarIncidencias from '../pages/ConfirmarIncidencias';
 import apiClient from './apiClient';   // ← Updated import
 
 const envios = {
@@ -66,13 +65,16 @@ const envios = {
     return data;
   },
 
-  //Confirmar cambio de estado
-  confirmarEstadoNuevo: async (id) => {
+  //Confirmar inicio de viaje
+  confirmarInicioViaje: async (id) => {
     const {data} = await apiClient.put(`/supervisor/ordenes/${id}/aprobar-inicio`)
     return data;
   },
 
-  //Rechazar cambio de estado
+  //Rechazar inicio de viaje
+  rechazarInicioViaje: async (id) => {
+    
+  },
 
   // Obtener un envío por su ID
   getById: async (id) => {
@@ -86,21 +88,14 @@ const envios = {
     return data;
   },
 
-  // Obtener el historial de un envío por su id
-  // Devuelve siempre un array para evitar errores al hacer .map() o similar
-  getHistorial: async (id) => {
-    try {
-      const { data } = await apiClient.get(`/ordenes/${id}/historial`);
-      return Array.isArray(data) ? data : [];
-    } catch (error) {
-      console.warn(`No se pudo obtener historial del envío ${id}`);
-      return [];
-    }
-  },
+  //Obtener el historial del envio (auditoria de estados)
+  getHistorialEstado: async (id) => {
+    
+  }, 
 
   //Confirmar y rechazar incidencia
   gestionarIncidencia: async (remito, payload) => {
-    const { data } = await apiClient.put(`/ordenes/remito/${remito}/cancelar`, payload);
+    const { data } = await apiClient.put(`/supervisor/ordenes/remito/${remito}/gestion-incidencia`, payload);
     return data;
   },
 
