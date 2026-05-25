@@ -59,6 +59,17 @@ const datos = {
     getIncidencias: async () => {
         const { data } = await apiClient.get('/supervisor/incidencias');
         return data;
+    },
+
+    //Rutas
+    calculateRuta: async (origenId, destinoId) => {
+        const { data } = await apiClient.get(`/rutas/calculate/${origenId}/${destinoId}`);
+        return data;
+    },
+
+    getRuta: async (rutaId) => {
+        const { data } = await apiClient.get(`/rutas/get/${rutaId}`);
+        return data;
     }
 };
 

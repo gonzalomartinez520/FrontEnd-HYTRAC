@@ -97,6 +97,13 @@ const transportista = {
 
     return data;
   },
+
+  createIncidencia: async (payload) => {
+    // TODO: reemplazar la ruta cuando el backend este listo.
+    const { data } = await apiClient.post("/pendiente/incidencias", payload);
+
+    return data;
+  },
 };
 
 export default transportista;

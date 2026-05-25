@@ -41,6 +41,18 @@ const envios = {
     return await apiClient.post('/ordenes/crear', payload);
   },
 
+  // Editar un envío pendiente a confirmar
+  editarEnvio: async (id, payload) => {
+    const { data } = await apiClient.put(`/ordenes/${id}/editar`, payload);
+    return data;
+  },
+
+  // Cancelar un envio por incidencia
+  cancelarEnvio: async (id) => {
+    const { data } = await apiClient.put(`/ordenes/${id}/cancelar`)
+    return data;
+  },
+
   // Confirmar un envío
   confirmarEnvio: async (id) => {
     const { data } = await apiClient.put(`/supervisor/ordenes/${id}/confirmar`);
@@ -53,13 +65,16 @@ const envios = {
     return data;
   },
 
-  //Confirmar cambio de estado
-  confirmarEstadoNuevo: async (id) => {
+  //Confirmar inicio de viaje
+  confirmarInicioViaje: async (id) => {
     const {data} = await apiClient.put(`/supervisor/ordenes/${id}/aprobar-inicio`)
     return data;
   },
 
-  //Rechazar cambio de estado
+  //Rechazar inicio de viaje
+  rechazarInicioViaje: async (id) => {
+    
+  },
 
   // Obtener un envío por su ID
   getById: async (id) => {
@@ -73,16 +88,15 @@ const envios = {
     return data;
   },
 
-  // Obtener el historial de un envío por su id
-  // Devuelve siempre un array para evitar errores al hacer .map() o similar
-  getHistorial: async (id) => {
-    try {
-      const { data } = await apiClient.get(`/ordenes/${id}/historial`);
-      return Array.isArray(data) ? data : [];
-    } catch (error) {
-      console.warn(`No se pudo obtener historial del envío ${id}`);
-      return [];
-    }
+  //Obtener el historial del envio (auditoria de estados)
+  getHistorialEstado: async (id) => {
+    
+  }, 
+
+  //Confirmar y rechazar incidencia
+  gestionarIncidencia: async (remito, payload) => {
+    const { data } = await apiClient.put(`/supervisor/ordenes/remito/${remito}/gestion-incidencia`, payload);
+    return data;
   },
 
 };
