@@ -114,19 +114,16 @@ export default function ReportarIncidencia({ user }) {
     setError("");
 
     const payload = {
-      id: null,
       orden_id: getField(activeEnvio, ["orden_id", "ordenId", "id", "envio_id"], null),
-      usuario_registro_id: user?.usuarioId ?? user?.id ?? transportistaId ?? null,
-      usuario_gestion_id: user?.usuarioGestionId ?? null,
+      nro_remito: getField(activeEnvio, ["nro_remito", "numeroRemito", "remito"], null),
+      legajo_transportista: user?.legajo ?? localStorage.getItem("legajo") ?? null,
       tipo_incidencia_id: Number(tipoIncidenciaId),
       descripcion: motivo.trim(),
-      fecha_incidente: new Date().toISOString(),
     };
 
     try {
-      // TODO: completar la ruta en el servicio antes de enviar.
-      // await transportistaApi.createIncidencia(payload);
-      setSentMessage("Incidencia registrada localmente. En una próxima etapa se enviará al backend.");
+      await transportistaApi.createIncidencia(payload);
+      setSentMessage("Incidencia enviada correctamente.");
     } catch (requestError) {
       console.error(requestError);
       setError("No se pudo enviar la incidencia. Intentá nuevamente.");
@@ -179,7 +176,7 @@ export default function ReportarIncidencia({ user }) {
             <div className="incidencia-shipment-ref">
               <span className="section-label">Envío activo</span>
               <strong>
-                COT {getField(activeEnvio, ["cot", "numeroCot", "numero_cot", "cotizacion"], "Sin dato")} - {getField(activeEnvio, ["nro_remito", "numeroRemito", "remito"], "Sin dato")}
+                {getField(activeEnvio, ["cot", "numeroCot", "numero_cot", "cotizacion"], "Sin dato")} | Remito: {getField(activeEnvio, ["nro_remito", "numeroRemito", "remito"], "Sin dato")}
               </strong>
             </div>
 
