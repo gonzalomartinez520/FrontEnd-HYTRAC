@@ -113,47 +113,61 @@ export default function OperarioDashboard({ user }) {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Origen / Refinería</th>
-                <th>Destino / Estación</th>
+                <th>Ruta Designada</th>
+                <th>Combustible</th>
                 <th>Estado</th>
                 <th>Chofer</th>
                 <th>Fecha Creación</th>
-                <th>Acciones</th>
+                <th>Detalle</th>
               </tr>
             </thead>
 
             <tbody>
               {filteredShipments.map((shipment) => (
                 <tr key={shipment.id}>
-                      <td className="tracking" data-label="ID">{shipment.id}</td>
-                  <td data-label="Origen">
-                    <strong>{shipment.plantaDespacho}</strong>
+                      <td className="tracking" data-label="ID">{shipment.trackingId}</td>
+                  <td data-label="Ruta Designada">
+                    <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                   </td>
-                  <td data-label="Destino">
-                    <strong>{shipment.estacionDestino}</strong>
+
+                  <td data-label="Combustible">
+                    {shipment.combustible}
                   </td>
+
                   <td data-label="Estado">
-                    <StatusBadge estado={shipment.estado} />
+                    <StatusBadge estado={shipment.estado}/>
                   </td>
                   <td data-label="Chofer">{shipment.transportistaNombre} {shipment.transportistaApellido}</td>
                   <td data-label="Fecha Creación">{formatearFecha(shipment.fechaCreacion)}</td>
-                  <td data-label="Acciones">
-                    <Link to={`/ordenes/${shipment.id}`}>
-                      Detalle
-                    </Link>
+                  <td data-label="Detalle">
+                    <div className="detalle-button-container">
+                    <button className="ver-detalle" onClick={() => navigate(`/ordenes/${shipment.id}`)}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        width="24"
+                        fill="currentColor"
+                        >
+                            <path d="M12 6c-4.79 0-8.73 3.11-10 6 1.27 2.89 5.21 6 10 6s8.73-3.11 10-6c-1.27-2.89-5.21-6-10-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                            <circle cx="12" cy="12" r="2.5"/>
+                        </svg>
+                    </button>
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          <div className="pagination">
+          {/* LUEGO SE VERA COMO HACER PARA PASAR DE PAGINA Y VER OTROS ENVIOS, POR AHORA QUEDA COMENTADO */}
+          {/* <div className="pagination">
             <button>Anterior</button>
             <button className="active-page">1</button>
             <button>2</button>
             <button>3</button>
             <button>Siguiente</button>
-          </div>
+          </div> */}
         </section>
       </main>
     </div>

@@ -1,6 +1,8 @@
 import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
 import "../styles/confirmarEntregas.css";
+import "../styles/statusBadge.css";
+import StatusBadge from "@/components/StatusBadge";
 import { envios } from '@/api';
 
 export default function ConfirmarEntregas( { user } ) {
@@ -19,7 +21,7 @@ export default function ConfirmarEntregas( { user } ) {
     const timer = setTimeout(() => {
         const fetchData = async () => {
             try {
-                const response = await envios.getAll();
+                const response = await envios.getAllSupervisor();
                 console.log("Datos obtenidos de la API:", response);
                 setShipments(response);
             } catch (error) {
@@ -122,7 +124,8 @@ export default function ConfirmarEntregas( { user } ) {
                                 <th>ID</th>
                                 <th>Ruta Designada</th>
                                 <th>Responsable</th>
-                                <th>Fecha de Edición</th>
+                                <th>Fecha de Solicitud de Entrega</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -133,14 +136,15 @@ export default function ConfirmarEntregas( { user } ) {
                                     
                                     {/* FILA PRINCIPAL */}
                                     <tr>
-                                        <td className="tracking">{shipment.id}</td>
+                                        <td className="tracking">{shipment.trackingId}</td>
                                         <td>
                                             <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                                         </td>
                                         <td>
-                                            {shipment.transportistaNombre} {shipment.transportistaApellido}
+                                            {shipment.transportista}
                                         </td>
                                         <td>{formatearFecha(shipment.fechaCreacion)}</td>
+                                        <td><StatusBadge estado={shipment.estado}/></td>
                                         <td>
                                             <div className="edicion-actions-table">
                                             <button
@@ -225,13 +229,12 @@ export default function ConfirmarEntregas( { user } ) {
                                         <tr className="fila-expandida">
                                             <td colSpan="7">
                                                 <div className="datos-editados">
-                                                    <p><strong>ID:</strong> {shipment.id}</p>
-                                                    <p><strong>Estado:</strong> {shipment.estado}</p>
-                                                    <p><strong>Combustible:</strong> {shipment.combustibleTipo}</p>
-                                                    <p><strong>Transportista:</strong> {shipment.transportistaNombre} {shipment.transportistaApellido}</p>
-                                                    <p><strong>Fecha creación:</strong> {formatearFecha(shipment.fechaCreacion)}</p>
-                                                    <p><strong>Origen:</strong> {shipment.plantaDespachoNombre}</p>
-                                                    <p><strong>Destino:</strong> {shipment.estacionDestinoNombre}</p>
+                                                    <p><strong>Patente del Camion:</strong> {shipment.camionPatente}</p>
+                                                    <p><strong>Patente del Acoplado:</strong> {shipment.acopladoPatente}</p>
+                                                    <p><strong>Combustible:</strong> {shipment.combustible}</p>
+                                                    <p><strong>Fecha de creación:</strong> {formatearFecha(shipment.fechaCreacion)}</p>
+                                                    <p><strong>Número de Remito:</strong> {shipment.numeroRemito}</p>
+                                                    <p><strong>COT:</strong> {shipment.cot}</p>
                                                 </div>
                                             </td>
                                         </tr>

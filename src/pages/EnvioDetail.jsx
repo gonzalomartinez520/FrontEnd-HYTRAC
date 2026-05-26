@@ -26,6 +26,9 @@ export default function EnvioDetail({ user }) {
   const [isMapLoading, setIsMapLoading] = useState(false);
   const [mapError, setMapError] = useState(false);
 
+  const [combustibles, setCombustibles] = useState([]);
+  const [combustibleSeleccionado, setCombustibleSeleccionado] = useState(null);
+
   const formatearEstado = (estado) => {
     if (!estado) return "";
     return estado.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
@@ -69,6 +72,37 @@ export default function EnvioDetail({ user }) {
 
     if (id) fetchShipmentAndHistory();
   }, [id, user]);
+
+  useEffect(() => {
+    const fetchCombustibles = async () => {
+      try {
+        const combustiblesData = await datos.getCombustibles();
+        setCombustibles(combustiblesData);
+      } catch (err) {
+        console.error("Error fetching combustibles:", err);
+      }
+    };
+
+    fetchCombustibles();
+  }, []);
+
+  useEffect(() => {
+    if (!combustibles.length || !shipment) return;
+
+    const nombreBuscado =
+      shipment?.combustibleNombre || shipment?.combustible;
+
+    if (!nombreBuscado) return;
+
+    const combustible = combustibles.find(
+      (c) =>
+        c.nombre.trim().toLowerCase() ===
+        nombreBuscado.trim().toLowerCase()
+    );
+
+    setCombustibleSeleccionado(combustible);
+    console.log("Combustible seleccionado:", combustible);
+  }, [combustibles, shipment]);
 
   // --- DIAGNOSTIC EFFECT: Fetches the entire route dataset ---
   useEffect(() => {
@@ -134,34 +168,6 @@ export default function EnvioDetail({ user }) {
     });
   };
 
-  const handleUpdateEstado = async (e) => {
-    e.preventDefault();
-    setUpdatingEstado(true);
-    setEstadoMsg("");
-
-    try {
-      await api.patch(`/envios/${id}/estado`, {
-        estado: selectedEstado,
-        motivo: motivo.trim() || "Actualizacion manual desde web",
-        usuario: user?.username || "operario-web",
-      });
-
-      const [shipmentResponse, historyResponse] = await Promise.all([
-        api.get(`/envios/${id}`),
-        api.get(`/envios/${id}/historial`).catch(() => ({ data: [] })),
-      ]);
-
-      setShipment(shipmentResponse.data);
-      setHistory(Array.isArray(historyResponse.data) ? historyResponse.data : []);
-      setMotivo("");
-      setEstadoMsg("Estado actualizado correctamente.");
-    } catch (err) {
-      setEstadoMsg(err?.response?.data?.message || "No se pudo actualizar el estado.");
-    } finally {
-      setUpdatingEstado(false);
-    }
-  };
-
   if (loading) return (
     <div className="loading-screen-detail">
       <h1 className="loader-detail"></h1>
@@ -175,15 +181,23 @@ export default function EnvioDetail({ user }) {
   return (
     <div className="details-page">
       {/* LEFT COLUMN: NOW ABSOLUTELY POSITIONED FOR ELEMENTS OVERLAPPING */}
-      <div className="details-left" style={{
-        display: "flex",
-        flexDirection: "column",
-        position: "relative", // Crucial anchor for overlapping elements
-        height: "calc(100vh - 120px)", // Forces left panel to match dashboard view height dynamically
-        minHeight: "600px"
-      }}>
+      <div className="details-left">
+        {/* MAP BACKGROUND WRAPPER - CLAIMS 100% OF COLUMN DENSITY */}
+        <div className="details-left-placeholder">
+          {isMapLoading ? (
+            <div className="map-loading">
+              <span>Recuperando traza del mapa...</span>
+            </div>
+          ) : mapError ? (
+            <div className="map-error">
+              <strong>Traza No Disponible</strong>
+            </div>
+          ) : (
+            <RouteMap geometry={fullRoute?.geometria} />
+          )}
+        </div>
 
-        <div className="back-link" onClick={() => navigate("/dashboard")} style={{ marginBottom: "12px", zIndex: 10 }}>
+        <div className="back-link" onClick={() => navigate("/dashboard")}>
           ← Volver al Panel
         </div>
 
@@ -192,22 +206,12 @@ export default function EnvioDetail({ user }) {
           type="button"
           className="summary-toggle-btn"
           onClick={() => setSummaryOpen((prev) => !prev)}
-          style={{ zIndex: 10 }}
         >
           Resumen del Trayecto
         </button>
 
         {/* OVERLAPPING "RESUMEN" PANEL */}
-        <div className={`card route-summary ${summaryOpen ? "open" : ""}`} style={{
-          position: "absolute",
-          top: "80px",
-          left: "10px",
-          zIndex: 1000, // Forces card to stay beautifully layered over the map
-          width: "320px", // Standard rigid widget sizing
-          background: "rgba(30, 41, 59, 0.95)", // Slightly translucent slate for premium glassmorphism feel
-          backdropFilter: "blur(4px)",
-          boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.5)"
-        }}>
+        <div className={`card route-summary ${summaryOpen ? "open" : ""}`}>
           <div className="card-header">
             📍 <span>Resumen del Trayecto</span>
           </div>
@@ -223,7 +227,7 @@ export default function EnvioDetail({ user }) {
                 </h2>
               </div>
               <div>
-                <small>Tiempo Estimado de Viaje</small>
+                <small>Tiempo Estimado</small>
                 <h2>⏱ {fullRoute?.tiempoEstimadoHoras ? formatRouteTime(fullRoute.tiempoEstimadoHoras) : "15:30"}</h2>
               </div>
             </div>
@@ -231,11 +235,11 @@ export default function EnvioDetail({ user }) {
             <div className="dates">
               <div>
                 <small>Fecha Salida</small>
-                <h2>⏱ {shipment.fechaSalidaPlanta ? formatearFecha(shipment.fechaSalidaPlanta) : "09:30"}</h2>
+                <h2>⏱ {shipment.fechaSalidaPlanta ? formatearFecha(shipment.fechaSalidaPlanta) : "-"}</h2>
               </div>
               <div>
                 <small>Fecha Llegada</small>
-                <h2>⏱ {shipment.fechaEntrega ? formatearFecha(shipment.fechaEntrega) : "16:00"}</h2>
+                <h2>⏱ {shipment.fechaEntrega ? formatearFecha(shipment.fechaEntrega) : "-"}</h2>
               </div>
             </div>
 
@@ -245,35 +249,12 @@ export default function EnvioDetail({ user }) {
             </div>
           </div>
         </div>
-
-        {/* MAP BACKGROUND WRAPPER - CLAIMS 100% OF COLUMN DENSITY */}
-        <div className="details-left-placeholder" style={{
-          position: "absolute",
-          top: "50px",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          width: "100%",
-          height: "100%"
-        }}>
-          {isMapLoading ? (
-            <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "#1e293b", borderRadius: "8px", color: "#94a3b8", border: "1px solid #334155" }}>
-              <span>Recuperando traza del mapa...</span>
-            </div>
-          ) : mapError ? (
-            <div style={{ height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: "#1a2332", borderRadius: "8px", color: "#94a3b8", border: "1px solid #334155", padding: "20px" }}>
-              <strong>Traza No Disponible</strong>
-            </div>
-          ) : (
-            <RouteMap geometry={fullRoute?.geometria} />
-          )}
-        </div>
       </div>
 
       <div className="details-right">
         <div className="details-header-right">
           <div className="details-header-right__info">
-            <h1>Orden {shipment.id}</h1>
+            <h1>Orden {shipment.trackingId}</h1>
             <small>Creado: {formatearFecha(shipment.fechaCreacion)}</small>
           </div>
           <span>
@@ -330,7 +311,7 @@ export default function EnvioDetail({ user }) {
 
               <div className="info-row">
                 <span>Temperatura</span>
-                <strong>{shipment.temperaturaReferencia} °C</strong>
+                <strong>{combustibleSeleccionado?.temperaturaReferencia} °C</strong>
               </div>
 
               <div className="info-row">
@@ -340,63 +321,15 @@ export default function EnvioDetail({ user }) {
             </div>
           </div>
 
-          <section className="card info-section">
-            <h4 className="sub-title">🔄 ACTUALIZACION DE ESTADO</h4>
-            <form className="status-form" onSubmit={handleUpdateEstado}>
-              <label>Nuevo estado</label>
-              <select
-                value={selectedEstado}
-                onChange={(e) => setSelectedEstado(e.target.value)}
-                disabled={updatingEstado}
-              >
-                {ESTADOS_DISPONIBLES.map((estado) => (
-                  <option key={estado} value={estado}>
-                    {formatearEstado(estado)}
-                  </option>
-                ))}
-              </select>
+          <div className="historial-estados">
+            <h3 className="section-title">📜 HISTORIAL DE LA ORDEN</h3>
+            <div className="historial-detalle">
+              <div>
+                {/* HISTORIAL DE ESTADOS */}
+              </div>
+            </div>
+          </div>
 
-              <label>Motivo del cambio</label>
-              <textarea
-                value={motivo}
-                onChange={(e) => setMotivo(e.target.value)}
-                placeholder="Ej: Entregado al destinatario"
-                disabled={updatingEstado}
-              />
-
-              <button type="submit" disabled={updatingEstado}>
-                {updatingEstado ? "Actualizando..." : "Guardar estado"}
-              </button>
-            </form>
-            {estadoMsg && (
-              <p className={`status-msg ${estadoMsg.includes("correctamente") ? "success" : "error"}`}>
-                {estadoMsg}
-              </p>
-            )}
-          </section>
-
-          {user?.role === "supervisor" && (
-            <section className="card info-section">
-              <h3>🕘 Historial</h3>
-              {history.length === 0 ? (
-                <p className="history-empty">Sin cambios registrados.</p>
-              ) : (
-                <ul className="history-list">
-                  {history.map((item, index) => (
-                    <li key={index}>
-                      <strong>
-                        {formatearEstado(item.estadoAnterior)} → {formatearEstado(item.estadoNuevo)}
-                      </strong>
-                      <span>{item.motivoCambio || "Sin motivo"}</span>
-                      <small>
-                        {item.cambiadoPor || "sistema"} - {new Date(item.fechaCambio).toLocaleString()}
-                      </small>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
-          )}
         </div>
       </div>
     </div>

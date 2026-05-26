@@ -6,7 +6,7 @@
 }
 
 .hytrac-layout {
-  min-height: 100vh;
+  min-height: calc(100vh - 60px); /* 🔥 ajustá el 60px */
   background: #0B1120;
 }
 
@@ -88,7 +88,7 @@ thead {
 th,
 td {
   padding: 18px;
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid #eee;
 }
 
@@ -117,7 +117,8 @@ th {
 
 .pagination button {
   border: none;
-  background: #f3f3f3;
+  background-color: #0B1120 !important; 
+  color:#F8FAF6;  
   padding: 10px 14px;
   border-radius: 10px;
   cursor: pointer;
@@ -125,11 +126,11 @@ th {
 
 .active-page {
   background: #ff7b00 !important;
-  color: white;
+  color: #F8FAF6;
 }
 
 .loading-screen {
-  min-height: 100vh;
+  height: calc(100vh - 60px); /* 🔥 ajustá el 60px */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -152,6 +153,27 @@ a {
   text-decoration: none;
   color: #ff7b00;
   font-weight: 600;
+}
+
+.ver-detalle {
+    background-color: #0B1120;
+    color: #ff7b00;
+    border-radius: 8px;
+    font-size: large;
+    font-style: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.detalle-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 @keyframes spin {

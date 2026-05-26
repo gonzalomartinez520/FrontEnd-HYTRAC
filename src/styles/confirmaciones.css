@@ -1,5 +1,5 @@
 .confirmaciones-layout {
-  min-height: 100vh;
+  height: calc(100vh - 60px);
   background: #0B1120;      
 }
 
@@ -22,7 +22,6 @@
 .confirmaciones-header h1 {
     font-size: 2.5rem;
     color: #F8FAF6;
-    margin-bottom: 10px;
 }
 
 .confirmaciones-header p {
@@ -48,14 +47,10 @@
 
     box-shadow: none;
 
-    /* Estado inicial */
     opacity: 0;
     transform: translateY(40px) scale(0.9);
 
-    /* 👇 IMPORTANTE */
     animation: aparecerCard 0.6s ease forwards;
-
-    /* 👇 CLAVE: estado final definido acá */
     animation-fill-mode: forwards;
 
     transition: transform 0.25s ease, box-shadow 0.25s ease;
@@ -80,7 +75,71 @@
     background-color: red;
 }
 
-/* 🖱️ HOVER (ESCALA + LEVANTA) */
+.icon-confirmaciones {
+    color: #ff7b00;
+    font-size: 40px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+/* ✅ FIX: badge aislado del hover */
+.badge-cantidad {
+    font-size: 70px;
+    font-weight: 900;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: auto;
+    height: auto;
+
+    margin-bottom: 10px;
+
+    /* ❌ se elimina el círculo */
+    background: transparent;
+
+    /* color base (se sobrescribe por card) */
+    color: #0f172a;
+
+    /* borde grueso negro */
+    -webkit-text-stroke: 5px #000;
+    paint-order: stroke fill;
+
+    transition: none;
+    transform: none;
+    will-change: auto;
+}
+
+/* 🔥 evita que el hover de la card afecte visualmente al badge */
+.pendientes:hover .badge-cantidad,
+.entregas:hover .badge-cantidad,
+.cambios-estado:hover .badge-cantidad,
+.incidencias:hover .badge-cantidad {
+    transform: none !important;
+}
+
+.badge-cantidad.entregas {
+    margin-right: 0px;
+}
+
+.pendientes .badge-cantidad {
+    color: #ffb347;
+}
+
+.entregas .badge-cantidad {
+    color: #93c5fd;
+}
+
+.cambios-estado .badge-cantidad {
+    color: #86efac;
+}
+
+.incidencias .badge-cantidad {
+    color: #fca5a5;
+}
+
+/* 🖱️ HOVER CARD (SE MANTIENE) */
 .pendientes:hover, 
 .entregas:hover, 
 .cambios-estado:hover,
@@ -91,7 +150,7 @@
 /* TEXTOS */
 .confirmaciones-card h2 {
     color: #F8FAF6;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 
 .confirmaciones-card p {
@@ -111,13 +170,12 @@
     }
 }
 
-/* 🔒 Para poder usar overlay */
+/* 🔒 Overlay */
 .pendientes, .entregas, .cambios-estado, .incidencias{
     position: relative;
     overflow: visible;
 }
 
-/* 🌑 Overlay oscuro suave */
 .pendientes::before,
 .entregas::before,
 .cambios-estado::before,
@@ -130,17 +188,14 @@
     transition: background 0.25s ease;
 }
 
-/* 🧠 Texto siempre por encima */
 .confirmaciones-card h2,
 .confirmaciones-card p {
     position: relative;
     z-index: 2;
-
-    /* ✨ mejora brutal de lectura */
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
 }
 
-/* ✨ Glow inferior */
+/* ✨ Glow */
 .pendientes::after,
 .entregas::after,
 .cambios-estado::after,
@@ -159,7 +214,6 @@
     transition: opacity 0.25s ease;
 }
 
-/* colores por card */
 .pendientes::after {
     background: rgba(255, 123, 0, 0.45);
 }
@@ -176,7 +230,6 @@
     background: rgba(255, 0, 0, 0.45);
 }
 
-/* aparece en hover */
 .pendientes:hover::after,
 .entregas:hover::after,
 .cambios-estado:hover::after,

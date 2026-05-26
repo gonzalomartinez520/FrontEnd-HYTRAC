@@ -22,8 +22,10 @@ export default function ConfirmarIncidencias({ user }) {
       const fetchData = async () => {
         try {
           const response = await datos.getIncidencias();
-          console.log(response);
-          setIncidencias(response);
+
+          const incidenciasNoResueltas = response.filter(i => !i.resuelto);
+          console.log(incidenciasNoResueltas);
+          setIncidencias(incidenciasNoResueltas);
 
           // 🔥 obtener remitos únicos
           const remitosUnicos = [...new Set(
@@ -196,7 +198,7 @@ export default function ConfirmarIncidencias({ user }) {
                 <Fragment key={incidencia.id}>
 
                   <tr>
-                    <td className="tracking">{shipment.id}</td>
+                    <td className="tracking">{shipment.trackingId}</td>
 
                     <td>
                       <strong>
@@ -271,7 +273,19 @@ export default function ConfirmarIncidencias({ user }) {
                             }
                           }}
                         >
-                          ✔
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="22"
+                            viewBox="0 0 24 24"
+                            width="22"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                          <path d="M20 6L9 17l-5-5" />
+                          </svg>
                         </button>
 
                         <button 
@@ -280,7 +294,20 @@ export default function ConfirmarIncidencias({ user }) {
                             setSelectedShipment(shipment);
                             setShowModal(true);
                           }}> 
-                          ✖
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="22"
+                            viewBox="0 0 24 24"
+                            width="22"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                          <line x1="6" y1="6" x2="18" y2="18" />
+                          <line x1="18" y1="6" x2="6" y2="18" />
+                          </svg>
                         </button>
 
                       </div>
@@ -293,10 +320,12 @@ export default function ConfirmarIncidencias({ user }) {
                       <td colSpan="6">
 
                         <div className="datos-incidencias">
-                          <p><strong>Remito:</strong> {shipment.numeroRemito}</p>
-                          <p><strong>Tipo:</strong> {incidencia.tipo}</p>
-                          <p><strong>Descripción:</strong> {incidencia.descripcion}</p>
-                          <p><strong>Fecha:</strong> {formatearFecha(incidencia.fechaCreacion)}</p>
+                          <p><strong>Patente del Camion:</strong> {shipment.camionPatente}</p>
+                          <p><strong>Patente del Acoplado:</strong> {shipment.acopladoPatente}</p>
+                          <p><strong>Combustible:</strong> {shipment.combustible}</p>
+                          <p><strong>Fecha de creación:</strong> {formatearFecha(shipment.fechaCreacion)}</p>
+                          <p><strong>Número de Remito:</strong> {shipment.numeroRemito}</p>
+                          <p><strong>COT:</strong> {shipment.cot}</p>
                         </div>
 
                       </td>
