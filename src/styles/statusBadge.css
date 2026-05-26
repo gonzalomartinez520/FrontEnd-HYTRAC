@@ -1,5 +1,4 @@
-/* Unified Status Badge Styles */
-
+/* 🔹 Base del badge (unificada) */
 .badge {
   padding: 8px 14px;
   border-radius: 30px;
@@ -7,51 +6,52 @@
   font-weight: 600;
   text-transform: uppercase;
   display: inline-block;
+
+  /* 👇 Mejora de legibilidad (CLAVE) */
+  color: #ffffff;
+  letter-spacing: 0.4px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
-/* Unified status colors for all states */
+/* 🔹 Estados existentes */
 .badge.status-pendiente {
   background: #ff9821;
-  color: #edf8ef;
 }
 
 .badge.status-en-viaje,
 .badge.status-en-transito,
 .badge.status-en-curso {
   background: #2d5bcc;
-  color: #edf8ef;
 }
 
 .badge.status-entregada {
   background: #2d8b57;
-  color: #edf8ef;
 }
 
 .badge.status-cancelada {
   background: #c44444;
-  color: #edf8ef;
 }
 
 .badge.status-unknown {
   background: #666;
-  color: #edf8ef;
 }
 
 /* 🔹 NUEVOS ESTADOS */
-
 .badge.status-confirmado {
-  background: #2d8b57; /* mismo verde que entregada */
-  color: #edf8ef;
+  background: #2d8b57; /* verde */
 }
 
 .badge.status-rechazado {
-  background: #c44444; /* mismo rojo que cancelada */
-  color: #edf8ef;
+  background: #c44444; /* rojo */
 }
 
 .badge.status-pendiente-a-confirmar {
-  background: #ff9821; /* mismo naranja que pendiente */
-  color: #edf8ef;
+  background: #f97316; /* naranja */
+}
+
+.badge.status-pendiente-de-inicio-de-viaje,
+.badge.status-pendiente-de-confirmacion-de-entrega {
+  background: #f97316; /* naranja moderno */
 }
 
 /* Media Queries for Responsive Design */

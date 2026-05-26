@@ -1,49 +1,55 @@
 export default function StatusBadge({ estado }) {
+  if (!estado) {
+    return <span className="badge status-unknown">Sin estado</span>;
+  }
+
+  // 🔹 Normaliza para CSS
+  const normalize = (str) =>
+    str.toLowerCase().trim();
+
   const getStatusClass = (estado) => {
-    if (!estado) return "status-unknown";
-    
-    const normalized = estado
-      .toLowerCase()
-      .trim()
-      .replace(/\s+/g, "-");
-    
-    return `status-${normalized}`;
+    return `status-${normalize(estado).replace(/\s+/g, "-")}`;
   };
 
-  const formatearEstado = (estado) => {
-    if (!estado) return "";
-    
-    let estadoMapeado = estado;
+  // 🔹 Configuración centralizada (PRO 🔥)
+  const estadosConfig = {
+    // 🔹 EXISTENTES
+    "en viaje": "En curso",
+    "en curso": "En curso",
+    "cancelado": "Cancelada",
+    "cancelada": "Cancelada",
+    "entregado": "Entregada",
+    "entregada": "Entregada",
 
-    // 🔹 Estados existentes
-    if (estadoMapeado.toUpperCase() === "EN_VIAJE") {
-      estadoMapeado = "EN_CURSO";
-    } else if (estadoMapeado.toUpperCase() === "CANCELADO") {
-      estadoMapeado = "CANCELADA";
-    } else if (estadoMapeado.toUpperCase() === "ENTREGADO") {
-      estadoMapeado = "ENTREGADA";
+    // 🔹 NUEVOS
+    "confirmado": "Confirmado",
+    "rechazado": "Rechazado",
+    "pendiente confirmar": "Pendiente a confirmar",
+    "pendiente a confirmar": "Pendiente a confirmar",
+
+    // 🔹 PERSONALIZADOS (los que pediste)
+    "pendiente de confirmacion de entrega": "Confirmación de entrega",
+    "pendiente de inicio de viaje": "Inicio pendiente",
+  };
+
+  // 🔹 Obtener label
+  const getEstadoLabel = (estado) => {
+    const key = normalize(estado);
+
+    if (estadosConfig[key]) {
+      return estadosConfig[key];
     }
 
-    // 🔹 NUEVOS ESTADOS (sin romper lo demás)
-    else if (estadoMapeado.toUpperCase() === "CONFIRMADO") {
-      estadoMapeado = "CONFIRMADO";
-    } else if (estadoMapeado.toUpperCase() === "RECHAZADO") {
-      estadoMapeado = "RECHAZADO";
-    } else if (estadoMapeado.toUpperCase() === "PENDIENTE_CONFIRMAR") {
-      estadoMapeado = "PENDIENTE A CONFIRMAR";
-    }
-
-    return estadoMapeado
-      .replace(/_/g, " ")
-      .toLowerCase()
-      .replace(/\b\w/g, (c) => c.toUpperCase());
+    // fallback automático
+    return key.replace(/\b\w/g, (c) => c.toUpperCase());
   };
 
   const statusClass = getStatusClass(estado);
+  const label = getEstadoLabel(estado);
 
   return (
     <span className={`badge ${statusClass}`}>
-      {formatearEstado(estado)}
+      {label}
     </span>
   );
 }

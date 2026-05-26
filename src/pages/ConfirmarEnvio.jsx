@@ -1,6 +1,8 @@
 import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
 import "../styles/confirmarEnvio.css";
+import "../styles/statusBadge.css";
+import StatusBadge from "@/components/StatusBadge";
 import { envios } from '@/api';
 
 export default function ConfirmarEnvio({ user }) {
@@ -154,6 +156,7 @@ export default function ConfirmarEnvio({ user }) {
                                 <th>Tipo Combustible</th>
                                 <th>Transportista</th>
                                 <th>Fecha de Creación</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -164,7 +167,7 @@ export default function ConfirmarEnvio({ user }) {
                                     
                                     {/* FILA PRINCIPAL */}
                                     <tr>
-                                        <td className="tracking">{shipment.id}</td>
+                                        <td className="tracking">{shipment.trackingId}</td>
                                         <td>
                                             <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                                         </td>
@@ -173,6 +176,7 @@ export default function ConfirmarEnvio({ user }) {
                                             {shipment.transportista}
                                         </td>
                                         <td>{formatearFecha(shipment.fechaCreacion)}</td>
+                                        <td><StatusBadge estado="PENDIENTE A CONFIRMAR"></StatusBadge></td>
                                         <td>
                                             <div className="actions-table">
                                             <button
@@ -257,9 +261,11 @@ export default function ConfirmarEnvio({ user }) {
                                         <tr className="fila-expandida">
                                             <td colSpan="7">
                                                 <div className="detalle-envio">
-                                                    <p><strong>ID:</strong> {shipment.id}</p>
-                                                    <p><strong>Transportista:</strong> {shipment.transportista}</p>
-                                                    {/* Agregar mas datos relevantes para confirmar el envio*/}
+                                                    <p><strong>Patente del Camion:</strong> {shipment.camionPatente}</p>
+                                                    <p><strong>Patente del Acoplado:</strong> {shipment.acopladoPatente}</p>
+                                                    <p><strong>Litros Cargados:</strong> {shipment.litrosCargados} Lts.</p>
+                                                    <p><strong>Número de Remito:</strong> {shipment.numeroRemito}</p>
+                                                    <p><strong>COT:</strong> {shipment.cot}</p>
                                                 </div>
                                             </td>
                                         </tr>
