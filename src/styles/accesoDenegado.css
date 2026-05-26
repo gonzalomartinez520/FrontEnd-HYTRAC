@@ -1,39 +1,115 @@
 .denegado-layout {
-  height: 100vh;
+  height: calc(100vh - 60px);
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #0B1120;
-}
-
-.acceso-denegado {
-  background: white;
-  padding: 2rem 3rem;
-  border-radius: 10px;
+  padding: 20px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* CONTENIDO SIN CARD */
+.acceso-denegado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🔥 TÍTULO MÁS IMPACTANTE */
 .denegado-titulo {
-  color: #d32f2f;
+  color: #ef4444;
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 1px;
   margin-bottom: 1rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
 }
 
+/* TEXTO MÁS GRANDE Y LIMPIO */
 .denegado-texto {
-  color: #555;
-  margin-bottom: 1.5rem;
+  color: #F8FAF6;
+  font-size: 1.4rem;
+  max-width: 600px;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  opacity: 0.9;
 }
 
+/* BOTÓN MÁS MODERNO */
 .denegado-boton {
-  padding: 10px 20px;
+  padding: 12px 28px;
   border: none;
-  border-radius: 6px;
-  background-color: #1976d2;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #ff7b00, #ff9a3d);
   color: white;
+
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.3s;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .denegado-boton:hover {
-  background-color: #115293;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255, 123, 0, 0.35);
+}.denegado-layout {
+  height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0B1120;
+  padding: 20px;
+  text-align: center;
+}
+
+/* CONTENIDO SIN CARD */
+.acceso-denegado {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🔥 TÍTULO MÁS IMPACTANTE */
+.denegado-titulo {
+  color: #ef4444;
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 1rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* TEXTO MÁS GRANDE Y LIMPIO */
+.denegado-texto {
+  color: #F8FAF6;
+  font-size: 1.4rem;
+  max-width: 600px;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* BOTÓN MÁS MODERNO */
+.denegado-boton {
+  padding: 12px 28px;
+  border: none;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #ff7b00, #ff9a3d);
+  color: white;
+
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.denegado-boton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255, 123, 0, 0.35);
 }

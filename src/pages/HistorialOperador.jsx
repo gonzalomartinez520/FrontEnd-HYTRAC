@@ -5,6 +5,7 @@ import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
 import { envios } from '@/api';
 import { datos } from '@/api';
+import RouteMap from "../components/RouteMap";
 
 export default function HistorialOperador( { user } ) {
     const navigate = useNavigate();
@@ -22,7 +23,17 @@ export default function HistorialOperador( { user } ) {
     const [plantasTotales, setPlantasTotales] = useState([]);
     const [estacionesTotales, setEstacionesTotales] = useState([]);
 
-    //LUEGO VER COMO LE PASO LOS DATOS CAMBIADOS (POR AHORA SE GUARDARAN ACA).
+    // --- NEW STATE FOR ROUTE LOADING ---
+    const [isRouteLoading, setIsRouteLoading] = useState(false);
+
+    // Initializing state structured exactly to your API layout
+    const [routeData, setRouteData] = useState({
+      rutaId: null,
+      geometria: null,
+      distanciaKm: null,
+      tiempoEstimadoHoras: null
+    });
+
     const [formData, setFormData] = useState({
     // Vehículo
     camion: null,
@@ -156,6 +167,48 @@ export default function HistorialOperador( { user } ) {
     };
     fetchEstacionesDestino();
   }, [formData.localidadDestino]);
+
+  useEffect(() => {
+    const origenId = formData.refineriaOrigen?.id;
+    const destinoId = formData.estacionDestino?.id;
+
+    if (!origenId || !destinoId) return;
+
+    // 🔥 Si ya es la misma ruta, no recalcular
+    if (routeData.rutaId && selectedShipment?.rutaId === routeData.rutaId) {
+      return;
+    }
+
+    const fetchRoute = async () => {
+      try {
+        setIsRouteLoading(true);
+
+        const data = await datos.calculateRuta(origenId, destinoId);
+
+        setRouteData({
+          rutaId: data.rutaId,
+          geometria: data.geometria,
+          distanciaKm: data.distanciaKm,
+          tiempoEstimadoHoras: data.tiempoEstimadoHoras
+        });
+
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsRouteLoading(false);
+      }
+    };
+
+    fetchRoute();
+  }, [formData.refineriaOrigen, formData.estacionDestino]);
+
+  // Helper function to turn decimal hours (e.g. 5.159) into standard tracking formats (5h 09m)
+  const formatRouteTime = (decimalHours) => {
+    if (!decimalHours || isNaN(decimalHours)) return "Puntos incompletos";
+    const hours = Math.floor(decimalHours);
+    const minutes = Math.round((decimalHours - hours) * 60);
+    return `${hours}h ${minutes.toString().padStart(2, "0")}m`;
+  };
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -365,6 +418,7 @@ export default function HistorialOperador( { user } ) {
               <tr>
                 <th>ID</th>
                 <th>Ruta Designada</th>
+                <th>Combustible</th>
                 <th>Estado</th>  
                 <th>Chofer</th>
                 <th>Fecha Creación</th>
@@ -376,9 +430,12 @@ export default function HistorialOperador( { user } ) {
               {filteredShipments.map((shipment) => (
                 <Fragment key={shipment.id}>
                 <tr key={shipment.id}>
-                      <td className="tracking" data-label="ID">{shipment.id}</td>
+                      <td className="tracking" data-label="ID">{shipment.trackingId}</td>
                   <td data-label="Ruta Designada">
                     <strong>{shipment.plantaDespacho} → {shipment.estacionDestino}</strong>
+                  </td>
+                  <td data-label="Combustible">
+                    <strong>{shipment.combustible}</strong>
                   </td>
                   <td data-label="Estado">  {/*CAMBIARLO POR EL OTRO ESTADO QUE ES PARA CONFIRMACIONES */}
                     {shipment.confirmado === true ? (
@@ -503,6 +560,13 @@ export default function HistorialOperador( { user } ) {
                                 localidadDestino: estacionDestinoEdicionSeleccionada?.localidadId || null,
                                 estacionDestino: estacionDestinoEdicionSeleccionada || null,
                             }));
+
+                            setRouteData({
+                              rutaId: shipment.rutaId || null,
+                              geometria: shipment.geometria || null,
+                              distanciaKm: shipment.distanciaKm || null,
+                              tiempoEstimadoHoras: shipment.tiempoEstimadoHoras || null
+                            });
                             setShowModal(true);
                           }}
                           >
@@ -824,6 +888,72 @@ export default function HistorialOperador( { user } ) {
               </div>
             </div>
           </div>
+
+          {/* PERSISTENT MAP GRID BLOCK WITH UPDATED LOADING STATE */}
+          <div className="map-integration-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "20px", marginBottom: "20px", height: "40vh" }}>
+            <div style={{ position: "relative" }}>
+              <RouteMap geometry={routeData.geometria} />
+
+              {/* Optional: Simple subtle blur layer over the map during live fetch */}
+              {isRouteLoading && (
+                <div style={{
+                  position: "absolute",
+                  top: 0, left: 0, right: 0, bottom: 0,
+                  backgroundColor: "rgba(15, 23, 42, 0.2)",
+                  backdropFilter: "blur(2px)",
+                  borderRadius: "8px",
+                  zIndex: 400,
+                  pointerEvents: "none"
+                }} />
+              )}
+            </div>
+
+            <div className="route-telemetry-panel" style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px", borderRadius: "8px", background: "#1a2332", color: "#fff", position: "relative" }}>
+
+              {/* LIVE REFINERY BUFFERING INDICATOR */}
+              {isRouteLoading ? (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "12px", height: "100%" }}>
+                  {/* CSS Inline Animated Spinner */}
+                  <div style={{
+                    width: "36px",
+                    height: "36px",
+                    border: "3px solid rgba(59, 130, 246, 0.2)",
+                    borderTop: "3px solid #3b82f6",
+                    borderRadius: "50%",
+                    animation: "spin 0.8s linear infinite"
+                  }} />
+                  <style>{`
+                    @keyframes spin {
+                      0% { transform: rotate(0deg); }
+                      100% { transform: rotate(360deg); }
+                    }
+                  `}</style>
+                  <span style={{ fontSize: "14px", color: "#94a3b8", fontWeight: "500", letterSpacing: "0.3px" }}>
+                    Calculando ruta óptima...
+                  </span>
+                </div>
+              ) : (
+                <>
+                  <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", color: "#3b82f6", letterSpacing: "0.5px", textTransform: "uppercase" }}>
+                    Información de Ruta Estimada
+                  </h3>
+                  <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
+                    <strong style={{ color: "#fff" }}>Distancia Total:</strong> {routeData.distanciaKm ? `${Number(routeData.distanciaKm).toFixed(1)} km` : "--"}
+                  </p>
+                  <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
+                    <strong style={{ color: "#fff" }}>Tiempo Estimado:</strong> {routeData.tiempoEstimadoHoras ? formatRouteTime(routeData.tiempoEstimadoHoras) : "--"}
+                  </p>
+
+                  {(!formData.refineriaOrigen || !formData.estacionDestino) && (
+                    <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "12px", fontStyle: "italic" }}>
+                      Seleccione refinería de origen y estación de destino para calcular la ruta.
+                    </span>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+
         </section>
 
         <div className="modal-actions">
@@ -847,6 +977,7 @@ export default function HistorialOperador( { user } ) {
                     estacionDestinoId: formData.estacionDestino?.id || null,
                     operadorId: user?.id || null, 
                     combustibleId: formData.combustible?.id || null,
+                    rutaId: routeData.rutaId || selectedShipment.rutaId,
                     estadoId: 1, //PENDIENTE
                     fechaCreacion: selectedShipment.fechaCreacion,
                     temperaturaCarga: formData.temperatura ? parseFloat(formData.temperatura) : null,

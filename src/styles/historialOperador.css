@@ -6,7 +6,7 @@
 }
 
 .historial-operador-layout {
-  min-height: 100vh;
+  min-height: calc(100vh - 60px); /* 🔥 ajustá el 60px */
   background: #0B1120;
 }
 
@@ -129,8 +129,10 @@ table td {
 }
 
 .actions-historial-operador {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  justify-content: center; /* 🔥 centra SIEMPRE */
+  align-items: center;
+  gap: 10px; /* espacio entre botones */
 }
 
 .fila-expandida td {

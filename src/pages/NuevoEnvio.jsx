@@ -562,7 +562,7 @@ export default function NuevoEnvio({ user }) {
           </div>
 
           {/* PERSISTENT MAP GRID BLOCK WITH UPDATED LOADING STATE */}
-          <div className="map-integration-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "20px", marginBottom: "20px" }}>
+          <div className="map-integration-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "20px", marginBottom: "20px", height: "40vh"}}>
             <div style={{ position: "relative" }}>
               <RouteMap geometry={routeData.geometria} />
 

@@ -180,7 +180,7 @@ useEffect(() => {
           >
             {role == "OPERADOR" ? (
               <>
-                <span className="route-nav-icon" aria-hidden="true">🛣️</span> Historial de Órdenes
+                <span className="route-nav-icon" aria-hidden="true">🕘</span> Historial de Órdenes
               </>
             ) : (
               null
@@ -192,7 +192,16 @@ useEffect(() => {
 
       <div className="nav-right">
         <div className="user-profile">
-          <span className="user-icon">👤</span>
+          <span className="user-icon">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="orange"
+            >
+              <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/>
+            </svg>
+          </span>
           <div className="user-info">
             <strong>
               {user?.nombre || "Usuario"} {user?.apellido || ""}

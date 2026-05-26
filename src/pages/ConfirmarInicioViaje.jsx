@@ -158,7 +158,7 @@ export default function ConfirmarInicioViaje( { user } ) {
                                 <th>ID</th>
                                 <th>Ruta Designada</th>
                                 <th>Responsable</th>  {/* Ademas se dice si es transportista o jefe de estacion */}
-                                <th>Fecha de Cambio de Estado</th>
+                                <th>Fecha de Solicitud de viaje</th>
                                 <th>Estado</th> {/* Buscar un nombre mejor para el campo */}
                                 <th>Acciones</th>
                             </tr>
@@ -170,7 +170,7 @@ export default function ConfirmarInicioViaje( { user } ) {
                                     
                                     {/* FILA PRINCIPAL */}
                                     <tr>
-                                        <td className="tracking">{shipment.id}</td>
+                                        <td className="tracking">{shipment.trackingId}</td>
                                         <td>
                                             <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                                         </td>
@@ -263,13 +263,12 @@ export default function ConfirmarInicioViaje( { user } ) {
                                         <tr className="fila-expandida">
                                             <td colSpan="7">
                                                 <div className="datos-cambio-estado">
-                                                    <p><strong>ID:</strong> {shipment.id}</p>
-                                                    <p><strong>Estado:</strong> {shipment.estado}</p>
-                                                    <p><strong>Combustible:</strong> {shipment.combustibleTipo}</p>
-                                                    <p><strong>Responsable:</strong> {shipment.transportistaNombre} {shipment.transportistaApellido}</p>
-                                                    <p><strong>Fecha creación:</strong> {formatearFecha(shipment.fechaCreacion)}</p>
-                                                    <p><strong>Origen:</strong> {shipment.plantaDespachoNombre}</p>
-                                                    <p><strong>Destino:</strong> {shipment.estacionDestinoNombre}</p>
+                                                    <p><strong>Patente del Camion:</strong> {shipment.camionPatente}</p>
+                                                    <p><strong>Patente del Acoplado:</strong> {shipment.acopladoPatente}</p>
+                                                    <p><strong>Combustible:</strong> {shipment.combustible}</p>
+                                                    <p><strong>Fecha de creacion:</strong> {formatearFecha(shipment.fechaCreacion)}</p>
+                                                    <p><strong>Número de Remito:</strong> {shipment.numeroRemito}</p>
+                                                    <p><strong>COT:</strong> {shipment.cot}</p>
                                                 </div>
                                             </td>
                                         </tr>
