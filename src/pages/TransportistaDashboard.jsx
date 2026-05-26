@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { canNotificarEntrega, getPrimaryActionLabel, transportista as transportistaApi } from "../api";
+import { datos } from '@/api';
 import "../styles/transportistaDashboard.css";
+import RouteMap from "../components/RouteMap";
 
 const formatDate = (value) => {
   if (!value) return "Pendiente";
@@ -51,6 +53,11 @@ const getField = (envio, keys, fallback = "Pendiente") => {
 
 export default function TransportistaDashboard({ user }) {
   const navigate = useNavigate();
+
+  const [fullRoute, setFullRoute] = useState(null);
+  const [isMapLoading, setIsMapLoading] = useState(false);
+  const [mapError, setMapError] = useState(false);
+
   const [loading, setLoading] = useState(true);
   const [envios, setEnvios] = useState([]);
   const transportistaId = useMemo(
@@ -103,6 +110,48 @@ export default function TransportistaDashboard({ user }) {
     };
   }, [transportistaId]);
 
+  useEffect(() => {
+      const resolveSavedRouteData = async () => {
+        if (!activeEnvio) return;
+  
+        // 🔍 DEBUG LOG: Check your developer console to see the exact payload layout!
+        console.log("Shipment payload data received:", activeEnvio);
+  
+        // Checking potential database field permutations
+        const targetRutaId = activeEnvio.rutaId || activeEnvio.ruta_id || activeEnvio.ruta?.id || activeEnvio.ruta;
+  
+        console.log("Resolved targetRutaId:", targetRutaId);
+  
+        if (!targetRutaId) {
+          console.warn("Map block skipped: No valid route identifier found in shipment object.");
+          setMapError(true);
+          return;
+        }
+  
+        try {
+          setIsMapLoading(true);
+          setMapError(false);
+  
+          console.log(`Firing API call to: /rutas/get/${targetRutaId}`);
+          const routeData = await datos.getRuta(targetRutaId);
+          console.log("Route metadata fetched successfully:", routeData);
+  
+          if (routeData) {
+            setFullRoute(routeData);
+          } else {
+            setMapError(true);
+          }
+        } catch (err) {
+          console.error("Could not resolve complete route metadata layer:", err);
+          setMapError(true);
+        } finally {
+          setIsMapLoading(false);
+        }
+      };
+  
+      resolveSavedRouteData();
+    }, [activeEnvio]);
+
   const handleIniciarViaje = () => {
     if (!activeEnvio?.id) {
       return;
@@ -117,6 +166,26 @@ export default function TransportistaDashboard({ user }) {
     }
 
     navigate("/transportista/incidencia");
+  };
+
+  const formatRouteTime = (decimalHours) => {
+    if (!decimalHours || isNaN(decimalHours)) return "--:--";
+    const hours = Math.floor(decimalHours);
+    const minutes = Math.round((decimalHours - hours) * 60);
+    return `${hours}h ${minutes.toString().padStart(2, "0")}m`;
+  };
+
+  const formatearFecha = (fechaString) => {
+    if (!fechaString) return "--/--/---- --:--";
+    const fecha = new Date(fechaString);
+    return fecha.toLocaleString('es-AR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
   };
 
   const renderEnvioDetail = (envio) => {
@@ -210,22 +279,53 @@ export default function TransportistaDashboard({ user }) {
 
             {renderEnvioDetail(activeEnvio)}
 
-            <div className="map-placeholder" aria-label="Mapa de ruta pendiente de carga">
-              <div className="map-grid" />
-              <div className="map-route map-route--one" />
-              <div className="map-route map-route--two" />
-              <div className="map-pin">
-                <span className="pin-dot" />
-                <strong>Destino</strong>
-                <small>{getField(activeEnvio, ["destino", "puntoDestino", "plantaDestino"], "Se cargará el mapa luego")}</small>
+            <div className="container-map-summary">
+
+              <div className="map-placeholder">
+                 {isMapLoading ? (
+              <div className="map-loading">
+                <span>Recuperando traza del mapa...</span>
               </div>
-              <div className="map-overlay">
-                <span>Mapa en preparación</span>
-                <p>
-                  Aquí se integrará el mapa con la ubicación y el destino de la carga.
-                </p>
+              ) : mapError ? (
+              <div className="map-error">
+                <strong>Traza No Disponible</strong>
+              </div>
+              ) : (
+                <RouteMap geometry={fullRoute?.geometria} />
+              )}
+              </div>
+
+              <div className="route-summary">
+                <div className="card-body">
+                  <div className="row">
+                    <div>
+                      <small>Distancia Estimada</small>
+                      <h2>
+                        {fullRoute?.distanciaKm
+                          ? `${Number(fullRoute.distanciaKm).toFixed(1)} km`
+                          : activeEnvio.distanciaKm ? `${Number(activeEnvio.distanciaKm).toFixed(1)} km` : "-- km"}
+                      </h2>
+                    </div>
+                    <div>
+                      <small>Tiempo Estimado</small>
+                      <h2>⏱ {fullRoute?.tiempoEstimadoHoras ? formatRouteTime(fullRoute.tiempoEstimadoHoras) : "15:30"}</h2>
+                    </div>
+                  </div>
+
+                  <div className="dates">
+                    <div>
+                      <small>Fecha Salida</small>
+                      <h2>⏱ {activeEnvio.fechaSalidaPlanta ? formatearFecha(activeEnvio.fechaSalidaPlanta) : "-"}</h2>
+                    </div>
+                    <div>
+                      <small>Fecha Llegada</small>
+                      <h2>⏱ {activeEnvio.fechaEntrega ? formatearFecha(activeEnvio.fechaEntrega) : "-"}</h2>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+            
 
             <div className="action-row">
               <button
