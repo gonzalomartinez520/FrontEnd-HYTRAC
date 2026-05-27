@@ -460,12 +460,12 @@ export default function NuevoEnvio({ user }) {
             </div>
 
             <div className="form-group">
-              <label>Temperatura (°C)</label>
+              <label>Temperatura Referencia (°C)</label>
               <input type="number" name="temperatura" value={formData.temperatura} required disabled />
             </div>
 
             <div className="form-group">
-              <label>Volumen a cargar (L)</label>
+              <label>Volumen a cargar (Lts)</label>
               <input type="number" name="volumenACargar" placeholder="30000" min="0" value={formData.volumenACargar} required disabled={loading} onChange={handleChange} />
             </div>
 
@@ -518,9 +518,9 @@ export default function NuevoEnvio({ user }) {
               </div>
 
               <div className="form-group">
-                <label>Refinería de origen</label>
+                <label>Ubicación de despacho</label>
                 <select name="refineriaOrigen" value={formData.refineriaOrigen?.id || ""} disabled={!formData.localidadOrigen || loading} onChange={handleChange}>
-                  <option value="">Seleccione una refinería</option>
+                  <option value="">Seleccione una ubicación</option>
                   {plantasOrigen.map((ref) => (
                     <option key={ref.id} value={ref.id}>{ref.nombre}</option>
                   ))}
@@ -550,9 +550,9 @@ export default function NuevoEnvio({ user }) {
               </div>
 
               <div className="form-group">
-                <label>Estación de servicio destino</label>
+                <label>Ubicación de entrega</label>
                 <select name="estacionDestino" value={formData.estacionDestino?.id || ""} disabled={!formData.localidadDestino || loading} onChange={handleChange}>
-                  <option value="">Seleccione una estación</option>
+                  <option value="">Seleccione una ubicación</option>
                   {estacionesDestino.map((est) => (
                     <option key={est.id} value={est.id}>{est.nombre}</option>
                   ))}

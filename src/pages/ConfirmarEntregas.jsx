@@ -42,7 +42,26 @@ export default function ConfirmarEntregas( { user } ) {
         setExpandedId((prev) => (prev === id ? null : id));
     };
 
-    // Agregar funciones para confirmar y rechazar ediciones con motivo (aún no implementadas)
+    const confirmarEntrega = (id) => {
+        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar la entrega con ID ${id}?`);
+
+        if (confirmacion) {
+            const fetchConfirmar = async () => {
+                try {
+                    await envios.confirmarEntrega(id);
+                    console.log(`Entrega confirmada con ID: ${id}`);
+
+                    // 🔄 REFRESCAR DATOS (sin recargar página)
+                    window.location.reload();
+
+                } catch (error) {
+                    console.error(`Error al confirmar entrega con ID: ${id}`, error);
+                }
+            };
+
+            fetchConfirmar();
+        }
+    };
 
     const formatearFecha = (fechaString) => {
         const fecha = new Date(fechaString);
@@ -184,7 +203,7 @@ export default function ConfirmarEntregas( { user } ) {
                                                     )}
                                             </button>
 
-                                            <button className="confirmar-edicion"> 
+                                            <button className="confirmar-edicion" onClick={() => confirmarEntrega(shipment.id)}> 
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"

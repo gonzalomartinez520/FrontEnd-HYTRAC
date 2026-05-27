@@ -61,6 +61,9 @@ const getHomePath = (userLike) => {
   if (role === "TRANSPORTISTA") {
     return "/transportista";
   }
+  if (role === "JEFE_ESTACION") {
+    return "/jefe-estacion";
+  }
 
   return "/dashboard";
 };
@@ -118,7 +121,7 @@ function App() {
         />
 
         {/* ACCESO DENEGADO */}
-        <Route path="/acceso-denegado" element={<AccesoDenegado />} />
+        <Route path="/acceso-denegado" element={<AccesoDenegado user={parsedUser}/>} />
 
         {/* DASHBOARD */}
         <Route
@@ -165,7 +168,7 @@ function App() {
           path="/ordenes/:id"
           element={
             <ProtectedRoute
-              allowedRoles={["OPERADOR", "SUPERVISOR", "ADMIN"]}
+              allowedRoles={["OPERADOR", "SUPERVISOR", "ADMIN", "JEFE_ESTACION"]}
             >
               <EnvioDetail user={parsedUser} />
             </ProtectedRoute>
