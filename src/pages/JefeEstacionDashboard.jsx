@@ -14,6 +14,11 @@ export default function JefeEstacionDashboard({ user }) {
   const [shipments, setShipments] = useState([]);
   const [search, setSearch] = useState("");
 
+  const [showModal, setShowModal] = useState(false);
+  const [litros, setLitros] = useState("");
+  const [observaciones, setObservaciones] = useState("");
+  const [selectedShipment, setSelectedShipment] = useState(null);
+
   useEffect(() => {
     const timer = setTimeout(() => {
       const fetchData = async () => {
@@ -47,13 +52,10 @@ export default function JefeEstacionDashboard({ user }) {
       });
   };
 
-  const confirmarEntregaJefe = (id) => {
-        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar la entrega con ID ${id}?`);
-
-        if (confirmacion) {
+  const confirmarEntregaJefe = (id, payload) => {
             const fetchConfirmar = async () => {
                 try {
-                    await envios.confirmarEntrega(id);
+                    await envios.confirmarEntregaJefe(id, payload);
                     console.log(`Entrega confirmada con ID: ${id}`);
 
                     // 🔄 REFRESCAR DATOS (sin recargar página)
@@ -65,7 +67,7 @@ export default function JefeEstacionDashboard({ user }) {
             };
 
             fetchConfirmar();
-        }
+        
     };
 
   const filteredShipments = shipments.filter((shipment) => {
@@ -154,7 +156,7 @@ export default function JefeEstacionDashboard({ user }) {
                   <td data-label="Estado">
                     <StatusBadge estado={shipment.estado} />
                   </td>
-                  <td data-label="Chofer">{shipment.transportistaNombre} {shipment.transportistaApellido}</td>
+                  <td data-label="Chofer">{shipment.transportista}</td>
                   <td data-label="Fecha Creación">{formatearFecha(shipment.fechaCreacion)}</td>
 
                   {/* aca tengo que poner los 3 botones(el ojo tiene que seguir mostrando el detalle) */}
@@ -178,46 +180,54 @@ export default function JefeEstacionDashboard({ user }) {
                       </svg>
                     </button>
 
-                    {/* ✅ CONFIRMAR */}
-                    <button
-                      className="confirmar-envio"
-                      onClick={() => confirmarEntregaJefe(shipment.id)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="22"
-                        viewBox="0 0 24 24"
-                        width="22"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M20 6L9 17l-5-5" />
-                      </svg>
-                    </button>
+                    {shipment.estado?.toLowerCase() === "pendiente de confirmacion de entrega" &&
+                      shipment.litrosEntregados != null && shipment.litrosEntregados !== "" && (
+                        <>
+                          {/* ✅ CONFIRMAR */}
+                          <button
+                            className="confirmar-envio"
+                            onClick={() => {
+                              setSelectedShipment(shipment);
+                              setShowModal(true);
+                            }}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              height="22"
+                              viewBox="0 0 24 24"
+                              width="22"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="M20 6L9 17l-5-5" />
+                            </svg>
+                          </button>
 
-                    {/* ❌ CANCELAR */}
-                    <button
-                      className="rechazar-envio"
-                      onClick={() => console.log("Cancelar", shipment.id)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="22"
-                        viewBox="0 0 24 24"
-                        width="22"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                      </svg>
-                    </button>
+                          {/* ❌ CANCELAR */}
+                          <button
+                            className="rechazar-envio"
+                            onClick={() => console.log("Cancelar", shipment.id)}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              height="22"
+                              viewBox="0 0 24 24"
+                              width="22"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <line x1="6" y1="6" x2="18" y2="18" />
+                              <line x1="18" y1="6" x2="6" y2="18" />
+                            </svg>
+                          </button>
+                        </>
+                      )}
 
                   </div>
                 </td>
@@ -226,16 +236,74 @@ export default function JefeEstacionDashboard({ user }) {
               ))}
             </tbody>
           </table>
-
-          <div className="pagination">
-            <button>Anterior</button>
-            <button className="active-page">1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>Siguiente</button>
-          </div>
         </section>
       </main>
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Confirmar entrega</h2>
+
+            {/* Input de litros */}
+            <input
+              type="number"
+              placeholder="Litros entregados"
+              value={litros}
+              onChange={(e) => setLitros(e.target.value)}
+            />
+
+            {/* Observaciones */}
+            <textarea
+              placeholder="Observaciones..."
+              value={observaciones}
+              onChange={(e) => setObservaciones(e.target.value)}
+            />
+
+            <div className="modal-buttons">
+              <button
+                className="confirmar"
+                onClick={async () => {
+                  try {
+                    const payload = {
+                      litrosEntregados: Number(litros),
+                      observaciones: observaciones,
+                    };
+
+                    console.log("PAYLOAD:", payload);
+
+                    await confirmarEntregaJefe(
+                      selectedShipment.id,
+                      payload
+                    );
+
+                    // limpiar estado
+                    setLitros("");
+                    setObservaciones("");
+                    setShowModal(false);
+
+                  } catch (error) {
+                    console.error("Error al confirmar entrega:", error);
+                    console.log("DATA:", error.response?.data);
+                    console.log("STATUS:", error.response?.status);
+                  }
+                }}
+              >
+                Confirmar
+              </button>
+
+              <button
+                className="cancelar"
+                onClick={() => {
+                  setShowModal(false);
+                  setLitros("");
+                  setObservaciones("");
+                }}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

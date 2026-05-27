@@ -128,7 +128,7 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute
-              allowedRoles={["OPERADOR", "SUPERVISOR", "ADMIN"]}
+              allowedRoles={["OPERADOR", "SUPERVISOR"]}
             >
               <OperarioDashboard user={parsedUser} />
             </ProtectedRoute>
@@ -168,7 +168,7 @@ function App() {
           path="/ordenes/:id"
           element={
             <ProtectedRoute
-              allowedRoles={["OPERADOR", "SUPERVISOR", "ADMIN", "JEFE_ESTACION"]}
+              allowedRoles={["OPERADOR", "SUPERVISOR", "JEFE_ESTACION"]}
             >
               <EnvioDetail user={parsedUser} />
             </ProtectedRoute>
@@ -199,7 +199,7 @@ function App() {
         <Route
           path="/confirmaciones"
           element={
-            <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
+            <ProtectedRoute allowedRoles={["SUPERVISOR"]}>
               <Confirmaciones user={parsedUser} />
             </ProtectedRoute>
           }
@@ -209,7 +209,7 @@ function App() {
         <Route
           path="/confirmar-envio"
           element={
-            <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
+            <ProtectedRoute allowedRoles={["SUPERVISOR"]}>
               <ConfirmarEnvio user={parsedUser} />
             </ProtectedRoute>
           }
@@ -219,7 +219,7 @@ function App() {
         <Route
           path="/confirmar-entregas"
           element={
-            <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
+            <ProtectedRoute allowedRoles={["SUPERVISOR"]}>
               <ConfirmarEntregas user={parsedUser} />
             </ProtectedRoute>
           } 
@@ -229,7 +229,7 @@ function App() {
         <Route
         path="/confirmar-incidencias"
         element={
-          <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
+          <ProtectedRoute allowedRoles={["SUPERVISOR"]}>
             <ConfirmarIncidencias user={parsedUser} />
             </ProtectedRoute>
           }
@@ -239,7 +239,7 @@ function App() {
         <Route
           path="/confirmar-inicio-viaje"
           element={
-            <ProtectedRoute allowedRoles={["SUPERVISOR", "ADMIN"]}>
+            <ProtectedRoute allowedRoles={["SUPERVISOR"]}>
               <ConfirmarInicioViaje user={parsedUser} />
             </ProtectedRoute>
           }
@@ -249,7 +249,7 @@ function App() {
         <Route
           path="/jefe-estacion"
           element={
-            <ProtectedRoute allowedRoles={["ADMIN" , "JEFE_ESTACION"]}>
+            <ProtectedRoute allowedRoles={["JEFE_ESTACION"]}>
               <JefeEstacionDashboard user={parsedUser} />
             </ProtectedRoute>
           }

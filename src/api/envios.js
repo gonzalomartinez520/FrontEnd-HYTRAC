@@ -75,8 +75,8 @@ const envios = {
     return data;
   },
 
-  confirmarEntregaJefe: async (id) => {
-    const {data} = await apiClient.put(`/jefe-estacion/orden/{id}/reportar-entrega`);
+  confirmarEntregaJefe: async (id, payload) => {
+    const {data} = await apiClient.put(`/jefe-estacion/orden/${id}/reportar-entrega`, payload);
     return data;
   },
 
