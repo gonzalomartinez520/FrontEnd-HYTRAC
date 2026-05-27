@@ -113,13 +113,17 @@ export default function ReportarIncidencia({ user }) {
 
     setError("");
 
+    const tipoSeleccionado = INCIDENCIA_OPTIONS.find(
+      (opt) => opt.id === Number(tipoIncidenciaId)
+    );
+
     const payload = {
-      orden_id: getField(activeEnvio, ["orden_id", "ordenId", "id", "envio_id"], null),
-      nro_remito: getField(activeEnvio, ["nro_remito", "numeroRemito", "remito"], null),
-      legajo_transportista: user?.legajo ?? localStorage.getItem("legajo") ?? null,
-      tipo_incidencia_id: Number(tipoIncidenciaId),
+      numeroRemito: getField(activeEnvio, ["nro_remito", "numeroRemito", "remito"], null),
+      legajoTransportista: user?.legajo ?? localStorage.getItem("legajo") ?? null,
+      tipoIncidencia: tipoSeleccionado?.label,
       descripcion: motivo.trim(),
     };
+    console.log(payload);
 
     try {
       await transportistaApi.createIncidencia(payload);
