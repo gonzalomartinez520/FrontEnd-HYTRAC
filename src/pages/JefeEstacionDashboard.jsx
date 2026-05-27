@@ -156,7 +156,7 @@ export default function JefeEstacionDashboard({ user }) {
                   <td data-label="Estado">
                     <StatusBadge estado={shipment.estado} />
                   </td>
-                  <td data-label="Chofer">{shipment.transportista}</td>
+                  <td data-label="Chofer">{shipment.transportistaNombre} {shipment.transportistaApellido}</td>
                   <td data-label="Fecha Creación">{formatearFecha(shipment.fechaCreacion)}</td>
 
                   {/* aca tengo que poner los 3 botones(el ojo tiene que seguir mostrando el detalle) */}
