@@ -197,7 +197,16 @@ export default function EnvioDetail({ user }) {
           )}
         </div>
 
-        <div className="back-link" onClick={() => navigate("/dashboard")}>
+        <div
+          className="back-link"
+          onClick={() =>
+            navigate(
+              user?.role === "JEFE_ESTACION"
+                ? "/jefe-estacion"
+                : "/dashboard"
+            )
+          }
+        >
           ← Volver al Panel
         </div>
 

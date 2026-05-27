@@ -47,12 +47,6 @@ const envios = {
     return data;
   },
 
-  // Cancelar un envio por incidencia
-  cancelarEnvio: async (id) => {
-    const { data } = await apiClient.put(`/ordenes/${id}/cancelar`)
-    return data;
-  },
-
   // Confirmar un envío
   confirmarEnvio: async (id) => {
     const { data } = await apiClient.put(`/supervisor/ordenes/${id}/confirmar`);
@@ -67,13 +61,23 @@ const envios = {
 
   //Confirmar inicio de viaje
   confirmarInicioViaje: async (id) => {
-    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/aprobar-inicio`)
+    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/aprobar-inicio`);
     return data;
   },
 
   //Rechazar inicio de viaje
   rechazarInicioViaje: async (id) => {
     
+  },
+
+  confirmarEntrega: async (id) => {
+    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/confirmar-entrega`);
+    return data;
+  },
+
+  confirmarEntregaJefe: async (id) => {
+    const {data} = await apiClient.put(`/jefe-estacion/orden/{id}/reportar-entrega`);
+    return data;
   },
 
   // Obtener un envío por su ID
