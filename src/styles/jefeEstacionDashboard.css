@@ -106,26 +106,13 @@ th {
   font-weight: bold;
 }
 
-/* Status styles imported from statusBadge.css */
-
-.pagination {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 25px;
-}
-
-.pagination button {
-  border: none;
-  background: #f3f3f3;
-  padding: 10px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.active-page {
-  background: #ff7b00 !important;
-  color: white;
+.modal-overlay input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #0B1120;
+  color: #F8FAF6;
 }
 
 .loading-screen {

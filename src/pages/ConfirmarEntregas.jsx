@@ -77,27 +77,32 @@ export default function ConfirmarEntregas( { user } ) {
     };
 
     const filteredShipments = shipments.filter((shipment) => {
-        const searchText = (search || "").toLowerCase();
+    const searchText = (search || "").toLowerCase();
 
-        const fields = [
-            shipment.plantaDespacho,
-            shipment.estacionDestino,
-            shipment.transportistaNombre,
-            shipment.combustibleTipo,
-        ];
+    const fields = [
+        shipment.plantaDespacho,
+        shipment.estacionDestino,
+        shipment.transportistaNombre,
+        shipment.combustibleTipo,
+    ];
 
-        const matchesSearch =
-            String(shipment.id).includes(searchText) ||
-            fields.some(field =>
-                (field || "").toLowerCase().includes(searchText)
-            );
+    const matchesSearch =
+        String(shipment.id).includes(searchText) ||
+        fields.some(field =>
+        (field || "").toLowerCase().includes(searchText)
+        );
 
-        const isPendienteConfirmacion =
-            (shipment.estado || "")
-                .trim()
-                .toLowerCase() === "pendiente de confirmacion de entrega";
+    const isPendienteConfirmacion =
+        (shipment.estado || "")
+        .trim()
+        .toLowerCase() === "pendiente de confirmacion de entrega";
 
-        return matchesSearch && isPendienteConfirmacion;
+    const tieneLitrosEntregados =
+        shipment.litrosEntregados !== null &&
+        shipment.litrosEntregados !== undefined &&
+        shipment.litrosEntregados !== "";
+
+    return matchesSearch && isPendienteConfirmacion && tieneLitrosEntregados;
     });
 
     if (loading) {
@@ -251,7 +256,9 @@ export default function ConfirmarEntregas( { user } ) {
                                                     <p><strong>Patente del Camion:</strong> {shipment.camionPatente}</p>
                                                     <p><strong>Patente del Acoplado:</strong> {shipment.acopladoPatente}</p>
                                                     <p><strong>Combustible:</strong> {shipment.combustible}</p>
-                                                    <p><strong>Fecha de creación:</strong> {formatearFecha(shipment.fechaCreacion)}</p>
+                                                    <p><strong>Litros Cargados:</strong> {shipment.litrosCargados}</p>
+                                                    <p><strong>Litros Entregados:</strong> {shipment.litrosEntregados}</p>
+                                                    <p><strong>Observaciones:</strong> {shipment.observaciones}</p>
                                                     <p><strong>Número de Remito:</strong> {shipment.numeroRemito}</p>
                                                     <p><strong>COT:</strong> {shipment.cot}</p>
                                                 </div>

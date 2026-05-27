@@ -112,7 +112,7 @@ useEffect(() => {
       icon: "➕",
       label: "Nueva Orden",
     },
-    ADMIN: {
+    SUPERVISOR: {
       title: "Confirmaciones",
       to: "/confirmaciones",
       icon: "✅",
