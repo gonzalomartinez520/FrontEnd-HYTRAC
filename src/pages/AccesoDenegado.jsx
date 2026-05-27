@@ -2,12 +2,12 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import "../styles/accesoDenegado.css";
 
-//Modificar la pantalla para que sea mas grande y ver que tipo de informacion
-//puedo agregar, como por ejemplo un mensaje personalizado o un enlace a la pagina de inicio.
-//Esta pagina quedaria como PLACEHOLDER para ver si funciona el sistema de permisos.
-
-const AccesoDenegado = () => {
+export default function  AccesoDenegado  ( { user } ) {
   const navigate = useNavigate();
+  const role = String(user?.role || user?.normalizedRole || user?.rol || "")
+  .toUpperCase()
+  .replace("ROLE_", "")
+  .replace(" ", "_");
 
   return (
     <div className="denegado-layout">
@@ -18,15 +18,27 @@ const AccesoDenegado = () => {
           No tenés permisos para acceder a esta sección.
         </p>
 
-        <button
-          className="denegado-boton"
-          onClick={() => navigate("/dashboard")}
+        <div
+          className="back-link"
+          onClick={() => {
+            console.log("ROLE:", role);
+            console.log(user);
+
+            const route =
+              role === "JEFE_ESTACION"
+                ? "/jefe-estacion"
+                : role === "TRANSPORTISTA"
+                ? "/transportista"
+                : "/dashboard";
+
+            console.log("NAVIGATE TO:", route);
+
+            navigate(route);
+          }}
         >
-          Volver al inicio
-        </button>
+          ← Volver al Panel
+        </div>
       </div>
     </div>
   );
 };
-
-export default AccesoDenegado;

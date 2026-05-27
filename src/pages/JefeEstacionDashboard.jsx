@@ -47,6 +47,27 @@ export default function JefeEstacionDashboard({ user }) {
       });
   };
 
+  const confirmarEntregaJefe = (id) => {
+        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar la entrega con ID ${id}?`);
+
+        if (confirmacion) {
+            const fetchConfirmar = async () => {
+                try {
+                    await envios.confirmarEntrega(id);
+                    console.log(`Entrega confirmada con ID: ${id}`);
+
+                    // 🔄 REFRESCAR DATOS (sin recargar página)
+                    window.location.reload();
+
+                } catch (error) {
+                    console.error(`Error al confirmar entrega con ID: ${id}`, error);
+                }
+            };
+
+            fetchConfirmar();
+        }
+    };
+
   const filteredShipments = shipments.filter((shipment) => {
     const searchText = (search || "").toLowerCase();
 
@@ -114,8 +135,7 @@ export default function JefeEstacionDashboard({ user }) {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Origen / Refinería</th>
-                <th>Destino / Estación</th>
+                <th>Ruta Designada</th>
                 <th>Estado</th>
                 <th>Chofer</th>
                 <th>Fecha Creación</th>
@@ -127,12 +147,9 @@ export default function JefeEstacionDashboard({ user }) {
               {/* aca tengo que filtrar solo los envios pendientes */}
               {filteredShipments.map((shipment) => (
                 <tr key={shipment.id}>
-                      <td className="tracking" data-label="ID">{shipment.id}</td>
+                      <td className="tracking" data-label="ID">{shipment.trackingId}</td>
                   <td data-label="Origen">
-                    <strong>{shipment.plantaDespacho}</strong>
-                  </td>
-                  <td data-label="Destino">
-                    <strong>{shipment.estacionDestino}</strong>
+                    <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                   </td>
                   <td data-label="Estado">
                     <StatusBadge estado={shipment.estado} />
@@ -164,7 +181,7 @@ export default function JefeEstacionDashboard({ user }) {
                     {/* ✅ CONFIRMAR */}
                     <button
                       className="confirmar-envio"
-                      onClick={() => console.log("Confirmar", shipment.id)}
+                      onClick={() => confirmarEntregaJefe(shipment.id)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

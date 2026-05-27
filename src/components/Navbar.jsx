@@ -98,6 +98,7 @@ useEffect(() => {
 
   const homeByRole = {
     TRANSPORTISTA: "/transportista",
+    JEFE_ESTACION: "/jefe-estacion",
   };
 
   const homeTo = homeByRole[role] || "/dashboard";
@@ -156,6 +157,10 @@ useEffect(() => {
               <>
                 <span className="route-nav-icon" aria-hidden="true">🛣️</span> Mi ruta
               </>
+            ) : role === "JEFE_ESTACION" ? (
+              <>
+                <span className="icon">⛽</span> Panel Estación
+              </>
             ) : (
               <>
                 <span className="icon">🏠</span> Panel Control
@@ -206,7 +211,12 @@ useEffect(() => {
             <strong>
               {user?.nombre || "Usuario"} {user?.apellido || ""}
             </strong>
-            <span>{(user?.normalizedRole || user?.role || "Operario").toString().toLowerCase()}</span>
+            {role === "JEFE_ESTACION" ? (
+                <span>Jefe Estación</span>
+              ) : (
+                <span>{(user?.normalizedRole || user?.role || "Operario").toString().toLowerCase()}</span>
+              )
+            }
           </div>
         </div>
 
