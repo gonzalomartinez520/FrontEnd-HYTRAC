@@ -151,7 +151,7 @@ const transportista = {
   },
 
   createIncidencia: async (payload) => {
-    const { data } = await apiClient.post("/api/transportistas/incidencia", payload);
+    const { data } = await apiClient.post("/transportistas/incidencia", payload);
 
     return data;
   },

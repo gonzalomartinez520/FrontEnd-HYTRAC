@@ -323,7 +323,9 @@ export default function ConfirmarIncidencias({ user }) {
                           <p><strong>Patente del Camion:</strong> {shipment.camionPatente}</p>
                           <p><strong>Patente del Acoplado:</strong> {shipment.acopladoPatente}</p>
                           <p><strong>Combustible:</strong> {shipment.combustible}</p>
-                          <p><strong>Fecha de creación:</strong> {formatearFecha(shipment.fechaCreacion)}</p>
+                          <p><strong>Fecha Incidente:</strong> {formatearFecha(incidencia.fechaIncidente)}</p>
+                          <p><strong>Tipo de Incidencia:</strong> {incidencia.tipoIncidencia}</p>
+                          <p><strong>Descripción:</strong> {incidencia.descripcion}</p>
                           <p><strong>Número de Remito:</strong> {shipment.numeroRemito}</p>
                           <p><strong>COT:</strong> {shipment.cot}</p>
                         </div>
