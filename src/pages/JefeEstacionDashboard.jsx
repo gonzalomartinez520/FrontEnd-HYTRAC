@@ -80,7 +80,7 @@ export default function JefeEstacionDashboard({ user }) {
     ];
 
     const matchesSearch =
-      String(shipment.id).includes(searchText) ||
+      String(shipment.trackingId).includes(searchText) ||
         fields.some(field =>
             (field || "").toLowerCase().includes(searchText)
           );

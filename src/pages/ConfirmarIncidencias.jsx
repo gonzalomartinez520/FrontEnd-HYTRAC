@@ -83,7 +83,7 @@ export default function ConfirmarIncidencias({ user }) {
     ];
 
     return (
-      String(shipment.id).includes(searchText) ||
+      String(shipment.trackingId).includes(searchText) ||
       fields.some(field =>
         (field || "").toLowerCase().includes(searchText)
       )

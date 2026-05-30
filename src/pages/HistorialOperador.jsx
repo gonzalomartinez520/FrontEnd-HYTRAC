@@ -351,7 +351,7 @@ export default function HistorialOperador( { user } ) {
         // 🔎 Coincidencia del buscador
         const matchesSearch =
             !searchText || // si está vacío, no filtra
-            String(shipment.id).includes(searchText) ||
+            String(shipment.trackingId).includes(searchText) ||
             fields.some(field =>
                 (field || "").toLowerCase().includes(searchText)
             );

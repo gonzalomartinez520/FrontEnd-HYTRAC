@@ -29,6 +29,8 @@ export default function  AccesoDenegado  ( { user } ) {
                 ? "/jefe-estacion"
                 : role === "TRANSPORTISTA"
                 ? "/transportista"
+                : role === "ADMIN"
+                ? "/administrador"
                 : "/dashboard";
 
             console.log("NAVIGATE TO:", route);
