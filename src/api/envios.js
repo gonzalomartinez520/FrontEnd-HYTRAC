@@ -100,8 +100,9 @@ const envios = {
   },
 
   //Obtener el historial del envio (auditoria de estados)
-  getHistorialEstado: async (id) => {
-    
+  getHistorialEstado: async (remito) => {
+    const { data } = await apiClient.get(`/auditoria/${remito}`);
+    return data;
   }, 
 
   //Confirmar y rechazar incidencia
