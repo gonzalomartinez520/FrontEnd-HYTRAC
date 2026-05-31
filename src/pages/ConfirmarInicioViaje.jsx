@@ -61,13 +61,13 @@ export default function ConfirmarInicioViaje( { user } ) {
         }
     };
     //Despues ver si a la notificacion se hace desde Backend o se manda a esta API para que lo mande al ROL correspondiente.
-    const rechazarInicioViaje = (id) => {
+    const rechazarInicioViaje = (id, motivo) => {
         const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar el inicio del viaje?`);
 
         if(confirmacion) {
             const fetchRechazar = async () => {
                 try {
-                    await envios.rechazarInicioViaje(id);
+                    await envios.rechazarInicioViaje(id, motivo);
                     console.log(`Inicio de viaje rechazado con ID: ${id}`);
 
                     window.location.reload();
@@ -103,7 +103,7 @@ export default function ConfirmarInicioViaje( { user } ) {
         ];
 
         const matchesSearch =
-            String(shipment.id).includes(searchText) ||
+            String(shipment.trackingId).includes(searchText) ||
             fields.some(field =>
                 (field || "").toLowerCase().includes(searchText)
             );

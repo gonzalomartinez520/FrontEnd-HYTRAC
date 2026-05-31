@@ -63,6 +63,27 @@ export default function ConfirmarEntregas( { user } ) {
         }
     };
 
+    const rechazarEntrega = (id, motivo) => {
+        const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar la entrega con ID ${id}?`);
+
+        if (confirmacion) {
+            const fetchConfirmar = async () => {
+                try {
+                    await envios.rechazarEntrega(id, motivo);
+                    console.log(`Entrega rechazada con ID: ${id}`);
+
+                    // 🔄 REFRESCAR DATOS (sin recargar página)
+                    window.location.reload();
+
+                } catch (error) {
+                    console.error(`Error al rechazar entrega con ID: ${id}`, error);
+                }
+            };
+
+            fetchConfirmar();
+        }
+    };
+
     const formatearFecha = (fechaString) => {
         const fecha = new Date(fechaString);
 
@@ -87,7 +108,7 @@ export default function ConfirmarEntregas( { user } ) {
     ];
 
     const matchesSearch =
-        String(shipment.id).includes(searchText) ||
+        String(shipment.trackingId).includes(searchText) ||
         fields.some(field =>
         (field || "").toLowerCase().includes(searchText)
         );

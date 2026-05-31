@@ -54,8 +54,8 @@ const envios = {
   },
 
   // Rechazar un envío
-  rechazarEnvio: async (id) => {
-    const { data } = await apiClient.put(`/supervisor/ordenes/${id}/rechazar`);
+  rechazarEnvio: async (id, motivo) => {
+    const { data } = await apiClient.put(`/supervisor/ordenes/${id}/rechazar`, motivo);
     return data;
   },
 
@@ -66,8 +66,9 @@ const envios = {
   },
 
   //Rechazar inicio de viaje
-  rechazarInicioViaje: async (id) => {
-    
+  rechazarInicioViaje: async (id, motivo) => {
+    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/rechazar-inicio`, motivo);
+    return data;
   },
 
   confirmarEntrega: async (id) => {
@@ -75,10 +76,16 @@ const envios = {
     return data;
   },
 
+  rechazarEntrega: async (id, motivo) => {
+    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/rechazar-entrega`, motivo);
+  },
+
   confirmarEntregaJefe: async (id, payload) => {
     const {data} = await apiClient.put(`/jefe-estacion/orden/${id}/reportar-entrega`, payload);
     return data;
   },
+
+  //POR AHI FALTA QUE EL JEFE DE ESTACION RECHACE A ENTREGA.
 
   // Obtener un envío por su ID
   getById: async (id) => {
