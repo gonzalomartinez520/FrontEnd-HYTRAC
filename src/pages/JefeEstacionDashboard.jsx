@@ -181,7 +181,7 @@ export default function JefeEstacionDashboard({ user }) {
                     </button>
 
                     {shipment.estado?.toLowerCase() === "pendiente de confirmacion de entrega" &&
-                      shipment.litrosEntregados != null && shipment.litrosEntregados !== "" && (
+                      (shipment.litrosEntregados === null || shipment.litrosEntregados === "") && (
                         <>
                           {/* ✅ CONFIRMAR */}
                           <button

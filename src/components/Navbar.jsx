@@ -178,7 +178,7 @@ useEffect(() => {
               </>
             ) : (
               <>
-                <span className="icon">🏠</span> Panel Control
+                <span className="icon">📊</span> Panel Control
               </>
             )}
           </Link>
