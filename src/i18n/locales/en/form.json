@@ -1,0 +1,80 @@
+{
+  "newOrder": {
+    "title": "Create transport order",
+    "subtitle": "Complete the sections to generate the order",
+    "new": "NEW ORDER",
+
+    "sections": {
+      "unitDriver": "Unit & Driver",
+      "unitDriverDesc": "Vehicle data and document verification.",
+      "cargoSpecs": "Cargo specifications",
+      "cargoSpecsDesc": "Fuel, hazardous transport code and conditions.",
+      "logistics": "Logistics & Documentation",
+      "logisticsDesc": "Origin, destination and fiscal documents."
+    },
+
+    "fields": {
+      "truckPlate": "Truck Plate",
+      "trailerPlate": "Trailer Plate",
+      "brand": "Brand",
+      "model": "Model",
+      "capacity": "Trailer Max Capacity (L)",
+      "maxWeight": "Max Weight (kg)",
+      "driver": "Assigned Driver",
+      "cuit": "Tax ID",
+      "relationship": "Relationship Type",
+
+      "fuelType": "Fuel Type",
+      "onuCode": "UN Code",
+      "temperature": "Reference Temperature (°C)",
+      "volume": "Load Volume (L)",
+      "density": "Density (kg/m³)",
+      "risk": "Risk Class",
+
+      "originProvince": "Origin Province",
+      "originCity": "Origin City",
+      "originPlant": "Dispatch Location",
+
+      "destinationProvince": "Destination Province",
+      "destinationCity": "Destination City",
+      "destinationStation": "Delivery Location",
+
+      "remito": "Delivery Note #",
+      "cot": "COT (ARBA)"
+    },
+
+    "placeholders": {
+      "select": "Select an option",
+      "selectTruck": "Select a truck plate",
+      "selectFuel": "Select a fuel type",
+      "selectTransport": "Select a carrier",
+      "selectProvince": "Select a province",
+      "selectCity": "Select a city",
+      "selectLocation": "Select a location"
+    },
+
+    "route": {
+      "title": "Estimated Route Information",
+      "distance": "Total Distance",
+      "time": "Estimated Time",
+      "calculating": "Calculating optimal route...",
+      "incomplete": "Select origin refinery and destination station to calculate the route."
+    },
+
+    "terms": "I accept the terms and conditions related to Law 25,326 (Personal Data Protection).",
+
+    "info": "Once the shipment is created, a unique tracking ID will be automatically generated. The initial status will be \"PENDING\".",
+
+    "buttons": {
+      "cancel": "Cancel",
+      "submit": "Create Shipment",
+      "loading": "Processing..."
+    },
+
+    "messages": {
+      "success": "Shipment successfully created! Tracking ID: {{id}}",
+      "error": "Error creating shipment.",
+      "termsError": "You must accept the terms and conditions."
+    }
+  }
+}

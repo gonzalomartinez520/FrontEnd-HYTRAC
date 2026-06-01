@@ -1,51 +1,47 @@
+import { useTranslation } from "react-i18next";
+
 export default function StatusBadge({ estado }) {
+  const { t } = useTranslation("common");
+
   if (!estado) {
-    return <span className="badge status-unknown">Sin estado</span>;
+    return <span className="badge status-unknown">{t("status.sin_estado")}</span>;
   }
 
-  // 🔹 Normaliza para CSS
-  const normalize = (str) =>
-    str.toLowerCase().trim();
+  // 🔹 Normalizar
+  const normalize = (str) => str.toLowerCase().trim();
 
+  // 🔹 Generar clase CSS (NO se toca)
   const getStatusClass = (estado) => {
     return `status-${normalize(estado).replace(/\s+/g, "-")}`;
   };
 
-  // 🔹 Configuración centralizada (PRO 🔥)
-  const estadosConfig = {
-    // 🔹 EXISTENTES
-    "en viaje": "En curso",
-    "en curso": "En curso",
-    "cancelado": "Cancelada",
-    "cancelada": "Cancelada",
-    "entregado": "Entregada",
-    "entregada": "Entregada",
-
-    // 🔹 NUEVOS
-    "confirmado": "Confirmado",
-    "rechazado": "Rechazado",
-    "pendiente confirmar": "Pendiente a confirmar",
-    "pendiente a confirmar": "Pendiente a confirmar",
-
-    // 🔹 PERSONALIZADOS (los que pediste)
-    "pendiente de confirmacion de entrega": "Confirmación de entrega",
-    "pendiente de inicio de viaje": "Inicio pendiente",
-  };
-
-  // 🔹 Obtener label
-  const getEstadoLabel = (estado) => {
+  // 🔹 MAPEO CLAVE (🔥 importante)
+  const mapEstadoToKey = (estado) => {
     const key = normalize(estado);
 
-    if (estadosConfig[key]) {
-      return estadosConfig[key];
-    }
+    const mapping = {
+      "en viaje": "en_viaje",
+      "en curso": "en_curso",
+      "cancelado": "cancelado",
+      "cancelada": "cancelada",
+      "entregado": "entregado",
+      "entregada": "entregada",
+      "confirmado": "confirmado",
+      "rechazado": "rechazado",
+      "pendiente confirmar": "pendiente_confirmar",
+      "pendiente a confirmar": "pendiente_confirmar",
+      "pendiente de confirmacion de entrega": "pendiente_confirmacion_entrega",
+      "pendiente de inicio de viaje": "pendiente_inicio_viaje",
+    };
 
-    // fallback automático
-    return key.replace(/\b\w/g, (c) => c.toUpperCase());
+    return mapping[key] || key.replace(/\s+/g, "_");
   };
 
   const statusClass = getStatusClass(estado);
-  const label = getEstadoLabel(estado);
+  const estadoKey = mapEstadoToKey(estado);
+
+  // 🔥 traducción real
+  const label = t(`status.${estadoKey}`);
 
   return (
     <span className={`badge ${statusClass}`}>

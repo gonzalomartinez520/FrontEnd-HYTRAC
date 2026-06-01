@@ -1,0 +1,44 @@
+{
+  "roles": {
+    "OPERADOR": "Operador",
+    "SUPERVISOR": "Supervisor",
+    "ADMIN": "Administrador",
+    "TRANSPORTISTA": "Transportador",
+    "JEFE_ESTACION": "Chefe da Estação"
+  },
+
+  "status": {
+    "en_viaje": "Em trânsito",
+    "en_curso": "Em andamento",
+    "cancelado": "Cancelado",
+    "cancelada": "Cancelado",
+    "entregado": "Entregue",
+    "entregada": "Entregue",
+    "confirmado": "Confirmado",
+    "rechazado": "Rejeitado",
+    "pendiente_confirmar": "Pendente de confirmação",
+    "pendiente_confirmacion_entrega": "Confirmação de entrega",
+    "pendiente_inicio_viaje": "Início pendente",
+    "sin_estado": "Sem status"
+  },
+
+  "dashboard": {
+    "title": "Painel de Controle Logístico",
+    "subtitle": "Monitoramento em tempo real da frota e despachos de combustível",
+    "history": "Histórico de Ordens Recentes",
+    "ordersFound": "Ordens encontradas: {{count}}",
+    "searchPlaceholder": "Buscar ID, Origem..."
+  },
+  "table": {
+    "id": "ID",
+    "route": "Rota Designada",
+    "fuel": "Combustível",
+    "status": "Status",
+    "driver": "Motorista",
+    "createdAt": "Data de Criação",
+    "detail": "Detalhe"
+  },
+  "common": {
+    "loading": "Carregando painel HYTRAC..."
+  }
+}
