@@ -8,8 +8,6 @@ import { envios } from '@/api';
 export default function ConfirmarEnvio({ user }) {
     const navigate = useNavigate();
 
-    const [legajoSupervisor, setLegajoSupervisor] = useState("");
-
     const [loading, setLoading] = useState(true);
     const [shipments, setShipments] = useState([]);
     const [search, setSearch] = useState("");
@@ -26,7 +24,6 @@ export default function ConfirmarEnvio({ user }) {
                     const response = await envios.getAllSupervisor();
                     console.log("Datos obtenidos de la API:", response);
                     setShipments(response);
-                    setLegajoSupervisor(localStorage.getItem("legajo"));
                 } catch (error) {
                     console.error("Error al obtener envíos:", error);
                 } finally {

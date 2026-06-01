@@ -87,6 +87,7 @@ export default function NuevoEnvio({ user }) {
         setCamiones(camionesData);
         setAcoplados(acopladosData);
         setTransportistas(transportistasData);
+        console.log(transportistasData);
       } catch (error) {
         console.error("Error cargando datos:", error);
       }

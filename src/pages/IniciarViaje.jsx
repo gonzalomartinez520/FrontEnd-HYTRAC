@@ -141,7 +141,7 @@ export default function IniciarViaje({ user }) {
 
       if (shouldNotificarEntrega) {
         const response = await transportistaApi.notificarEntrega(ordenId, {
-          usuario: user?.username || user?.nombre || "transportista-web",
+          legajoTransportista: localStorage.getItem("legajo"),
         });
 
         const refreshed = await reloadShipment();
@@ -155,6 +155,7 @@ export default function IniciarViaje({ user }) {
         estado: "EN_VIAJE",
         motivo: "Envio confirmado desde el panel de transportista",
         usuario: user?.username || user?.nombre || "transportista-web",
+        legajoTransportista: localStorage.getItem("legajo"),
       };
 
       await api.put(`/transportista/orden/${ordenId}/iniciar-viaje`, payload);
