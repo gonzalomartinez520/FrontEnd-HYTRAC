@@ -60,8 +60,8 @@ const envios = {
   },
 
   //Confirmar inicio de viaje
-  confirmarInicioViaje: async (id) => {
-    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/aprobar-inicio`);
+  confirmarInicioViaje: async (id, payload) => {
+    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/aprobar-inicio`, payload);
     return data;
   },
 
@@ -71,8 +71,8 @@ const envios = {
     return data;
   },
 
-  confirmarEntrega: async (id) => {
-    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/confirmar-entrega`);
+  confirmarEntrega: async (id, payload) => {
+    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/confirmar-entrega`, payload);
     return data;
   },
 

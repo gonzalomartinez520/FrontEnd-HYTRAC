@@ -7,6 +7,8 @@ import { envios } from '@/api';
 
 export default function ConfirmarInicioViaje( { user } ) {
   const navigate = useNavigate();
+
+  const [legajoSupervisor, setLegajoSupervisor] = useState("");
   
   const [loading, setLoading] = useState(true);
   const [shipments, setShipments] = useState([]);
@@ -24,6 +26,7 @@ export default function ConfirmarInicioViaje( { user } ) {
                 const response = await envios.getAllSupervisor();
                 console.log("Datos obtenidos de la API:", response);
                 setShipments(response);
+                setLegajoSupervisor(localStorage.getItem("legajo"));
             } catch (error) {
                 console.error("Error al obtener envíos:", error);
             } finally {
@@ -42,13 +45,13 @@ export default function ConfirmarInicioViaje( { user } ) {
         setExpandedId((prev) => (prev === id ? null : id));
     };
 
-    const confirmarInicioViaje = (id) => {
+    const confirmarInicioViaje = (id, payload) => {
         const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar el inicio del viaje?`);
 
         if (confirmacion) {
             const fetchConfirmar = async () => {
                 try {
-                    await envios.confirmarInicioViaje(id);
+                    await envios.confirmarInicioViaje(id, payload);
                     console.log(`Inicio de viaje confirmado con ID: ${id}`);
 
                     window.location.reload();
@@ -219,7 +222,22 @@ export default function ConfirmarInicioViaje( { user } ) {
                                                     )}
                                             </button>
 
-                                            <button className="confirmar-cambio-estado" onClick={() => confirmarInicioViaje(shipment.id)}> {/* Boton de confirmar cambio de estado, luego agregar funcion */}
+                                            <button className="confirmar-cambio-estado"
+                                                onClick={async () => {
+                                                    try {
+                                                    const payload = {
+                                                        legajoSupervisor: legajoSupervisor,
+                                                    };
+                                                    console.log(payload);
+                                                    const inicioViaje = confirmarInicioViaje(shipment.id, payload);
+
+                                                    } catch (error) {
+                                                    console.error("Error al confirmar incidencia:", error);
+                                                    console.log("DATA:", error.response?.data);
+                                                    console.log("STATUS:", error.response?.status);
+                                                    }
+                                                }}
+                                                >
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"
