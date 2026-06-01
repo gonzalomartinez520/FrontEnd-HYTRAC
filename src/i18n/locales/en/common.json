@@ -1,0 +1,44 @@
+{
+  "roles": {
+    "OPERADOR": "Operator",
+    "SUPERVISOR": "Supervisor",
+    "ADMIN": "Administrator",
+    "TRANSPORTISTA": "Driver",
+    "JEFE_ESTACION": "Station Manager"
+  },
+
+  "status": {
+    "en_viaje": "In transit",
+    "en_curso": "In progress",
+    "cancelado": "Canceled",
+    "cancelada": "Canceled",
+    "entregado": "Delivered",
+    "entregada": "Delivered",
+    "confirmado": "Confirmed",
+    "rechazado": "Rejected",
+    "pendiente_confirmar": "Pending confirmation",
+    "pendiente_confirmacion_entrega": "Delivery confirmation",
+    "pendiente_inicio_viaje": "Pending start",
+    "sin_estado": "No status"
+  },
+
+  "dashboard": {
+    "title": "Logistics Control Panel",
+    "subtitle": "Real-time monitoring of fleet and fuel dispatch",
+    "history": "Recent Orders History",
+    "ordersFound": "Orders found: {{count}}",
+    "searchPlaceholder": "Search ID, Origin..."
+  },
+  "table": {
+    "id": "ID",
+    "route": "Assigned Route",
+    "fuel": "Fuel",
+    "status": "Status",
+    "driver": "Driver",
+    "createdAt": "Creation Date",
+    "detail": "Detail"
+  },
+  "common": {
+    "loading": "Loading HYTRAC dashboard..."
+  }
+}
