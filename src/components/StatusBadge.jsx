@@ -28,6 +28,7 @@ export default function StatusBadge({ estado }) {
       "entregada": "entregada",
       "confirmado": "confirmado",
       "rechazado": "rechazado",
+      "pendiente": "pendiente",
       "pendiente confirmar": "pendiente_confirmar",
       "pendiente a confirmar": "pendiente_confirmar",
       "pendiente de confirmacion de entrega": "pendiente_confirmacion_entrega",

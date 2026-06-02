@@ -16,6 +16,7 @@
     "entregada": "Delivered",
     "confirmado": "Confirmed",
     "rechazado": "Rejected",
+    "pendiente": "Pending",
     "pendiente_confirmar": "Pending confirmation",
     "pendiente_confirmacion_entrega": "Delivery confirmation",
     "pendiente_inicio_viaje": "Pending start",
