@@ -1,0 +1,14 @@
+{
+  "panelControl": "Dashboard",
+  "panelEstacion": "Station Panel",
+  "miRuta": "My Route",
+  "nuevaOrden": "New Order",
+  "confirmaciones": "Confirmations",
+  "reportarIncidencia": "Report Issue",
+  "historialOrdenes": "Order History",
+  "confirmarEnvio": "Confirm Shipment",
+  "notificarEntrega": "Notify Delivery",
+  "gestionUsuarios": "User Management",
+  "usuarioNuevo": "New User",
+  "salir": "Logout"
+}

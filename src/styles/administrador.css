@@ -1,0 +1,242 @@
+.gestion-usuarios-layout {
+  height: calc(100vh - 60px);
+  background: #0B1120;      
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.gestion-usuarios-content {
+  padding: 40px 60px;
+}
+
+.gestion-usuarios-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.gestion-usuarios-header h1 {
+    font-size: 2.5rem;
+    color: #F8FAF6;
+}
+
+.gestion-usuarios-header p {
+    color: #a3b0c2;
+    font-size: 1.1rem;
+}
+
+.gestion-usuarios-card {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 25px;
+}
+
+/* 🔥 CARDS */
+.operarios, .transportistas, .supervisores, .jefe-estacion {
+    display: block;
+    will-change: transform;
+
+    border-radius: 20px;
+    width: 350px;
+    cursor: pointer;
+
+    box-shadow: none;
+
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+
+    animation: aparecerCard 0.6s ease forwards;
+    animation-fill-mode: forwards;
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* COLORES */
+.operarios {
+    background-color: #f97316;
+    margin-right: 50px;
+}
+
+.transportistas {
+    background-color: #1d4ed8;
+    margin-right: 50px;
+}
+
+.supervisores {
+    background-color: #15803d;
+}
+
+.jefe-estacion {
+    background-color: #7c3aed;
+}
+
+.icon-gestion-usuarios {
+    color: #ff7b00;
+    font-size: 40px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+/* ✅ FIX: badge aislado del hover */
+.badge-cantidad {
+    font-size: 70px;
+    font-weight: 900;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: auto;
+    height: auto;
+
+    margin-bottom: 10px;
+
+    /* ❌ se elimina el círculo */
+    background: transparent;
+
+    /* color base (se sobrescribe por card) */
+    color: #0f172a;
+
+    /* borde grueso negro */
+    -webkit-text-stroke: 5px #000;
+    paint-order: stroke fill;
+
+    transition: none;
+    transform: none;
+    will-change: auto;
+}
+
+/* 🔥 evita que el hover de la card afecte visualmente al badge */
+.operarios:hover .badge-cantidad,
+.transportistas:hover .badge-cantidad,
+.supervisores:hover .badge-cantidad,
+.jefe-estacion:hover .badge-cantidad {
+    transform: none !important;
+}
+
+.transportistas .badge-cantidad {
+    margin-right: 0px;
+}
+
+.operarios .badge-cantidad {
+    margin-right: 0px;
+}
+
+.operarios .badge-cantidad {
+    color: #ffb347;
+}
+
+.transportistas .badge-cantidad {
+    color: #93c5fd;
+}
+
+.supervisores .badge-cantidad {
+    color: #86efac;
+}
+
+.jefe-estacion .badge-cantidad {
+    color: #c4b5fd;
+}
+
+/* 🖱️ HOVER CARD (SE MANTIENE) */
+.operarios:hover, 
+.transportistas:hover, 
+.supervisores:hover,
+.jefe-estacion:hover {
+    transform: translateY(-6px) !important;
+}
+
+/* TEXTOS */
+.gestion-usuarios-card h2 {
+    color: #F8FAF6;
+    margin-bottom: 10px;
+}
+
+.gestion-usuarios-card p {
+    color: #F8FAF6;
+    margin-bottom: 20px;
+}
+
+/* 🎬 Animación entrada */
+@keyframes aparecerCard {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* 🔒 Overlay */
+.operarios, .transportistas, .supervisores, .jefe-estacion{
+    position: relative;
+    overflow: visible;
+}
+
+.operarios::before,
+.transportistas::before,
+.supervisores::before,
+.jefe-estacion::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    border-radius: 20px;
+    transition: background 0.25s ease;
+}
+
+.gestion-usuarios-card h2,
+.gestion-usuarios-card p {
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+/* ✨ Glow */
+.operarios::after,
+.transportistas::after,
+.supervisores::after,
+.jefe-estacion::after {
+    content: "";
+    position: absolute;
+    bottom: -15px;
+    left: 20%;
+    width: 60%;
+    height: 22px;
+
+    border-radius: 50%;
+    filter: blur(12px);
+
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.operarios::after {
+    background: rgba(255, 123, 0, 0.45);
+}
+
+.transportistas::after {
+    background: rgba(37, 99, 235, 0.45);
+}
+
+.supervisores::after {
+    background: rgba(22, 163, 74, 0.45);
+}
+
+.jefe-estacion::after {
+    background: rgba(124, 58, 237, 0.45);
+}
+
+.operarios:hover::after,
+.transportistas:hover::after,
+.supervisores:hover::after,
+.jefe-estacion:hover::after {
+    opacity: 1;
+}

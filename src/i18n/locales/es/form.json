@@ -1,0 +1,80 @@
+{
+  "newOrder": {
+    "title": "Crear orden de transporte",
+    "subtitle": "Complete las secciones para generar el orden",
+    "new": "NUEVA ORDEN",
+
+    "sections": {
+      "unitDriver": "Unidad & Chofer",
+      "unitDriverDesc": "Datos del vehículo y verificación documental.",
+      "cargoSpecs": "Especificaciones de la carga",
+      "cargoSpecsDesc": "Combustible, código de transporte peligroso y condiciones.",
+      "logistics": "Logística & Documentación",
+      "logisticsDesc": "Origen, destino y comprobantes fiscales."
+    },
+
+    "fields": {
+      "truckPlate": "Patente Camión",
+      "trailerPlate": "Patente Acoplado",
+      "brand": "Marca",
+      "model": "Modelo",
+      "capacity": "Capacidad Máxima Acoplado (L)",
+      "maxWeight": "Peso Máximo (kg)",
+      "driver": "Chofer Asignado",
+      "cuit": "CUIT",
+      "relationship": "Tipo de vínculo",
+
+      "fuelType": "Tipo de Combustible",
+      "onuCode": "Código ONU",
+      "temperature": "Temperatura Referencia (°C)",
+      "volume": "Volumen a cargar (Lts)",
+      "density": "Densidad (kg/m³)",
+      "risk": "Clase de riesgo",
+
+      "originProvince": "Provincia de origen",
+      "originCity": "Localidad de origen",
+      "originPlant": "Ubicación de despacho",
+
+      "destinationProvince": "Provincia de destino",
+      "destinationCity": "Localidad de destino",
+      "destinationStation": "Ubicación de entrega",
+
+      "remito": "Remito #",
+      "cot": "COT (ARBA)"
+    },
+
+    "placeholders": {
+      "select": "Seleccione una opción",
+      "selectTruck": "Seleccione una patente",
+      "selectFuel": "Seleccione un combustible",
+      "selectTransport": "Seleccione un transportista",
+      "selectProvince": "Seleccione una provincia",
+      "selectCity": "Seleccione una localidad",
+      "selectLocation": "Seleccione una ubicación"
+    },
+
+    "route": {
+      "title": "Información de Ruta Estimada",
+      "distance": "Distancia Total",
+      "time": "Tiempo Estimado",
+      "calculating": "Calculando ruta óptima...",
+      "incomplete": "Seleccione refinería de origen y estación de destino para calcular la ruta."
+    },
+
+    "terms": "Acepto los términos y condiciones asociados a la Ley 25.326 (Protección de Datos Personales).",
+
+    "info": "Una vez creado el envío, se generará automáticamente un número de seguimiento único (tracking ID). El estado inicial será \"PENDIENTE\".",
+
+    "buttons": {
+      "cancel": "Cancelar",
+      "submit": "Crear Envío",
+      "loading": "Procesando..."
+    },
+
+    "messages": {
+      "success": "¡Envío creado exitosamente! Tracking ID: {{id}}",
+      "error": "Error al crear el envío.",
+      "termsError": "Debes aceptar los términos y condiciones."
+    }
+  }
+}

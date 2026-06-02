@@ -1,0 +1,80 @@
+{
+  "newOrder": {
+    "title": "Criar ordem de transporte",
+    "subtitle": "Preencha as seções para gerar a ordem",
+    "new": "NOVA ORDEM",
+
+    "sections": {
+      "unitDriver": "Unidade & Motorista",
+      "unitDriverDesc": "Dados do veículo e verificação documental.",
+      "cargoSpecs": "Especificações da carga",
+      "cargoSpecsDesc": "Combustível, código de transporte perigoso e condições.",
+      "logistics": "Logística & Documentação",
+      "logisticsDesc": "Origem, destino e documentos fiscais."
+    },
+
+    "fields": {
+      "truckPlate": "Placa do Caminhão",
+      "trailerPlate": "Placa do Reboque",
+      "brand": "Marca",
+      "model": "Modelo",
+      "capacity": "Capacidade Máxima do Reboque (L)",
+      "maxWeight": "Peso Máximo (kg)",
+      "driver": "Motorista Designado",
+      "cuit": "CNPJ/CPF",
+      "relationship": "Tipo de vínculo",
+
+      "fuelType": "Tipo de Combustível",
+      "onuCode": "Código ONU",
+      "temperature": "Temperatura de Referência (°C)",
+      "volume": "Volume a carregar (L)",
+      "density": "Densidade (kg/m³)",
+      "risk": "Classe de risco",
+
+      "originProvince": "Estado de origem",
+      "originCity": "Cidade de origem",
+      "originPlant": "Local de despacho",
+
+      "destinationProvince": "Estado de destino",
+      "destinationCity": "Cidade de destino",
+      "destinationStation": "Local de entrega",
+
+      "remito": "Nota de Remessa #",
+      "cot": "COT (ARBA)"
+    },
+
+    "placeholders": {
+      "select": "Selecione uma opção",
+      "selectTruck": "Selecione uma placa",
+      "selectFuel": "Selecione um combustível",
+      "selectTransport": "Selecione um transportador",
+      "selectProvince": "Selecione um estado",
+      "selectCity": "Selecione uma cidade",
+      "selectLocation": "Selecione um local"
+    },
+
+    "route": {
+      "title": "Informações da Rota Estimada",
+      "distance": "Distância Total",
+      "time": "Tempo Estimado",
+      "calculating": "Calculando a rota ideal...",
+      "incomplete": "Selecione a refinaria de origem e o destino para calcular a rota."
+    },
+
+    "terms": "Aceito os termos e condições relacionados à Lei 25.326 (Proteção de Dados Pessoais).",
+
+    "info": "Após criar o envio, um código de rastreamento único será gerado automaticamente. O estado inicial será \"PENDENTE\".",
+
+    "buttons": {
+      "cancel": "Cancelar",
+      "submit": "Criar Envio",
+      "loading": "Processando..."
+    },
+
+    "messages": {
+      "success": "Envio criado com sucesso! Código de rastreamento: {{id}}",
+      "error": "Erro ao criar o envio.",
+      "termsError": "Você deve aceitar os termos e condições."
+    }
+  }
+}

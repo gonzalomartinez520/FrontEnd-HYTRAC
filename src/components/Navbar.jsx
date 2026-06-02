@@ -3,17 +3,36 @@ import { useEffect, useState } from "react";
 import { canNotificarEntrega, transportista as transportistaApi } from "../api";
 import "../styles/navbar.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
+import i18n from "../i18n";
+import { useTranslation } from "react-i18next";
 
 export default function Navbar({ user, onLogout }) {
   const navigate = useNavigate();
+  const { t } = useTranslation("navbar");
+  const { t : tCommon } = useTranslation("common");
+
+  const languages = [
+    { code: "es", label: "Español", flag: "🇦🇷" },
+    { code: "en", label: "English", flag: "🇺🇸" },
+    { code: "pt", label: "Português", flag: "🇧🇷" }
+  ];
+
   const [menuOpen, setMenuOpen] = useState(false);
   const role = String(user?.normalizedRole || user?.role || "").toUpperCase();
   const [transportistaAction, setTransportistaAction] = useState({
-    title: "Confirmar Envío",
+    title: t("confirmarEnvío"),
     to: "/transportista",
     icon: "✅",
-    label: "Confirmar Envío",
+    label: t("confirmarEnvío"),
   });
+
+  const handleChangeLanguage = (e) => {
+    const lang = e.target.value;
+    i18n.changeLanguage(lang);
+
+    // opcional (MUY recomendado)
+    localStorage.setItem("lang", lang);
+  };
 
 
 useEffect(() => {
@@ -37,10 +56,10 @@ useEffect(() => {
         if (!orden?.id) {
           if (isMounted) {
             setTransportistaAction({
-              title: "Confirmar Envío",
+              title: t("confirmarEnvío"),
               to: "/transportista",
               icon: "✅",
-              label: "Confirmar Envío",
+              label: t("confirmarEnvío"),
             });
           }
           return;
@@ -52,16 +71,16 @@ useEffect(() => {
           setTransportistaAction(
             shouldNotificarEntrega
               ? {
-                  title: "Notificar Entrega",
+                  title: t("notificarEntrega"),
                   to: `/transportista/orden/${orden.id}/iniciar-viaje`,
                   icon: "📦",
-                  label: "Notificar Entrega",
+                  label: t("notificarEntrega"),
                 }
               : {
-                  title: "Confirmar Envío",
+                  title: t("confirmarEnvío"),
                   to: `/transportista/orden/${orden.id}/iniciar-viaje`,
                   icon: "✅",
-                  label: "Confirmar Envío",
+                  label: t("confirmarEnvío"),
                 }
           );
         }
@@ -99,6 +118,7 @@ useEffect(() => {
   const homeByRole = {
     TRANSPORTISTA: "/transportista",
     JEFE_ESTACION: "/jefe-estacion",
+    ADMIN: "/administrador",
   };
 
   const homeTo = homeByRole[role] || "/dashboard";
@@ -107,22 +127,28 @@ useEffect(() => {
   // Definir acciones específicas por rol, SE PUEDE ESCALAR CON LOS ROLES RESTANTES.
   const actionByRole = {
     OPERADOR: {
-      title: "Nueva Orden",
+      title: t("nuevaOrden"),
       to: "/nuevo-envio",
       icon: "➕",
-      label: "Nueva Orden",
+      label: t("nuevaOrden"),
     },
     SUPERVISOR: {
-      title: "Confirmaciones",
+      title: t("confirmaciones"),
       to: "/confirmaciones",
       icon: "✅",
-      label: "Confirmaciones",
+      label: t("confirmaciones"),
     },
     TRANSPORTISTA: {
-      title: "Reportar Incidencia",
+      title: t("reportarIncidencia"),
       to: "/transportista/incidencia",
       icon: "⚠️",
-      label: "Incidencia",
+      label: t("reportarIncidencia"),
+    },
+    ADMIN: {
+      title: t("usuarioNuevo"),
+      to: "/alta-usuario",
+      icon: "➕",
+      label: t("usuarioNuevo"),
     },
   };
 
@@ -149,21 +175,35 @@ useEffect(() => {
 
         <div className={`nav-links ${menuOpen ? "active" : ""}`}>
           <Link
-            title="Panel Control"
+            title={t("panelControl")}
             to={homeTo}
             onClick={() => setMenuOpen(false)}
           >
             {role === "TRANSPORTISTA" ? (
               <>
-                <span className="route-nav-icon" aria-hidden="true">🛣️</span> Mi ruta
+                <span className="route-nav-icon" aria-hidden="true">🛣️</span> {t("miRuta")}
               </>
             ) : role === "JEFE_ESTACION" ? (
               <>
-                <span className="icon">⛽</span> Panel Estación
+                <span className="icon">⛽</span> {t("panelEstacion")}
+              </>
+            ) : role === "ADMIN" ? (
+              <>
+              <svg
+                className="icon icon-admin"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="orange"
+              >
+                <path d="M16 11c1.66 0 3-1.57 3-3.5S17.66 4 16 4s-3 1.57-3 3.5S14.34 11 16 11zm-8 0c1.66 0 3-1.57 3-3.5S9.66 4 8 4 5 5.57 5 7.5 6.34 11 8 11zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+              </svg> 
+                <span>{t("gestionUsuarios")}</span>
               </>
             ) : (
               <>
-                <span className="icon">🏠</span> Panel Control
+                <span className="icon">📊</span> {t("panelControl")}
               </>
             )}
           </Link>
@@ -179,13 +219,13 @@ useEffect(() => {
           )}
 
           <Link
-            title="Historial de Ordenes"
+            title={t("historialOrdenes")}
             to="/historial-operador"
             onClick={() => setMenuOpen(false)}
           >
             {role == "OPERADOR" ? (
               <>
-                <span className="route-nav-icon" aria-hidden="true">🕘</span> Historial de Órdenes
+                <span className="route-nav-icon" aria-hidden="true">🕘</span> {t("historialOrdenes")}
               </>
             ) : (
               null
@@ -196,6 +236,15 @@ useEffect(() => {
       </div>
 
       <div className="nav-right">
+
+        <select className="language-select" onChange={handleChangeLanguage} value={i18n.language}>
+          {languages.map((lang) => (
+            <option key={lang.code} value={lang.code}>
+              {lang.flag} {lang.label}
+            </option>
+          ))}
+        </select>
+
         <div className="user-profile">
           <span className="user-icon">
             <svg
@@ -211,17 +260,14 @@ useEffect(() => {
             <strong>
               {user?.nombre || "Usuario"} {user?.apellido || ""}
             </strong>
-            {role === "JEFE_ESTACION" ? (
-                <span>Jefe Estación</span>
-              ) : (
-                <span>{(user?.normalizedRole || user?.role || "Operario").toString().toLowerCase()}</span>
-              )
-            }
+            <span>
+              {tCommon(`roles.${(user?.normalizedRole || user?.role || "OPERADOR").toUpperCase()}`)}
+            </span>
           </div>
         </div>
 
         <button className="logout-btn" onClick={handleLogout}>
-          Salir
+          {t("salir")}
         </button>
       </div>
     </nav>

@@ -20,6 +20,12 @@ import ConfirmarEnvio from "./pages/ConfirmarEnvio.jsx";
 import ConfirmarEntregas from "./pages/ConfirmarEntregas.jsx";
 import ConfirmarInicioViaje from "./pages/ConfirmarInicioViaje.jsx";
 import ConfirmarIncidencias from "./pages/ConfirmarIncidencias.jsx";
+import Administrador from "./pages/Administrador.jsx";
+import GestionOperario from "./pages/GestionOperario.jsx";
+import GestionSupervisor from "./pages/GestionSupervisor.jsx";
+import GestionTransportista from "./pages/GestionTransportista.jsx";
+import GestionJefeEstacion from "./pages/GestionJefeEstacion.jsx";
+import NuevoUsuario from "./pages/NuevoUsuario.jsx";
 import AccesoDenegado from "./pages/AccesoDenegado.jsx"; 
 import Navbar from "./components/Navbar.jsx";
 import JefeEstacionDashboard from "./pages/JefeEstacionDashboard.jsx"; //importo pantalla
@@ -63,6 +69,9 @@ const getHomePath = (userLike) => {
   }
   if (role === "JEFE_ESTACION") {
     return "/jefe-estacion";
+  }
+  if (role === "ADMIN") {
+    return "/administrador";
   }
 
   return "/dashboard";
@@ -215,7 +224,7 @@ function App() {
           }
         />
 
-        {/* CONFIRMAR EDICION */}
+        {/* CONFIRMAR ENTREGAS */}
         <Route
           path="/confirmar-entregas"
           element={
@@ -235,7 +244,7 @@ function App() {
           }
         />
 
-        {/* CONFIRMAR CAMBIO DE ESTADO */}
+        {/* CONFIRMAR INICIO DEL VIAJE */}
         <Route
           path="/confirmar-inicio-viaje"
           element={
@@ -251,6 +260,66 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["JEFE_ESTACION"]}>
               <JefeEstacionDashboard user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ADMINISTRADOR */}
+        <Route
+          path="/administrador"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <Administrador user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* NUEVO USUARIO */}
+        <Route
+          path="/alta-usuario"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <NuevoUsuario user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* GESTION OPERADOR */}
+        <Route  
+          path="/gestion-operarios"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <GestionOperario user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* GESTION SUPERVISOR */}
+        <Route
+          path="/gestion-supervisores"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <GestionSupervisor user={parsedUser}/>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* GESTION TRANSPORTISTA */}
+        <Route
+          path="/gestion-transportistas"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <GestionTransportista user={parsedUser}/>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* GESTION JEFE DE ESTACION */}
+        <Route
+          path="/gestion-jefe-estacion"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <GestionJefeEstacion user={parsedUser}/>
             </ProtectedRoute>
           }
         />

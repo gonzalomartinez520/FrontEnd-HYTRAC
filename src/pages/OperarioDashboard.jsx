@@ -5,9 +5,12 @@ import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
 import { envios } from '@/api';
 
+import { useTranslation } from "react-i18next";
+
 
 export default function OperarioDashboard({ user }) {
   const navigate = useNavigate();
+  const { t } = useTranslation("common");
 
   const [loading, setLoading] = useState(true);
   const [shipments, setShipments] = useState([]);
@@ -56,7 +59,7 @@ export default function OperarioDashboard({ user }) {
     ];
 
     const matchesSearch =
-      String(shipment.id).includes(searchText) ||
+      String(shipment.trackingId).includes(searchText) ||
         fields.some(field =>
             (field || "").toLowerCase().includes(searchText)
           );
@@ -68,7 +71,7 @@ export default function OperarioDashboard({ user }) {
     return (
       <div className="loading-screen">
         <div className="loader"></div>
-        <h2>Cargando panel HYTRAC...</h2>
+        <h2>{t("common.loading")}</h2>
       </div>
     );
   }
@@ -81,10 +84,9 @@ export default function OperarioDashboard({ user }) {
         {/* HEADER */}
         <section className="dashboard-header">
           <div>
-            <h1>Panel de Control de Logística</h1>
+            <h1>{t("dashboard.title")}</h1>
             <p>
-              Monitoreo en tiempo real de la flota y despachos de
-              hidrocarburos.
+              {t("dashboard.subtitle")}
             </p>
           </div>
         </section>
@@ -93,14 +95,14 @@ export default function OperarioDashboard({ user }) {
         <section className="table-card">
           <div className="table-top">
             <div>
-              <h2>Historial de Órdenes Recientes</h2>
-              <span>Órdenes encontradas: {filteredShipments.length}</span>
+              <h2>{t("dashboard.history")}</h2>
+              <span>{t("dashboard.ordersFound", { count: filteredShipments.length })}</span>
             </div>
 
             <div className="table-actions">
               <input
                 type="text"
-                placeholder="Buscar ID, Origen..."
+                placeholder={t("dashboard.searchPlaceholder")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -112,34 +114,34 @@ export default function OperarioDashboard({ user }) {
           <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Ruta Designada</th>
-                <th>Combustible</th>
-                <th>Estado</th>
-                <th>Chofer</th>
-                <th>Fecha Creación</th>
-                <th>Detalle</th>
+                <th>{t("table.id")}</th>
+                <th>{t("table.route")}</th>
+                <th>{t("table.fuel")}</th>
+                <th>{t("table.status")}</th>
+                <th>{t("table.driver")}</th>
+                <th>{t("table.createdAt")}</th>
+                <th>{t("table.detail")}</th>
               </tr>
             </thead>
 
             <tbody>
               {filteredShipments.map((shipment) => (
                 <tr key={shipment.id}>
-                      <td className="tracking" data-label="ID">{shipment.trackingId}</td>
-                  <td data-label="Ruta Designada">
+                      <td className="tracking" data-label={t("table.id")}>{shipment.trackingId}</td>
+                  <td data-label={t("table.route")}>
                     <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                   </td>
 
-                  <td data-label="Combustible">
+                  <td data-label={t("table.fuel")}>
                     {shipment.combustible}
                   </td>
 
-                  <td data-label="Estado">
+                  <td data-label={t("table.status")}>
                     <StatusBadge estado={shipment.estado}/>
                   </td>
-                  <td data-label="Chofer">{shipment.transportistaNombre} {shipment.transportistaApellido}</td>
-                  <td data-label="Fecha Creación">{formatearFecha(shipment.fechaCreacion)}</td>
-                  <td data-label="Detalle">
+                  <td data-label={t("table.driver")}>{shipment.transportistaNombre} {shipment.transportistaApellido}</td>
+                  <td data-label={t("table.createdAt")}>{formatearFecha(shipment.fechaCreacion)}</td>
+                  <td data-label={t("table.detail")}>
                     <div className="detalle-button-container">
                     <button className="ver-detalle" onClick={() => navigate(`/ordenes/${shipment.id}`)}>
                       <svg

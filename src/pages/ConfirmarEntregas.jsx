@@ -7,6 +7,8 @@ import { envios } from '@/api';
 
 export default function ConfirmarEntregas( { user } ) {
   const navigate = useNavigate();
+
+  const [legajoSupervisor, setLegajoSupervisor] = useState("");
   
   const [loading, setLoading] = useState(true);
   const [shipments, setShipments] = useState([]);
@@ -24,6 +26,7 @@ export default function ConfirmarEntregas( { user } ) {
                 const response = await envios.getAllSupervisor();
                 console.log("Datos obtenidos de la API:", response);
                 setShipments(response);
+                setLegajoSupervisor(localStorage.getItem("legajo"));
             } catch (error) {
                 console.error("Error al obtener envíos:", error);
             } finally {
@@ -42,13 +45,13 @@ export default function ConfirmarEntregas( { user } ) {
         setExpandedId((prev) => (prev === id ? null : id));
     };
 
-    const confirmarEntrega = (id) => {
+    const confirmarEntrega = (id, payload) => {
         const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar la entrega con ID ${id}?`);
 
         if (confirmacion) {
             const fetchConfirmar = async () => {
                 try {
-                    await envios.confirmarEntrega(id);
+                    await envios.confirmarEntrega(id, payload);
                     console.log(`Entrega confirmada con ID: ${id}`);
 
                     // 🔄 REFRESCAR DATOS (sin recargar página)
@@ -56,6 +59,27 @@ export default function ConfirmarEntregas( { user } ) {
 
                 } catch (error) {
                     console.error(`Error al confirmar entrega con ID: ${id}`, error);
+                }
+            };
+
+            fetchConfirmar();
+        }
+    };
+
+    const rechazarEntrega = (id, motivo) => {
+        const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar la entrega con ID ${id}?`);
+
+        if (confirmacion) {
+            const fetchConfirmar = async () => {
+                try {
+                    await envios.rechazarEntrega(id, motivo);
+                    console.log(`Entrega rechazada con ID: ${id}`);
+
+                    // 🔄 REFRESCAR DATOS (sin recargar página)
+                    window.location.reload();
+
+                } catch (error) {
+                    console.error(`Error al rechazar entrega con ID: ${id}`, error);
                 }
             };
 
@@ -87,7 +111,7 @@ export default function ConfirmarEntregas( { user } ) {
     ];
 
     const matchesSearch =
-        String(shipment.id).includes(searchText) ||
+        String(shipment.trackingId).includes(searchText) ||
         fields.some(field =>
         (field || "").toLowerCase().includes(searchText)
         );
@@ -208,7 +232,21 @@ export default function ConfirmarEntregas( { user } ) {
                                                     )}
                                             </button>
 
-                                            <button className="confirmar-edicion" onClick={() => confirmarEntrega(shipment.id)}> 
+                                            <button className="confirmar-edicion"  
+                                                onClick={async () => {
+                                                    try {
+                                                    const payload = {
+                                                        legajoSupervisor: legajoSupervisor,
+                                                    };
+                                                    console.log(payload);
+                                                    const inicioViaje = confirmarEntrega(shipment.id, payload);
+
+                                                    } catch (error) {
+                                                    console.error("Error al confirmar incidencia:", error);
+                                                    console.log("DATA:", error.response?.data);
+                                                    console.log("STATUS:", error.response?.status);
+                                                    }
+                                                }}> 
                                                 <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 height="22"

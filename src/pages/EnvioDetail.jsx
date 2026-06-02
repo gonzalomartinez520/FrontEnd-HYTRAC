@@ -6,19 +6,15 @@ import StatusBadge from "@/components/StatusBadge";
 import { envios, datos, apiClient as api } from '@/api';
 import RouteMap from "../components/RouteMap";
 
-const ESTADOS_DISPONIBLES = ["PENDIENTE", "EN_CURSO", "ENTREGADA", "CANCELADA"];
 
 export default function EnvioDetail({ user }) {
   const { id } = useParams();
   const navigate = useNavigate();
+
   const [shipment, setShipment] = useState(null);
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedEstado, setSelectedEstado] = useState("PENDIENTE");
-  const [motivo, setMotivo] = useState("");
-  const [updatingEstado, setUpdatingEstado] = useState(false);
-  const [estadoMsg, setEstadoMsg] = useState("");
   const [summaryOpen, setSummaryOpen] = useState(false);
 
   // --- SINGLE SOURCE OF TRUTH FOR THE WHOLE ROUTE OBJECT ---
@@ -40,25 +36,27 @@ export default function EnvioDetail({ user }) {
         setLoading(true);
         setError(null);
 
-        // ⏱️ Timer mínimo de 1 segundo
         const delay = new Promise((resolve) => setTimeout(resolve, 1000));
 
-        const fetchData = Promise.all([
-          envios.getById(id),
-          user?.role === "supervisor"
-            ? envios.getHistorial(id).catch(() => [])
-            : Promise.resolve([]),
-        ]);
+        const shipmentData = await envios.getById(id);
 
-        // ⛓️ Espera ambas cosas: datos + 1 segundo
-        const [[shipmentData, historyData]] = await Promise.all([
-          fetchData,
-          delay,
-        ]);
+        let historyData = [];
+
+        if (shipmentData?.numeroRemito) {
+          try {
+            historyData = await envios.getHistorialEstado(
+              shipmentData.numeroRemito
+            );
+          } catch (err) {
+            console.warn("No se pudo obtener historial:", err);
+          }
+        }
+
+        await delay;
 
         setShipment(shipmentData);
-        setSelectedEstado(shipmentData.estado || "PENDIENTE");
         setHistory(Array.isArray(historyData) ? historyData : []);
+
       } catch (err) {
         setError(
           err?.response?.data?.message ||
@@ -71,7 +69,7 @@ export default function EnvioDetail({ user }) {
     };
 
     if (id) fetchShipmentAndHistory();
-  }, [id, user]);
+  }, [id, user?.role]); // ✅ SIEMPRE misma cantidad y orden
 
   useEffect(() => {
     const fetchCombustibles = async () => {
@@ -330,13 +328,55 @@ export default function EnvioDetail({ user }) {
             </div>
           </div>
 
-          <div className="historial-estados">
-            <h3 className="section-title">📜 HISTORIAL DE LA ORDEN</h3>
-            <div className="historial-detalle">
-              <div>
-                {/* HISTORIAL DE ESTADOS */}
-              </div>
-            </div>
+          <h3 className="section-title">
+            🚚 SEGUIMIENTO DE LA ORDEN
+          </h3>
+
+          <div className="timeline">
+            {[...history]
+              .sort((a, b) => new Date(a.fechaCambio) - new Date(b.fechaCambio))
+              .map((item, index) => {
+                const isConfirm = !!item.confirmadorLegajo;
+
+                const isLast = index === history.length - 1;
+
+                const actor = item.solicitanteLegajo
+                  ? { label: "Solicitado por", value: item.solicitanteLegajo }
+                  : item.confirmadorLegajo
+                  ? { label: "Confirmado por", value: item.confirmadorLegajo }
+                  : { label: "Sistema", value: "-" };
+
+                return (
+                  <div key={index} className="timeline-item">
+                    {/* Línea + punto */}
+                    <div className="timeline-left">
+                      <div className={`timeline-dot ${isConfirm ? "confirm" : "request"}`} />
+                      {index !== history.length - 1 && <div className="timeline-line" />}
+                    </div>
+
+                    {/* Contenido */}
+                    <div className={`timeline-content ${isLast ? "active" : ""}`}>
+                      <div className="timeline-header">
+                        <StatusBadge estado={item.estadoAnteriorNombre} />
+                        <span className="arrow">→</span>
+                        <StatusBadge estado={item.estadoNuevoNombre} />
+                      </div>
+
+                      <div className="timeline-body">
+                        <p className="actor">
+                          👤 {actor.label}: <strong>{actor.value}</strong>
+                        </p>
+
+                        <p className="motivo">📝 {item.motivo}</p>
+
+                        <p className="fecha">
+                          🕒 {formatearFecha(item.fechaCambio)}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
 
         </div>

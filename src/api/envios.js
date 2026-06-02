@@ -54,31 +54,38 @@ const envios = {
   },
 
   // Rechazar un envío
-  rechazarEnvio: async (id) => {
-    const { data } = await apiClient.put(`/supervisor/ordenes/${id}/rechazar`);
+  rechazarEnvio: async (id, motivo) => {
+    const { data } = await apiClient.put(`/supervisor/ordenes/${id}/rechazar`, motivo);
     return data;
   },
 
   //Confirmar inicio de viaje
-  confirmarInicioViaje: async (id) => {
-    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/aprobar-inicio`);
+  confirmarInicioViaje: async (id, payload) => {
+    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/aprobar-inicio`, payload);
     return data;
   },
 
   //Rechazar inicio de viaje
-  rechazarInicioViaje: async (id) => {
-    
+  rechazarInicioViaje: async (id, motivo) => {
+    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/rechazar-inicio`, motivo);
+    return data;
   },
 
-  confirmarEntrega: async (id) => {
-    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/confirmar-entrega`);
+  confirmarEntrega: async (id, payload) => {
+    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/confirmar-entrega`, payload);
     return data;
+  },
+
+  rechazarEntrega: async (id, motivo) => {
+    const {data} = await apiClient.put(`/supervisor/ordenes/${id}/rechazar-entrega`, motivo);
   },
 
   confirmarEntregaJefe: async (id, payload) => {
     const {data} = await apiClient.put(`/jefe-estacion/orden/${id}/reportar-entrega`, payload);
     return data;
   },
+
+  //POR AHI FALTA QUE EL JEFE DE ESTACION RECHACE A ENTREGA.
 
   // Obtener un envío por su ID
   getById: async (id) => {
@@ -93,8 +100,9 @@ const envios = {
   },
 
   //Obtener el historial del envio (auditoria de estados)
-  getHistorialEstado: async (id) => {
-    
+  getHistorialEstado: async (remito) => {
+    const { data } = await apiClient.get(`/auditoria/${remito}`);
+    return data;
   }, 
 
   //Confirmar y rechazar incidencia
