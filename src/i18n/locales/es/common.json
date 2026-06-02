@@ -16,6 +16,7 @@
     "entregada": "Entregada",
     "confirmado": "Confirmado",
     "rechazado": "Rechazado",
+    "pendiente": "Pendiente",
     "pendiente_confirmar": "Pendiente a confirmar",
     "pendiente_confirmacion_entrega": "Confirmación de entrega",
     "pendiente_inicio_viaje": "Inicio pendiente",
