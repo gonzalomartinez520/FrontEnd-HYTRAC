@@ -25,6 +25,7 @@ import GestionOperario from "./pages/GestionOperario.jsx";
 import GestionSupervisor from "./pages/GestionSupervisor.jsx";
 import GestionTransportista from "./pages/GestionTransportista.jsx";
 import GestionJefeEstacion from "./pages/GestionJefeEstacion.jsx";
+import NuevoUsuario from "./pages/NuevoUsuario.jsx";
 import AccesoDenegado from "./pages/AccesoDenegado.jsx"; 
 import Navbar from "./components/Navbar.jsx";
 import JefeEstacionDashboard from "./pages/JefeEstacionDashboard.jsx"; //importo pantalla
@@ -273,7 +274,17 @@ function App() {
           }
         />
 
-        {/*GESTION OPERADOR */}
+        {/* NUEVO USUARIO */}
+        <Route
+          path="/alta-usuario"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <NuevoUsuario user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* GESTION OPERADOR */}
         <Route  
           path="/gestion-operarios"
           element={
@@ -283,7 +294,7 @@ function App() {
           }
         />
 
-        {/*GESTION SUPERVISOR */}
+        {/* GESTION SUPERVISOR */}
         <Route
           path="/gestion-supervisores"
           element={
@@ -293,7 +304,7 @@ function App() {
           }
         />
 
-        {/*GESTION TRANSPORTISTA */}
+        {/* GESTION TRANSPORTISTA */}
         <Route
           path="/gestion-transportistas"
           element={
@@ -303,7 +314,7 @@ function App() {
           }
         />
 
-        {/*GESTION JEFE DE ESTACION */}
+        {/* GESTION JEFE DE ESTACION */}
         <Route
           path="/gestion-jefe-estacion"
           element={

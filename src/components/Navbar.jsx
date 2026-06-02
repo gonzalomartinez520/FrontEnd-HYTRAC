@@ -144,6 +144,12 @@ useEffect(() => {
       icon: "⚠️",
       label: t("reportarIncidencia"),
     },
+    ADMIN: {
+      title: t("usuarioNuevo"),
+      to: "/alta-usuario",
+      icon: "➕",
+      label: t("usuarioNuevo"),
+    },
   };
 
    const action = role === "TRANSPORTISTA" ? transportistaAction : actionByRole[role];
