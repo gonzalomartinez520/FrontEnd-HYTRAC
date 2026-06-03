@@ -6,6 +6,8 @@ import { administrador } from '@/api';
 export default function SupervisorForm() {
     const navigate = useNavigate();
 
+    const [errorDni, setErrorDni] = useState("");
+
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
@@ -32,6 +34,13 @@ export default function SupervisorForm() {
         e.preventDefault();
         setError("");
         setSuccess("");
+
+        if (formData.dni.length < 7 || formData.dni.length > 8) {
+            setErrorDni("El DNI debe tener entre 7 y 8 dígitos");
+            return;
+        } else {
+            setErrorDni("");
+        }
 
         try {
             const payload = {

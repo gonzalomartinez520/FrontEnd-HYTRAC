@@ -6,6 +6,8 @@ import { administrador } from '@/api';
 export default function OperadorForm() {
     const navigate = useNavigate();
 
+    const [errorDni, setErrorDni] = useState("");
+
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
