@@ -63,14 +63,14 @@ export default function ConfirmarInicioViaje( { user } ) {
             fetchConfirmar();
         }
     };
-    //Despues ver si a la notificacion se hace desde Backend o se manda a esta API para que lo mande al ROL correspondiente.
-    const rechazarInicioViaje = (id, motivo) => {
+    
+    const rechazarInicioViaje = (id, payload) => {
         const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar el inicio del viaje?`);
 
         if(confirmacion) {
             const fetchRechazar = async () => {
                 try {
-                    await envios.rechazarInicioViaje(id, motivo);
+                    await envios.rechazarInicioViaje(id, payload);
                     console.log(`Inicio de viaje rechazado con ID: ${id}`);
 
                     window.location.reload();
@@ -311,8 +311,22 @@ export default function ConfirmarInicioViaje( { user } ) {
                     <div className="modal-buttons">
                         <button
                         className="confirmar"
-                        onClick={() => {
-                            rechazarInicioViaje(selectedShipmentId, motivo);
+                        onClick={async () => {
+                            try {
+                                const payload = {
+                                legajoSupervisor: legajoSupervisor,
+                                motivoRechazo: motivo,
+                                };
+
+                                console.log(payload);
+                                const inicioViaje = rechazarInicioViaje(selectedShipmentId, payload);
+
+                            } catch (error) {
+                                console.error("Error al confirmar incidencia:", error);
+                                console.log("DATA:", error.response?.data);
+                                console.log("STATUS:", error.response?.status);
+                        
+                            }
                             setShowModal(false);
                             setMotivo("");
                         }}

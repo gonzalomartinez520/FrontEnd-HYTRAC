@@ -66,13 +66,13 @@ export default function ConfirmarEntregas( { user } ) {
         }
     };
 
-    const rechazarEntrega = (id, motivo) => {
+    const rechazarEntrega = (id, payload) => {
         const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar la entrega con ID ${id}?`);
 
         if (confirmacion) {
             const fetchConfirmar = async () => {
                 try {
-                    await envios.rechazarEntrega(id, motivo);
+                    await envios.rechazarEntrega(id, payload);
                     console.log(`Entrega rechazada con ID: ${id}`);
 
                     // 🔄 REFRESCAR DATOS (sin recargar página)
@@ -323,8 +323,20 @@ export default function ConfirmarEntregas( { user } ) {
                     <div className="modal-buttons">
                         <button
                         className="confirmar"
-                        onClick={() => {
-                            rechazarEnvio(selectedShipmentId, motivo);
+                        onClick={ async () => {
+                            try {
+                                const payload = {
+                                    legajoSupervisor: legajoSupervisor,
+                                    motivoRechazo: motivo,
+                                };
+
+                                console.log(payload);
+                                const entrega = rechazarEntrega(selectedShipmentId, payload);
+
+                            } catch (error) {
+                                console.error("Error al rechazar envío:", error);
+                            }
+
                             setShowModal(false);
                             setMotivo("");
                         }}

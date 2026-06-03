@@ -338,19 +338,49 @@ export default function EnvioDetail({ user }) {
               .map((item, index) => {
                 const isConfirm = !!item.confirmadorLegajo;
 
+                const isReject =
+                  (item.estadoAnteriorNombre?.toLowerCase() === "pendiente de inicio de viaje" &&
+                    item.estadoNuevoNombre?.toLowerCase() === "pendiente") ||
+
+                  (item.estadoAnteriorNombre?.toLowerCase() === "pendiente de confirmacion de entrega" &&
+                    item.estadoNuevoNombre?.toLowerCase() === "en curso");
+
+                  const dotClass = isReject
+                    ? "reject"
+                    : isConfirm
+                    ? "confirm"
+                    : "request";
+
                 const isLast = index === history.length - 1;
 
-                const actor = item.solicitanteLegajo
-                  ? { label: "Solicitado por", value: item.solicitanteLegajo }
+                const actor = isReject
+                  ? {
+                      label: "Rechazado por",
+                      value:
+                        item.confirmadorLegajo ||
+                        item.solicitanteLegajo ||
+                        "-"
+                    }
                   : item.confirmadorLegajo
-                  ? { label: "Confirmado por", value: item.confirmadorLegajo }
-                  : { label: "Sistema", value: "-" };
+                  ? {
+                      label: "Confirmado por",
+                      value: item.confirmadorLegajo
+                    }
+                  : item.solicitanteLegajo
+                  ? {
+                      label: "Solicitado por",
+                      value: item.solicitanteLegajo
+                    }
+                  : {
+                      label: "Sistema",
+                      value: "-"
+                    };
 
                 return (
                   <div key={index} className="timeline-item">
                     {/* Línea + punto */}
                     <div className="timeline-left">
-                      <div className={`timeline-dot ${isConfirm ? "confirm" : "request"}`} />
+                      <div className={`timeline-dot ${dotClass}`} />
                       {index !== history.length - 1 && <div className="timeline-line" />}
                     </div>
 
