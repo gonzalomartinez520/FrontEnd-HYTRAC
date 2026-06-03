@@ -1,12 +1,24 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "../styles/supervisorForm.css";
+import { administrador } from '@/api';
 
 export default function SupervisorForm() {
+    const navigate = useNavigate();
+
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
+
     const [formData, setFormData] = useState({
         nombre: "",
+        apellido: "",
+        dni: "",
         email: "",
-        telefono: ""
+        passwordTemporal: ""
     });
+
+    // 🔹 Este valor NO viene del formulario
+    const rolNombre = "SUPERVISOR"; // lo podés cambiar dinámicamente si querés
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -18,22 +30,32 @@ export default function SupervisorForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError("");
+        setSuccess("");
 
         try {
-        const payload = {
-            nombre: formData.nombre,
-            email: formData.email,
-            telefono: formData.telefono
-        };
+            const payload = {
+                nombre: formData.nombre,
+                apellido: formData.apellido,
+                dni: Number(formData.dni),
+                email: formData.email,
+                passwordTemporal: formData.passwordTemporal,
+                rolNombre: rolNombre
+            };
 
-        //LLAMADO A API PARA GUARDAR NUEVO OPERADOR
+            console.log("Payload a enviar:", payload);
+            const response = await administrador.crearUsuario(payload);
+            setSuccess("Usuario creado exitosamente.");
+            setError("");
 
-        setTimeout(() => {
-            navigate("/gestion-operarios");
-        }, 1500);
+            setTimeout(() => {
+                navigate("/gestion-supervisores");
+            }, 1500);
 
         } catch (err) {
-        console.error(err);
+            console.error(err);
+            setError("Error al crear el usuario.");
+            setSuccess("");
         }
     };
 
@@ -41,12 +63,13 @@ export default function SupervisorForm() {
         <div className="supervisor-container">
             <header className="supervisor-header">
                 <div>
-                    <h2>Nuevo usuario supervisor</h2>
-                    <p>Por favor, complete los siguientes campos para crear un nuevo supervisor.</p>
+                    <h2>Alta de Usuario Supervisor</h2>
+                    <p>Complete los siguientes datos para registrar un nuevo supervisor en el sistema.</p>
                 </div>
             </header>
 
             <form className="supervisor-form" onSubmit={handleSubmit}>
+
                 <div className="form-group">
                     <label htmlFor="nombre">Nombre</label>
                     <input
@@ -55,28 +78,73 @@ export default function SupervisorForm() {
                         name="nombre"
                         value={formData.nombre}
                         onChange={handleChange}
+                        required
                     />
                 </div>
+
                 <div className="form-group">
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="apellido">Apellido</label>
+                    <input
+                        type="text"
+                        id="apellido"
+                        name="apellido"
+                        value={formData.apellido}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="dni">Documento Nacional de Identidad (DNI)</label>
+                    <input
+                        type="text"
+                        id="dni"
+                        name="dni"
+                        value={formData.dni}
+                        onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, ""); // solo números
+                            setFormData((prev) => ({
+                            ...prev,
+                            dni: value
+                            }));
+                        }}
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        required
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="email">Correo Electrónico</label>
                     <input
                         type="email"
                         id="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
+                        required
                     />
                 </div>
+
                 <div className="form-group">
-                    <label htmlFor="telefono">Teléfono</label>
+                    <label htmlFor="passwordTemporal">Contraseña</label>
                     <input
-                        type="tel"
-                        id="telefono"
-                        name="telefono"
-                        value={formData.telefono}
+                        type="password"
+                        id="passwordTemporal"
+                        name="passwordTemporal"
+                        value={formData.passwordTemporal}
                         onChange={handleChange}
+                        required
                     />
                 </div>
+
+                {error && <div className="error-alert">❌ {error}</div>}
+                {success && <div className="success-alert">✅ {success}</div>}
+
+                <button type="submit" className="btn-submit">
+                    Crear Usuario
+                </button>
+
             </form>
         </div>
     );
