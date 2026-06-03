@@ -127,7 +127,7 @@
 }
 
 .logo-img {
-  height: 40px;
+  height: 100px;
   width: auto;
   object-fit: contain;
 }
@@ -290,9 +290,5 @@
 
   .nav-right {
     gap: 8px;
-  }
-
-  .logo-img {
-    height: 32px;
   }
 }

@@ -437,17 +437,14 @@ export default function HistorialOperador( { user } ) {
                   <td data-label="Combustible">
                     <strong>{shipment.combustible}</strong>
                   </td>
-                  <td data-label="Estado">  {/*CAMBIARLO POR EL OTRO ESTADO QUE ES PARA CONFIRMACIONES */}
-                    {shipment.confirmado === true ? (
-                        <StatusBadge estado="CONFIRMADO"></StatusBadge>
+                  <td data-label="Estado"> 
+                    {shipment.confirmado ? (
+                      <StatusBadge estado="CONFIRMADO" />
+                    ) : shipment.motivoRechazo?.length > 0 ? (
+                      <StatusBadge estado="RECHAZADO" />
                     ) : (
-                        <StatusBadge estado="PENDIENTE A CONFIRMAR"></StatusBadge>
+                      <StatusBadge estado="PENDIENTE A CONFIRMAR" />
                     )}
-{/*                     {shipment.motivoRechazo.length === 0 ? (
-                        null
-                    ) : (
-                        <StatusBadge estado="RECHAZADO"></StatusBadge>
-                    )} */}
                   </td>
                   <td data-label="Chofer">{shipment.transportistaNombre} {shipment.transportistaApellido}</td>
                   <td data-label="Fecha Creación">{formatearFecha(shipment.fechaCreacion)}</td>
@@ -489,26 +486,7 @@ export default function HistorialOperador( { user } ) {
                         </svg>
                         )}
                         </button>
-{/*                         {shipment.motivoRechazo.length === 0 ? (
-                          null
-                        ) : (
-                          <button className="ver-motivo-rechazo" onClick={() => toggleExpand(shipment.id)}>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                height="22"
-                                viewBox="0 0 24 24"
-                                width="22"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                            <line x1="6" y1="6" x2="18" y2="18" />
-                            <line x1="18" y1="6" x2="6" y2="18" />
-                            </svg>
-                        </button> 
-                        )} */}
+
                         {shipment.confirmado === true ? (
                           null
                         ) : (
@@ -594,7 +572,13 @@ export default function HistorialOperador( { user } ) {
                             <p><strong>ID:</strong> {shipment.id}</p>
                             <p><strong>Transportista:</strong> {shipment.transportista}</p>
                             {/* Agregar mas datos para el historial del Operador*/}
-                            </div>
+                            {shipment.motivoRechazo && (
+                              <div className="motivo-rechazo">
+                                <h3>Motivo de rechazo:</h3>
+                                <p>{shipment.motivoRechazo}</p>
+                              </div>
+                            )}
+                        </div>
                         </td>
                     </tr>
                 )}
