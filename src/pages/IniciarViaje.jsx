@@ -5,10 +5,11 @@ import {
   canNotificarEntrega,
   envios,
   getOrdenEstado,
-  getPrimaryActionLabel,
+  getPrimaryActionKey,
   transportista as transportistaApi,
 } from "@/api";
 import "../styles/iniciarViaje.css";
+import { useTranslation } from "react-i18next";
 
 const formatDate = (value) => {
   if (!value) return "Pendiente";
@@ -59,6 +60,7 @@ const resolveUpdatedOrden = (response, ordenActual) => {
 
 export default function IniciarViaje({ user }) {
   const navigate = useNavigate();
+  const { t: tTransportista } = useTranslation("transportista");
   const { ordenId } = useParams();
   const [loading, setLoading] = useState(true);
   const [shipment, setShipment] = useState(null);
@@ -68,7 +70,7 @@ export default function IniciarViaje({ user }) {
   const transportistaId = user?.transportistaId ?? user?.id ?? user?.usuarioId ?? null;
 
   const shouldNotificarEntrega = useMemo(() => canNotificarEntrega(shipment), [shipment]);
-  const primaryActionLabel = useMemo(() => getPrimaryActionLabel(shipment), [shipment]);
+  const primaryActionKey = useMemo(() => getPrimaryActionKey(shipment), [shipment]);
 
   const reloadShipment = async () => {
     if (!ordenId) {
@@ -94,7 +96,7 @@ export default function IniciarViaje({ user }) {
 
     const loadShipment = async () => {
       if (!ordenId) {
-        setError("No se recibió el ID de la orden.");
+        setError(tTransportista("iniciarViaje.error.title"));
         setLoading(false);
         return;
       }
@@ -113,7 +115,7 @@ export default function IniciarViaje({ user }) {
           setError(
             requestError?.response?.data?.message ||
             requestError?.message ||
-            "No se pudo cargar la orden."
+            tTransportista("iniciarViaje.error.title")
           );
         }
       } finally {
@@ -147,7 +149,7 @@ export default function IniciarViaje({ user }) {
         const refreshed = await reloadShipment();
 
         setShipment((prev) => resolveUpdatedOrden(response, refreshed || prev));
-        setFeedback("Entrega notificada correctamente.");
+        setFeedback(tTransportista("iniciarViaje.feedback.notifySuccess"));
         return;
       }
 
@@ -166,12 +168,12 @@ export default function IniciarViaje({ user }) {
         (prev) =>
           resolveUpdatedOrden(refreshed, prev ? { ...prev, estado: "EN_CURSO" } : prev)
       );
-      setFeedback("Envío confirmado. El estado pasó a en curso.");
+      setFeedback(tTransportista("iniciarViaje.feedback.confirmSuccess"));
     } catch (requestError) {
       setFeedback(
         requestError?.response?.data?.message ||
         requestError?.message ||
-        "No se pudo completar la acción."
+        tTransportista("iniciarViaje.feedback.actionError")
       );
     } finally {
       setIsSubmitting(false);
@@ -193,58 +195,58 @@ export default function IniciarViaje({ user }) {
     <main className="iniciar-viaje-screen">
       <section className="iniciar-viaje-shell">
         <button type="button" className="back-link" onClick={() => navigate("/transportista")}>
-          ← Volver al panel
+          ← {tTransportista("iniciarViaje.back")}
         </button>
 
         <header className="iniciar-viaje-hero">
           <div>
-            <p className="eyebrow">Transportista</p>
-            <h1>Orden {ordenId}</h1>
+            <p className="eyebrow">{tTransportista("iniciarViaje.eyebrow")}</p>
+            <h1>{tTransportista("iniciarViaje.title", { id: ordenId })}</h1>
             <p>
-              Si la orden está pendiente, confirmá el envío. Cuando el estado sea en curso, podés notificar la entrega.
+              {tTransportista("iniciarViaje.subtitle")}
             </p>
           </div>
 
           <div className="status-card">
-            <span className="status-label">Estado actual</span>
+            <span className="status-label">{tTransportista("iniciarViaje.status.label")}</span>
             <strong>{formatEstado(estadoActual)}</strong>
             <small>
               {shouldNotificarEntrega
-                ? "Siguiente paso: notificar entrega"
-                : "Siguiente paso: confirmar envío"}
+                ? tTransportista("iniciarViaje.status.nextNotify")
+                : tTransportista("iniciarViaje.status.nextConfirm")}
             </small>
           </div>
         </header>
 
         {loading ? (
           <section className="iniciar-viaje-card">
-            <span className="section-label">Cargando</span>
-            <h2>Buscando la orden asignada</h2>
-            <p>Estamos consultando los datos de la orden para iniciar el flujo.</p>
+            <span className="section-label">{tTransportista("iniciarViaje.loading.label")}</span>
+            <h2>{tTransportista("iniciarViaje.loading.title")}</h2>
+            <p>{tTransportista("iniciarViaje.loading.subtitle")}</p>
           </section>
         ) : error ? (
           <section className="iniciar-viaje-card">
-            <span className="section-label">Error</span>
-            <h2>No pudimos cargar la orden</h2>
+            <span className="section-label">{tTransportista("iniciarViaje.error.label")}</span>
+            <h2>{tTransportista("iniciarViaje.error.title")}</h2>
             <p>{error}</p>
           </section>
         ) : (
           <section className="iniciar-viaje-card">
             <div className="route-grid">
               <div>
-                <span>Origen</span>
+                <span>{tTransportista("iniciarViaje.detail.origin")}</span>
                 <strong>{origen}</strong>
               </div>
               <div>
-                <span>Destino</span>
+                <span>{tTransportista("iniciarViaje.detail.destination")}</span>
                 <strong>{destino}</strong>
               </div>
               <div>
-                <span>Combustible</span>
+                <span>{tTransportista("iniciarViaje.detail.fuel")}</span>
                 <strong>{combustible}</strong>
               </div>
               <div>
-                <span>Fecha de salida</span>
+                <span>{tTransportista("iniciarViaje.detail.departureDate")}</span>
                 <strong>
                   {formatDate(
                     getField(shipment, [
@@ -265,14 +267,14 @@ export default function IniciarViaje({ user }) {
                 onClick={handlePrimaryAction}
                 disabled={isSubmitting}
               >
-                {primaryActionLabel}
+                {tTransportista(`actions.${primaryActionKey}`)}
               </button>
 
               <p>
                 {feedback ||
                   (shouldNotificarEntrega
-                    ? "La orden está en curso. Presioná el botón para notificar la entrega."
-                    : "La orden está pendiente u otro estado. Presioná el botón para confirmar el envío.")}
+                    ? tTransportista("iniciarViaje.status.nextNotify")
+                    : tTransportista("iniciarViaje.status.nextConfirm"))}
               </p>
             </div>
           </section>

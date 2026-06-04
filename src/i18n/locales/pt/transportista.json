@@ -1,0 +1,140 @@
+{
+  "dashboard": {
+    "eyebrow": "Painel do transportador",
+    "title": "Acompanhamento de rota em tempo real",
+    "subtitle": "Visualize o destino atribuido, informe avancos operacionais e reporte incidentes sem sair da tela.",
+    "status": {
+      "inProgress": "Em andamento",
+      "pendingConfirmation": "Pendente de confirmacao"
+    },
+    "driverLabel": "Transportador",
+    "driverIdLabel": "ID do transportador: {{id}}",
+    "driverIdFallback": "Nao disponivel",
+    "loading": {
+      "label": "Carregando",
+      "title": "Buscando envios atribuidos",
+      "subtitle": "Estamos consultando o sistema com seu ID de transportador."
+    },
+    "empty": {
+      "label": "Sem atribuicao",
+      "title": "Sem envios atribuidos",
+      "subtitle": "Nao ha envios em andamento para voce no momento."
+    },
+    "map": {
+      "destinationLabel": "Destino",
+      "assignedRouteTitle": "Rota atribuida",
+      "destinationPending": "Destino pendente",
+      "loadingTrace": "Carregando traca do mapa...",
+      "traceUnavailable": "Traca indisponivel"
+    },
+    "detail": {
+      "sectionLabel": "Detalhe do envio",
+      "remito": "Nota de remessa",
+      "originDestination": "Origem / destino",
+      "truckPlate": "Placa do caminhao",
+      "trailerPlate": "Placa do reboque",
+      "fuel": "Combustivel",
+      "litersLoaded": "Litros carregados",
+      "departureDate": "Data de saida",
+      "arrivalDate": "Chegada estimada",
+      "noData": "Sem dado",
+      "pending": "Pendente",
+      "truckFallback": "Caminhao",
+      "trailerFallback": "Reboque"
+    },
+    "summary": {
+      "distance": "Distancia estimada",
+      "time": "Tempo estimado",
+      "departureDate": "Data de saida",
+      "arrivalDate": "Data de chegada",
+      "defaultTime": "15:30",
+      "defaultDistance": "-- km",
+      "defaultDate": "-"
+    },
+    "actions": {
+      "reportIncident": "Reportar incidente"
+    }
+  },
+  "iniciarViaje": {
+    "back": "Voltar ao painel",
+    "eyebrow": "Transportador",
+    "title": "Ordem {{id}}",
+    "subtitle": "Se a ordem estiver pendente, confirme o envio. Quando o estado estiver em andamento, voce pode notificar a entrega.",
+    "status": {
+      "label": "Estado atual",
+      "nextNotify": "Proximo passo: notificar entrega",
+      "nextConfirm": "Proximo passo: confirmar envio"
+    },
+    "loading": {
+      "label": "Carregando",
+      "title": "Buscando ordem atribuida",
+      "subtitle": "Estamos carregando os dados da ordem para iniciar o fluxo."
+    },
+    "error": {
+      "label": "Erro",
+      "title": "Nao foi possivel carregar a ordem"
+    },
+    "detail": {
+      "origin": "Origem",
+      "destination": "Destino",
+      "fuel": "Combustivel",
+      "departureDate": "Data de saida"
+    },
+    "feedback": {
+      "notifySuccess": "Entrega notificada com sucesso.",
+      "confirmSuccess": "Envio confirmado. O estado passou para em andamento.",
+      "actionError": "Nao foi possivel concluir a acao."
+    }
+  },
+  "reportarIncidencia": {
+    "back": "Voltar para a rota",
+    "eyebrow": "Reportar incidente",
+    "title": "Detalhe o motivo do incidente",
+    "subtitle": "Registre qualquer desvio operacional, atraso ou problema na rota para registrar imediatamente.",
+    "summary": {
+      "label": "Transportador",
+      "fallbackUser": "Usuario",
+      "idLabel": "ID {{id}}",
+      "idFallback": "Nao disponivel"
+    },
+    "loading": {
+      "label": "Carregando",
+      "title": "Verificando envios atribuidos",
+      "subtitle": "Estamos verificando se ha um envio em andamento para registrar um incidente."
+    },
+    "empty": {
+      "label": "Sem atribuicao",
+      "title": "Nao e possivel registrar um incidente",
+      "subtitle": "Este transportador nao tem envios atribuidos, portanto nao pode registrar um incidente.",
+      "back": "Voltar para a rota"
+    },
+    "shipment": {
+      "label": "Envio ativo",
+      "remitoLabel": "Nota de remessa",
+      "noData": "Sem dado"
+    },
+    "form": {
+      "typeLabel": "Tipo de incidente",
+      "typePlaceholder": "Selecione uma opcao",
+      "descriptionLabel": "Descricao do incidente",
+      "descriptionPlaceholder": "Ex.: atraso na carga, desvio de rota, falha mecanica, documentacao pendente...",
+      "cancel": "Cancelar",
+      "submit": "Enviar incidente"
+    },
+    "errors": {
+      "typeRequired": "Selecione o tipo de incidente para continuar.",
+      "descriptionRequired": "Informe o motivo do incidente para continuar.",
+      "submitError": "Nao foi possivel enviar o incidente. Tente novamente.",
+      "submitSuccess": "Incidente enviado com sucesso."
+    },
+    "incidenceTypes": {
+      "delay": "Atraso",
+      "accident": "Acidente",
+      "documentation": "Documentacao"
+    }
+  },
+  "actions": {
+    "confirmShipment": "Confirmar envio",
+    "notifyDelivery": "Notificar entrega"
+  }
+}

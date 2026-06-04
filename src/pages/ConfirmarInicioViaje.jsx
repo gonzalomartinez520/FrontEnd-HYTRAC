@@ -1,5 +1,6 @@
 import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
+import { useTranslation } from "react-i18next";
 import "../styles/confirmarInicioViaje.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
@@ -7,6 +8,7 @@ import { envios } from '@/api';
 
 export default function ConfirmarInicioViaje( { user } ) {
   const navigate = useNavigate();
+  const { t } = useTranslation("supervisor");
 
   const [legajoSupervisor, setLegajoSupervisor] = useState("");
   
@@ -46,7 +48,7 @@ export default function ConfirmarInicioViaje( { user } ) {
     };
 
     const confirmarInicioViaje = (id, payload) => {
-        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar el inicio del viaje?`);
+        const confirmacion = window.confirm(t("confirmarInicioViaje.confirmPrompt"));
 
         if (confirmacion) {
             const fetchConfirmar = async () => {
@@ -65,7 +67,7 @@ export default function ConfirmarInicioViaje( { user } ) {
     };
     
     const rechazarInicioViaje = (id, payload) => {
-        const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar el inicio del viaje?`);
+        const confirmacion = window.confirm(t("confirmarInicioViaje.rejectPrompt"));
 
         if(confirmacion) {
             const fetchRechazar = async () => {
@@ -121,7 +123,7 @@ export default function ConfirmarInicioViaje( { user } ) {
         return (
             <div className="confirmar-cambio-estado-loading-screen">
                 <div className="confirmar-cambio-estado-loader"></div>
-                <h2>Cargando inicio de viajes a confirmar...</h2>
+                <h2>{t("confirmarInicioViaje.loading")}</h2>
             </div>
         );
     }
@@ -131,10 +133,9 @@ export default function ConfirmarInicioViaje( { user } ) {
             <main className="cambio-estado-dashboard-content">
                 <section className="cambio-estado-header">
                     <div>
-                        <h1>Confirmar inicio de viajes</h1>
+                        <h1>{t("confirmarInicioViaje.title")}</h1>
                         <p>
-                            En este panel podrás revisar y confirmar los inicios de viajes de cada orden
-                            y validar los datos para confirmar el inicio de la orden.
+                            {t("confirmarInicioViaje.subtitle")}
                         </p>
                     </div>
                 </section>
@@ -142,13 +143,13 @@ export default function ConfirmarInicioViaje( { user } ) {
                 <section className="cambio-estado-table-section">
                     <div className="cambio-estado-table-header">
                         <div>
-                            <h2>Inicio de viajes a confirmar: {filteredShipments.length}</h2>
+                            <h2>{t("confirmarInicioViaje.count", { count: filteredShipments.length })}</h2>
                         </div>
 
                         <div className="confirmar-cambio-estado-buscador">
                             <input
                                 type="text"
-                                placeholder="🔎 Busqueda por ID, ruta o transportista..."
+                                placeholder={t("confirmarInicioViaje.searchPlaceholder")}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -158,12 +159,12 @@ export default function ConfirmarInicioViaje( { user } ) {
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ruta Designada</th>
-                                <th>Responsable</th>  {/* Ademas se dice si es transportista o jefe de estacion */}
-                                <th>Fecha de Solicitud de viaje</th>
-                                <th>Estado</th> {/* Buscar un nombre mejor para el campo */}
-                                <th>Acciones</th>
+                                <th>{t("confirmarInicioViaje.table.id")}</th>
+                                <th>{t("confirmarInicioViaje.table.route")}</th>
+                                <th>{t("confirmarInicioViaje.table.responsible")}</th>
+                                <th>{t("confirmarInicioViaje.table.requestDate")}</th>
+                                <th>{t("confirmarInicioViaje.table.status")}</th>
+                                <th>{t("confirmarInicioViaje.table.actions")}</th>
                             </tr>
                         </thead>
                         
@@ -281,12 +282,12 @@ export default function ConfirmarInicioViaje( { user } ) {
                                         <tr className="fila-expandida">
                                             <td colSpan="7">
                                                 <div className="datos-cambio-estado">
-                                                    <p><strong>Patente del Camion:</strong> {shipment.camionPatente}</p>
-                                                    <p><strong>Patente del Acoplado:</strong> {shipment.acopladoPatente}</p>
-                                                    <p><strong>Combustible:</strong> {shipment.combustible}</p>
-                                                    <p><strong>Fecha de creacion:</strong> {formatearFecha(shipment.fechaCreacion)}</p>
-                                                    <p><strong>Número de Remito:</strong> {shipment.numeroRemito}</p>
-                                                    <p><strong>COT:</strong> {shipment.cot}</p>
+                                                    <p><strong>{t("confirmarInicioViaje.expanded.truckPlate")}:</strong> {shipment.camionPatente}</p>
+                                                    <p><strong>{t("confirmarInicioViaje.expanded.trailerPlate")}:</strong> {shipment.acopladoPatente}</p>
+                                                    <p><strong>{t("confirmarInicioViaje.expanded.fuel")}:</strong> {shipment.combustible}</p>
+                                                    <p><strong>{t("confirmarInicioViaje.expanded.createdAt")}:</strong> {formatearFecha(shipment.fechaCreacion)}</p>
+                                                    <p><strong>{t("confirmarInicioViaje.expanded.remito")}:</strong> {shipment.numeroRemito}</p>
+                                                    <p><strong>{t("confirmarInicioViaje.expanded.cot")}:</strong> {shipment.cot}</p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -300,10 +301,10 @@ export default function ConfirmarInicioViaje( { user } ) {
             {showModal && (
                 <div className="modal-overlay">
                     <div className="modal">
-                    <h2>Motivo de rechazo</h2>
+                    <h2>{t("confirmarInicioViaje.modal.title")}</h2>
 
                     <textarea
-                        placeholder="Ingrese el motivo..."
+                        placeholder={t("confirmarInicioViaje.modal.placeholder")}
                         value={motivo}
                         onChange={(e) => setMotivo(e.target.value)}
                     />
@@ -331,7 +332,7 @@ export default function ConfirmarInicioViaje( { user } ) {
                             setMotivo("");
                         }}
                         >
-                        Confirmar
+                        {t("confirmarInicioViaje.modal.confirm")}
                         </button>
 
                         <button
@@ -341,7 +342,7 @@ export default function ConfirmarInicioViaje( { user } ) {
                             setMotivo("");
                         }}
                         >
-                        Cancelar
+                        {t("confirmarInicioViaje.modal.cancel")}
                         </button>
                     </div>
                     </div>

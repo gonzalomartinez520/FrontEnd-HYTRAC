@@ -1,7 +1,8 @@
 // Login.jsx
 
 import axios from 'axios';
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import { useTranslation } from "react-i18next";
 import "../styles/login.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 
@@ -32,6 +33,7 @@ const decodeJwtPayload = (token) => {
 };
 
 export default function Login({ onLogin }) {
+  const { t } = useTranslation("common");
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -42,12 +44,12 @@ export default function Login({ onLogin }) {
     e.preventDefault();
 
     if (!mail || typeof mail !== "string" || !mail.trim()) {
-      setError("Por favor ingresá un mail válido.");
+      setError(t("login.errors.emailRequired"));
       return;
     }
 
     if (!password || typeof password !== "string" || !password.trim()) {
-      setError("Por favor ingresá tu contraseña.");
+      setError(t("login.errors.passwordRequired"));
       return;
     }
 
@@ -113,10 +115,22 @@ console.log("LEGAJO DEL TOKEN:", {
     } catch (error) {
       console.error(error);
 
-      if (error.response && error.response.data) {
-        setError(error.response.data.message);
+      if (error.response) {
+        const message = error.response.data?.message;
+        
+        // Comprobamos código 401 o variaciones del mensaje de credenciales incorrectas
+        if (
+          error.response.status === 401 || 
+          (typeof message === "string" && message.toLowerCase().includes("incorrect"))
+        ) {
+          setError(t("login.errors.invalidCredentials"));
+        } else if (message) {
+          setError(message);
+        } else {
+          setError(t("login.errors.unexpected"));
+        }
       } else {
-        setError("Error inesperado. Intentalo de nuevo.");
+        setError(t("login.errors.unexpected"));
       }
     }
   };
@@ -139,34 +153,33 @@ console.log("LEGAJO DEL TOKEN:", {
 
           <div className="hero-text">
             <h1>
-              Trazabilidad total
-              <br />
-              del combustible
-              <br />
-              <span>en tiempo real.</span>
+              {t("login.heroTitle").split("\n").map((line, index, lines) => (
+                <Fragment key={line}>
+                  {index === lines.length - 1 ? <span>{line}</span> : line}
+                  {index < lines.length - 1 && <br />}
+                </Fragment>
+              ))}
             </h1>
 
             <p>
-              Gestión integral de envíos hidrocarburíferos para
-              operadores, supervisores y transportistas en toda
-              Argentina.
+              {t("login.heroDescription")}
             </p>
           </div>
 
           <div className="metrics">
             <div className="metric-item">
               <h3>2.4K</h3>
-              <span>Envíos / mes</span>
+              <span>{t("login.shipmentsPerMonth")}</span>
             </div>
 
             <div className="metric-item">
               <h3>98.7%</h3>
-              <span>Cumplimiento</span>
+              <span>{t("login.compliance")}</span>
             </div>
 
             <div className="metric-item">
               <h3>24/7</h3>
-              <span>Monitoreo</span>
+              <span>{t("login.monitoring")}</span>
             </div>
           </div>
         </div>
@@ -179,15 +192,15 @@ console.log("LEGAJO DEL TOKEN:", {
             <img src={LogiTrackLogo} alt="HYTRAC" />
           </div>
 
-          <h1>Bienvenido</h1>
+          <h1>{t("login.welcome")}</h1>
 
           <p className="login-subtitle">
-            Inicie sesión para acceder a la plataforma.
+            {t("login.subtitle")}
           </p>
 
           <form onSubmit={handleSubmit}>
             <div className="input-group">
-              <label>MAIL</label>
+              <label>{t("login.email")}</label>
 
               <div className="input-wrapper">
                 <span>⌘</span>
@@ -202,7 +215,7 @@ console.log("LEGAJO DEL TOKEN:", {
 
             <div className="input-group">
               <div className="password-top">
-                <label>CONTRASEÑA</label>
+                <label>{t("login.password")}</label>
               </div>
 
               <div className="input-wrapper">
@@ -223,7 +236,7 @@ console.log("LEGAJO DEL TOKEN:", {
             )}
 
             <button type="submit" className="login-btn">
-              Iniciar Sesión
+              {t("login.submit")}
             </button>
           </form>
 

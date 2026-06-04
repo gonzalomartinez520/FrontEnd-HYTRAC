@@ -1,0 +1,23 @@
+{
+  "historial": {
+    "loading": "Carregando histórico de ordens...",
+    "title": "Histórico de ordens de {{nombre}} {{apellido}}",
+    "subtitle": "Aqui você pode visualizar todas as ordens criadas. Se necessário, poderá editar uma ordem antes da confirmação.",
+    "recentTitle": "Histórico de Ordens Recentes",
+    "ordersFound": "Ordens encontradas: {{count}}",
+    "searchPlaceholder": "🔎 Buscar por ID, rota ou transportador...",
+    "actions": "Ações",
+    "expanded": {
+      "carrier": "Transportador",
+      "rejectionReason": "Motivo da rejeição:"
+    },
+    "logisticsSectionTitle": "Logística da ordem",
+    "logisticsSectionDesc": "Rota designada para a carga.",
+    "originRefinery": "Refinaria de origem",
+    "destinationStation": "Posto de destino",
+    "incompletePoints": "Pontos incompletos",
+    "messages": {
+      "editSuccess": "Envio com ID {{id}} editado com sucesso"
+    }
+  }
+}

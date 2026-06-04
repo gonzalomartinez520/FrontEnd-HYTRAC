@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import "../styles/envioDetail.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
@@ -10,6 +11,7 @@ import RouteMap from "../components/RouteMap";
 export default function EnvioDetail({ user }) {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation("common");
 
   const [shipment, setShipment] = useState(null);
   const [history, setHistory] = useState([]);
@@ -61,7 +63,7 @@ export default function EnvioDetail({ user }) {
         setError(
           err?.response?.data?.message ||
           err.message ||
-          "Error al cargar el envío"
+          t("envioDetail.loadError")
         );
       } finally {
         setLoading(false);
@@ -169,11 +171,11 @@ export default function EnvioDetail({ user }) {
   if (loading) return (
     <div className="loading-screen-detail">
       <h1 className="loader-detail"></h1>
-      Cargando Orden...
+      {t("envioDetail.loading")}
     </div>
   );
 
-  if (error) return <div className="error-msg">Error: {error} <button onClick={() => navigate("/dashboard")}>Volver</button></div>;
+  if (error) return <div className="error-msg">{t("alerts.error")}: {error} <button onClick={() => navigate("/dashboard")}>{t("envioDetail.back")}</button></div>;
   if (!shipment) return null;
 
   return (
@@ -184,11 +186,11 @@ export default function EnvioDetail({ user }) {
         <div className="details-left-placeholder">
           {isMapLoading ? (
             <div className="map-loading">
-              <span>Recuperando traza del mapa...</span>
+              <span>{t("envioDetail.mapLoading")}</span>
             </div>
           ) : mapError ? (
             <div className="map-error">
-              <strong>Traza No Disponible</strong>
+              <strong>{t("envioDetail.mapUnavailable")}</strong>
             </div>
           ) : (
             <RouteMap geometry={fullRoute?.geometria} />
@@ -205,7 +207,7 @@ export default function EnvioDetail({ user }) {
             )
           }
         >
-          ← Volver al Panel
+          {t("envioDetail.backToPanel")}
         </div>
 
         {/* FLOATING CONTROL BUTTON */}
@@ -214,19 +216,19 @@ export default function EnvioDetail({ user }) {
           className="summary-toggle-btn"
           onClick={() => setSummaryOpen((prev) => !prev)}
         >
-          Resumen del Trayecto
+          {t("envioDetail.routeSummary")}
         </button>
 
         {/* OVERLAPPING "RESUMEN" PANEL */}
         <div className={`card route-summary ${summaryOpen ? "open" : ""}`}>
           <div className="card-header">
-            📍 <span>Resumen del Trayecto</span>
+            📍 <span>{t("envioDetail.routeSummary")}</span>
           </div>
 
           <div className="card-body">
             <div className="row">
               <div>
-                <small>Distancia Estimada</small>
+                <small>{t("envioDetail.estimatedDistance")}</small>
                 <h2>
                   {fullRoute?.distanciaKm
                     ? `${Number(fullRoute.distanciaKm).toFixed(1)} km`
@@ -234,25 +236,25 @@ export default function EnvioDetail({ user }) {
                 </h2>
               </div>
               <div>
-                <small>Tiempo Estimado</small>
+                <small>{t("envioDetail.estimatedTime")}</small>
                 <h2>⏱ {fullRoute?.tiempoEstimadoHoras ? formatRouteTime(fullRoute.tiempoEstimadoHoras) : "15:30"}</h2>
               </div>
             </div>
 
             <div className="dates">
               <div>
-                <small>Fecha Salida</small>
+                <small>{t("envioDetail.departureDate")}</small>
                 <h2>⏱ {shipment.fechaSalidaPlanta ? formatearFecha(shipment.fechaSalidaPlanta) : "-"}</h2>
               </div>
               <div>
-                <small>Fecha Llegada</small>
+                <small>{t("envioDetail.arrivalDate")}</small>
                 <h2>⏱ {shipment.fechaEntrega ? formatearFecha(shipment.fechaEntrega) : "-"}</h2>
               </div>
             </div>
 
             <div className="info">
-              <p><strong>Origen:</strong> {shipment.plantaDespacho}</p>
-              <p><strong>Destino:</strong> {shipment.estacionDestino}</p>
+              <p><strong>{t("envioDetail.origin")}</strong> {shipment.plantaDespacho}</p>
+              <p><strong>{t("envioDetail.destination")}</strong> {shipment.estacionDestino}</p>
             </div>
           </div>
         </div>
@@ -261,8 +263,8 @@ export default function EnvioDetail({ user }) {
       <div className="details-right">
         <div className="details-header-right">
           <div className="details-header-right__info">
-            <h1>Orden {shipment.trackingId}</h1>
-            <small>Creado: {formatearFecha(shipment.fechaCreacion)}</small>
+            <h1>{t("envioDetail.orderTitle", { id: shipment.trackingId })}</h1>
+            <small>{t("envioDetail.created", { date: formatearFecha(shipment.fechaCreacion) })}</small>
           </div>
           <span>
             <StatusBadge estado={shipment.estado} />
@@ -270,7 +272,7 @@ export default function EnvioDetail({ user }) {
         </div>
 
         <div className="details-info-right">
-          <h3 className="section-title">👤 INFORMACIÓN DEL CONDUCTOR</h3>
+          <h3 className="section-title">👤 {t("envioDetail.driverInfo")}</h3>
 
           <div className="driver-card">
             <div>
@@ -355,7 +357,7 @@ export default function EnvioDetail({ user }) {
 
                 const actor = isReject
                   ? {
-                      label: "Rechazado por",
+                      label: t("envioDetail.rejectedBy"),
                       value:
                         item.confirmadorLegajo ||
                         item.solicitanteLegajo ||
@@ -363,16 +365,16 @@ export default function EnvioDetail({ user }) {
                     }
                   : item.confirmadorLegajo
                   ? {
-                      label: "Confirmado por",
+                      label: t("envioDetail.confirmedBy"),
                       value: item.confirmadorLegajo
                     }
                   : item.solicitanteLegajo
                   ? {
-                      label: "Solicitado por",
+                      label: t("envioDetail.requestedBy"),
                       value: item.solicitanteLegajo
                     }
                   : {
-                      label: "Sistema",
+                      label: t("envioDetail.system"),
                       value: "-"
                     };
 

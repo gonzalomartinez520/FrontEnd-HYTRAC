@@ -40,6 +40,107 @@
     "detail": "Detail"
   },
   "common": {
-    "loading": "Loading HYTRAC dashboard..."
+    "loading": "Loading HYTRAC dashboard...",
+    "usuario": "User",
+    "accesoDenegado": "Access Denied",
+    "noTienePermisos": "You do not have permission to access this section.",
+    "volverAlInicio": "Back to home"
+  },
+  "alerts": {
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "buttons": {
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "login": {
+    "heroTitle": "Total fuel\ntraceability\nin real time.",
+    "heroDescription": "End-to-end fuel shipment management for operators, supervisors, and drivers across Argentina.",
+    "shipmentsPerMonth": "Shipments / month",
+    "compliance": "Compliance",
+    "monitoring": "Monitoring",
+    "welcome": "Welcome",
+    "subtitle": "Sign in to access the platform.",
+    "email": "EMAIL",
+    "password": "PASSWORD",
+    "submit": "Sign In",
+    "errors": {
+      "emailRequired": "Please enter a valid email.",
+      "passwordRequired": "Please enter your password.",
+      "invalidCredentials": "Incorrect email address or password.",
+      "unexpected": "Unexpected error. Please try again."
+    }
+  },
+  "admin": {
+    "title": "User Management",
+    "subtitle": "Please select one of the options.",
+    "cards": {
+      "operators": {
+        "title": "Operators",
+        "description": "Manage system operations"
+      },
+      "supervisors": {
+        "title": "Supervisors",
+        "description": "Supervise and validate processes"
+      },
+      "carriers": {
+        "title": "Drivers",
+        "description": "Manage routes and deliveries"
+      },
+      "stationManagers": {
+        "title": "Station Managers",
+        "description": "Manage station operations"
+      }
+    }
+  },
+  "stationDashboard": {
+    "title": "Station Manager Panel",
+    "subtitle": "Here you can view all pending shipments and confirm or cancel them.",
+    "pendingHistory": "Pending Orders History",
+    "confirmDelivery": "Confirm delivery",
+    "deliveredLiters": "Delivered liters",
+    "observations": "Notes...",
+    "actions": "Actions"
+  },
+  "envioDetail": {
+    "loading": "Loading order...",
+    "loadError": "Error loading shipment",
+    "back": "Back",
+    "backToPanel": "← Back to panel",
+    "mapLoading": "Loading map trace...",
+    "mapUnavailable": "Trace unavailable",
+    "routeSummary": "Route summary",
+    "estimatedDistance": "Estimated distance",
+    "estimatedTime": "Estimated time",
+    "departureDate": "Departure date",
+    "arrivalDate": "Arrival date",
+    "origin": "Origin:",
+    "destination": "Destination:",
+    "orderTitle": "Order {{id}}",
+    "created": "Created: {{date}}",
+    "driverInfo": "DRIVER INFORMATION",
+    "transportUnit": "TRANSPORT UNIT",
+    "truckPlate": "Truck plate",
+    "trailerPlate": "Trailer plate",
+    "totalCapacity": "Total capacity",
+    "maxWeight": "Max weight",
+    "cargoSpecs": "CARGO SPECIFICATIONS",
+    "fuel": "Fuel",
+    "dangerClass": "Hazard class",
+    "temperature": "Temperature",
+    "litersLoaded": "Liters loaded",
+    "orderTracking": "ORDER TRACKING",
+    "rejectedBy": "Rejected by",
+    "confirmedBy": "Confirmed by",
+    "requestedBy": "Requested by",
+    "system": "System",
+    "litersUnit": "L",
+    "kgUnit": "kg"
   }
 }

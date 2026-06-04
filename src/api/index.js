@@ -18,7 +18,7 @@ export {
   default as transportista,
   canNotificarEntrega,
   getOrdenEstado,
-  getPrimaryActionLabel,
+  getPrimaryActionKey,
   isOrdenEnCurso,
   normalizeEstado,
 } from './transportista';

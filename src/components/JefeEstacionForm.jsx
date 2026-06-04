@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { datos, administrador } from '@/api';
 import "../styles/jefeEstacionForm.css";
 
 export default function JefeEstacionForm() {
     const navigate = useNavigate();
+    const { t: tForm } = useTranslation("form");
+    const { t: tCommon } = useTranslation("common");
 
     const [errorDni, setErrorDni] = useState("");
 
@@ -131,7 +134,7 @@ export default function JefeEstacionForm() {
         setSuccess("");
 
         if (formData.dni.length < 7 || formData.dni.length > 8) {
-            setErrorDni("El DNI debe tener entre 7 y 8 dígitos");
+            setErrorDni(tForm("newOrder.messages.dniError"));
             return;
         } else {
             setErrorDni("");
@@ -152,7 +155,7 @@ export default function JefeEstacionForm() {
 
             const response = await administrador.crearUsuario(payload);
             
-            setSuccess("Usuario creado exitosamente.");
+            setSuccess(tForm("newOrder.messages.userCreatedSuccess"));
             setError("");
 
             setTimeout(() => {
@@ -161,7 +164,7 @@ export default function JefeEstacionForm() {
 
         } catch (err) {
             console.error(err);
-            setError("Error al crear el usuario.");
+            setError(tForm("newOrder.messages.userCreatedError"));
             setSuccess("");
         }
     };
@@ -170,8 +173,8 @@ export default function JefeEstacionForm() {
         <div className="jefeEstacion-container">
             <header className="jefeEstacion-header">
                 <div>
-                    <h2>Alta de Usuario Jefe de Estación</h2>
-                    <p>Complete los siguientes datos para registrar un nuevo jefe de estación en el sistema.</p>
+                    <h2>{tCommon('roles.JEFE_ESTACION')} - {tForm('newOrder.new')}</h2>
+                    <p>{tForm("newOrder.users.descriptions.JEFE_ESTACION")}</p>
                 </div>
             </header>
 
@@ -185,13 +188,13 @@ export default function JefeEstacionForm() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 6.75A2.25 2.25 0 015.25 4.5h13.5A2.25 2.25 0 0121 6.75v10.5A2.25 2.25 0 0118.75 19.5H5.25A2.25 2.25 0 013 17.25V6.75z" />
                             <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 9h3m-3 3h6m-6 3h4" />
                         </svg>
-                        Datos Personales
+                        {tForm("newOrder.sections.personalData")}
                     </h3>
                 </div>
 
                 <div className="form-row">
                 <div className="form-group">
-                    <label>Nombre</label>
+                    <label>{tForm("newOrder.fields.nombre")}</label>
                     <input
                     type="text"
                     name="nombre"
@@ -202,7 +205,7 @@ export default function JefeEstacionForm() {
                 </div>
 
                 <div className="form-group">
-                    <label>Apellido</label>
+                    <label>{tForm("newOrder.fields.apellido")}</label>
                     <input
                     type="text"
                     name="apellido"
@@ -215,7 +218,7 @@ export default function JefeEstacionForm() {
 
                 <div className="form-row">
                 <div className="form-group">
-                    <label>DNI</label>
+                    <label>{tForm("newOrder.fields.dni")}</label>
                     <input
                     type="text"
                     name="dni"
@@ -231,7 +234,7 @@ export default function JefeEstacionForm() {
                 </div>
 
                 <div className="form-group">
-                    <label>Correo Electrónico</label>
+                    <label>{tForm("newOrder.fields.email")}</label>
                     <input
                     type="email"
                     name="email"
@@ -250,12 +253,12 @@ export default function JefeEstacionForm() {
                         <svg className="admin-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V7.875a4.125 4.125 0 10-8.25 0V10.5M6.75 10.5h10.5A1.5 1.5 0 0118.75 12v6A1.5 1.5 0 0117.25 19.5H6.75A1.5 1.5 0 015.25 18v-6A1.5 1.5 0 016.75 10.5z" />
                         </svg>
-                        Datos de Acceso
+                        {tForm("newOrder.sections.accessData")}
                     </h3>
                 </div>
 
                 <div className="form-group">
-                <label>Contraseña</label>
+                <label>{tForm("newOrder.fields.passwordTemporal")}</label>
                 <input
                     type="password"
                     name="passwordTemporal"
@@ -274,20 +277,20 @@ export default function JefeEstacionForm() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 21s7-5.686 7-11a7 7 0 10-14 0c0 5.314 7 11 7 11z" />
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 11.25a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z" />
                         </svg>
-                        Ubicación Operativa
+                        {tForm("newOrder.sections.operationalLocation")}
                     </h3>
                 </div>
 
                 <div className="form-row">
                 <div className="form-group">
-                    <label>Provincia</label>
+                    <label>{tForm("newOrder.fields.originProvince")}</label>
                     <select
                     name="provincia"
                     value={formData.provincia?.id || ""}
                     onChange={handleChange}
                     required
                     >
-                    <option value="">Seleccione una provincia</option>
+                    <option value="">{tForm("newOrder.placeholders.selectProvince")}</option>
                     {provincias.map((prov) => (
                         <option key={prov.id} value={prov.id}>
                         {prov.nombre}
@@ -297,7 +300,7 @@ export default function JefeEstacionForm() {
                 </div>
 
                 <div className="form-group">
-                    <label>Localidad</label>
+                    <label>{tForm("newOrder.fields.originCity")}</label>
                     <select
                     name="localidad"
                     value={formData.localidad?.id || ""}
@@ -305,7 +308,7 @@ export default function JefeEstacionForm() {
                     onChange={handleChange}
                     required
                     >
-                    <option value="">Seleccione una localidad</option>
+                    <option value="">{tForm("newOrder.placeholders.selectCity")}</option>
                     {localidades.map((loc) => (
                         <option key={loc.id} value={loc.id}>
                         {loc.nombre}
@@ -316,7 +319,7 @@ export default function JefeEstacionForm() {
                 </div>
 
                 <div className="form-group">
-                <label>Lugar Operativo</label>
+                <label>{tForm("newOrder.fields.originPlant")}</label>
                 <select
                     name="lugarOperativo"
                     value={formData.lugarOperativo?.id || ""}
@@ -324,7 +327,7 @@ export default function JefeEstacionForm() {
                     onChange={handleChange}
                     required
                 >
-                    <option value="">Seleccione un lugar operativo</option>
+                    <option value="">{tForm("newOrder.placeholders.selectLocation")}</option>
                     {lugaresOperativos.map((est) => (
                     <option key={est.id} value={est.id}>
                         {est.nombre}
@@ -341,7 +344,7 @@ export default function JefeEstacionForm() {
             {/* 🔹 BOTÓN */}
             <div className="form-actions">
                 <button type="submit" className="btn-submit">
-                Crear Usuario
+                {tForm("newOrder.buttons.create")}
                 </button>
             </div>
 

@@ -1,7 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import "../styles/transportistaForm.css";
 
 export default function TransportistaForm() {
+    const navigate = useNavigate();
+    const { t: tForm } = useTranslation("form");
+    const { t: tCommon } = useTranslation("common");
+
     const [formData, setFormData] = useState({
         nombre: "",
         email: "",
@@ -41,14 +47,14 @@ export default function TransportistaForm() {
         <div className="transportista-container">
             <header className="transportista-header">
                 <div>
-                    <h2>Nuevo usuario transportista</h2>
-                    <p>Por favor, complete los siguientes campos para crear un nuevo transportista.</p>
+                    <h2>{tCommon('roles.TRANSPORTISTA')} - {tForm('newOrder.new')}</h2>
+                    <p>{tForm("newOrder.users.descriptions.TRANSPORTISTA")}</p>
                 </div>
             </header>
 
             <form className="transportista-form" onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="nombre">Nombre</label>
+                    <label htmlFor="nombre">{tForm("newOrder.fields.nombre")}</label>
                     <input
                         type="text"
                         id="nombre"
@@ -58,7 +64,7 @@ export default function TransportistaForm() {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="email">Email</label>
+                    <label htmlFor="email">{tForm("newOrder.fields.email")}</label>
                     <input
                         type="email"
                         id="email"
@@ -68,7 +74,7 @@ export default function TransportistaForm() {
                     />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="telefono">Teléfono</label>
+                    <label htmlFor="telefono">{tForm("newOrder.fields.telefono")}</label>
                     <input
                         type="tel"
                         id="telefono"

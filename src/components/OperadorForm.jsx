@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import "../styles/operadorForm.css";
 import { administrador } from '@/api';
 
 export default function OperadorForm() {
     const navigate = useNavigate();
+    const { t: tForm } = useTranslation("form");
+    const { t: tCommon } = useTranslation("common");
 
     const [errorDni, setErrorDni] = useState("");
 
@@ -36,7 +39,7 @@ export default function OperadorForm() {
         setSuccess("");
 
         if (formData.dni.length < 7 || formData.dni.length > 8) {
-            setErrorDni("El DNI debe tener entre 7 y 8 dígitos");
+            setErrorDni(tForm("newOrder.messages.dniError"));
             return;
         } else {
             setErrorDni("");
@@ -54,7 +57,7 @@ export default function OperadorForm() {
 
             console.log("Payload a enviar:", payload);
             const response = await administrador.crearUsuario(payload);
-            setSuccess("Usuario creado exitosamente.");
+            setSuccess(tForm("newOrder.messages.userCreatedSuccess"));
             setError("");
 
             setTimeout(() => {
@@ -63,7 +66,7 @@ export default function OperadorForm() {
 
         } catch (err) {
             console.error(err);
-            setError("Error al crear el usuario.");
+            setError(tForm("newOrder.messages.userCreatedError"));
             setSuccess("");
         }
     };
@@ -72,15 +75,15 @@ export default function OperadorForm() {
         <div className="operador-container">
             <header className="operador-header">
                 <div>
-                    <h2>Alta de Usuario Operador</h2>
-                    <p>Complete los siguientes datos para registrar un nuevo operador en el sistema.</p>
+                    <h2>{tCommon('roles.OPERADOR')} - {tForm('newOrder.new')}</h2>
+                    <p>{tForm("newOrder.users.descriptions.OPERADOR")}</p>
                 </div>
             </header>
 
             <form className="operador-form" onSubmit={handleSubmit}>
 
                 <div className="form-group">
-                    <label htmlFor="nombre">Nombre</label>
+                    <label htmlFor="nombre">{tForm("newOrder.fields.nombre")}</label>
                     <input
                         type="text"
                         id="nombre"
@@ -92,7 +95,7 @@ export default function OperadorForm() {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="apellido">Apellido</label>
+                    <label htmlFor="apellido">{tForm("newOrder.fields.apellido")}</label>
                     <input
                         type="text"
                         id="apellido"
@@ -104,7 +107,7 @@ export default function OperadorForm() {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="dni">Documento Nacional de Identidad (DNI)</label>
+                    <label htmlFor="dni">{tForm("newOrder.fields.dni")}</label>
                     <input
                         type="text"
                         id="dni"
@@ -124,7 +127,7 @@ export default function OperadorForm() {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="email">Correo Electrónico</label>
+                    <label htmlFor="email">{tForm("newOrder.fields.email")}</label>
                     <input
                         type="email"
                         id="email"
@@ -136,7 +139,7 @@ export default function OperadorForm() {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="passwordTemporal">Contraseña</label>
+                    <label htmlFor="passwordTemporal">{tForm("newOrder.fields.passwordTemporal")}</label>
                     <input
                         type="password"
                         id="passwordTemporal"
@@ -151,7 +154,7 @@ export default function OperadorForm() {
                 {success && <div className="success-alert">✅ {success}</div>}
 
                 <button type="submit" className="btn-submit">
-                    Crear Usuario
+                    {tForm("newOrder.buttons.create")}
                 </button>
 
             </form>

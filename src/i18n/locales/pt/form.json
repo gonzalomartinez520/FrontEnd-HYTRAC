@@ -10,7 +10,22 @@
       "cargoSpecs": "Especificações da carga",
       "cargoSpecsDesc": "Combustível, código de transporte perigoso e condições.",
       "logistics": "Logística & Documentação",
-      "logisticsDesc": "Origem, destino e documentos fiscais."
+      "logisticsDesc": "Origem, destino e documentos fiscais.",
+      "personalData": "Dados Pessoais",
+      "accessData": "Dados de Acesso",
+      "operationalLocation": "Localização Operacional"
+    },
+
+    "users": {
+      "eyebrow": "NOVO USUÁRIO",
+      "title": "Criar novo usuário",
+      "subtitle": "Por favor, selecione a função do usuário que deseja criar.",
+      "descriptions": {
+        "OPERADOR": "Preencha os dados a seguir para registrar um novo operador no sistema.",
+        "SUPERVISOR": "Preencha os dados a seguir para registrar um novo supervisor no sistema.",
+        "TRANSPORTISTA": "Por favor, preencha os campos a seguir para criar um novo transportador.",
+        "JEFE_ESTACION": "Preencha os dados a seguir para registrar um novo chefe da estação no sistema."
+      }
     },
 
     "fields": {
@@ -40,7 +55,13 @@
       "destinationStation": "Local de entrega",
 
       "remito": "Nota de Remessa #",
-      "cot": "COT (ARBA)"
+      "cot": "COT (ARBA)",
+      "nombre": "Nome",
+      "apellido": "Sobrenome",
+      "dni": "Documento Nacional de Identidade (DNI)",
+      "email": "Correio Eletrônico",
+      "passwordTemporal": "Senha",
+      "telefono": "Telefone"
     },
 
     "placeholders": {
@@ -68,13 +89,18 @@
     "buttons": {
       "cancel": "Cancelar",
       "submit": "Criar Envio",
-      "loading": "Processando..."
+      "loading": "Processando...",
+      "create": "Criar",
+      "save": "Salvar"
     },
 
     "messages": {
       "success": "Envio criado com sucesso! Código de rastreamento: {{id}}",
       "error": "Erro ao criar o envio.",
-      "termsError": "Você deve aceitar os termos e condições."
+      "termsError": "Você deve aceitar os termos e condições.",
+      "userCreatedSuccess": "Usuário criado com sucesso.",
+      "userCreatedError": "Erro ao criar o usuário.",
+      "dniError": "O DNI deve ter entre 7 e 8 dígitos"
     }
   }
 }

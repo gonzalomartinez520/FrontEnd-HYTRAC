@@ -10,13 +10,15 @@ import { useTranslation } from "react-i18next";
 
 export default function NuevoUsuario( { user } ) {
     const navigate = useNavigate();
+    const { t: tForm } = useTranslation("form");
+    const { t: tCommon } = useTranslation("common");
     const [selectedRole, setSelectedRole] = useState(null);
 
     const roles = [
-        { value: "OPERADOR", label: "OPERADOR" },
-        { value: "SUPERVISOR", label: "SUPERVISOR" },
-        { value: "TRANSPORTISTA", label: "TRANSPORTISTA" },
-        { value: "JEFE_ESTACION", label: "JEFE DE ESTACIÓN" }
+        { value: "OPERADOR", label: tCommon("roles.OPERADOR") },
+        { value: "SUPERVISOR", label: tCommon("roles.SUPERVISOR") },
+        { value: "TRANSPORTISTA", label: tCommon("roles.TRANSPORTISTA") },
+        { value: "JEFE_ESTACION", label: tCommon("roles.JEFE_ESTACION") }
     ];
 
 
@@ -36,9 +38,9 @@ export default function NuevoUsuario( { user } ) {
                 <div className="top-section">
                     <header className="nuevo-usuario-header">
                         <div>
-                            <p id="nuevo-usuario">NUEVO USUARIO</p>
-                            <h1>Crear usuario nuevo</h1>
-                            <p>Por favor, seleccione el rol del usuario que desea crear.</p>
+                            <p id="nuevo-usuario">{tForm("newOrder.users.eyebrow")}</p>
+                            <h1>{tForm("newOrder.users.title")}</h1>
+                            <p>{tForm("newOrder.users.subtitle")}</p>
                         </div>
                     </header>
 
