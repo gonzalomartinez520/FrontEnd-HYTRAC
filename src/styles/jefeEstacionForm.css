@@ -42,12 +42,12 @@
 
 .form-section input {
   margin-top: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .form-section select {
   margin-top: 5px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .form-section h3 {
@@ -88,7 +88,7 @@
 }
 
 .error {
-  font-size: 12px;
+  font-size: 14px;
   color: red;
   margin-top: 4px;
 }
