@@ -101,9 +101,10 @@ table td {
   text-align: center;
 }
 
-.historial-operador-detalles, .ver-motivo-rechazo, .editar-envio{
+.historial-operador-detalles, .editar-envio{
     background-color: #0B1120;
     border-radius: 8px;
+    border: none;
     font-size: large;
     font-style: bold;
     display: flex;
@@ -119,8 +120,9 @@ table td {
     color: #ff7b00;
 }
 
-.ver-motivo-rechazo {
-    color: red;
+.historial-operador-detalles:hover,
+.editar-envio:hover {
+  background-color: #ff7b001a;
 }
 
 .historial-operador-detalles svg {

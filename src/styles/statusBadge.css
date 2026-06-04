@@ -54,6 +54,14 @@
   background: #f97316; /* naranja moderno */
 }
 
+.badge.status-activo {
+  background: #2d8b57;
+}
+
+.badge.status-no-activo {
+  background: #c44444;
+}
+
 /* Media Queries for Responsive Design */
 @media (max-width: 1366px) {
   .badge {

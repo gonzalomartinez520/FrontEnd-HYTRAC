@@ -33,3 +33,124 @@
   flex-direction: column;
   gap: 15px;
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(54%) sepia(93%) saturate(2000%) hue-rotate(5deg) brightness(100%) contrast(100%);
+}
+
+.custom-date-picker {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ff7a00;
+  background-color: #0f172a;
+  color: white;
+}
+
+/* calendario */
+.react-datepicker {
+  background-color: #0f172a;
+  border: 1px solid #ff7a00;
+}
+
+.react-datepicker__header {
+  background-color: #ff7a00;
+  border-bottom: none;
+}
+
+.react-datepicker__day--selected {
+  background-color: #ff7a00;
+  color: white;
+}
+
+.react-datepicker__day:hover {
+  background-color: #fb923c;
+}
+
+.btn-documento {
+  background: #F97316;
+  border: 2px solid #1E293B;
+  color: white;
+  flex: 1;
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-documento:hover {
+  background: #ff7a00;
+}
+
+.documentos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.documento-card {
+  background: #0f172a;
+  border: 1px solid #ff7a00;
+  border-radius: 10px;
+  padding: 12px 16px;
+  transition: 0.2s ease;
+}
+
+.documento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
+}
+
+.doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.doc-icon {
+  font-size: 18px;
+}
+
+.doc-title-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.doc-title {
+  font-weight: 600;
+  color: #ff7a00;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: #ef4444;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  color: #dc2626;
+  transform: scale(1.2);
+}
+
+.doc-body {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #F8FAF6;
+}
+
+.doc-field {
+  display: flex;
+  gap: 5px;
+}
+
+.label {
+  color: #94a3b8;
+}
