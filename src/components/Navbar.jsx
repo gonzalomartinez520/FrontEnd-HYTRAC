@@ -159,9 +159,6 @@ useEffect(() => {
       <div className="nav-left">
         <div className="nav-logo">
           <img src={LogiTrackLogo} alt="LogiTrack" className="logo-img" />
-          <div className="logo-text">
-            <strong>HYTRAC</strong>
-          </div>
         </div>
 
         <button

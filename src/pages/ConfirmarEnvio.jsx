@@ -8,6 +8,8 @@ import { envios } from '@/api';
 export default function ConfirmarEnvio({ user }) {
     const navigate = useNavigate();
 
+    const [legajoSupervisor, setLegajoSupervisor] = useState("");
+
     const [loading, setLoading] = useState(true);
     const [shipments, setShipments] = useState([]);
     const [search, setSearch] = useState("");
@@ -21,9 +23,10 @@ export default function ConfirmarEnvio({ user }) {
         const timer = setTimeout(() => {
             const fetchData = async () => {
                 try {
-                    const response = await envios.getAllSupervisor();
+                    const response = await envios.getAll();
                     console.log("Datos obtenidos de la API:", response);
                     setShipments(response);
+                    setLegajoSupervisor(localStorage.getItem("legajo"));
                 } catch (error) {
                     console.error("Error al obtener envíos:", error);
                 } finally {
@@ -63,13 +66,15 @@ export default function ConfirmarEnvio({ user }) {
         }
     };
 
-    const rechazarEnvio = (id, motivo) => {
+    const rechazarEnvio = (id, payload) => {
         const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar el envío con ID ${id}?`);
         if (confirmacion) {
             const fetchRechazar = async () => {
                 try {
-                    await envios.rechazarEnvio(id, motivo);
+                    await envios.rechazarEnvio(id, payload);
                     console.log(`Envío rechazado con ID: ${id}`);
+
+                    window.location.reload();
                 } catch (error) {
                     console.error(`Error al rechazar envío con ID: ${id}`, error);
                 }
@@ -108,7 +113,7 @@ export default function ConfirmarEnvio({ user }) {
                 (field || "").toLowerCase().includes(searchText)
             );
 
-        return !shipment.confirmado && matchesSearch;
+        return !shipment.confirmado && !shipment.motivoRechazo?.length > 0 && matchesSearch;
     });
 
     if (loading) {
@@ -173,7 +178,7 @@ export default function ConfirmarEnvio({ user }) {
                                         </td>
                                         <td>{shipment.combustible}</td>
                                         <td>
-                                            {shipment.transportista}
+                                            {shipment.transportistaNombre} {shipment.transportistaApellido}
                                         </td>
                                         <td>{formatearFecha(shipment.fechaCreacion)}</td>
                                         <td><StatusBadge estado="PENDIENTE A CONFIRMAR"></StatusBadge></td>
@@ -290,8 +295,18 @@ export default function ConfirmarEnvio({ user }) {
                     <div className="modal-buttons">
                         <button
                         className="confirmar"
-                        onClick={() => {
-                            rechazarEnvio(selectedShipmentId, motivo);
+                        onClick={ async () => {
+                            try {
+                                const payload = {
+                                    legajoSupervisor: legajoSupervisor,
+                                    motivoRechazo: motivo
+                                };
+
+                                console.log(payload);
+                                const newOrder = envios.rechazarEnvio(selectedShipmentId, payload);
+                            } catch (error) {
+                                console.error("Error al rechazar el envío:", error);
+                            }
                             setShowModal(false);
                             setMotivo("");
                         }}
