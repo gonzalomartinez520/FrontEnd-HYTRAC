@@ -1,5 +1,6 @@
 import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
+import { useTranslation } from "react-i18next";
 import "../styles/confirmarEnvio.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
@@ -7,6 +8,7 @@ import { envios } from '@/api';
 
 export default function ConfirmarEnvio({ user }) {
     const navigate = useNavigate();
+    const { t } = useTranslation("supervisor");
 
     const [legajoSupervisor, setLegajoSupervisor] = useState("");
 
@@ -46,7 +48,7 @@ export default function ConfirmarEnvio({ user }) {
     };
 
     const confirmarEnvio = (id) => {
-        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar el envío con ID ${id}?`);
+        const confirmacion = window.confirm(t("confirmarEnvio.confirmPrompt", { id }));
 
         if (confirmacion) {
             const fetchConfirmar = async () => {
@@ -120,7 +122,7 @@ export default function ConfirmarEnvio({ user }) {
         return (
             <div className="confirmar-loading-screen">
                 <div className="confirmar-loader"></div>
-                <h2>Cargando nuevas órdenes a confirmar...</h2>
+                <h2>{t("confirmarEnvio.loading")}</h2>
             </div>
         );
     }
@@ -130,9 +132,9 @@ export default function ConfirmarEnvio({ user }) {
             <main className="confirmar-dashboard-content">
                 <section className="confirmar-header">
                     <div>
-                        <h1>Confirmar nuevas órdenes</h1>
+                        <h1>{t("confirmarEnvio.title")}</h1>
                         <p>
-                            Aquí podrás confirmar las órdenes entrantes al sistema. Revisa los detalles de cada orden y confirma su estado para mantener el sistema actualizado.
+                            {t("confirmarEnvio.subtitle")}
                         </p>
                     </div>
                 </section>
@@ -140,13 +142,13 @@ export default function ConfirmarEnvio({ user }) {
                 <section className="shipments-table">
                     <div className="table-header">
                         <div>
-                            <h2>Órdenes pendientes: {filteredShipments.length}</h2>
+                            <h2>{t("confirmarEnvio.count", { count: filteredShipments.length })}</h2>
                         </div>
 
                         <div className="confirmar-actions">
                             <input
                                 type="text"
-                                placeholder="🔎 Busqueda por ID, ruta o transportista..."
+                                placeholder={t("confirmarEnvio.searchPlaceholder")}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -156,13 +158,13 @@ export default function ConfirmarEnvio({ user }) {
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ruta Designada</th>
-                                <th>Tipo Combustible</th>
-                                <th>Transportista</th>
-                                <th>Fecha de Creación</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
+                                <th>{t("confirmarEnvio.table.id")}</th>
+                                <th>{t("confirmarEnvio.table.route")}</th>
+                                <th>{t("confirmarEnvio.table.fuelType")}</th>
+                                <th>{t("confirmarEnvio.table.carrier")}</th>
+                                <th>{t("confirmarEnvio.table.createdAt")}</th>
+                                <th>{t("confirmarEnvio.table.status")}</th>
+                                <th>{t("confirmarEnvio.table.actions")}</th>
                             </tr>
                         </thead>
 
@@ -266,11 +268,11 @@ export default function ConfirmarEnvio({ user }) {
                                         <tr className="fila-expandida">
                                             <td colSpan="7">
                                                 <div className="detalle-envio">
-                                                    <p><strong>Patente del Camion:</strong> {shipment.camionPatente}</p>
-                                                    <p><strong>Patente del Acoplado:</strong> {shipment.acopladoPatente}</p>
-                                                    <p><strong>Litros Cargados:</strong> {shipment.litrosCargados} Lts.</p>
-                                                    <p><strong>Número de Remito:</strong> {shipment.numeroRemito}</p>
-                                                    <p><strong>COT:</strong> {shipment.cot}</p>
+                                                    <p><strong>{t("confirmarEnvio.expanded.truckPlate")}:</strong> {shipment.camionPatente}</p>
+                                                    <p><strong>{t("confirmarEnvio.expanded.trailerPlate")}:</strong> {shipment.acopladoPatente}</p>
+                                                    <p><strong>{t("confirmarEnvio.expanded.litersLoaded")}:</strong> {shipment.litrosCargados} Lts.</p>
+                                                    <p><strong>{t("confirmarEnvio.expanded.remito")}:</strong> {shipment.numeroRemito}</p>
+                                                    <p><strong>{t("confirmarEnvio.expanded.cot")}:</strong> {shipment.cot}</p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -284,10 +286,10 @@ export default function ConfirmarEnvio({ user }) {
             {showModal && (
                 <div className="modal-overlay">
                     <div className="modal">
-                    <h2>Motivo de rechazo</h2>
+                    <h2>{t("confirmarEnvio.modal.title")}</h2>
 
                     <textarea
-                        placeholder="Ingrese el motivo..."
+                        placeholder={t("confirmarEnvio.modal.placeholder")}
                         value={motivo}
                         onChange={(e) => setMotivo(e.target.value)}
                     />
@@ -311,7 +313,7 @@ export default function ConfirmarEnvio({ user }) {
                             setMotivo("");
                         }}
                         >
-                        Confirmar
+                        {t("confirmarEnvio.modal.confirm")}
                         </button>
 
                         <button
@@ -321,7 +323,7 @@ export default function ConfirmarEnvio({ user }) {
                             setMotivo("");
                         }}
                         >
-                        Cancelar
+                        {t("confirmarEnvio.modal.cancel")}
                         </button>
                     </div>
                     </div>

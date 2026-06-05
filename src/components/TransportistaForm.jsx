@@ -230,8 +230,8 @@ export default function TransportistaForm() {
         <div className="transportista-container">
             <header className="transportista-header">
                 <div>
-                    <h2>Alta de Usuario transportista</h2>
-                    <p>Complete los siguientes datos para registrar un nuevo transportista en el sistema.</p>
+                    <h2>{tCommon('roles.TRANSPORTISTA')} - {tForm('newOrder.new')}</h2>
+                    <p>{tForm("newOrder.users.descriptions.TRANSPORTISTA")}</p>
                 </div>
             </header>
 
@@ -250,7 +250,7 @@ export default function TransportistaForm() {
 
                 <div className="form-row">
                 <div className="form-group">
-                    <label>Nombre</label>
+                    <label htmlFor="nombre">{tForm("newOrder.fields.nombre")}</label>
                     <input
                     type="text"
                     name="nombre"
@@ -261,7 +261,7 @@ export default function TransportistaForm() {
                 </div>
 
                 <div className="form-group">
-                    <label>Apellido</label>
+                    <label htmlFor="email">{tForm("newOrder.fields.email")}</label>
                     <input
                     type="text"
                     name="apellido"

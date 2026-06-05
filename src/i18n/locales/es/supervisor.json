@@ -1,0 +1,152 @@
+{
+  "confirmaciones": {
+    "title": "Confirmaciones",
+    "subtitle": "Por favor, seleccione una de las opciones.",
+    "cards": {
+      "newOrders": {
+        "title": "Nuevas órdenes",
+        "description": "Validación de órdenes entrantes al sistema"
+      },
+      "tripStarts": {
+        "title": "Inicio de viajes",
+        "description": "Confirmación para iniciar viaje"
+      },
+      "deliveries": {
+        "title": "Entregas",
+        "description": "Verificación de entregas completadas"
+      },
+      "incidents": {
+        "title": "Incidencias",
+        "description": "Validación de incidencias registradas"
+      }
+    }
+  },
+  "confirmarEnvio": {
+    "loading": "Cargando nuevas órdenes a confirmar...",
+    "title": "Confirmar nuevas órdenes",
+    "subtitle": "Aquí podrás confirmar las órdenes entrantes al sistema. Revisa los detalles de cada orden y confirma su estado para mantener el sistema actualizado.",
+    "count": "Órdenes pendientes: {{count}}",
+    "searchPlaceholder": "🔎 Búsqueda por ID, ruta o transportista...",
+    "confirmPrompt": "¿Estás seguro de que deseas confirmar el envío con ID {{id}}?",
+    "rejectPrompt": "¿Estás seguro de que deseas rechazar el envío con ID {{id}}?",
+    "table": {
+      "id": "ID",
+      "route": "Ruta Designada",
+      "fuelType": "Tipo Combustible",
+      "carrier": "Transportista",
+      "createdAt": "Fecha de Creación",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "expanded": {
+      "truckPlate": "Patente del Camión",
+      "trailerPlate": "Patente del Acoplado",
+      "litersLoaded": "Litros Cargados",
+      "remito": "Número de Remito",
+      "cot": "COT"
+    },
+    "modal": {
+      "title": "Motivo de rechazo",
+      "placeholder": "Ingrese el motivo...",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  },
+  "confirmarIncidencias": {
+    "loading": "Cargando incidencias registradas...",
+    "title": "Confirmar incidencias registradas",
+    "subtitle": "En este panel podrás revisar las incidencias entrantes al sistema para verificarlas con los datos correspondientes.",
+    "count": "Incidencias a confirmar: {{count}}",
+    "searchPlaceholder": "🔎 Búsqueda por ID, ruta o transportista...",
+    "confirmPrompt": "¿Confirmar incidencia?",
+    "rejectPrompt": "¿Rechazar incidencia?",
+    "table": {
+      "id": "ID",
+      "route": "Ruta Designada",
+      "responsible": "Responsable",
+      "incidentDate": "Fecha de Incidencia",
+      "incidentType": "Tipo de Incidencia",
+      "actions": "Acciones"
+    },
+    "expanded": {
+      "truckPlate": "Patente del Camión",
+      "trailerPlate": "Patente del Acoplado",
+      "fuel": "Combustible",
+      "incidentDate": "Fecha Incidente",
+      "incidentType": "Tipo de Incidencia",
+      "description": "Descripción",
+      "remito": "Número de Remito",
+      "cot": "COT"
+    },
+    "modal": {
+      "title": "Motivo de rechazo",
+      "placeholder": "Ingrese el motivo...",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  },
+  "confirmarEntregas": {
+    "loading": "Cargando entregas a confirmar...",
+    "title": "Confirmar entregas",
+    "subtitle": "Aqui podras visualizar las ordenes que necesitan verificacion para su entrega.",
+    "count": "Entregas a confirmar: {{count}}",
+    "searchPlaceholder": "🔎 Busqueda por ID, ruta o transportista...",
+    "table": {
+      "id": "ID",
+      "route": "Ruta designada",
+      "responsible": "Responsable",
+      "requestDate": "Fecha de solicitud de entrega",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "confirmPrompt": "¿Estas seguro de que deseas confirmar la entrega con ID {{id}}?",
+    "rejectPrompt": "¿Estas seguro de que deseas rechazar la entrega con ID {{id}}?",
+    "expanded": {
+      "truckPlate": "Patente del camion",
+      "trailerPlate": "Patente del acoplado",
+      "fuel": "Combustible",
+      "litersLoaded": "Litros cargados",
+      "litersDelivered": "Litros entregados",
+      "observations": "Observaciones",
+      "remito": "Numero de remito",
+      "cot": "COT"
+    },
+    "modal": {
+      "title": "Motivo de rechazo",
+      "placeholder": "Ingrese el motivo...",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  },
+  "confirmarInicioViaje": {
+    "loading": "Cargando inicio de viajes a confirmar...",
+    "title": "Confirmar inicio de viajes",
+    "subtitle": "En este panel podras revisar y confirmar los inicios de viajes de cada orden y validar los datos para confirmar el inicio de la orden.",
+    "count": "Inicio de viajes a confirmar: {{count}}",
+    "searchPlaceholder": "🔎 Busqueda por ID, ruta o transportista...",
+    "table": {
+      "id": "ID",
+      "route": "Ruta designada",
+      "responsible": "Responsable",
+      "requestDate": "Fecha de solicitud de viaje",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "confirmPrompt": "¿Estas seguro de que deseas confirmar el inicio del viaje?",
+    "rejectPrompt": "¿Estas seguro de que deseas rechazar el inicio del viaje?",
+    "expanded": {
+      "truckPlate": "Patente del camion",
+      "trailerPlate": "Patente del acoplado",
+      "fuel": "Combustible",
+      "createdAt": "Fecha de creacion",
+      "remito": "Numero de remito",
+      "cot": "COT"
+    },
+    "modal": {
+      "title": "Motivo de rechazo",
+      "placeholder": "Ingrese el motivo...",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  }
+}

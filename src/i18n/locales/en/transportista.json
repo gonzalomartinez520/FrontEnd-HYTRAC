@@ -1,0 +1,140 @@
+{
+  "dashboard": {
+    "eyebrow": "Driver panel",
+    "title": "Real-time route tracking",
+    "subtitle": "View the assigned destination, report operational updates, and log incidents without leaving the screen.",
+    "status": {
+      "inProgress": "In progress",
+      "pendingConfirmation": "Pending confirmation"
+    },
+    "driverLabel": "Driver",
+    "driverIdLabel": "Driver ID: {{id}}",
+    "driverIdFallback": "Unavailable",
+    "loading": {
+      "label": "Loading",
+      "title": "Fetching assigned shipments",
+      "subtitle": "We are querying the system with your driver ID."
+    },
+    "empty": {
+      "label": "No assignment",
+      "title": "No shipments assigned",
+      "subtitle": "There are no active shipments for you at the moment."
+    },
+    "map": {
+      "destinationLabel": "Destination",
+      "assignedRouteTitle": "Assigned route",
+      "destinationPending": "Destination pending",
+      "loadingTrace": "Loading map trace...",
+      "traceUnavailable": "Trace unavailable"
+    },
+    "detail": {
+      "sectionLabel": "Shipment detail",
+      "remito": "Delivery note",
+      "originDestination": "Origin / destination",
+      "truckPlate": "Truck plate",
+      "trailerPlate": "Trailer plate",
+      "fuel": "Fuel",
+      "litersLoaded": "Liters loaded",
+      "departureDate": "Departure date",
+      "arrivalDate": "Estimated arrival",
+      "noData": "No data",
+      "pending": "Pending",
+      "truckFallback": "Truck",
+      "trailerFallback": "Trailer"
+    },
+    "summary": {
+      "distance": "Estimated distance",
+      "time": "Estimated time",
+      "departureDate": "Departure date",
+      "arrivalDate": "Arrival date",
+      "defaultTime": "15:30",
+      "defaultDistance": "-- km",
+      "defaultDate": "-"
+    },
+    "actions": {
+      "reportIncident": "Report incident"
+    }
+  },
+  "iniciarViaje": {
+    "back": "Back to panel",
+    "eyebrow": "Driver",
+    "title": "Order {{id}}",
+    "subtitle": "If the order is pending, confirm the shipment. When the status is in progress, you can notify the delivery.",
+    "status": {
+      "label": "Current status",
+      "nextNotify": "Next step: notify delivery",
+      "nextConfirm": "Next step: confirm shipment"
+    },
+    "loading": {
+      "label": "Loading",
+      "title": "Fetching assigned order",
+      "subtitle": "We are loading the order details to start the flow."
+    },
+    "error": {
+      "label": "Error",
+      "title": "We could not load the order"
+    },
+    "detail": {
+      "origin": "Origin",
+      "destination": "Destination",
+      "fuel": "Fuel",
+      "departureDate": "Departure date"
+    },
+    "feedback": {
+      "notifySuccess": "Delivery successfully notified.",
+      "confirmSuccess": "Shipment confirmed. Status moved to in progress.",
+      "actionError": "Unable to complete the action."
+    }
+  },
+  "reportarIncidencia": {
+    "back": "Back to route",
+    "eyebrow": "Report incident",
+    "title": "Describe the incident",
+    "subtitle": "Log any operational deviation, delay, or issue on route to record it immediately.",
+    "summary": {
+      "label": "Driver",
+      "fallbackUser": "User",
+      "idLabel": "ID {{id}}",
+      "idFallback": "Unavailable"
+    },
+    "loading": {
+      "label": "Loading",
+      "title": "Checking assigned shipments",
+      "subtitle": "We are checking if there is an active shipment to log an incident."
+    },
+    "empty": {
+      "label": "No assignment",
+      "title": "Cannot log an incident",
+      "subtitle": "This driver has no assigned shipments, so an incident cannot be created.",
+      "back": "Back to route"
+    },
+    "shipment": {
+      "label": "Active shipment",
+      "remitoLabel": "Delivery note",
+      "noData": "No data"
+    },
+    "form": {
+      "typeLabel": "Incident type",
+      "typePlaceholder": "Select an option",
+      "descriptionLabel": "Incident description",
+      "descriptionPlaceholder": "E.g. loading delay, route deviation, mechanical issue, pending documentation...",
+      "cancel": "Cancel",
+      "submit": "Send incident"
+    },
+    "errors": {
+      "typeRequired": "Select the incident type to continue.",
+      "descriptionRequired": "Enter the incident reason to continue.",
+      "submitError": "Could not send the incident. Try again.",
+      "submitSuccess": "Incident sent successfully."
+    },
+    "incidenceTypes": {
+      "delay": "Delay",
+      "accident": "Accident",
+      "documentation": "Documentation"
+    }
+  },
+  "actions": {
+    "confirmShipment": "Confirm shipment",
+    "notifyDelivery": "Notify delivery"
+  }
+}

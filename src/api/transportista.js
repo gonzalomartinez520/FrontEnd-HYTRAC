@@ -33,8 +33,8 @@ export const isOrdenEnCurso = (orden) => {
 
 export const canNotificarEntrega = (orden) => isOrdenEnCurso(orden);
 
-export const getPrimaryActionLabel = (orden) =>
-  canNotificarEntrega(orden) ? "Notificar Entrega" : "Confirmar Envío";
+export const getPrimaryActionKey = (orden) =>
+  canNotificarEntrega(orden) ? "notifyDelivery" : "confirmShipment";
 
 const normalizeOrdenEnCurso = (payload) => {
   if (!payload) {

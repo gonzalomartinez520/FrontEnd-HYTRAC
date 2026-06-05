@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import "../styles/supervisorForm.css";
 import { administrador } from '@/api';
 
 export default function SupervisorForm() {
     const navigate = useNavigate();
+    const { t: tForm } = useTranslation("form");
+    const { t: tCommon } = useTranslation("common");
 
     const [errorDni, setErrorDni] = useState("");
     const [errorPassword, setErrorPassword] = useState("");
@@ -38,7 +41,7 @@ export default function SupervisorForm() {
         setSuccess("");
 
         if (formData.dni.length < 7 || formData.dni.length > 8) {
-            setErrorDni("El DNI debe tener entre 7 y 8 dígitos");
+            setErrorDni(tForm("newOrder.messages.dniError"));
             return;
         } else {
             setErrorDni("");
@@ -63,7 +66,7 @@ export default function SupervisorForm() {
 
             console.log("Payload a enviar:", payload);
             const response = await administrador.crearUsuario(payload);
-            setSuccess("Usuario creado exitosamente.");
+            setSuccess(tForm("newOrder.messages.userCreatedSuccess"));
             setError("");
 
             setTimeout(() => {
@@ -72,7 +75,7 @@ export default function SupervisorForm() {
 
         } catch (err) {
             console.error(err);
-            setError("Error al crear el usuario.");
+            setError(tForm("newOrder.messages.userCreatedError"));
             setSuccess("");
         }
     };
@@ -81,8 +84,8 @@ export default function SupervisorForm() {
         <div className="supervisor-container">
             <header className="supervisor-header">
                 <div>
-                    <h2>Alta de Usuario Supervisor</h2>
-                    <p>Complete los siguientes datos para registrar un nuevo supervisor en el sistema.</p>
+                    <h2>{tCommon('roles.SUPERVISOR')} - {tForm('newOrder.new')}</h2>
+                    <p>{tForm("newOrder.users.descriptions.SUPERVISOR")}</p>
                 </div>
             </header>
 
@@ -102,7 +105,7 @@ export default function SupervisorForm() {
 
                 <div className="form-row">
                 <div className="form-group">
-                    <label>Nombre</label>
+                    <label htmlFor="nombre">{tForm("newOrder.fields.nombre")}</label>
                     <input
                     type="text"
                     name="nombre"
@@ -113,7 +116,7 @@ export default function SupervisorForm() {
                 </div>
 
                 <div className="form-group">
-                    <label>Apellido</label>
+                    <label htmlFor="apellido">{tForm("newOrder.fields.apellido")}</label>
                     <input
                     type="text"
                     name="apellido"
@@ -126,7 +129,7 @@ export default function SupervisorForm() {
 
                 <div className="form-row">
                 <div className="form-group">
-                    <label>DNI</label>
+                    <label htmlFor="dni">{tForm("newOrder.fields.dni")}</label>
                     <input
                     type="text"
                     name="dni"
@@ -142,7 +145,7 @@ export default function SupervisorForm() {
                 </div>
 
                 <div className="form-group">
-                    <label>Correo Electrónico</label>
+                    <label htmlFor="email">{tForm("newOrder.fields.email")}</label>
                     <input
                     type="email"
                     name="email"
@@ -193,7 +196,7 @@ export default function SupervisorForm() {
                 {success && <div className="success-alert">✅ {success}</div>}
 
                 <button type="submit" className="btn-submit">
-                    Crear Usuario
+                    {tForm("newOrder.buttons.create")}
                 </button>
 
             </form>

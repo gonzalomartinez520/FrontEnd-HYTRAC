@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom"; 
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import "../styles/confirmaciones.css";
 import { envios, datos } from '@/api';
 
 export default function Confirmaciones({ user }) {
   const navigate = useNavigate();
+  const { t } = useTranslation("supervisor");
 
   const [enviosSupervisor, setEnviosSupervisor] = useState([]);
 
@@ -80,9 +82,9 @@ export default function Confirmaciones({ user }) {
             <main className="confirmaciones-content">
                 <section className="confirmaciones-header">
                     <div>
-                        <h1>Confirmaciones</h1>
+                        <h1>{t("confirmaciones.title")}</h1>
                         <p>
-                            Por favor, seleccione una de las opciones.
+                            {t("confirmaciones.subtitle")}
                         </p>
                     </div>
                 </section>
@@ -91,18 +93,18 @@ export default function Confirmaciones({ user }) {
                     <div className="pendientes" onClick={() => navigate("/confirmar-envio")}>
                         <div className="icon-confirmaciones">🧾</div>
                         <div className="badge-cantidad ordenes">{noConfirmados}</div>
-                        <h2>Nuevas órdenes</h2>
+                        <h2>{t("confirmaciones.cards.newOrders.title")}</h2>
                         <p>
-                            Validación de órdenes entrantes al sistema
+                            {t("confirmaciones.cards.newOrders.description")}
                         </p>
                     </div>
 
                     <div className="cambios-estado" onClick={() => navigate("/confirmar-inicio-viaje")}>
                         <div className="icon-confirmaciones">🚚</div>
                         <div className="badge-cantidad inicio">{pendienteInicio}</div>
-                        <h2>Inicio de viajes</h2>
+                        <h2>{t("confirmaciones.cards.tripStarts.title")}</h2>
                         <p>
-                            Confirmación para iniciar viaje
+                            {t("confirmaciones.cards.tripStarts.description")}
                         </p>
                     </div>
                 </section>
@@ -111,18 +113,18 @@ export default function Confirmaciones({ user }) {
                     <div className="entregas" onClick={() => navigate("/confirmar-entregas")}>
                         <div className="icon-confirmaciones">📦</div>
                         <div className="badge-cantidad entregas">{pendienteEntrega}</div>
-                        <h2>Entregas</h2>
+                        <h2>{t("confirmaciones.cards.deliveries.title")}</h2>
                         <p>
-                            Verificación de entregas completadas
+                            {t("confirmaciones.cards.deliveries.description")}
                         </p>
                     </div>
 
                     <div className="incidencias" onClick={() => navigate("/confirmar-incidencias")}>
                         <div className="icon-confirmaciones">⚠️</div>
                         <div className="badge-cantidad incidencias">{incidencias}</div>
-                        <h2>Indicencias</h2>
+                        <h2>{t("confirmaciones.cards.incidents.title")}</h2>
                         <p>
-                            Validación de incidencias registradas
+                            {t("confirmaciones.cards.incidents.description")}
                         </p>
                     </div>
                 </section>

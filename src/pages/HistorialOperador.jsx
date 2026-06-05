@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
+import { useTranslation } from "react-i18next";
 import "../styles/historialOperador.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
@@ -9,6 +10,9 @@ import RouteMap from "../components/RouteMap";
 
 export default function HistorialOperador( { user } ) {
     const navigate = useNavigate();
+    const { t: tOperador } = useTranslation("operador");
+    const { t: tForm } = useTranslation("form");
+    const { t: tCommon } = useTranslation("common");
 
     const [combustibles, setCombustibles] = useState([]);
     const [provincias, setProvincias] = useState([]);
@@ -204,7 +208,7 @@ export default function HistorialOperador( { user } ) {
 
   // Helper function to turn decimal hours (e.g. 5.159) into standard tracking formats (5h 09m)
   const formatRouteTime = (decimalHours) => {
-    if (!decimalHours || isNaN(decimalHours)) return "Puntos incompletos";
+    if (!decimalHours || isNaN(decimalHours)) return tOperador("historial.incompletePoints");
     const hours = Math.floor(decimalHours);
     const minutes = Math.round((decimalHours - hours) * 60);
     return `${hours}h ${minutes.toString().padStart(2, "0")}m`;
@@ -372,7 +376,7 @@ export default function HistorialOperador( { user } ) {
         return (
         <div className="historial-operador-loading-screen">
             <div className="historial-operador-loader"></div>
-            <h2>Cargando historial de órdenes...</h2>
+            <h2>{tOperador("historial.loading")}</h2>
         </div>
         );
     }
@@ -385,11 +389,8 @@ export default function HistorialOperador( { user } ) {
         {/* HEADER */}
         <section className="historial-operador-header">
           <div>
-            <h1>Historial de órdenes de {user?.nombre} {user?.apellido}</h1>
-            <p>
-              Aquí podrá visualizar todas tus órdenes creadas.
-              Si es necesario, se podra editar una orden antes de su confirmación.
-            </p>
+            <h1>{tOperador("historial.title", { nombre: user?.nombre, apellido: user?.apellido })}</h1>
+            <p>{tOperador("historial.subtitle")}</p>
           </div>
         </section>
 
@@ -397,14 +398,14 @@ export default function HistorialOperador( { user } ) {
         <section className="historial-operador-card">
           <div className="historial-operador-top">
             <div>
-                <h2>Historial de Órdenes Recientes</h2>
-              <span>Órdenes encontradas: {filteredShipments.length}</span>
+                <h2>{tOperador("historial.recentTitle")}</h2>
+              <span>{tOperador("historial.ordersFound", { count: filteredShipments.length })}</span>
             </div>
 
             <div className="historial-operador-buscador">
               <input
                 type="text"
-                placeholder="🔎 Busqueda por ID, ruta o transportista..."
+                placeholder={tOperador("historial.searchPlaceholder")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -416,13 +417,13 @@ export default function HistorialOperador( { user } ) {
           <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Ruta Designada</th>
-                <th>Combustible</th>
-                <th>Estado</th>  
-                <th>Chofer</th>
-                <th>Fecha Creación</th>
-                <th>Acciones</th>
+                <th>{tCommon("table.id")}</th>
+                <th>{tCommon("table.route")}</th>
+                <th>{tCommon("table.fuel")}</th>
+                <th>{tCommon("table.status")}</th>
+                <th>{tCommon("table.driver")}</th>
+                <th>{tCommon("table.createdAt")}</th>
+                <th>{tOperador("historial.actions")}</th>
               </tr>
             </thead>
 
@@ -571,12 +572,11 @@ export default function HistorialOperador( { user } ) {
                 <tr className="fila-expandida">
                     <td colSpan="7">
                         <div className="detalle-envio">
-                            <p><strong>ID:</strong> {shipment.id}</p>
-                            <p><strong>Transportista:</strong> {shipment.transportista}</p>
-                            {/* Agregar mas datos para el historial del Operador*/}
+                            <p><strong>{tCommon("table.id")}:</strong> {shipment.id}</p>
+                            <p><strong>{tOperador("historial.expanded.carrier")}:</strong> {shipment.transportista}</p>
                             {shipment.motivoRechazo && (
                               <div className="motivo-rechazo">
-                                <h3>Motivo de rechazo:</h3>
+                                <h3>{tOperador("historial.expanded.rejectionReason")}</h3>
                                 <p>{shipment.motivoRechazo}</p>
                               </div>
                             )}
@@ -604,15 +604,15 @@ export default function HistorialOperador( { user } ) {
                 <svg className="icon" viewBox="0 0 24 24">
                   <path d="M3 6h11v8H3zM14 9h3l3 3v2h-6zM7 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm10 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
                 </svg>
-                Unidad & Chofer</h2>
-              <p>Datos del vehículo y verificación documental.</p>
+                {tForm("newOrder.sections.unitDriver")}</h2>
+              <p>{tForm("newOrder.sections.unitDriverDesc")}</p>
             </div>
           </div>
           
           <div className="grid-2">
             <div>
               <div className="form-group">
-                <label>Patente Camión</label>
+                <label>{tForm("newOrder.fields.truckPlate")}</label>
                 <select
                   name="patenteCamion"
                   value={formData.patenteCamion}
@@ -620,7 +620,7 @@ export default function HistorialOperador( { user } ) {
                   onChange={handleChange}
                   required
                 >
-                  <option value="">Seleccione una patente</option>
+                  <option value="">{tForm("newOrder.placeholders.selectTruck")}</option>
 
                   {camiones.map((camion) => (
                     <option key={camion.patente} value={camion.patente}>
@@ -631,21 +631,21 @@ export default function HistorialOperador( { user } ) {
               </div>
 
               <div className="form-group">
-                <label>Marca</label>
+                <label>{tForm("newOrder.fields.brand")}</label>
                 <input type="text" value={formData.marcaCamion} disabled={true} />
               </div>
 
               <div className="form-group">
-                <label>Modelo</label>
+                <label>{tForm("newOrder.fields.model")}</label>
                 <input type="text" value={formData.modeloCamion} disabled={true} />
               </div>
             </div>
 
             <div>
               <div className="form-group">
-                <label>Patente Acoplado</label>
+                <label>{tForm("newOrder.fields.trailerPlate")}</label>
                 <select name="patenteAcoplado" value={formData.patenteAcoplado} disabled={loading} onChange={handleChange} required>
-                  <option value="">Seleccione una patente</option>
+                  <option value="">{tForm("newOrder.placeholders.selectTruck")}</option>
                   {acoplados.map((acoplado) => (
                     <option key={acoplado.patente} value={acoplado.patente}>{acoplado.patente}</option>
                   ))}
@@ -653,12 +653,12 @@ export default function HistorialOperador( { user } ) {
               </div>
 
               <div className="form-group">
-                <label>Capacidad Máxima Acoplado (L)</label>
+                <label>{tForm("newOrder.fields.capacity")}</label>
                 <input type="text" name="capacidad" value={formData.capacidad} disabled={true} />
               </div>
 
               <div className="form-group">
-                <label>Peso Maximo (kg)</label>
+                <label>{tForm("newOrder.fields.maxWeight")}</label>
                 <input type="number" name="pesoMaximo" value={formData.pesoMaximo} disabled={true} />
               </div>
             </div>
@@ -666,9 +666,9 @@ export default function HistorialOperador( { user } ) {
 
           <div className="chofer-full-width">
             <div className="form-group">
-              <label>Chofer Asignado</label>
+              <label>{tForm("newOrder.fields.driver")}</label>
               <select name="choferAsignado" value={formData.choferAsignado} disabled={loading} onChange={handleChange} required>
-                <option value="">Seleccione un transportista</option>
+                <option value="">{tForm("newOrder.placeholders.selectTransport")}</option>
                 {transportistas.map((trans) => (
                   <option key={trans.cuit} value={trans.nombre}>{trans.nombre} {trans.apellido}</option>
                 ))}
@@ -676,12 +676,12 @@ export default function HistorialOperador( { user } ) {
             </div>
 
             <div className="form-group">
-              <label>CUIT</label>
+              <label>{tForm("newOrder.fields.cuit")}</label>
               <input type="text" value={formData.cuitTransportista} disabled />
             </div>
 
             <div className="form-group">
-              <label>Tipo de vínculo</label>
+              <label>{tForm("newOrder.fields.relationship")}</label>
               <input type="text" value={formData.tipoVinculoTransportista} disabled />
             </div>
           </div>
@@ -746,16 +746,16 @@ export default function HistorialOperador( { user } ) {
                 <svg className="icon" viewBox="0 0 24 24">
                   <path d="M7 2h10v2H7zM7 20h10v2H7zM5 4h14v16H5zM5 10h14M5 14h14"/>
                 </svg>
-                Especificaciones de la carga</h2>
-              <p>Combustible, código de transporte peligroso y condiciones.</p>
+                {tForm("newOrder.sections.cargoSpecs")}</h2>
+              <p>{tForm("newOrder.sections.cargoSpecsDesc")}</p>
             </div>
           </div>
 
           <div className="grid-3">
             <div className="form-group">
-              <label>Tipo de Combustible</label>
+              <label>{tForm("newOrder.fields.fuelType")}</label>
               <select name="tipoCombustible" value={formData.tipoCombustible} disabled={loading} onChange={handleChange} required>
-                <option value="">Seleccione un combustible</option>
+                <option value="">{tForm("newOrder.placeholders.selectFuel")}</option>
                 {combustibles.map((combustible) => (
                   <option key={combustible.id} value={combustible.id}>
                     {combustible.nombre}
@@ -765,27 +765,27 @@ export default function HistorialOperador( { user } ) {
             </div>
 
             <div className="form-group">
-              <label>Código ONU</label>
+              <label>{tForm("newOrder.fields.onuCode")}</label>
               <input type="text" name="codigoOnu" value={formData.codigoOnu} required disabled />
             </div>
 
             <div className="form-group">
-              <label>Temperatura (°C)</label>
+              <label>{tForm("newOrder.fields.temperature")}</label>
               <input type="number" name="temperatura" value={formData.temperatura} required disabled />
             </div>
 
             <div className="form-group">
-              <label>Volumen a cargar (L)</label>
+              <label>{tForm("newOrder.fields.volume")}</label>
               <input type="number" name="volumenACargar" placeholder="30000" min="0" value={formData.volumenACargar} required disabled={loading} onChange={handleChange} />
             </div>
 
             <div className="form-group">
-              <label>Densidad (kg/m³)</label>
+              <label>{tForm("newOrder.fields.density")}</label>
               <input type="number" name="densidad" value={formData.densidad} required disabled />
             </div>
 
             <div className="form-group">
-              <label>Clase de riesgo</label>
+              <label>{tForm("newOrder.fields.risk")}</label>
               <input type="text" name="riesgo" value={formData.riesgo} required disabled />
             </div>
           </div>
@@ -804,17 +804,17 @@ export default function HistorialOperador( { user } ) {
               />
               <circle cx="12" cy="10" r="3" fill="white" />
             </svg>
-                Logistica de la orden</h2>
-              <p>Ruta designada para la carga.</p>
+                {tOperador("historial.logisticsSectionTitle")}</h2>
+              <p>{tOperador("historial.logisticsSectionDesc")}</p>
             </div>
           </div>
 
           <div className="grid-2">
             <div>
               <div className="form-group">
-                <label>Provincia de origen</label>
+                <label>{tForm("newOrder.fields.originProvince")}</label>
                 <select name="provinciaOrigen" value={formData.provinciaOrigen} disabled={loading} onChange={handleChange}>
-                  <option value="">Seleccione una provincia</option>
+                  <option value="">{tForm("newOrder.placeholders.selectProvince")}</option>
                   {provincias.map((prov) => (
                     <option key={prov.id} value={prov.id}>{prov.nombre}</option>
                   ))}
@@ -822,9 +822,9 @@ export default function HistorialOperador( { user } ) {
               </div>
 
               <div className="form-group">
-                <label>Localidad de origen</label>
+                <label>{tForm("newOrder.fields.originCity")}</label>
                 <select name="localidadOrigen" value={formData.localidadOrigen} disabled={!formData.provinciaOrigen || loading} onChange={handleChange}>
-                  <option value="">Seleccione una localidad</option>
+                  <option value="">{tForm("newOrder.placeholders.selectCity")}</option>
                   {localidadesOrigen.map((loc) => (
                     <option key={loc.id} value={loc.id}>{loc.nombre}</option>
                   ))}
@@ -832,9 +832,9 @@ export default function HistorialOperador( { user } ) {
               </div>
 
               <div className="form-group">
-                <label>Refinería de origen</label>
+                <label>{tOperador("historial.originRefinery")}</label>
                 <select name="refineriaOrigen" value={formData.refineriaOrigen?.id || ""} disabled={!formData.localidadOrigen || loading} onChange={handleChange}>
-                  <option value="">Seleccione una refinería</option>
+                  <option value="">{tForm("newOrder.placeholders.selectLocation")}</option>
                   {plantasOrigen.map((ref) => (
                     <option key={ref.id} value={ref.id}>{ref.nombre}</option>
                   ))}
@@ -844,9 +844,9 @@ export default function HistorialOperador( { user } ) {
 
             <div>
               <div className="form-group">
-                <label>Provincia de destino</label>
+                <label>{tForm("newOrder.fields.destinationProvince")}</label>
                 <select name="provinciaDestino" value={formData.provinciaDestino} disabled={loading} onChange={handleChange}>
-                  <option value="">Seleccione una provincia</option>
+                  <option value="">{tForm("newOrder.placeholders.selectProvince")}</option>
                   {provincias.map((prov) => (
                     <option key={prov.id} value={prov.id}>{prov.nombre}</option>
                   ))}
@@ -854,9 +854,9 @@ export default function HistorialOperador( { user } ) {
               </div>
 
               <div className="form-group">
-                <label>Localidad de destino</label>
+                <label>{tForm("newOrder.fields.destinationCity")}</label>
                 <select name="localidadDestino" value={formData.localidadDestino} disabled={!formData.provinciaDestino || loading} onChange={handleChange}>
-                  <option value="">Seleccione una localidad</option>
+                  <option value="">{tForm("newOrder.placeholders.selectCity")}</option>
                   {localidadesDestino.map((loc) => (
                     <option key={loc.id} value={loc.id}>{loc.nombre}</option>
                   ))}
@@ -864,9 +864,9 @@ export default function HistorialOperador( { user } ) {
               </div>
 
               <div className="form-group">
-                <label>Estación de servicio destino</label>
+                <label>{tOperador("historial.destinationStation")}</label>
                 <select name="estacionDestino" value={formData.estacionDestino?.id || ""} disabled={!formData.localidadDestino || loading} onChange={handleChange}>
-                  <option value="">Seleccione una estación</option>
+                  <option value="">{tForm("newOrder.placeholders.selectLocation")}</option>
                   {estacionesDestino.map((est) => (
                     <option key={est.id} value={est.id}>{est.nombre}</option>
                   ))}
@@ -915,24 +915,24 @@ export default function HistorialOperador( { user } ) {
                     }
                   `}</style>
                   <span style={{ fontSize: "14px", color: "#94a3b8", fontWeight: "500", letterSpacing: "0.3px" }}>
-                    Calculando ruta óptima...
+                    {tForm("newOrder.route.calculating")}
                   </span>
                 </div>
               ) : (
                 <>
                   <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", color: "#3b82f6", letterSpacing: "0.5px", textTransform: "uppercase" }}>
-                    Información de Ruta Estimada
+                    {tForm("newOrder.route.title")}
                   </h3>
                   <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
-                    <strong style={{ color: "#fff" }}>Distancia Total:</strong> {routeData.distanciaKm ? `${Number(routeData.distanciaKm).toFixed(1)} km` : "--"}
+                    <strong style={{ color: "#fff" }}>{tForm("newOrder.route.distance")}:</strong> {routeData.distanciaKm ? `${Number(routeData.distanciaKm).toFixed(1)} km` : "--"}
                   </p>
                   <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
-                    <strong style={{ color: "#fff" }}>Tiempo Estimado:</strong> {routeData.tiempoEstimadoHoras ? formatRouteTime(routeData.tiempoEstimadoHoras) : "--"}
+                    <strong style={{ color: "#fff" }}>{tForm("newOrder.route.time")}:</strong> {routeData.tiempoEstimadoHoras ? formatRouteTime(routeData.tiempoEstimadoHoras) : "--"}
                   </p>
 
                   {(!formData.refineriaOrigen || !formData.estacionDestino) && (
                     <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "12px", fontStyle: "italic" }}>
-                      Seleccione refinería de origen y estación de destino para calcular la ruta.
+                      {tForm("newOrder.route.incomplete")}
                     </span>
                   )}
                 </>
@@ -944,7 +944,7 @@ export default function HistorialOperador( { user } ) {
 
         <div className="modal-actions">
           <button className="cancelar-edicion" onClick={() => setShowModal(false)}>
-            Cancelar
+            {tForm("newOrder.buttons.cancel")}
           </button>
 
           <button
@@ -976,7 +976,7 @@ export default function HistorialOperador( { user } ) {
                 console.log(payload);
                 const envioEditado = await envios.editarEnvio(selectedShipment.id, payload);
 
-                const confirmacion = window.confirm(`Envio con ID: ${selectedShipment.id} editado correctamente`);
+                const confirmacion = window.confirm(tOperador("historial.messages.editSuccess", { id: selectedShipment.id }));
                 console.log(envioEditado);
 
                 window.location.reload();
@@ -989,7 +989,7 @@ export default function HistorialOperador( { user } ) {
               }
             }}
           >
-            Guardar
+            {tForm("newOrder.buttons.save")}
           </button>
       </div>
         </div>

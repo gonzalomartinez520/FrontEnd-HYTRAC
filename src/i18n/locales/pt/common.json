@@ -42,6 +42,107 @@
     "detail": "Detalhe"
   },
   "common": {
-    "loading": "Carregando painel HYTRAC..."
+    "loading": "Carregando painel HYTRAC...",
+    "usuario": "Usuário",
+    "accesoDenegado": "Acesso negado",
+    "noTienePermisos": "Você não tem permissão para acessar esta seção.",
+    "volverAlInicio": "Voltar ao início"
+  },
+  "alerts": {
+    "error": "Erro",
+    "success": "Sucesso",
+    "warning": "Aviso"
+  },
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Próximo"
+  },
+  "buttons": {
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
+  },
+  "login": {
+    "heroTitle": "Rastreabilidade total\ndo combustível\nem tempo real.",
+    "heroDescription": "Gestão integral de envios de hidrocarbonetos para operadores, supervisores e transportadores em toda a Argentina.",
+    "shipmentsPerMonth": "Envios / mês",
+    "compliance": "Conformidade",
+    "monitoring": "Monitoramento",
+    "welcome": "Bem-vindo",
+    "subtitle": "Inicie sessão para acessar a plataforma.",
+    "email": "E-MAIL",
+    "password": "SENHA",
+    "submit": "Iniciar Sessão",
+    "errors": {
+      "emailRequired": "Por favor, informe um e-mail válido.",
+      "passwordRequired": "Por favor, informe sua senha.",
+      "invalidCredentials": "E-mail ou senha incorretos.",
+      "unexpected": "Erro inesperado. Tente novamente."
+    }
+  },
+  "admin": {
+    "title": "Gestão de Usuários",
+    "subtitle": "Por favor, selecione uma das opções.",
+    "cards": {
+      "operators": {
+        "title": "Operadores",
+        "description": "Gerencia operações do sistema"
+      },
+      "supervisors": {
+        "title": "Supervisores",
+        "description": "Supervisiona e valida processos"
+      },
+      "carriers": {
+        "title": "Transportadores",
+        "description": "Gerencia rotas e entregas"
+      },
+      "stationManagers": {
+        "title": "Chefes da Estação",
+        "description": "Administra a operação da estação"
+      }
+    }
+  },
+  "stationDashboard": {
+    "title": "Painel do Chefe da Estação",
+    "subtitle": "Aqui você pode ver todos os envios pendentes e confirmá-los ou cancelá-los.",
+    "pendingHistory": "Histórico de Ordens Pendentes",
+    "confirmDelivery": "Confirmar entrega",
+    "deliveredLiters": "Litros entregues",
+    "observations": "Observações...",
+    "actions": "Ações"
+  },
+  "envioDetail": {
+    "loading": "Carregando ordem...",
+    "loadError": "Erro ao carregar o envio",
+    "back": "Voltar",
+    "backToPanel": "← Voltar ao painel",
+    "mapLoading": "Recuperando trilha do mapa...",
+    "mapUnavailable": "Trilha indisponível",
+    "routeSummary": "Resumo do trajeto",
+    "estimatedDistance": "Distância estimada",
+    "estimatedTime": "Tempo estimado",
+    "departureDate": "Data de saída",
+    "arrivalDate": "Data de chegada",
+    "origin": "Origem:",
+    "destination": "Destino:",
+    "orderTitle": "Ordem {{id}}",
+    "created": "Criado: {{date}}",
+    "driverInfo": "INFORMAÇÕES DO MOTORISTA",
+    "transportUnit": "UNIDADE DE TRANSPORTE",
+    "truckPlate": "Placa do caminhão",
+    "trailerPlate": "Placa do reboque",
+    "totalCapacity": "Capacidade total",
+    "maxWeight": "Peso máximo",
+    "cargoSpecs": "ESPECIFICAÇÕES DA CARGA",
+    "fuel": "Combustível",
+    "dangerClass": "Classe de perigo",
+    "temperature": "Temperatura",
+    "litersLoaded": "Litros carregados",
+    "orderTracking": "ACOMPANHAMENTO DA ORDEM",
+    "rejectedBy": "Rejeitado por",
+    "confirmedBy": "Confirmado por",
+    "requestedBy": "Solicitado por",
+    "system": "Sistema",
+    "litersUnit": "L",
+    "kgUnit": "kg"
   }
 }
