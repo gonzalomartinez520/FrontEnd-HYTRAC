@@ -385,7 +385,7 @@ export default function TransportistaForm() {
                             <option value="">Seleccionar empresa</option>
                             {empresas.map(emp => (
                                 <option key={emp.id} value={emp.id}>
-                                    {emp.nombre}
+                                    {emp.nombreFantasia}
                                 </option>
                             ))}
                         </select>
