@@ -158,6 +158,7 @@ a {
 .ver-detalle {
     background-color: #0B1120;
     color: #ff7b00;
+    border: none;
     border-radius: 8px;
     font-size: large;
     font-style: bold;
@@ -168,6 +169,10 @@ a {
     height: 40px;
     padding: 0;
     cursor: pointer;
+}
+
+.ver-detalle:hover {
+  background-color: #ff7b001a;
 }
 
 .detalle-button-container {

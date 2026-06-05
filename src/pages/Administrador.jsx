@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom"; 
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import "../styles/administrador.css";
 import { administrador } from '@/api';
 
 export default function Administrador({ user }) {
   const navigate = useNavigate();
+  const { t } = useTranslation("common");
 
   const [usuarios, setUsuarios] = useState([]);
 
@@ -60,9 +62,9 @@ export default function Administrador({ user }) {
             <main className="gestion-usuarios-content">
                 <section className="gestion-usuarios-header">
                     <div>
-                        <h1>Gestion de Usuarios</h1>
+                        <h1>{t("admin.title")}</h1>
                         <p>
-                            Por favor, seleccione una de las opciones.
+                            {t("admin.subtitle")}
                         </p>
                     </div>
                 </section>
@@ -73,7 +75,7 @@ export default function Administrador({ user }) {
                         <div className="badge-cantidad operarios">{operarios}</div>   {/*LUEGO REEMPLAZAR POR VALORES REALES */}
                         <h2>Operadores</h2>
                         <p>
-                            Gestiona operaciones del sistema
+                            {t("admin.cards.operators.description")}
                         </p>
                     </div>
 
@@ -82,7 +84,7 @@ export default function Administrador({ user }) {
                         <div className="badge-cantidad supervisores">{supervisores}</div>
                         <h2>Supervisores</h2>
                         <p>
-                            Supervisa y valida procesos
+                            {t("admin.cards.supervisors.description")}
                         </p>
                     </div>
                 </section>
@@ -93,7 +95,7 @@ export default function Administrador({ user }) {
                         <div className="badge-cantidad transportistas">{transportistas}</div>
                         <h2>Transportistas</h2>
                         <p>
-                            Gestiona rutas y entregas
+                            {t("admin.cards.carriers.description")}
                         </p>
                     </div>
 
@@ -102,7 +104,7 @@ export default function Administrador({ user }) {
                         <div className="badge-cantidad jefe-estacion">{jefesEstacion}</div>
                         <h2>Jefes de Estación</h2>
                         <p>
-                            Administra la operación de la estación
+                            {t("admin.cards.stationManagers.description")}
                         </p>
                     </div>
                 </section>

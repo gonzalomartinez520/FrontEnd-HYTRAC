@@ -1,0 +1,152 @@
+{
+  "confirmaciones": {
+    "title": "Confirmations",
+    "subtitle": "Please select one of the options.",
+    "cards": {
+      "newOrders": {
+        "title": "New orders",
+        "description": "Validation of incoming orders"
+      },
+      "tripStarts": {
+        "title": "Trip starts",
+        "description": "Confirmation to start the trip"
+      },
+      "deliveries": {
+        "title": "Deliveries",
+        "description": "Verification of completed deliveries"
+      },
+      "incidents": {
+        "title": "Incidents",
+        "description": "Validation of reported incidents"
+      }
+    }
+  },
+  "confirmarEnvio": {
+    "loading": "Loading new orders to confirm...",
+    "title": "Confirm new orders",
+    "subtitle": "Here you can confirm incoming orders. Review each order's details and confirm its status to keep the system updated.",
+    "count": "Pending orders: {{count}}",
+    "searchPlaceholder": "🔎 Search by ID, route, or driver...",
+    "confirmPrompt": "Are you sure you want to confirm shipment with ID {{id}}?",
+    "rejectPrompt": "Are you sure you want to reject shipment with ID {{id}}?",
+    "table": {
+      "id": "ID",
+      "route": "Assigned Route",
+      "fuelType": "Fuel Type",
+      "carrier": "Driver",
+      "createdAt": "Creation Date",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "expanded": {
+      "truckPlate": "Truck Plate",
+      "trailerPlate": "Trailer Plate",
+      "litersLoaded": "Liters Loaded",
+      "remito": "Delivery Note Number",
+      "cot": "COT"
+    },
+    "modal": {
+      "title": "Rejection reason",
+      "placeholder": "Enter the reason...",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
+  },
+  "confirmarIncidencias": {
+    "loading": "Loading reported incidents...",
+    "title": "Confirm reported incidents",
+    "subtitle": "In this panel you can review incoming incidents and verify them against the corresponding data.",
+    "count": "Incidents to confirm: {{count}}",
+    "searchPlaceholder": "🔎 Search by ID, route, or driver...",
+    "confirmPrompt": "Confirm incident?",
+    "rejectPrompt": "Reject incident?",
+    "table": {
+      "id": "ID",
+      "route": "Assigned Route",
+      "responsible": "Responsible",
+      "incidentDate": "Incident Date",
+      "incidentType": "Incident Type",
+      "actions": "Actions"
+    },
+    "expanded": {
+      "truckPlate": "Truck Plate",
+      "trailerPlate": "Trailer Plate",
+      "fuel": "Fuel",
+      "incidentDate": "Incident Date",
+      "incidentType": "Incident Type",
+      "description": "Description",
+      "remito": "Delivery Note Number",
+      "cot": "COT"
+    },
+    "modal": {
+      "title": "Rejection reason",
+      "placeholder": "Enter the reason...",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
+  },
+  "confirmarEntregas": {
+    "loading": "Loading deliveries to confirm...",
+    "title": "Confirm deliveries",
+    "subtitle": "Here you can review orders that need delivery verification.",
+    "count": "Deliveries to confirm: {{count}}",
+    "searchPlaceholder": "🔎 Search by ID, route, or driver...",
+    "table": {
+      "id": "ID",
+      "route": "Assigned route",
+      "responsible": "Responsible",
+      "requestDate": "Delivery request date",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "confirmPrompt": "Are you sure you want to confirm delivery with ID {{id}}?",
+    "rejectPrompt": "Are you sure you want to reject delivery with ID {{id}}?",
+    "expanded": {
+      "truckPlate": "Truck plate",
+      "trailerPlate": "Trailer plate",
+      "fuel": "Fuel",
+      "litersLoaded": "Liters loaded",
+      "litersDelivered": "Liters delivered",
+      "observations": "Notes",
+      "remito": "Delivery note number",
+      "cot": "COT"
+    },
+    "modal": {
+      "title": "Rejection reason",
+      "placeholder": "Enter the reason...",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
+  },
+  "confirmarInicioViaje": {
+    "loading": "Loading trip starts to confirm...",
+    "title": "Confirm trip start",
+    "subtitle": "In this panel you can review and confirm the start of trips for each order and validate the data.",
+    "count": "Trip starts to confirm: {{count}}",
+    "searchPlaceholder": "🔎 Search by ID, route, or driver...",
+    "table": {
+      "id": "ID",
+      "route": "Assigned route",
+      "responsible": "Responsible",
+      "requestDate": "Trip request date",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "confirmPrompt": "Are you sure you want to confirm the start of the trip?",
+    "rejectPrompt": "Are you sure you want to reject the start of the trip?",
+    "expanded": {
+      "truckPlate": "Truck plate",
+      "trailerPlate": "Trailer plate",
+      "fuel": "Fuel",
+      "createdAt": "Creation date",
+      "remito": "Delivery note number",
+      "cot": "COT"
+    },
+    "modal": {
+      "title": "Rejection reason",
+      "placeholder": "Enter the reason...",
+      "confirm": "Confirm",
+      "cancel": "Cancel"
+    }
+  }
+}

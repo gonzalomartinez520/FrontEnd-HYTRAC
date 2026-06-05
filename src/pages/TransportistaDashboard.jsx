@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { canNotificarEntrega, getPrimaryActionLabel, transportista as transportistaApi } from "../api";
+import { canNotificarEntrega, getPrimaryActionKey, transportista as transportistaApi } from "../api";
 import { datos } from '@/api';
 import "../styles/transportistaDashboard.css";
 import RouteMap from "../components/RouteMap";
+import { useTranslation } from "react-i18next";
 
 const formatDate = (value) => {
   if (!value) return "Pendiente";
@@ -53,6 +54,7 @@ const getField = (envio, keys, fallback = "Pendiente") => {
 
 export default function TransportistaDashboard({ user }) {
   const navigate = useNavigate();
+  const { t: tTransportista } = useTranslation("transportista");
 
   const [fullRoute, setFullRoute] = useState(null);
   const [isMapLoading, setIsMapLoading] = useState(false);
@@ -67,7 +69,7 @@ export default function TransportistaDashboard({ user }) {
 
   const activeEnvio = envios[0];
   const shouldNotificarEntrega = useMemo(() => canNotificarEntrega(activeEnvio), [activeEnvio]);
-  const primaryActionLabel = useMemo(() => getPrimaryActionLabel(activeEnvio), [activeEnvio]);
+  const primaryActionKey = useMemo(() => getPrimaryActionKey(activeEnvio), [activeEnvio]);
 
   useEffect(() => {
     let isMounted = true;
@@ -196,39 +198,41 @@ export default function TransportistaDashboard({ user }) {
       <article className="envio-detail-card" key={envio?.id ?? `${getField(envio, ["cot", "numeroCot"])}`}>
         <div className="envio-detail-top">
           <div>
-            <span className="section-label">Detalle de envío</span>
-            <h2>{getField(envio, ["cot", "numeroCot", "numero_cot", "cotizacion"], "Sin dato")}</h2>
+            <span className="section-label">{tTransportista("dashboard.detail.sectionLabel")}</span>
+            <h2>{getField(envio, ["cot", "numeroCot", "numero_cot", "cotizacion"], tTransportista("dashboard.detail.noData"))}</h2>
           </div>
-          <span className="detail-pill">Remito {getField(envio, ["nro_remito", "numeroRemito", "remito"], "Sin dato")}</span>
+          <span className="detail-pill">
+            {tTransportista("dashboard.detail.remito")} {getField(envio, ["nro_remito", "numeroRemito", "remito"], tTransportista("dashboard.detail.noData"))}
+          </span>
         </div>
 
         <div className="envio-detail-grid">
           <div className="detail-item detail-item--wide">
-            <span>Origen / destino</span>
+            <span>{tTransportista("dashboard.detail.originDestination")}</span>
             <strong>{origen} → {destino}</strong>
           </div>
           <div className="detail-item">
-            <span>Patente de camión</span>
-            <strong>{getField(envio, ["patenteCamion", "patente_camion", "patenteVehiculo", "camionPatente"], "Camión")}</strong>
+            <span>{tTransportista("dashboard.detail.truckPlate")}</span>
+            <strong>{getField(envio, ["patenteCamion", "patente_camion", "patenteVehiculo", "camionPatente"], tTransportista("dashboard.detail.truckFallback"))}</strong>
           </div>
           <div className="detail-item">
-            <span>Patente de acoplado</span>
-            <strong>{getField(envio, ["patenteAcoplado", "patente_acoplado", "acopladoPatente"], "Acoplado")}</strong>
+            <span>{tTransportista("dashboard.detail.trailerPlate")}</span>
+            <strong>{getField(envio, ["patenteAcoplado", "patente_acoplado", "acopladoPatente"], tTransportista("dashboard.detail.trailerFallback"))}</strong>
           </div>
           <div className="detail-item">
-            <span>Combustible</span>
-            <strong>{getField(envio, ["tipoCombustible", "combustible", "combustibleNombre"], "Sin dato")}</strong>
+            <span>{tTransportista("dashboard.detail.fuel")}</span>
+            <strong>{getField(envio, ["tipoCombustible", "combustible", "combustibleNombre"], tTransportista("dashboard.detail.noData"))}</strong>
           </div>
           <div className="detail-item">
-            <span>Litros cargados</span>
-            <strong>{getField(envio, ["litrosCargados", "litros_cargados", "volumen"], "Pendiente")}</strong>
+            <span>{tTransportista("dashboard.detail.litersLoaded")}</span>
+            <strong>{getField(envio, ["litrosCargados", "litros_cargados", "volumen"], tTransportista("dashboard.detail.pending"))}</strong>
           </div>
           <div className="detail-item">
-            <span>Fecha de salida</span>
+            <span>{tTransportista("dashboard.detail.departureDate")}</span>
             <strong>{formatDate(getField(envio, ["fechaSalida", "fecha_salida", "fechaSalidaPlanta", "salida"]))}</strong>
           </div>
           <div className="detail-item">
-            <span>Fecha estimada de llegada</span>
+            <span>{tTransportista("dashboard.detail.arrivalDate")}</span>
             <strong>{formatDate(getField(envio, ["fechaEntregaEstimada", "fecha_llegada", "fechaEntrega", "llegada"]))}</strong>
           </div>
         </div>
@@ -241,40 +245,48 @@ export default function TransportistaDashboard({ user }) {
       <section className="transportista-shell">
         <header className="transportista-hero">
           <div>
-            <p className="eyebrow">Panel del transportista</p>
-            <h1>Seguimiento de ruta en tiempo real</h1>
+            <p className="eyebrow">{tTransportista("dashboard.eyebrow")}</p>
+            <h1>{tTransportista("dashboard.title")}</h1>
             <p className="hero-copy">
-              Visualizá el destino asignado, informá avances operativos y reportá incidencias sin salir de la pantalla.
+              {tTransportista("dashboard.subtitle")}
             </p>
           </div>
 
           <div className="route-status">
-            <span className="status-chip">{shouldNotificarEntrega ? "En curso" : "Pendiente de confirmar"}</span>
-            <strong>{user?.nombre ? `${user.nombre} ${user.apellido || ""}` : "Transportista"}</strong>
-            <span>Transportista ID: {transportistaId ?? "No disponible"}</span>
+            <span className="status-chip">
+              {shouldNotificarEntrega
+                ? tTransportista("dashboard.status.inProgress")
+                : tTransportista("dashboard.status.pendingConfirmation")}
+            </span>
+            <strong>{user?.nombre ? `${user.nombre} ${user.apellido || ""}` : tTransportista("dashboard.driverLabel")}</strong>
+            <span>
+              {tTransportista("dashboard.driverIdLabel", { id: transportistaId ?? tTransportista("dashboard.driverIdFallback") })}
+            </span>
           </div>
         </header>
 
         {loading ? (
           <section className="map-card empty-state-card">
-            <span className="section-label">Cargando</span>
-            <h2>Buscando envíos asignados</h2>
-            <p>Estamos consultando el sistema con tu ID de transportista.</p>
+            <span className="section-label">{tTransportista("dashboard.loading.label")}</span>
+            <h2>{tTransportista("dashboard.loading.title")}</h2>
+            <p>{tTransportista("dashboard.loading.subtitle")}</p>
           </section>
         ) : envios.length === 0 ? (
           <section className="map-card empty-state-card">
-            <span className="section-label">Sin asignación</span>
-            <h2>Sin envíos asignados</h2>
-            <p>No hay envíos en curso para usted en este momento.</p>
+            <span className="section-label">{tTransportista("dashboard.empty.label")}</span>
+            <h2>{tTransportista("dashboard.empty.title")}</h2>
+            <p>{tTransportista("dashboard.empty.subtitle")}</p>
           </section>
         ) : (
           <section className="map-card">
             <div className="map-header">
               <div>
-                <span className="section-label">Destino</span>
-                <h2>Ruta asignada</h2>
+                <span className="section-label">{tTransportista("dashboard.map.destinationLabel")}</span>
+                <h2>{tTransportista("dashboard.map.assignedRouteTitle")}</h2>
               </div>
-              <span className="destination-pill">{getField(activeEnvio, ["destino", "puntoDestino", "estacionDestino"], "Destino pendiente")}</span>
+              <span className="destination-pill">
+                {getField(activeEnvio, ["destino", "puntoDestino", "estacionDestino"], tTransportista("dashboard.map.destinationPending"))}
+              </span>
             </div>
 
             {renderEnvioDetail(activeEnvio)}
@@ -284,11 +296,11 @@ export default function TransportistaDashboard({ user }) {
               <div className="map-placeholder">
                  {isMapLoading ? (
               <div className="map-loading">
-                <span>Recuperando traza del mapa...</span>
+                <span>{tTransportista("dashboard.map.loadingTrace")}</span>
               </div>
               ) : mapError ? (
               <div className="map-error">
-                <strong>Traza No Disponible</strong>
+                <strong>{tTransportista("dashboard.map.traceUnavailable")}</strong>
               </div>
               ) : (
                 <RouteMap geometry={fullRoute?.geometria} />
@@ -299,27 +311,27 @@ export default function TransportistaDashboard({ user }) {
                 <div className="card-body">
                   <div className="row">
                     <div>
-                      <small>Distancia Estimada</small>
+                      <small>{tTransportista("dashboard.summary.distance")}</small>
                       <h2>
                         {fullRoute?.distanciaKm
                           ? `${Number(fullRoute.distanciaKm).toFixed(1)} km`
-                          : activeEnvio.distanciaKm ? `${Number(activeEnvio.distanciaKm).toFixed(1)} km` : "-- km"}
+                          : activeEnvio.distanciaKm ? `${Number(activeEnvio.distanciaKm).toFixed(1)} km` : tTransportista("dashboard.summary.defaultDistance")}
                       </h2>
                     </div>
                     <div>
-                      <small>Tiempo Estimado</small>
-                      <h2>⏱ {fullRoute?.tiempoEstimadoHoras ? formatRouteTime(fullRoute.tiempoEstimadoHoras) : "15:30"}</h2>
+                      <small>{tTransportista("dashboard.summary.time")}</small>
+                      <h2>⏱ {fullRoute?.tiempoEstimadoHoras ? formatRouteTime(fullRoute.tiempoEstimadoHoras) : tTransportista("dashboard.summary.defaultTime")}</h2>
                     </div>
                   </div>
 
                   <div className="dates">
                     <div>
-                      <small>Fecha Salida</small>
-                      <h2>⏱ {activeEnvio.fechaSalidaPlanta ? formatearFecha(activeEnvio.fechaSalidaPlanta) : "-"}</h2>
+                      <small>{tTransportista("dashboard.summary.departureDate")}</small>
+                      <h2>⏱ {activeEnvio.fechaSalidaPlanta ? formatearFecha(activeEnvio.fechaSalidaPlanta) : tTransportista("dashboard.summary.defaultDate")}</h2>
                     </div>
                     <div>
-                      <small>Fecha Llegada</small>
-                      <h2>⏱ {activeEnvio.fechaEntrega ? formatearFecha(activeEnvio.fechaEntrega) : "-"}</h2>
+                      <small>{tTransportista("dashboard.summary.arrivalDate")}</small>
+                      <h2>⏱ {activeEnvio.fechaEntrega ? formatearFecha(activeEnvio.fechaEntrega) : tTransportista("dashboard.summary.defaultDate")}</h2>
                     </div>
                   </div>
                 </div>
@@ -334,7 +346,7 @@ export default function TransportistaDashboard({ user }) {
                 onClick={handleIniciarViaje}
                 disabled={!activeEnvio}
               >
-                {primaryActionLabel}
+                {tTransportista(`actions.${primaryActionKey}`)}
               </button>
               <button
                 type="button"
@@ -342,7 +354,7 @@ export default function TransportistaDashboard({ user }) {
                 onClick={handleReportarIncidencia}
                 disabled={!activeEnvio}
               >
-                Reportar incidencia
+                {tTransportista("dashboard.actions.reportIncident")}
               </button>
             </div>
           </section>

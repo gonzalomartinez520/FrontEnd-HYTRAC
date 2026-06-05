@@ -20,10 +20,10 @@ export default function Navbar({ user, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const role = String(user?.normalizedRole || user?.role || "").toUpperCase();
   const [transportistaAction, setTransportistaAction] = useState({
-    title: t("confirmarEnvío"),
+    title: t("confirmarEnvio"),
     to: "/transportista",
     icon: "✅",
-    label: t("confirmarEnvío"),
+    label: t("confirmarEnvio"),
   });
 
   const handleChangeLanguage = (e) => {
@@ -56,10 +56,10 @@ useEffect(() => {
         if (!orden?.id) {
           if (isMounted) {
             setTransportistaAction({
-              title: t("confirmarEnvío"),
+              title: t("confirmarEnvio"),
               to: "/transportista",
               icon: "✅",
-              label: t("confirmarEnvío"),
+              label: t("confirmarEnvio"),
             });
           }
           return;
@@ -77,10 +77,10 @@ useEffect(() => {
                   label: t("notificarEntrega"),
                 }
               : {
-                  title: t("confirmarEnvío"),
+                  title: t("confirmarEnvio"),
                   to: `/transportista/orden/${orden.id}/iniciar-viaje`,
                   icon: "✅",
-                  label: t("confirmarEnvío"),
+                  label: t("confirmarEnvio"),
                 }
           );
         }
@@ -94,7 +94,7 @@ useEffect(() => {
     return () => {
       isMounted = false;
     };
-  }, [role, user]);
+  }, [role, user, t]);
 
   const handleLogout = () => {
     // 🗑️ Eliminar sesión completa

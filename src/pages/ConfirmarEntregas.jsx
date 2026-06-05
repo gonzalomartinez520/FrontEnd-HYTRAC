@@ -1,5 +1,6 @@
 import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
+import { useTranslation } from "react-i18next";
 import "../styles/confirmarEntregas.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
@@ -7,6 +8,7 @@ import { envios } from '@/api';
 
 export default function ConfirmarEntregas( { user } ) {
   const navigate = useNavigate();
+  const { t } = useTranslation("supervisor");
 
   const [legajoSupervisor, setLegajoSupervisor] = useState("");
   
@@ -46,7 +48,7 @@ export default function ConfirmarEntregas( { user } ) {
     };
 
     const confirmarEntrega = (id, payload) => {
-        const confirmacion = window.confirm(`¿Estás seguro de que deseas confirmar la entrega con ID ${id}?`);
+        const confirmacion = window.confirm(t("confirmarEntregas.confirmPrompt", { id }));
 
         if (confirmacion) {
             const fetchConfirmar = async () => {
@@ -67,7 +69,7 @@ export default function ConfirmarEntregas( { user } ) {
     };
 
     const rechazarEntrega = (id, payload) => {
-        const confirmacion = window.confirm(`¿Estás seguro de que deseas rechazar la entrega con ID ${id}?`);
+        const confirmacion = window.confirm(t("confirmarEntregas.rejectPrompt", { id }));
 
         if (confirmacion) {
             const fetchConfirmar = async () => {
@@ -133,7 +135,7 @@ export default function ConfirmarEntregas( { user } ) {
         return (
             <div className="confirmar-edicion-loading-screen">
                 <div className="confirmar-edicion-loader"></div>
-                <h2>Cargando entregas a confirmar...</h2>
+                <h2>{t("confirmarEntregas.loading")}</h2>
             </div>
         );
     }
@@ -143,9 +145,9 @@ export default function ConfirmarEntregas( { user } ) {
             <main className="edicion-dashboard-content">
                 <section className="edicion-header">
                     <div>
-                        <h1>Confirmar Entregas</h1>
+                        <h1>{t("confirmarEntregas.title")}</h1>
                         <p>
-                            Aquí podrá visualizar las órdenes que necesitan verificación para su entrega.
+                            {t("confirmarEntregas.subtitle")}
                             </p>
                     </div>
                 </section>
@@ -153,13 +155,13 @@ export default function ConfirmarEntregas( { user } ) {
                 <section className="edicion-table-section">
                     <div className="edicion-table-header">
                         <div>
-                            <h2>Entregas a confirmar: {filteredShipments.length}</h2>
+                            <h2>{t("confirmarEntregas.count", { count: filteredShipments.length })}</h2>
                         </div>
 
                         <div className="confirmar-edicion-buscador">
                             <input
                                 type="text"
-                                placeholder="🔎 Busqueda por ID, ruta o transportista..."
+                                placeholder={t("confirmarEntregas.searchPlaceholder")}
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
@@ -169,12 +171,12 @@ export default function ConfirmarEntregas( { user } ) {
                     <table>
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ruta Designada</th>
-                                <th>Responsable</th>
-                                <th>Fecha de Solicitud de Entrega</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
+                                <th>{t("confirmarEntregas.table.id")}</th>
+                                <th>{t("confirmarEntregas.table.route")}</th>
+                                <th>{t("confirmarEntregas.table.responsible")}</th>
+                                <th>{t("confirmarEntregas.table.requestDate")}</th>
+                                <th>{t("confirmarEntregas.table.status")}</th>
+                                <th>{t("confirmarEntregas.table.actions")}</th>
                             </tr>
                         </thead>
                         
@@ -291,14 +293,14 @@ export default function ConfirmarEntregas( { user } ) {
                                         <tr className="fila-expandida">
                                             <td colSpan="7">
                                                 <div className="datos-editados">
-                                                    <p><strong>Patente del Camion:</strong> {shipment.camionPatente}</p>
-                                                    <p><strong>Patente del Acoplado:</strong> {shipment.acopladoPatente}</p>
-                                                    <p><strong>Combustible:</strong> {shipment.combustible}</p>
-                                                    <p><strong>Litros Cargados:</strong> {shipment.litrosCargados}</p>
-                                                    <p><strong>Litros Entregados:</strong> {shipment.litrosEntregados}</p>
-                                                    <p><strong>Observaciones:</strong> {shipment.observaciones}</p>
-                                                    <p><strong>Número de Remito:</strong> {shipment.numeroRemito}</p>
-                                                    <p><strong>COT:</strong> {shipment.cot}</p>
+                                                    <p><strong>{t("confirmarEntregas.expanded.truckPlate")}:</strong> {shipment.camionPatente}</p>
+                                                    <p><strong>{t("confirmarEntregas.expanded.trailerPlate")}:</strong> {shipment.acopladoPatente}</p>
+                                                    <p><strong>{t("confirmarEntregas.expanded.fuel")}:</strong> {shipment.combustible}</p>
+                                                    <p><strong>{t("confirmarEntregas.expanded.litersLoaded")}:</strong> {shipment.litrosCargados}</p>
+                                                    <p><strong>{t("confirmarEntregas.expanded.litersDelivered")}:</strong> {shipment.litrosEntregados}</p>
+                                                    <p><strong>{t("confirmarEntregas.expanded.observations")}:</strong> {shipment.observaciones}</p>
+                                                    <p><strong>{t("confirmarEntregas.expanded.remito")}:</strong> {shipment.numeroRemito}</p>
+                                                    <p><strong>{t("confirmarEntregas.expanded.cot")}:</strong> {shipment.cot}</p>
                                                 </div>
                                             </td>
                                         </tr>
@@ -312,10 +314,10 @@ export default function ConfirmarEntregas( { user } ) {
             {showModal && (
                 <div className="modal-overlay">
                     <div className="modal">
-                    <h2>Motivo de rechazo</h2>
+                    <h2>{t("confirmarEntregas.modal.title")}</h2>
 
                     <textarea
-                        placeholder="Ingrese el motivo..."
+                        placeholder={t("confirmarEntregas.modal.placeholder")}
                         value={motivo}
                         onChange={(e) => setMotivo(e.target.value)}
                     />
@@ -341,7 +343,7 @@ export default function ConfirmarEntregas( { user } ) {
                             setMotivo("");
                         }}
                         >
-                        Confirmar
+                        {t("confirmarEntregas.modal.confirm")}
                         </button>
 
                         <button
@@ -351,7 +353,7 @@ export default function ConfirmarEntregas( { user } ) {
                             setMotivo("");
                         }}
                         >
-                        Cancelar
+                        {t("confirmarEntregas.modal.cancel")}
                         </button>
                     </div>
                     </div>

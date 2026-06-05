@@ -1,0 +1,152 @@
+{
+  "confirmaciones": {
+    "title": "Confirmações",
+    "subtitle": "Por favor, selecione uma das opções.",
+    "cards": {
+      "newOrders": {
+        "title": "Novas ordens",
+        "description": "Validação de ordens recebidas pelo sistema"
+      },
+      "tripStarts": {
+        "title": "Inícios de viagem",
+        "description": "Confirmação para iniciar a viagem"
+      },
+      "deliveries": {
+        "title": "Entregas",
+        "description": "Verificação de entregas concluídas"
+      },
+      "incidents": {
+        "title": "Incidentes",
+        "description": "Validação de incidentes registrados"
+      }
+    }
+  },
+  "confirmarEnvio": {
+    "loading": "Carregando novas ordens para confirmar...",
+    "title": "Confirmar novas ordens",
+    "subtitle": "Aqui você pode confirmar as ordens recebidas pelo sistema. Revise os detalhes de cada ordem e confirme seu status para manter o sistema atualizado.",
+    "count": "Ordens pendentes: {{count}}",
+    "searchPlaceholder": "🔎 Buscar por ID, rota ou transportador...",
+    "confirmPrompt": "Tem certeza de que deseja confirmar o envio com ID {{id}}?",
+    "rejectPrompt": "Tem certeza de que deseja rejeitar o envio com ID {{id}}?",
+    "table": {
+      "id": "ID",
+      "route": "Rota Designada",
+      "fuelType": "Tipo de Combustível",
+      "carrier": "Transportador",
+      "createdAt": "Data de Criação",
+      "status": "Status",
+      "actions": "Ações"
+    },
+    "expanded": {
+      "truckPlate": "Placa do Caminhão",
+      "trailerPlate": "Placa do Reboque",
+      "litersLoaded": "Litros Carregados",
+      "remito": "Número da Nota de Remessa",
+      "cot": "COT"
+    },
+    "modal": {
+      "title": "Motivo da rejeição",
+      "placeholder": "Informe o motivo...",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  },
+  "confirmarIncidencias": {
+    "loading": "Carregando incidentes registrados...",
+    "title": "Confirmar incidentes registrados",
+    "subtitle": "Neste painel você pode revisar os incidentes recebidos pelo sistema e verificá-los com os dados correspondentes.",
+    "count": "Incidentes para confirmar: {{count}}",
+    "searchPlaceholder": "🔎 Buscar por ID, rota ou transportador...",
+    "confirmPrompt": "Confirmar incidente?",
+    "rejectPrompt": "Rejeitar incidente?",
+    "table": {
+      "id": "ID",
+      "route": "Rota Designada",
+      "responsible": "Responsável",
+      "incidentDate": "Data do Incidente",
+      "incidentType": "Tipo de Incidente",
+      "actions": "Ações"
+    },
+    "expanded": {
+      "truckPlate": "Placa do Caminhão",
+      "trailerPlate": "Placa do Reboque",
+      "fuel": "Combustível",
+      "incidentDate": "Data do Incidente",
+      "incidentType": "Tipo de Incidente",
+      "description": "Descrição",
+      "remito": "Número da Nota de Remessa",
+      "cot": "COT"
+    },
+    "modal": {
+      "title": "Motivo da rejeição",
+      "placeholder": "Informe o motivo...",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  },
+  "confirmarEntregas": {
+    "loading": "Carregando entregas para confirmar...",
+    "title": "Confirmar entregas",
+    "subtitle": "Aqui voce pode visualizar ordens que precisam de verificacao para entrega.",
+    "count": "Entregas para confirmar: {{count}}",
+    "searchPlaceholder": "🔎 Buscar por ID, rota ou transportador...",
+    "table": {
+      "id": "ID",
+      "route": "Rota atribuida",
+      "responsible": "Responsavel",
+      "requestDate": "Data de solicitacao de entrega",
+      "status": "Status",
+      "actions": "Acoes"
+    },
+    "confirmPrompt": "Tem certeza de que deseja confirmar a entrega com ID {{id}}?",
+    "rejectPrompt": "Tem certeza de que deseja rejeitar a entrega com ID {{id}}?",
+    "expanded": {
+      "truckPlate": "Placa do caminhao",
+      "trailerPlate": "Placa do reboque",
+      "fuel": "Combustivel",
+      "litersLoaded": "Litros carregados",
+      "litersDelivered": "Litros entregues",
+      "observations": "Observacoes",
+      "remito": "Numero da nota de remessa",
+      "cot": "COT"
+    },
+    "modal": {
+      "title": "Motivo da rejeicao",
+      "placeholder": "Informe o motivo...",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  },
+  "confirmarInicioViaje": {
+    "loading": "Carregando inicios de viagem para confirmar...",
+    "title": "Confirmar inicio de viagem",
+    "subtitle": "Neste painel voce pode revisar e confirmar o inicio das viagens de cada ordem e validar os dados.",
+    "count": "Inicios de viagem para confirmar: {{count}}",
+    "searchPlaceholder": "🔎 Buscar por ID, rota ou transportador...",
+    "table": {
+      "id": "ID",
+      "route": "Rota atribuida",
+      "responsible": "Responsavel",
+      "requestDate": "Data de solicitacao de viagem",
+      "status": "Status",
+      "actions": "Acoes"
+    },
+    "confirmPrompt": "Tem certeza de que deseja confirmar o inicio da viagem?",
+    "rejectPrompt": "Tem certeza de que deseja rejeitar o inicio da viagem?",
+    "expanded": {
+      "truckPlate": "Placa do caminhao",
+      "trailerPlate": "Placa do reboque",
+      "fuel": "Combustivel",
+      "createdAt": "Data de criacao",
+      "remito": "Numero da nota de remessa",
+      "cot": "COT"
+    },
+    "modal": {
+      "title": "Motivo da rejeicao",
+      "placeholder": "Informe o motivo...",
+      "confirm": "Confirmar",
+      "cancel": "Cancelar"
+    }
+  }
+}

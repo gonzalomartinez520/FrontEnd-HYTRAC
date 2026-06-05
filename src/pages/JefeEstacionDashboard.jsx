@@ -1,5 +1,6 @@
 import { data, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import "../styles/jefeEstacionDashboard.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
@@ -9,6 +10,7 @@ import { envios } from '@/api';
 
 export default function JefeEstacionDashboard({ user }) {
   const navigate = useNavigate();
+  const { t } = useTranslation("common");
 
   const [loading, setLoading] = useState(true);
   const [shipments, setShipments] = useState([]);
@@ -93,7 +95,7 @@ export default function JefeEstacionDashboard({ user }) {
     return (
       <div className="loading-screen">
         <div className="loader"></div>
-        <h2>Cargando panel HYTRAC...</h2>
+        <h2>{t("common.loading")}</h2>
       </div>
     );
   }
@@ -106,9 +108,9 @@ export default function JefeEstacionDashboard({ user }) {
         {/* HEADER */}
         <section className="dashboard-header">
           <div>
-            <h1>Panel de Jefe de Estación</h1>
+            <h1>{t("stationDashboard.title")}</h1>
             <p>
-              Aquí podrás ver todos los envios pendientes y confirmarlos o cancelarlos. 
+              {t("stationDashboard.subtitle")}
             </p>
           </div>
         </section>
@@ -117,14 +119,14 @@ export default function JefeEstacionDashboard({ user }) {
         <section className="table-card">
           <div className="table-top">
             <div>
-              <h2>Historial de Órdenes Pendientes</h2>
-              <span>Órdenes encontradas: {filteredShipments.length}</span>
+              <h2>{t("stationDashboard.pendingHistory")}</h2>
+              <span>{t("dashboard.ordersFound", { count: filteredShipments.length })}</span>
             </div>
 
             <div className="table-actions">
               <input
                 type="text"
-                placeholder="Buscar ID, Origen..."
+                placeholder={t("dashboard.searchPlaceholder")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -136,12 +138,12 @@ export default function JefeEstacionDashboard({ user }) {
           <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Ruta Designada</th>
-                <th>Estado</th>
-                <th>Chofer</th>
-                <th>Fecha Creación</th>
-                <th>Acciones</th>
+                <th>{t("table.id")}</th>
+                <th>{t("table.route")}</th>
+                <th>{t("table.status")}</th>
+                <th>{t("table.driver")}</th>
+                <th>{t("table.createdAt")}</th>
+                <th>{t("stationDashboard.actions")}</th>
               </tr>
             </thead>
 
@@ -149,18 +151,18 @@ export default function JefeEstacionDashboard({ user }) {
               {/* aca tengo que filtrar solo los envios pendientes */}
               {filteredShipments.map((shipment) => (
                 <tr key={shipment.id}>
-                      <td className="tracking" data-label="ID">{shipment.trackingId}</td>
-                  <td data-label="Origen">
+                      <td className="tracking" data-label={t("table.id")}>{shipment.trackingId}</td>
+                  <td data-label={t("table.route")}>
                     <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                   </td>
-                  <td data-label="Estado">
+                  <td data-label={t("table.status")}>
                     <StatusBadge estado={shipment.estado} />
                   </td>
-                  <td data-label="Chofer">{shipment.transportistaNombre} {shipment.transportistaApellido}</td>
-                  <td data-label="Fecha Creación">{formatearFecha(shipment.fechaCreacion)}</td>
+                  <td data-label={t("table.driver")}>{shipment.transportistaNombre} {shipment.transportistaApellido}</td>
+                  <td data-label={t("table.createdAt")}>{formatearFecha(shipment.fechaCreacion)}</td>
 
                   {/* aca tengo que poner los 3 botones(el ojo tiene que seguir mostrando el detalle) */}
-                 <td data-label="Acciones">
+                 <td data-label={t("stationDashboard.actions")}>
                   <div className="actions-table">
 
                     {/* 👁️ VER DETALLE */}
@@ -241,19 +243,19 @@ export default function JefeEstacionDashboard({ user }) {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
-            <h2>Confirmar entrega</h2>
+            <h2>{t("stationDashboard.confirmDelivery")}</h2>
 
             {/* Input de litros */}
             <input
               type="number"
-              placeholder="Litros entregados"
+              placeholder={t("stationDashboard.deliveredLiters")}
               value={litros}
               onChange={(e) => setLitros(e.target.value)}
             />
 
             {/* Observaciones */}
             <textarea
-              placeholder="Observaciones..."
+              placeholder={t("stationDashboard.observations")}
               value={observaciones}
               onChange={(e) => setObservaciones(e.target.value)}
             />
@@ -287,7 +289,7 @@ export default function JefeEstacionDashboard({ user }) {
                   }
                 }}
               >
-                Confirmar
+                {t("buttons.confirm")}
               </button>
 
               <button
@@ -298,7 +300,7 @@ export default function JefeEstacionDashboard({ user }) {
                   setObservaciones("");
                 }}
               >
-                Cancelar
+                {t("buttons.cancel")}
               </button>
             </div>
           </div>

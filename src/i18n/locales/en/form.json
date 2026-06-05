@@ -10,7 +10,22 @@
       "cargoSpecs": "Cargo specifications",
       "cargoSpecsDesc": "Fuel, hazardous transport code and conditions.",
       "logistics": "Logistics & Documentation",
-      "logisticsDesc": "Origin, destination and fiscal documents."
+      "logisticsDesc": "Origin, destination and fiscal documents.",
+      "personalData": "Personal Data",
+      "accessData": "Access Data",
+      "operationalLocation": "Operational Location"
+    },
+
+    "users": {
+      "eyebrow": "NEW USER",
+      "title": "Create new user",
+      "subtitle": "Please select the role of the user you want to create.",
+      "descriptions": {
+        "OPERADOR": "Complete the following information to register a new operator in the system.",
+        "SUPERVISOR": "Complete the following information to register a new supervisor in the system.",
+        "TRANSPORTISTA": "Please complete the following fields to create a new driver.",
+        "JEFE_ESTACION": "Complete the following information to register a new station manager in the system."
+      }
     },
 
     "fields": {
@@ -40,7 +55,13 @@
       "destinationStation": "Delivery Location",
 
       "remito": "Delivery Note #",
-      "cot": "COT (ARBA)"
+      "cot": "COT (ARBA)",
+      "nombre": "Name",
+      "apellido": "Last Name",
+      "dni": "National ID Document (DNI)",
+      "email": "Email",
+      "passwordTemporal": "Password",
+      "telefono": "Phone"
     },
 
     "placeholders": {
@@ -68,13 +89,18 @@
     "buttons": {
       "cancel": "Cancel",
       "submit": "Create Shipment",
-      "loading": "Processing..."
+      "loading": "Processing...",
+      "create": "Create",
+      "save": "Save"
     },
 
     "messages": {
       "success": "Shipment successfully created! Tracking ID: {{id}}",
       "error": "Error creating shipment.",
-      "termsError": "You must accept the terms and conditions."
+      "termsError": "You must accept the terms and conditions.",
+      "userCreatedSuccess": "User successfully created.",
+      "userCreatedError": "Error creating user.",
+      "dniError": "DNI must be between 7 and 8 digits"
     }
   }
 }

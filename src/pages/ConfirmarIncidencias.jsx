@@ -1,11 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, Fragment } from "react";
+import { useTranslation } from "react-i18next";
 import "../styles/confirmarIncidencias.css";
 import "../styles/statusBadge.css";
 import { envios, datos } from '@/api';
 
 export default function ConfirmarIncidencias({ user }) {
   const navigate = useNavigate();
+  const { t } = useTranslation("supervisor");
 
   const [loading, setLoading] = useState(true);
   const [shipments, setShipments] = useState([]);
@@ -95,7 +97,7 @@ export default function ConfirmarIncidencias({ user }) {
   };
 
   const confirmarIncidencia = (remito, payload) => {
-    const confirmacion = window.confirm("¿Confirmar incidencia?");
+    const confirmacion = window.confirm(t("confirmarIncidencias.confirmPrompt"));
 
     if (confirmacion) {
       const fetchConfirmar = async () => {
@@ -112,7 +114,7 @@ export default function ConfirmarIncidencias({ user }) {
   };
 
   const rechazarIncidencia = (remito, payload, motivo) => {
-    const confirmacion = window.confirm("¿Rechazar incidencia?");
+    const confirmacion = window.confirm(t("confirmarIncidencias.rejectPrompt"));
 
     if (confirmacion) {
       const fetchRechazar = async () => {
@@ -148,7 +150,7 @@ export default function ConfirmarIncidencias({ user }) {
     return (
       <div className="confirmar-incidencias-loading-screen">
         <div className="confirmar-incidencias-loader"></div>
-        <h2>Cargando incidencias registradas...</h2>
+        <h2>{t("confirmarIncidencias.loading")}</h2>
       </div>
     );
   }
@@ -159,22 +161,21 @@ export default function ConfirmarIncidencias({ user }) {
 
         <section className="incidencias-header">
           <div>
-            <h1>Confirmar incidencias registradas</h1>
+            <h1>{t("confirmarIncidencias.title")}</h1>
             <p>
-              En este panel podrás revisar las incidencias entrantes
-              al sistema para verificarlas con los datos correspondiente.
+              {t("confirmarIncidencias.subtitle")}
             </p>
           </div>
         </section>
 
         <section className="incidencias-table-section">
           <div className="incidencias-table-header">
-            <h2>Incidencias a confirmar: {filteredData.length}</h2>
+            <h2>{t("confirmarIncidencias.count", { count: filteredData.length })}</h2>
 
             <div className="confirmar-incidencias-buscador">
               <input
                 type="text"
-                placeholder="🔎 Busqueda por ID, ruta o transportista..."
+                placeholder={t("confirmarIncidencias.searchPlaceholder")}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -184,12 +185,12 @@ export default function ConfirmarIncidencias({ user }) {
           <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Ruta Designada</th>
-                <th>Responsable</th>
-                <th>Fecha de Incidencia</th>
-                <th>Tipo de Incidencia</th>
-                <th>Acciones</th>
+                <th>{t("confirmarIncidencias.table.id")}</th>
+                <th>{t("confirmarIncidencias.table.route")}</th>
+                <th>{t("confirmarIncidencias.table.responsible")}</th>
+                <th>{t("confirmarIncidencias.table.incidentDate")}</th>
+                <th>{t("confirmarIncidencias.table.incidentType")}</th>
+                <th>{t("confirmarIncidencias.table.actions")}</th>
               </tr>
             </thead>
 
@@ -320,14 +321,14 @@ export default function ConfirmarIncidencias({ user }) {
                       <td colSpan="6">
 
                         <div className="datos-incidencias">
-                          <p><strong>Patente del Camion:</strong> {shipment.camionPatente}</p>
-                          <p><strong>Patente del Acoplado:</strong> {shipment.acopladoPatente}</p>
-                          <p><strong>Combustible:</strong> {shipment.combustible}</p>
-                          <p><strong>Fecha Incidente:</strong> {formatearFecha(incidencia.fechaIncidente)}</p>
-                          <p><strong>Tipo de Incidencia:</strong> {incidencia.tipoIncidencia}</p>
-                          <p><strong>Descripción:</strong> {incidencia.descripcion}</p>
-                          <p><strong>Número de Remito:</strong> {shipment.numeroRemito}</p>
-                          <p><strong>COT:</strong> {shipment.cot}</p>
+                          <p><strong>{t("confirmarIncidencias.expanded.truckPlate")}:</strong> {shipment.camionPatente}</p>
+                          <p><strong>{t("confirmarIncidencias.expanded.trailerPlate")}:</strong> {shipment.acopladoPatente}</p>
+                          <p><strong>{t("confirmarIncidencias.expanded.fuel")}:</strong> {shipment.combustible}</p>
+                          <p><strong>{t("confirmarIncidencias.expanded.incidentDate")}:</strong> {formatearFecha(incidencia.fechaIncidente)}</p>
+                          <p><strong>{t("confirmarIncidencias.expanded.incidentType")}:</strong> {incidencia.tipoIncidencia}</p>
+                          <p><strong>{t("confirmarIncidencias.expanded.description")}:</strong> {incidencia.descripcion}</p>
+                          <p><strong>{t("confirmarIncidencias.expanded.remito")}:</strong> {shipment.numeroRemito}</p>
+                          <p><strong>{t("confirmarIncidencias.expanded.cot")}:</strong> {shipment.cot}</p>
                         </div>
 
                       </td>
@@ -343,10 +344,10 @@ export default function ConfirmarIncidencias({ user }) {
       {showModal && (
                 <div className="modal-overlay">
                     <div className="modal">
-                    <h2>Motivo de rechazo</h2>
+                    <h2>{t("confirmarIncidencias.modal.title")}</h2>
 
                     <textarea
-                        placeholder="Ingrese el motivo..."
+                        placeholder={t("confirmarIncidencias.modal.placeholder")}
                         value={motivo}
                         onChange={(e) => setMotivo(e.target.value)}
                     />
@@ -371,7 +372,7 @@ export default function ConfirmarIncidencias({ user }) {
                             setMotivo("");
                         }}
                         >
-                        Confirmar
+                        {t("confirmarIncidencias.modal.confirm")}
                         </button>
 
                         <button
@@ -381,7 +382,7 @@ export default function ConfirmarIncidencias({ user }) {
                             setMotivo("");
                         }}
                         >
-                        Cancelar
+                        {t("confirmarIncidencias.modal.cancel")}
                         </button>
                     </div>
                     </div>

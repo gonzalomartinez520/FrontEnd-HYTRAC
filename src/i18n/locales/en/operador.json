@@ -1,0 +1,23 @@
+{
+  "historial": {
+    "loading": "Loading order history...",
+    "title": "Order history for {{nombre}} {{apellido}}",
+    "subtitle": "Here you can view all orders you created. If needed, you can edit an order before it is confirmed.",
+    "recentTitle": "Recent Orders History",
+    "ordersFound": "Orders found: {{count}}",
+    "searchPlaceholder": "🔎 Search by ID, route, or driver...",
+    "actions": "Actions",
+    "expanded": {
+      "carrier": "Driver",
+      "rejectionReason": "Rejection reason:"
+    },
+    "logisticsSectionTitle": "Order logistics",
+    "logisticsSectionDesc": "Assigned route for the load.",
+    "originRefinery": "Origin refinery",
+    "destinationStation": "Destination service station",
+    "incompletePoints": "Incomplete points",
+    "messages": {
+      "editSuccess": "Shipment with ID {{id}} updated successfully"
+    }
+  }
+}
