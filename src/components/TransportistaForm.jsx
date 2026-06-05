@@ -3,14 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import "../styles/transportistaForm.css";
 import { administrador, datos } from '@/api';
 
+import { useTranslation } from 'react-i18next';
+
 export default function TransportistaForm() {
     const navigate = useNavigate();
+
+    const { t: tForm } = useTranslation("form");
+    const { t: tCommon } = useTranslation("common");
 
     const [tipoVinculo, setTipoVinculo] = useState([]);
     const [tipoDocumento, setTipoDocumento] = useState([]);
     const [empresas, setEmpresas] = useState([]);
 
     const [errorDni, setErrorDni] = useState("");
+    const [errorCuit, setErrorCuit] = useState("");
     const [errorPassword, setErrorPassword] = useState("");
 
     const [error, setError] = useState("");
@@ -104,7 +110,7 @@ export default function TransportistaForm() {
 
         // ❌ evitar duplicados
         const yaExiste = formData.documentos.some(
-            doc => doc.tipoDocumentoId === tipoDocumentoId
+            doc => doc.tipoDocumentoId === Number(tipoDocumentoId)
         );
 
         if (yaExiste) {
@@ -113,7 +119,7 @@ export default function TransportistaForm() {
         }
 
         const nuevoDocumento = {
-            tipoDocumentoId,
+            tipoDocumentoId: Number(tipoDocumentoId),
             nroDocumento,
             fechaEmision: formatDateToLocalDate(new Date()),
             fechaVencimiento: formatDateToLocalDate(fechaVencimiento),
@@ -191,7 +197,16 @@ export default function TransportistaForm() {
             setErrorPassword("");
         }
 
-        const cargados = formData.documentos.map(d => d.tipoDocumentoId);
+        const cuitRegex = /^\d{2}-\d{8}-\d{1}$/;
+
+        if (!cuitRegex.test(formData.cuit)) {
+            setErrorCuit("Formato de CUIT invalido");
+            return;
+        } else {
+            setErrorCuit("");
+        }
+
+        const cargados = formData.documentos.map(d => Number(d.tipoDocumentoId));
 
         const faltantes = tipoDocumento.filter(
             td => !cargados.includes(td.id)
@@ -215,14 +230,21 @@ export default function TransportistaForm() {
             documentos: formData.documentos
         };
 
-        //LLAMADO A API PARA GUARDAR NUEVO OPERADOR
+        console.log("Payload a enviar:", payload);
+
+        const response = await administrador.crearTransportista(payload);
+
+        setSuccess(tForm("newOrder.messages.userCreatedSuccess"));
+        setError("");
 
         setTimeout(() => {
             navigate("/gestion-transportistas");
         }, 1500);
 
         } catch (err) {
-        console.error(err);
+            console.error(err);
+            setError(tForm("newOrder.messages.userCreatedError"));
+            setSuccess("");
         }
     };
 
@@ -261,7 +283,7 @@ export default function TransportistaForm() {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="email">{tForm("newOrder.fields.email")}</label>
+                    <label htmlFor="email">{tForm("newOrder.fields.apellido")}</label>
                     <input
                     type="text"
                     name="apellido"
@@ -288,7 +310,19 @@ export default function TransportistaForm() {
                     />
                     {errorDni && <span className="error">{errorDni}</span>}
                 </div>
+                <div className="form-group">
+                    <label>CUIT</label>
+                    <input
+                    type="text"
+                    name="cuit"
+                    value={formData.cuit}
+                    onChange={handleChange}
+                    required
+                    />
+                    {errorCuit && <span className="error">{errorCuit}</span>}
+                </div>
 
+                </div>
                 <div className="form-group">
                     <label>Correo Electrónico</label>
                     <input
@@ -298,7 +332,6 @@ export default function TransportistaForm() {
                     onChange={handleChange}
                     required
                     />
-                </div>
                 </div>
             </div>
 
