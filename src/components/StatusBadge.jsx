@@ -33,6 +33,9 @@ export default function StatusBadge({ estado }) {
       "pendiente a confirmar": "pendiente_confirmar",
       "pendiente de confirmacion de entrega": "pendiente_confirmacion_entrega",
       "pendiente de inicio de viaje": "pendiente_inicio_viaje",
+
+      "activo": "activo",
+      "no activo": "no_activo"
     };
 
     return mapping[key] || key.replace(/\s+/g, "_");

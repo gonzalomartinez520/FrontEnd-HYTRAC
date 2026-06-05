@@ -70,6 +70,23 @@ const datos = {
     getRuta: async (rutaId) => {
         const { data } = await apiClient.get(`/rutas/get/${rutaId}`);
         return data;
+    },
+
+
+    //Entidades
+    getTipoVinculo: async () => {
+        const { data } = await apiClient.get('/entidades/tipo-vinculo');
+        return data;
+    },
+
+    getTipoDocumento: async () => {
+        const { data } = await apiClient.get('/entidades/tipo-documento');
+        return data;
+    },
+
+    getEmpresas: async () => {
+        const { data } = await apiClient.get('/entidades/empresas');
+        return data;
     }
 };
 

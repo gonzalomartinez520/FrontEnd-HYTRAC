@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import "../styles/operadorForm.css";
@@ -10,6 +10,7 @@ export default function OperadorForm() {
     const { t: tCommon } = useTranslation("common");
 
     const [errorDni, setErrorDni] = useState("");
+    const [errorPassword, setErrorPassword] = useState("");
 
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -19,7 +20,8 @@ export default function OperadorForm() {
         apellido: "",
         dni: "",
         email: "",
-        passwordTemporal: ""
+        passwordTemporal: "",
+        confirmarPassword: ""
     });
 
     // 🔹 Este valor NO viene del formulario
@@ -43,6 +45,13 @@ export default function OperadorForm() {
             return;
         } else {
             setErrorDni("");
+        }
+
+        if (formData.passwordTemporal !== formData.confirmarPassword) {
+            setErrorPassword("Las contraseñas no coinciden");
+            return;
+        } else {
+            setErrorPassword("");
         }
 
         try {
@@ -82,73 +91,106 @@ export default function OperadorForm() {
 
             <form className="operador-form" onSubmit={handleSubmit}>
 
+            {/* 🔹 DATOS PERSONALES */}
+            <div className="form-section">
+                <div className="form-section-title">
+                    <h3>
+                        <svg className="admin-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 6.75A2.25 2.25 0 015.25 4.5h13.5A2.25 2.25 0 0121 6.75v10.5A2.25 2.25 0 0118.75 19.5H5.25A2.25 2.25 0 013 17.25V6.75z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 9h3m-3 3h6m-6 3h4" />
+                        </svg>
+                        Datos Personales
+                    </h3>
+                </div>
+
+                <div className="form-row">
                 <div className="form-group">
                     <label htmlFor="nombre">{tForm("newOrder.fields.nombre")}</label>
                     <input
-                        type="text"
-                        id="nombre"
-                        name="nombre"
-                        value={formData.nombre}
-                        onChange={handleChange}
-                        required
+                    type="text"
+                    name="nombre"
+                    value={formData.nombre}
+                    onChange={handleChange}
+                    required
                     />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="apellido">{tForm("newOrder.fields.apellido")}</label>
                     <input
-                        type="text"
-                        id="apellido"
-                        name="apellido"
-                        value={formData.apellido}
-                        onChange={handleChange}
-                        required
+                    type="text"
+                    name="apellido"
+                    value={formData.apellido}
+                    onChange={handleChange}
+                    required
                     />
                 </div>
+                </div>
 
+                <div className="form-row">
                 <div className="form-group">
                     <label htmlFor="dni">{tForm("newOrder.fields.dni")}</label>
                     <input
-                        type="text"
-                        id="dni"
-                        name="dni"
-                        value={formData.dni}
-                        onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, ""); // solo números
-                            setFormData((prev) => ({
-                            ...prev,
-                            dni: value
-                            }));
-                        }}
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        required
+                    type="text"
+                    name="dni"
+                    value={formData.dni}
+                    onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, "");
+                        setFormData((prev) => ({ ...prev, dni: value }));
+                    }}
+                    inputMode="numeric"
+                    required
                     />
+                    {errorDni && <span className="error">{errorDni}</span>}
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="email">{tForm("newOrder.fields.email")}</label>
                     <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
                     />
+                </div>
+                </div>
+            </div>
+
+            {/* 🔹 ACCESO */}
+            <div className="form-section">
+                <div className="form-section-title">
+                    <h3> 
+                        <svg className="admin-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V7.875a4.125 4.125 0 10-8.25 0V10.5M6.75 10.5h10.5A1.5 1.5 0 0118.75 12v6A1.5 1.5 0 0117.25 19.5H6.75A1.5 1.5 0 015.25 18v-6A1.5 1.5 0 016.75 10.5z" />
+                        </svg>
+                        Datos de Acceso
+                    </h3>
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="passwordTemporal">{tForm("newOrder.fields.passwordTemporal")}</label>
+                <label>Contraseña</label>
+                <input
+                    type="password"
+                    name="passwordTemporal"
+                    value={formData.passwordTemporal}
+                    onChange={handleChange}
+                    required
+                />
+                </div>
+
+                <div className="form-group">
+                    <label>Confirmar Contraseña</label>
                     <input
                         type="password"
-                        id="passwordTemporal"
-                        name="passwordTemporal"
-                        value={formData.passwordTemporal}
+                        name="confirmarPassword"
+                        value={formData.confirmarPassword}
                         onChange={handleChange}
                         required
                     />
+                    {errorPassword && <span className="error">{errorPassword}</span>}
                 </div>
+            </div>
 
                 {error && <div className="error-alert">❌ {error}</div>}
                 {success && <div className="success-alert">✅ {success}</div>}

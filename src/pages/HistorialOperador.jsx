@@ -490,6 +490,8 @@ export default function HistorialOperador( { user } ) {
 
                         {shipment.confirmado === true ? (
                           null
+                        ) : shipment.motivoRechazo?.length > 0 ? (
+                          null
                         ) : (
                           <button 
                             className="editar-envio"

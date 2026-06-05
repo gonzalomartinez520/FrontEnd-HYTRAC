@@ -20,7 +20,9 @@
     "pendiente_confirmar": "Pendente de confirmação",
     "pendiente_confirmacion_entrega": "Confirmação de entrega",
     "pendiente_inicio_viaje": "Início pendente",
-    "sin_estado": "Sem status"
+    "sin_estado": "Sem status",
+    "activo": "Ativo",
+    "no_activo": "Não ativo"
   },
 
   "dashboard": {

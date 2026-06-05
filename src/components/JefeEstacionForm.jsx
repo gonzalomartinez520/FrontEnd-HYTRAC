@@ -10,6 +10,7 @@ export default function JefeEstacionForm() {
     const { t: tCommon } = useTranslation("common");
 
     const [errorDni, setErrorDni] = useState("");
+    const [errorPassword, setErrorPassword] = useState("");
 
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -24,6 +25,7 @@ export default function JefeEstacionForm() {
         dni: "",
         email: "",
         passwordTemporal: "",
+        confirmarPassword: "",
         provincia: null,
         localidad: null,
         lugarOperativo: null
@@ -138,6 +140,13 @@ export default function JefeEstacionForm() {
             return;
         } else {
             setErrorDni("");
+        }
+
+        if (formData.passwordTemporal !== formData.confirmarPassword) {
+            setErrorPassword("Las contraseñas no coinciden");
+            return;
+        } else {
+            setErrorPassword("");
         }
 
         try {
@@ -266,6 +275,18 @@ export default function JefeEstacionForm() {
                     onChange={handleChange}
                     required
                 />
+                </div>
+
+                <div className="form-group">
+                    <label>Confirmar Contraseña</label>
+                    <input
+                        type="password"
+                        name="confirmarPassword"
+                        value={formData.confirmarPassword}
+                        onChange={handleChange}
+                        required
+                    />
+                    {errorPassword && <span className="error">{errorPassword}</span>}
                 </div>
             </div>
 

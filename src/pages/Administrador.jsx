@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import "../styles/administrador.css";
-import { envios, datos } from '@/api';
+import { administrador } from '@/api';
 
 export default function Administrador({ user }) {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export default function Administrador({ user }) {
         const timer = setTimeout(() => {
             const fetchData = async () => {
                 try {
-                    const response = await envios.getUsuarios();
+                    const response = await administrador.obtenerUsuarios();
                     console.log("Datos obtenidos de la API:", response);
                     setUsuarios(response);
                 } catch (error) {
@@ -33,6 +33,28 @@ export default function Administrador({ user }) {
     }, []);
 
     //FILTROS PARA CADA ROL.
+    const operariosCount = (usuario) => usuario.rol === "OPERADOR" && usuario.activo;
+    const supervisoresCount = (usuario) => usuario.rol === "SUPERVISOR" && usuario.activo;
+    const transportistasCount = (usuario) => usuario.rol === "TRANSPORTISTA" && usuario.activo;
+    const jefesEstacionCount = (usuario) => usuario.rol === "JEFE_ESTACION" && usuario.activo;
+
+    useEffect(() => {
+        if (!usuarios.length) return;
+
+        let op = 0, sup = 0, trans = 0, jefe = 0;
+
+        usuarios.forEach((usuario) => {
+            if (operariosCount(usuario)) op++;
+            else if (supervisoresCount(usuario)) sup++;
+            else if (transportistasCount(usuario)) trans++;
+            else if (jefesEstacionCount(usuario)) jefe++;
+        });
+
+        setOperarios(op);
+        setSupervisores(sup);
+        setTransportistas(trans);
+        setJefeEstacion(jefe);
+    }, [usuarios]);
 
     return (
         <div className="gestion-usuarios-layout">
@@ -50,8 +72,8 @@ export default function Administrador({ user }) {
                 <section className="gestion-usuarios-card">
                     <div className="operarios" onClick={() => navigate("/gestion-operarios")}>
                         <div className="icon-gestion-usuarios">🛠️</div>
-                        <div className="badge-cantidad operarios">5</div>   {/*LUEGO REEMPLAZAR POR VALORES REALES */}
-                        <h2>{t("admin.cards.operators.title")}</h2>
+                        <div className="badge-cantidad operarios">{operarios}</div>   {/*LUEGO REEMPLAZAR POR VALORES REALES */}
+                        <h2>Operadores</h2>
                         <p>
                             {t("admin.cards.operators.description")}
                         </p>
@@ -59,8 +81,8 @@ export default function Administrador({ user }) {
 
                     <div className="supervisores" onClick={() => navigate("/gestion-supervisores")}>
                         <div className="icon-gestion-usuarios">✔️</div>
-                        <div className="badge-cantidad supervisores">3</div>
-                        <h2>{t("admin.cards.supervisors.title")}</h2>
+                        <div className="badge-cantidad supervisores">{supervisores}</div>
+                        <h2>Supervisores</h2>
                         <p>
                             {t("admin.cards.supervisors.description")}
                         </p>
@@ -70,8 +92,8 @@ export default function Administrador({ user }) {
                 <section className="gestion-usuarios-card">
                     <div className="transportistas" onClick={() => navigate("/gestion-transportistas")}>
                         <div className="icon-gestion-usuarios">🚚</div>
-                        <div className="badge-cantidad transportistas">9</div>
-                        <h2>{t("admin.cards.carriers.title")}</h2>
+                        <div className="badge-cantidad transportistas">{transportistas}</div>
+                        <h2>Transportistas</h2>
                         <p>
                             {t("admin.cards.carriers.description")}
                         </p>
@@ -79,8 +101,8 @@ export default function Administrador({ user }) {
 
                     <div className="jefe-estacion" onClick={() => navigate("/gestion-jefe-estacion")}>
                         <div className="icon-gestion-usuarios">⛽</div>
-                        <div className="badge-cantidad jefe-estacion">2</div>
-                        <h2>{t("admin.cards.stationManagers.title")}</h2>
+                        <div className="badge-cantidad jefe-estacion">{jefesEstacion}</div>
+                        <h2>Jefes de Estación</h2>
                         <p>
                             {t("admin.cards.stationManagers.description")}
                         </p>

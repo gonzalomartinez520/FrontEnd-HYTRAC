@@ -21,7 +21,7 @@ export default function Confirmaciones({ user }) {
     const fetchData = async () => {
       try {
         const [enviosRes, incidenciasRes] = await Promise.all([
-          envios.getAllSupervisor(),
+          envios.getAll(),
           datos.getIncidencias() // 👈 endpoint incidencias
         ]);
 
@@ -43,7 +43,7 @@ export default function Confirmaciones({ user }) {
   }, []);
 
   // 🧠 filtros
-  const isNoConfirmado = (shipment) => !shipment.confirmado;
+  const isNoConfirmado = (shipment) => !shipment.confirmado && !shipment.motivoRechazo?.length > 0;
 
   const isPendienteInicio = (shipment) =>
     (shipment.estado || "")
