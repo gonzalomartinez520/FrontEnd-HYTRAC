@@ -333,6 +333,7 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .terms-checkbox span {
+  margin-top: 2px;
   line-height: 1.5;
   flex: 1;
 }
