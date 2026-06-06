@@ -72,6 +72,9 @@ export default function IniciarViaje({ user }) {
   const shouldNotificarEntrega = useMemo(() => canNotificarEntrega(shipment), [shipment]);
   const primaryActionKey = useMemo(() => getPrimaryActionKey(shipment), [shipment]);
 
+  const [showTokenModal, setShowTokenModal] = useState(false);
+  const [token, setToken] = useState("");
+
   const reloadShipment = async () => {
     if (!ordenId) {
       return null;
@@ -132,7 +135,7 @@ export default function IniciarViaje({ user }) {
     };
   }, [ordenId, transportistaId]);
 
-  const handlePrimaryAction = async () => {
+  const handlePrimaryAction = async (tokenFromModal) => {
     if (!ordenId || isSubmitting) {
       return;
     }
@@ -144,6 +147,7 @@ export default function IniciarViaje({ user }) {
       if (shouldNotificarEntrega) {
         const response = await transportistaApi.notificarEntrega(ordenId, {
           legajoTransportista: localStorage.getItem("legajo"),
+          codigoConfirmacion: tokenFromModal
         });
 
         const refreshed = await reloadShipment();
@@ -264,7 +268,7 @@ export default function IniciarViaje({ user }) {
               <button
                 type="button"
                 className={`primary-action ${shouldNotificarEntrega ? "primary-action--alt" : ""}`}
-                onClick={handlePrimaryAction}
+                onClick={() => setShowTokenModal(true)}
                 disabled={isSubmitting}
               >
                 {tTransportista(`actions.${primaryActionKey}`)}
@@ -280,6 +284,48 @@ export default function IniciarViaje({ user }) {
           </section>
         )}
       </section>
+        {showTokenModal && (
+                <div className="modal-overlay">
+                  <div className="modal">
+                    <h2>Confirmación</h2>
+
+                    <div className="input-container">
+                      <input
+                        type="text"
+                        value={token}
+                        onChange={(e) => setToken(e.target.value)}
+                        placeholder="Ingrese el token"
+                      />
+                    </div>
+
+                    <div className="modal-buttons">
+                      <button
+                        className="cancelar"
+                        type="button"
+                        onClick={() => {
+                          setShowTokenModal(false);
+                          setToken("");
+                        }}
+                      >
+                        Cancelar
+                      </button>
+
+                      <button
+                        className="confirmar"
+                        type="button"
+                        onClick={async () => {
+                          await handlePrimaryAction(token);
+                          setShowTokenModal(false);
+                          setToken("");
+                        }}
+                        disabled={!token}
+                      >
+                        Confirmar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
     </main>
   );
 }
