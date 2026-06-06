@@ -65,6 +65,7 @@ export default function IniciarViaje({ user }) {
   const [loading, setLoading] = useState(true);
   const [shipment, setShipment] = useState(null);
   const [error, setError] = useState("");
+  const [errorToken, setErrorToken] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState("");
   const transportistaId = user?.transportistaId ?? user?.id ?? user?.usuarioId ?? null;
@@ -179,6 +180,9 @@ export default function IniciarViaje({ user }) {
         requestError?.message ||
         tTransportista("iniciarViaje.feedback.actionError")
       );
+
+      throw requestError;
+
     } finally {
       setIsSubmitting(false);
     }
@@ -268,7 +272,16 @@ export default function IniciarViaje({ user }) {
               <button
                 type="button"
                 className={`primary-action ${shouldNotificarEntrega ? "primary-action--alt" : ""}`}
-                onClick={() => setShowTokenModal(true)}
+                onClick={async () => {
+                // Si NO requiere token → ejecutar directo (ej: pasar a EN_CURSO)
+                if (!shouldNotificarEntrega) {
+                  await handlePrimaryAction();
+                  return;
+                }
+
+                // Si requiere token → abrir modal
+                setShowTokenModal(true);
+              }}
                 disabled={isSubmitting}
               >
                 {tTransportista(`actions.${primaryActionKey}`)}
@@ -293,9 +306,13 @@ export default function IniciarViaje({ user }) {
                       <input
                         type="text"
                         value={token}
-                        onChange={(e) => setToken(e.target.value)}
+                       onChange={(e) => {
+                        setToken(e.target.value);
+                        setErrorToken("");
+                      }}
                         placeholder="Ingrese el token"
                       />
+                      {errorToken && <span className="error">{errorToken}</span>}
                     </div>
 
                     <div className="modal-buttons">
@@ -314,9 +331,18 @@ export default function IniciarViaje({ user }) {
                         className="confirmar"
                         type="button"
                         onClick={async () => {
-                          await handlePrimaryAction(token);
-                          setShowTokenModal(false);
-                          setToken("");
+                          try {
+                            setErrorToken(""); // limpiar error anterior
+
+                            await handlePrimaryAction(token);
+
+                            // Si no tiró error → token válido
+                            setShowTokenModal(false);
+                            setToken("");
+                          } catch (err) {
+                            // Si falla → mostrar error y NO cerrar modal
+                            setErrorToken("El token es incorrecto");
+                          }
                         }}
                         disabled={!token}
                       >

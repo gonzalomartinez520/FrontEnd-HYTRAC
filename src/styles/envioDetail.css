@@ -414,7 +414,7 @@
   font-size: 13px;
 }
 
-.actor {
+.actor, .codigo-texto {
   color: #F8FAF6;
 }
 
@@ -429,6 +429,11 @@
 .fecha {
   color: #c6d0de;
   font-size: 12px;
+}
+
+.codigo-naranja {
+  color: #f97316; 
+  font-weight: bold;
 }
 
 /* ========================= */
