@@ -19,5 +19,21 @@
     "messages": {
       "editSuccess": "Envio com ID {{id}} editado com sucesso"
     }
+  },
+  "management": {
+    "title": "Gestão de Operadores",
+    "description": "Gerencie os operadores registrados no sistema",
+    "loading": "Carregando operadores...",
+    "registeredUsers": "Operadores Registrados:",
+    "search": "Pesquisar"
+  },
+  "table": {
+    "legajo": "Matrícula",
+    "operator": "Operador",
+    "email": "E-mail",
+    "dni": "Documento",
+    "status": "Estado",
+    "actions": "Ações",
+    "noActions": "Sem ações"
   }
 }

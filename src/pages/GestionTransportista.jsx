@@ -4,9 +4,11 @@ import { administrador } from '@/api';
 import "../styles/gestionTransportista.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
+import { useTranslation } from "react-i18next";
 
 
 export default function GestionTransportista( { user } ) {
+    const { t } = useTranslation("transportista");
     const navigate = useNavigate();
 
     const [transportistas, setTransportistas] = useState([]);
@@ -65,7 +67,7 @@ export default function GestionTransportista( { user } ) {
         return (
             <div className="confirmar-loading-screen">
                 <div className="confirmar-loader"></div>
-                <h2>Cargando transportistas...</h2>
+                <h2>{t("management.loading")}</h2>
             </div>
         );
     }
@@ -75,23 +77,23 @@ export default function GestionTransportista( { user } ) {
             <main className="gestion-transportista-content">
                 <section className="gestion-transportista-header">
                     <div>
-                        <h1>Gestión de Transportistas</h1>
-                        <p>
-                            Administra los transportistas registrados en el sistema
-                        </p>
+                        <h1>{t("management.title")}</h1>
+                            <p>
+                                {t("management.description")}
+                            </p>
                     </div>
                 </section>
 
                 <section className="gestion-transportista-table">
                     <div className="table-header">
                         <div>
-                            <h2>Transportistas Registrados: {transportistas.length}</h2>
+                            <h2>{t("management.registeredUsers")} {transportistas.length}</h2>
                         </div>
 
                         <div className="search-container">
                             <input
                             type="text"
-                            placeholder="🔎 Buscador"
+                            placeholder={`🔎 ${t("management.search")}`}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             />
@@ -100,16 +102,14 @@ export default function GestionTransportista( { user } ) {
 
                     <table>
                         <thead>
-                            <tr>
-                                <th>Legajo</th>
-                                <th>Transportista</th>
-                                <th>DNI</th>
-                                <th>CUIT</th>
-                                <th>Tipo Vinculo</th>
-                                <th>Empresa</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
+                            <th>{t("table.legajo")}</th>
+                            <th>{t("table.carrier")}</th>
+                            <th>{t("table.dni")}</th>
+                            <th>{t("table.cuit")}</th>
+                            <th>{t("table.relationshipType")}</th>
+                            <th>{t("table.company")}</th>
+                            <th>{t("table.status")}</th>
+                            <th>{t("table.actions")}</th>
                         </thead>
 
                         <tbody>
@@ -212,7 +212,7 @@ export default function GestionTransportista( { user } ) {
 
                                                 </button>
                                                 ) : (
-                                                    <strong className="">Sin acciones</strong>
+                                                    <strong>{t("table.noActions")}</strong>
                                                 )}
                                             </div>
                                         </td>
@@ -223,7 +223,7 @@ export default function GestionTransportista( { user } ) {
                                         <tr className="fila-expandida">
                                             <td colSpan="8">
                                                 <div className="detalle-envio">
-                                                    <p><strong>Documento:</strong> Prueba</p>
+                                                    <p><strong>{t("details.document")}:</strong> {t("details.test")}</p>
                                                 </div>
                                             </td>
                                         </tr>

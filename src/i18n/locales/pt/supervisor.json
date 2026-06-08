@@ -148,5 +148,41 @@
       "confirm": "Confirmar",
       "cancel": "Cancelar"
     }
+  },
+  "newOrder": {
+    "sections": {
+      "personalData": "Personal data",
+      "accessData": "Access data"
+    },
+    "fields": {
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "buttons": {
+      "create": "Create"
+    },
+    "messages": {
+      "passwordMismatch": "Passwords do not match"
+    }
+  },
+  "management": {
+    "title": "Gestão de Supervisores",
+    "description": "Gerencie os supervisores registrados no sistema",
+    "loading": "Carregando supervisores...",
+    "registeredUsers": "Supervisores Registrados:",
+    "search": "Pesquisar"
+  },
+  "table": {
+    "legajo": "Matrícula",
+    "supervisor": "Supervisor",
+    "email": "E-mail",
+    "dni": "Documento",
+    "status": "Estado",
+    "actions": "Ações",
+    "noActions": "Sem ações"
+  },
+  "status": {
+    "active": "ATIVO",
+    "inactive": "INATIVO"
   }
 }

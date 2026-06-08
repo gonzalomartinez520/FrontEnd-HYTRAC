@@ -4,8 +4,10 @@ import { administrador } from '@/api';
 import "../styles/gestionSupervisores.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
+import { useTranslation } from "react-i18next";
 
 export default function GestionSupervisor( { user } ) {
+    const { t } = useTranslation("supervisor");
     const navigate = useNavigate();
 
     const [supervisores, setSupervisores] = useState([]);
@@ -56,7 +58,7 @@ export default function GestionSupervisor( { user } ) {
         return (
             <div className="confirmar-loading-screen">
                 <div className="confirmar-loader"></div>
-                <h2>Cargando supervisores...</h2>
+                <h2>{t("management.loading")}</h2>
             </div>
         );
     }
@@ -66,23 +68,21 @@ export default function GestionSupervisor( { user } ) {
             <main className="gestion-supervisores-content">
                 <section className="gestion-supervisores-header">
                     <div>
-                        <h1>Gestión de Supervisores</h1>
-                        <p>
-                            Administra los supervisores registrados en el sistema
-                        </p>
+                        <h1>{t("management.title")}</h1>
+                            <p>{t("management.description")}</p>
                     </div>
                 </section>
 
                 <section className="gestion-supervisores-table">
                     <div className="table-header">
                         <div>
-                            <h2>Supervisores Registrados: {supervisores.length}</h2>
+                            <h2>{t("management.registeredUsers")} {supervisores.length}</h2>
                         </div>
                         
                         <div className="search-container">
                             <input
                             type="text"
-                            placeholder="🔎 Buscador"
+                            placeholder={`🔎 ${t("management.search")}`}
                             value={search}
                             onChange={(e) => setSearch(e.target.value)}
                             />
@@ -92,12 +92,12 @@ export default function GestionSupervisor( { user } ) {
                     <table>
                         <thead>
                             <tr>
-                                <th>Legajo</th>
-                                <th>Supervisor</th>
-                                <th>Email</th>
-                                <th>DNI</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
+                                <th>{t("table.legajo")}</th>
+                                <th>{t("table.supervisor")}</th>
+                                <th>{t("table.email")}</th>
+                                <th>{t("table.dni")}</th>
+                                <th>{t("table.status")}</th>
+                                <th>{t("table.actions")}</th>
                             </tr>
                         </thead>
 
@@ -159,7 +159,7 @@ export default function GestionSupervisor( { user } ) {
 
                                                 </button>
                                                 ) : (
-                                                    <strong className="">Sin acciones</strong>
+                                                    <strong>{t("table.noActions")}</strong>
                                                 )}
                                             </div>
                                         </td>

@@ -136,5 +136,62 @@
   "actions": {
     "confirmShipment": "Confirm shipment",
     "notifyDelivery": "Notify delivery"
+  },
+  "transportistaForm": {
+    "sections": {
+      "personalData": "Personal Data",
+      "accessData": "Login Details",
+      "documentation": "Documentation"
+    },
+    "fields": {
+      "dni": "ID Number",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "linkType": "Relationship Type",
+      "selectOption": "Select an option",
+      "workCompany": "Company",
+      "selectCompany": "Select company",
+      "documentType": "Document Type",
+      "selectDocument": "Select document",
+      "documentNumber": "Document Number",
+      "expirationDate": "Expiration Date",
+      "fileUrl": "File URL",
+      "numberLabel": "Number:",
+      "expiresLabel": "Expires:"
+    },
+    "buttons": {
+      "addDocument": "Add Document",
+      "createUser": "Create User"
+    },
+    "errors": {
+      "completeDocumentFields": "Please complete all document fields",
+      "documentAlreadyLoaded": "That document has already been uploaded",
+      "dniLength": "The ID must have between 7 and 8 digits",
+      "passwordMismatch": "Passwords do not match",
+      "missingDocuments": "Missing {{count}} mandatory documents"
+    }
+  },
+  "management": {
+    "title": "Carrier Management",
+    "description": "Manage carriers registered in the system",
+    "loading": "Loading carriers...",
+    "registeredUsers": "Registered Carriers:",
+    "search": "Search"
+  },
+  "table": {
+    "legajo": "Employee ID",
+    "carrier": "Carrier",
+    "dni": "National ID",
+    "cuit": "Tax ID",
+    "relationshipType": "Relationship Type",
+    "company": "Company",
+    "status": "Status",
+    "actions": "Actions",
+    "noActions": "No actions"
+  },
+  "details": {
+    "document": "Document",
+    "test": "Test"
   }
 }

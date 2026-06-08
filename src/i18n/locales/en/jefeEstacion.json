@@ -1,0 +1,23 @@
+{
+  "management": {
+    "title": "Management of Station Chiefs",
+    "description": "Manage the station chiefs registered in the system",
+    "loading": "Loading station chiefs...",
+    "registeredUsers": "Registered Station Chiefs:",
+    "search": "Search"
+  },
+  "table": {
+    "legajo": "Legajo",
+    "stationChief": "Station Chief",
+    "email": "Email",
+    "dni": "DNI",
+    "operationalLocation": "Operational Location",
+    "status": "Status",
+    "actions": "Actions",
+    "noActions": "No Actions"
+  },
+  "status": {
+    "active": "ACTIVE",
+    "inactive": "INACTIVE"
+  }
+}

@@ -25,37 +25,45 @@ import esOperador from "./locales/es/operador.json";
 import enOperador from "./locales/en/operador.json";
 import ptOperador from "./locales/pt/operador.json";
 
+import esJefeEstacion from "./locales/es/jefeEstacion.json";
+import enJefeEstacion from "./locales/en/jefeEstacion.json";
+import ptJefeEstacion from "./locales/pt/jefeEstacion.json";
 
 i18n.use(initReactI18next).init({
   resources: {
     es: {
-        navbar: esNavbar,
-        common: esCommon,
-        form: esForm,
+      navbar: esNavbar,
+      common: esCommon,
+      form: esForm,
       transportista: esTransportista,
       supervisor: esSupervisor,
       operador: esOperador,
+      jefeEstacion: esJefeEstacion,
     },
     en: {
-        navbar: enNavbar,
-        common: enCommon,
-        form: enForm,
+      navbar: enNavbar,
+      common: enCommon,
+      form: enForm,
       transportista: enTransportista,
       supervisor: enSupervisor,
       operador: enOperador,
+      jefeEstacion: enJefeEstacion,
+
     },
     pt: {
-        navbar: ptNavbar,
-        common: ptCommon,
-        form: ptForm,
+      navbar: ptNavbar,
+      common: ptCommon,
+      form: ptForm,
       transportista: ptTransportista,
       supervisor: ptSupervisor,
       operador: ptOperador,
+      jefeEstacion: ptJefeEstacion,
+
     },
     },
   lng: localStorage.getItem("lang") || "es",
   fallbackLng: "es",
-    ns: ["navbar", "common", "form", "transportista", "supervisor", "operador"],
+    ns: ["navbar", "common", "form", "transportista", "supervisor", "operador", "jefeEstacion"],
   defaultNS: "navbar",
   interpolation: {
     escapeValue: false,
