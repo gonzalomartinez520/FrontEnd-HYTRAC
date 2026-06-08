@@ -53,7 +53,7 @@ export default function Confirmaciones({ user }) {
   const isPendienteEntrega = (shipment) =>
     (shipment.estado || "")
       .toLowerCase()
-      .trim() === "pendiente de confirmacion de entrega";
+      .trim() === "pendiente de confirmacion de entrega" && shipment.litrosCargados > 0;
 
   // 📊 calcular contadores envíos
   useEffect(() => {

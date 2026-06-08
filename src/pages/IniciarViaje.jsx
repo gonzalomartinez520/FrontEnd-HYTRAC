@@ -102,12 +102,16 @@ export default function IniciarViaje({ user }) {
   const [loading, setLoading] = useState(true);
   const [shipment, setShipment] = useState(null);
   const [error, setError] = useState("");
+  const [errorToken, setErrorToken] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState("");
   const transportistaId = user?.transportistaId ?? user?.id ?? user?.usuarioId ?? null;
 
   const shouldNotificarEntrega = useMemo(() => canNotificarEntrega(shipment), [shipment]);
   const primaryActionKey = useMemo(() => getPrimaryActionKey(shipment), [shipment]);
+
+  const [showTokenModal, setShowTokenModal] = useState(false);
+  const [token, setToken] = useState("");
 
   const reloadShipment = async () => {
     if (!ordenId) {
@@ -169,7 +173,7 @@ export default function IniciarViaje({ user }) {
     };
   }, [ordenId, transportistaId]);
 
-  const handlePrimaryAction = async () => {
+  const handlePrimaryAction = async (tokenFromModal) => {
     if (!ordenId || isSubmitting) {
       return;
     }
@@ -181,6 +185,7 @@ export default function IniciarViaje({ user }) {
       if (shouldNotificarEntrega) {
         const response = await transportistaApi.notificarEntrega(ordenId, {
           legajoTransportista: localStorage.getItem("legajo"),
+          codigoConfirmacion: tokenFromModal
         });
 
         const refreshed = await reloadShipment();
@@ -212,6 +217,9 @@ export default function IniciarViaje({ user }) {
         requestError?.message ||
         tTransportista("iniciarViaje.feedback.actionError")
       );
+
+      throw requestError;
+
     } finally {
       setIsSubmitting(false);
     }
@@ -307,7 +315,16 @@ export default function IniciarViaje({ user }) {
               <button
                 type="button"
                 className={`primary-action ${shouldNotificarEntrega ? "primary-action--alt" : ""}`}
-                onClick={handlePrimaryAction}
+                onClick={async () => {
+                // Si NO requiere token → ejecutar directo (ej: pasar a EN_CURSO)
+                if (!shouldNotificarEntrega) {
+                  await handlePrimaryAction();
+                  return;
+                }
+
+                // Si requiere token → abrir modal
+                setShowTokenModal(true);
+              }}
                 disabled={isSubmitting}
               >
                 {tTransportista(`actions.${primaryActionKey}`)}
@@ -323,6 +340,61 @@ export default function IniciarViaje({ user }) {
           </section>
         )}
       </section>
+        {showTokenModal && (
+                <div className="modal-overlay">
+                  <div className="modal">
+                    <h2>Confirmación</h2>
+
+                    <div className="input-container">
+                      <input
+                        type="text"
+                        value={token}
+                       onChange={(e) => {
+                        setToken(e.target.value);
+                        setErrorToken("");
+                      }}
+                        placeholder="Ingrese el token"
+                      />
+                      {errorToken && <span className="error">{errorToken}</span>}
+                    </div>
+
+                    <div className="modal-buttons">
+                      <button
+                        className="cancelar"
+                        type="button"
+                        onClick={() => {
+                          setShowTokenModal(false);
+                          setToken("");
+                        }}
+                      >
+                        Cancelar
+                      </button>
+
+                      <button
+                        className="confirmar"
+                        type="button"
+                        onClick={async () => {
+                          try {
+                            setErrorToken(""); // limpiar error anterior
+
+                            await handlePrimaryAction(token);
+
+                            // Si no tiró error → token válido
+                            setShowTokenModal(false);
+                            setToken("");
+                          } catch (err) {
+                            // Si falla → mostrar error y NO cerrar modal
+                            setErrorToken("El token es incorrecto");
+                          }
+                        }}
+                        disabled={!token}
+                      >
+                        Confirmar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
     </main>
   );
 }

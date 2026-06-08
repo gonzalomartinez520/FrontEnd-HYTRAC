@@ -155,6 +155,29 @@ export default function EnvioDetail({ user }) {
     return `${hours}h ${minutes.toString().padStart(2, "0")}m`;
   };
 
+  const renderMotivo = (motivo) => {
+    if (!motivo) return "-";
+
+    const regex = /(Código generado:\s*)(\d+)/i;
+    const match = motivo.match(regex);
+
+    if (!match) return motivo;
+
+    const [fullMatch, texto, numero] = match;
+
+    const before = motivo.substring(0, match.index);
+    const after = motivo.substring(match.index + fullMatch.length);
+
+    return (
+      <>
+        {before}
+        <span className="codigo-texto">{texto}</span>
+        <span className="codigo-naranja">{numero}</span>
+        {after}
+      </>
+    );
+  };
+
   const formatearFecha = (fechaString) => {
     if (!fechaString) return "--/--/---- --:--";
     const fecha = new Date(fechaString);
@@ -399,7 +422,9 @@ export default function EnvioDetail({ user }) {
                           👤 {actor.label}: <strong>{actor.value}</strong>
                         </p>
 
-                        <p className="motivo">📝 {item.motivo}</p>
+                        <p className="motivo">
+                          📝 {renderMotivo(item.motivo)}
+                        </p>
 
                         <p className="fecha">
                           🕒 {formatearFecha(item.fechaCambio)}

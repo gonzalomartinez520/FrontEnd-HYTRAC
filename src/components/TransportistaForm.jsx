@@ -4,6 +4,8 @@ import "../styles/transportistaForm.css";
 import { administrador, datos } from '@/api';
 import { useTranslation } from 'react-i18next';
 
+import { useTranslation } from 'react-i18next';
+
 export default function TransportistaForm() {
     // 🔹 Importamos los 3 namespaces necesarios
     const { t: tTransportista } = useTranslation('transportista'); 
@@ -11,11 +13,15 @@ export default function TransportistaForm() {
     const { t: tCommon } = useTranslation('common');
     const navigate = useNavigate();
 
+    const { t: tForm } = useTranslation("form");
+    const { t: tCommon } = useTranslation("common");
+
     const [tipoVinculo, setTipoVinculo] = useState([]);
     const [tipoDocumento, setTipoDocumento] = useState([]);
     const [empresas, setEmpresas] = useState([]);
 
     const [errorDni, setErrorDni] = useState("");
+    const [errorCuit, setErrorCuit] = useState("");
     const [errorPassword, setErrorPassword] = useState("");
 
     const [error, setError] = useState("");
@@ -102,7 +108,7 @@ export default function TransportistaForm() {
         }
 
         const yaExiste = formData.documentos.some(
-            doc => doc.tipoDocumentoId === tipoDocumentoId
+            doc => doc.tipoDocumentoId === Number(tipoDocumentoId)
         );
 
         if (yaExiste) {
@@ -111,7 +117,7 @@ export default function TransportistaForm() {
         }
 
         const nuevoDocumento = {
-            tipoDocumentoId,
+            tipoDocumentoId: Number(tipoDocumentoId),
             nroDocumento,
             fechaEmision: formatDateToLocalDate(new Date()),
             fechaVencimiento: formatDateToLocalDate(fechaVencimiento),
@@ -187,7 +193,16 @@ export default function TransportistaForm() {
             setErrorPassword("");
         }
 
-        const cargados = formData.documentos.map(d => d.tipoDocumentoId);
+        const cuitRegex = /^\d{2}-\d{8}-\d{1}$/;
+
+        if (!cuitRegex.test(formData.cuit)) {
+            setErrorCuit("Formato de CUIT invalido");
+            return;
+        } else {
+            setErrorCuit("");
+        }
+
+        const cargados = formData.documentos.map(d => Number(d.tipoDocumentoId));
 
         const faltantes = tipoDocumento.filter(
             td => !cargados.includes(td.id)
@@ -199,25 +214,33 @@ export default function TransportistaForm() {
         }
 
         try {
-            const payload = {
-                nombre: formData.nombre,
-                apellido: formData.apellido,
-                dni: formData.dni,
-                email: formData.email,
-                passwordTemporal: formData.passwordTemporal,
-                cuit: formData.cuit,
-                tipoVinculoId: formData.tipoVinculo?.id,
-                empresaId: formData.empresa?.id,
-                documentos: formData.documentos
-            };
+        const payload = {
+            nombre: formData.nombre,
+            apellido: formData.apellido,
+            dni: formData.dni,
+            email: formData.email,
+            passwordTemporal: formData.passwordTemporal,
+            cuit: formData.cuit,
+            tipoVinculoId: formData.tipoVinculo?.id,
+            empresaId: formData.empresa?.id,
+            documentos: formData.documentos
+        };
 
-            // LLAMADO A API PARA GUARDAR NUEVO OPERADOR
-            setTimeout(() => {
-                navigate("/gestion-transportistas");
-            }, 1500);
+        console.log("Payload a enviar:", payload);
+
+        const response = await administrador.crearTransportista(payload);
+
+        setSuccess(tForm("newOrder.messages.userCreatedSuccess"));
+        setError("");
+
+        setTimeout(() => {
+            navigate("/gestion-transportistas");
+        }, 1500);
 
         } catch (err) {
             console.error(err);
+            setError(tForm("newOrder.messages.userCreatedError"));
+            setSuccess("");
         }
     };
 
