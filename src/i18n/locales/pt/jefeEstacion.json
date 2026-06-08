@@ -1,0 +1,23 @@
+{
+  "management": {
+    "title": "Gestão de Chefes de Estação",
+    "description": "Gerenciar os chefes de estação registrados no sistema”",
+    "loading": "Carregando chefes de estação...",
+    "registeredUsers": "Chefes de Estação Registrados:",
+    "search": "Pesquisa"
+  },
+  "table": {
+    "legajo": "Legajo",
+    "stationChief": "Chefe de Estação",
+    "email": "Email",
+    "dni": "DNI",
+    "operationalLocation": "Local de Operação",
+    "status": "Status",
+    "actions": "Ações",
+    "noActions": "Sem ações"
+  },
+  "status": {
+    "active": "ATIVO",
+    "inactive": "INATIVO"
+  }
+}

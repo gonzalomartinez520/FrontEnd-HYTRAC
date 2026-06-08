@@ -4,7 +4,7 @@
     "SUPERVISOR": "Supervisor",
     "ADMIN": "Administrator",
     "TRANSPORTISTA": "Driver",
-    "JEFE_ESTACION": "Station Manager"
+    "JEFE_ESTACION": "Station Chief"
   },
 
   "status": {
@@ -96,13 +96,13 @@
         "description": "Manage routes and deliveries"
       },
       "stationManagers": {
-        "title": "Station Managers",
+        "title": "Station Chiefs",
         "description": "Manage station operations"
       }
     }
   },
   "stationDashboard": {
-    "title": "Station Manager Panel",
+    "title": "Station Chief Panel",
     "subtitle": "Here you can view all pending shipments and confirm or cancel them.",
     "pendingHistory": "Pending Orders History",
     "confirmDelivery": "Confirm delivery",

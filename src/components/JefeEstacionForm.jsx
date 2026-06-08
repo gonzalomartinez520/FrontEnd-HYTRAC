@@ -290,7 +290,6 @@ export default function JefeEstacionForm() {
                 </div>
             </div>
 
-            {/* 🔹 UBICACIÓN */}
             <div className="form-section">
                 <div className="form-section-title">
                     <h3>
@@ -358,11 +357,9 @@ export default function JefeEstacionForm() {
                 </div>
             </div>
 
-            {/* 🔹 ALERTAS */}
             {error && <div className="error-alert">❌ {error}</div>}
             {success && <div className="success-alert">✅ {success}</div>}
 
-            {/* 🔹 BOTÓN */}
             <div className="form-actions">
                 <button type="submit" className="btn-submit">
                 {tForm("newOrder.buttons.create")}

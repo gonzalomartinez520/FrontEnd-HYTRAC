@@ -5,10 +5,11 @@ import { useTranslation } from 'react-i18next';
 import "../styles/gestionOperarios.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
-
+import { useTranslation } from "react-i18next";
 import { datos } from '@/api';
 
 export default function GestionOperador( { user } ) {
+    const { t } = useTranslation("operador");
     const navigate = useNavigate();
     const { t: tForm } = useTranslation("form");
     const { t: tCommon } = useTranslation("common");
@@ -114,7 +115,7 @@ export default function GestionOperador( { user } ) {
         return (
             <div className="confirmar-loading-screen">
                 <div className="confirmar-loader"></div>
-                <h2>Cargando operarios...</h2>
+                <h2>{t("management.loading")}</h2>
             </div>
         );
     }
@@ -124,24 +125,21 @@ export default function GestionOperador( { user } ) {
             <main className="gestion-operarios-content">
                 <section className="gestion-operarios-header">
                     <div>
-                        <h1>Gestión de Operarios</h1>
-                        <p>
-                            Administra los operarios registrados en el sistema
-                        </p>
+                        <h1>{t("management.title")}</h1>
+                            <p>
+                                {t("management.description")}
+                            </p>
                     </div>
                 </section>
-
                 <section className="gestion-operarios-table">
                     <div className="table-header">
                         <div>
-                            <h2>Operarios Registrados: {operarios.length}</h2>
+                            <h2>{t("management.registeredUsers")} {operarios.length}</h2>                        
                         </div>
-
                         <div className="search-container">
                             <input
                                 type="text"
-                                placeholder="🔎 Buscador"
-                                value={search}
+                                placeholder={`🔎 ${t("management.search")}`}                                value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
@@ -150,12 +148,12 @@ export default function GestionOperador( { user } ) {
                     <table>
                         <thead>
                             <tr>
-                                <th>Legajo</th>
-                                <th>Operador</th>
-                                <th>Email</th>
-                                <th>DNI</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
+                                <th>{t("table.legajo")}</th>
+                                <th>{t("table.operator")}</th>
+                                <th>{t("table.email")}</th>
+                                <th>{t("table.dni")}</th>
+                                <th>{t("table.status")}</th>
+                                <th>{t("table.actions")}</th>
                             </tr>
                         </thead>
 
@@ -230,7 +228,7 @@ export default function GestionOperador( { user } ) {
 
                                                 </button>
                                                 ) : (
-                                                    <strong className="">Sin acciones</strong>
+                                                    <strong>{t("table.noActions")}</strong>
                                                 )}
                                             </div>
                                         </td>

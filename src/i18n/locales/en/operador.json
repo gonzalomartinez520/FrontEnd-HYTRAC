@@ -19,5 +19,21 @@
     "messages": {
       "editSuccess": "Shipment with ID {{id}} updated successfully"
     }
+  },
+  "management": {
+    "title": "Operator Management",
+    "description": "Manage operators registered in the system",
+    "loading": "Loading operators...",
+    "registeredUsers": "Registered Operators:",
+    "search": "Search"
+  },
+  "table": {
+    "legajo": "Employee ID",
+    "operator": "Operator",
+    "email": "Email",
+    "dni": "National ID",
+    "status": "Status",
+    "actions": "Actions",
+    "noActions": "No actions"
   }
 }

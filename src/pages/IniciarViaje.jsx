@@ -11,8 +11,9 @@ import {
 import "../styles/iniciarViaje.css";
 import { useTranslation } from "react-i18next";
 
-const formatDate = (value) => {
-  if (!value) return "Pendiente";
+// 🔹 1. Actualizado para usar locale y fallback dinámicos
+const formatDate = (value, fallbackText = "-", locale = "es-AR") => {
+  if (!value) return fallbackText;
 
   const date = new Date(value);
 
@@ -20,16 +21,18 @@ const formatDate = (value) => {
     return String(value);
   }
 
-  return date.toLocaleString("es-AR", {
+  return date.toLocaleString(locale, {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    hour12: false
   });
 };
 
-const getField = (envio, keys, fallback = "Pendiente") => {
+// 🔹 2. Fallback dinámico pasado por parámetro (cambiado a null por defecto para evitar crasheos de fechas)
+const getField = (envio, keys, fallback = null) => {
   for (const key of keys) {
     const value = envio?.[key];
 
@@ -41,13 +44,43 @@ const getField = (envio, keys, fallback = "Pendiente") => {
   return fallback;
 };
 
-const formatEstado = (value) => {
-  if (!value) return "Sin estado";
+// 🔹 3. Modificado para recibir la función de traducción 't'
+const formatEstado = (value, t) => {
+  if (!value) return t("status.sin_estado", "Sin estado");
 
-  return String(value)
-    .replace(/_/g, " ")
-    .toLowerCase()
-    .replace(/\b\w/g, (char) => char.toUpperCase());
+  // Limpiamos y normalizamos la clave que viene de la base de datos
+  const key = String(value).toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+  // Igual que en el StatusBadge, mapeamos las variaciones
+  const mapping = {
+    "en viaje": "en_curso",
+    "en_viaje": "en_curso",
+    "en curso": "en_curso",
+    "en_curso": "en_curso",
+    "cancelado": "cancelado",
+    "cancelada": "cancelado",
+    "entregado": "entregado",
+    "entregada": "entregado",
+    "confirmado": "confirmado",
+    "rechazado": "rechazado",
+    "pendiente": "pendiente",
+    "pendiente confirmar": "pendiente_confirmar",
+    "pendiente_confirmar": "pendiente_confirmar",
+    "pendiente de confirmar": "pendiente_confirmar",
+    "pendiente a confirmar": "pendiente_confirmar",
+    "pendiente de confirmacion de entrega": "pendiente_confirmacion_entrega",
+    "pendiente_confirmacion_entrega": "pendiente_confirmacion_entrega",
+    "pendiente de inicio de viaje": "pendiente_inicio_viaje",
+    "pendiente_inicio_viaje": "pendiente_inicio_viaje",
+    "activo": "activo",
+    "no activo": "no_activo",
+    "no_activo": "no_activo"
+  };
+
+  const estadoKey = mapping[key] || key.replace(/\s+/g, "_");
+
+  // Devolvemos la traducción del archivo common.json
+  return t(`status.${estadoKey}`, String(value).replace(/_/g, " "));
 };
 
 const resolveUpdatedOrden = (response, ordenActual) => {
@@ -60,7 +93,11 @@ const resolveUpdatedOrden = (response, ordenActual) => {
 
 export default function IniciarViaje({ user }) {
   const navigate = useNavigate();
-  const { t: tTransportista } = useTranslation("transportista");
+  // 🔹 Cargamos ambos namespaces: el de la pantalla y el general (para los estados)
+  const { t: tTransportista, i18n } = useTranslation("transportista");
+  const { t: tCommon } = useTranslation("common"); 
+  const currentLocale = i18n.language || "es-AR";
+
   const { ordenId } = useParams();
   const [loading, setLoading] = useState(true);
   const [shipment, setShipment] = useState(null);
@@ -188,15 +225,18 @@ export default function IniciarViaje({ user }) {
     }
   };
 
-  const origen = getField(shipment, ["plantaDespachoNombre", "plantaDespacho", "origen", "puntoOrigen"]);
+  const noDataText = tTransportista("dashboard.detail.noData", "Sin dato");
+  const pendingText = tTransportista("dashboard.detail.pending", "Pendiente");
+
+  const origen = getField(shipment, ["plantaDespachoNombre", "plantaDespacho", "origen", "puntoOrigen"], noDataText);
   const destino = getField(shipment, [
     "destino",
     "puntoDestino",
     "estacionDestino",
     "estacionDestinoNombre",
     "plantaDestino",
-  ]);
-  const combustible = getField(shipment, ["combustibleTipo", "tipoCombustible", "combustible"]);
+  ], noDataText);
+  const combustible = getField(shipment, ["combustibleTipo", "tipoCombustible", "combustible"], noDataText);
   const estadoActual = getOrdenEstado(shipment) || "Sin estado";
 
   return (
@@ -217,7 +257,7 @@ export default function IniciarViaje({ user }) {
 
           <div className="status-card">
             <span className="status-label">{tTransportista("iniciarViaje.status.label")}</span>
-            <strong>{formatEstado(estadoActual)}</strong>
+            <strong>{formatEstado(estadoActual, tCommon)}</strong>
             <small>
               {shouldNotificarEntrega
                 ? tTransportista("iniciarViaje.status.nextNotify")
@@ -256,13 +296,16 @@ export default function IniciarViaje({ user }) {
               <div>
                 <span>{tTransportista("iniciarViaje.detail.departureDate")}</span>
                 <strong>
+                  {/* 🔹 Aplicada la traducción y el locale a la fecha */}
                   {formatDate(
                     getField(shipment, [
                       "fechaSalida",
                       "fecha_salida",
                       "fechaSalidaPlanta",
                       "salida",
-                    ])
+                    ]),
+                    pendingText,
+                    currentLocale
                   )}
                 </strong>
               </div>
