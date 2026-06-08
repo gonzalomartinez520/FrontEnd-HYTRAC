@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import "../styles/gestionOperarios.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
-import { useTranslation } from "react-i18next";
 import { datos } from '@/api';
 
 export default function GestionOperador( { user } ) {

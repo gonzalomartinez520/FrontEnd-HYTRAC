@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import "../styles/gestionSupervisores.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
-import { useTranslation } from "react-i18next";
 
 export default function GestionSupervisor( { user } ) {
     const { t } = useTranslation("supervisor");

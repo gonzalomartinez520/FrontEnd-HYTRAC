@@ -15,12 +15,12 @@ export default function StatusBadge({ estado }) {
     const key = normalize(estado);
 
     const mapping = {
-      "en viaje": "en_curso",
+      "en viaje": "en_viaje",
       "en curso": "en_curso",
       "cancelado": "cancelado",
-      "cancelada": "cancelado",
+      "cancelada": "cancelada",
       "entregado": "entregado",
-      "entregada": "entregado",
+      "entregada": "entregada",
       "confirmado": "confirmado",
       "rechazado": "rechazado",
       "pendiente": "pendiente",

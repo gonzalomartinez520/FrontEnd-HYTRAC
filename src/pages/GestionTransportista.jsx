@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import "../styles/gestionTransportista.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
-import { useTranslation } from "react-i18next";
+
 
 
 export default function GestionTransportista( { user } ) {

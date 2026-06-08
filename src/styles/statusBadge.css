@@ -24,11 +24,13 @@
   background: #2d5bcc;
 }
 
-.badge.status-entregada {
+.badge.status-entregada,
+.badge.status-entregado {
   background: #2d8b57;
 }
 
-.badge.status-cancelada {
+.badge.status-cancelada
+.badge.status-cancelado {
   background: #c44444;
 }
 
@@ -45,12 +47,12 @@
   background: #c44444; /* rojo */
 }
 
-.badge.status-pendiente-a-confirmar {
+.badge.status-pendiente-confirmar {
   background: #f97316; /* naranja */
 }
 
-.badge.status-pendiente-de-inicio-de-viaje,
-.badge.status-pendiente-de-confirmacion-de-entrega {
+.badge.status-pendiente-inicio-viaje,
+.badge.status-pendiente-confirmacion-entrega {
   background: #f97316; /* naranja moderno */
 }
 

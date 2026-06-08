@@ -4,7 +4,6 @@ import "../styles/transportistaForm.css";
 import { administrador, datos } from '@/api';
 import { useTranslation } from 'react-i18next';
 
-import { useTranslation } from 'react-i18next';
 
 export default function TransportistaForm() {
     // 🔹 Importamos los 3 namespaces necesarios
@@ -13,8 +12,6 @@ export default function TransportistaForm() {
     const { t: tCommon } = useTranslation('common');
     const navigate = useNavigate();
 
-    const { t: tForm } = useTranslation("form");
-    const { t: tCommon } = useTranslation("common");
 
     const [tipoVinculo, setTipoVinculo] = useState([]);
     const [tipoDocumento, setTipoDocumento] = useState([]);
