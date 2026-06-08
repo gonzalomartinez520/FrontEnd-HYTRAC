@@ -40,44 +40,13 @@ const obtenerEstadoReal = (envio) => {
     return "Pendiente de confirmación";
   }
 
-  if (
-    envio.confirmado &&
-    envio.estado === "Pendiente"
-  ) {
-    return "Pendiente de inicio de viaje";
-  }
-
-  if (
-    envio.estado === "En Curso"
-  ) {
-    return "En Curso";
-  }
-
-  if (
-    envio.estado ===
-    "Pendiente de confirmacion de entrega"
-  ) {
-    return "Pendiente de confirmación de entrega";
-  }
-
-  if (
-    envio.estado === "Entregada"
-  ) {
-    return "Entregada";
-  }
-
-  if (
-    envio.estado === "Cancelada"
-  ) {
-    return "Cancelada";
-  }
-
-  return "Otro";
+  return envio.estado || "Otro";
 };
 
 const estadosContador = {
   pendienteConfirmacion: 0,
-  pendienteInicio: 0,
+  pendiente: 0,
+  pendienteInicioViaje: 0,
   enCurso: 0,
   pendienteEntrega: 0,
   entregada: 0,
@@ -95,15 +64,19 @@ enviosData.forEach((envio) => {
       estadosContador.pendienteConfirmacion++;
       break;
 
+    case "Pendiente":
+      estadosContador.pendiente++;
+      break;
+
     case "Pendiente de inicio de viaje":
-      estadosContador.pendienteInicio++;
+      estadosContador.pendienteInicioViaje++;
       break;
 
     case "En Curso":
       estadosContador.enCurso++;
       break;
 
-    case "Pendiente de confirmación de entrega":
+    case "Pendiente de confirmacion de entrega":
       estadosContador.pendienteEntrega++;
       break;
 
@@ -127,9 +100,14 @@ const estadosData = [
       estadosContador.pendienteConfirmacion
   },
   {
+    name: "Pendiente",
+    value:
+      estadosContador.pendiente
+  },
+  {
     name: "Pendiente de inicio de viaje",
     value:
-      estadosContador.pendienteInicio
+      estadosContador.pendienteInicioViaje
   },
   {
     name: "En Curso",
@@ -153,8 +131,6 @@ const estadosData = [
       estadosContador.cancelada
   }
 ];
-
-
 
 
 
@@ -285,12 +261,13 @@ const evolucionMensualData =
 
     
   const COLORS = [
-    "#22c55e",
-    "#3b82f6",
-    "#f59e0b",
-    "#ef4444",
-    "#8b5cf6",
-    "#14b8a6"
+  "#22c55e",
+  "#3b82f6",
+  "#f59e0b",
+  "#ef4444",
+  "#8b5cf6",
+  "#14b8a6",
+  "#f97316"
   ];
 
 useEffect(() => {
