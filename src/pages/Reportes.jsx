@@ -19,13 +19,13 @@ import {
 
 import "../styles/reportes.css";
 
-import { envios } from "@/api";
+import { envios , datos } from "@/api";
 
 export default function Reportes({ user }) {
   const [loading, setLoading] = useState(true);
 
   const [enviosData, setEnviosData] = useState([]);
-  
+  const [incidenciasData, setIncidenciasData] = useState([]);
 
 
 const totalEnvios = enviosData.length;
@@ -101,6 +101,58 @@ const rankingData =
         b.envios - a.envios
     );
 
+    const totalIncidencias = incidenciasData.length;
+
+const incidenciasResueltas =
+  incidenciasData.filter(
+    (inc) => inc.resuelto === true
+  ).length;
+
+const incidenciasNoResueltas =
+  incidenciasData.filter(
+    (inc) => inc.resuelto === false
+  ).length;
+
+const incidenciasEstadoData = [
+  {
+    name: "Resueltas",
+    value: incidenciasResueltas
+  },
+  {
+    name: "No Resueltas",
+    value: incidenciasNoResueltas
+  }
+];
+
+const tiposIncidenciasMap = {};
+
+incidenciasData.forEach((incidencia) => {
+  const tipo =
+    incidencia.tipoIncidencia ||
+    "Sin Clasificar";
+
+  tiposIncidenciasMap[tipo] =
+    (tiposIncidenciasMap[tipo] || 0) + 1;
+});
+
+const rankingIncidenciasData =
+  Object.entries(tiposIncidenciasMap)
+    .map(([tipo, cantidad]) => ({
+      tipo,
+      cantidad,
+      porcentaje:
+        totalIncidencias > 0
+          ? `${Math.round(
+              (cantidad / totalIncidencias) * 100
+            )}%`
+          : "0%"
+    }))
+    .sort(
+      (a, b) =>
+        b.cantidad - a.cantidad
+    );
+
+    
 const meses = [
   "Ene",
   "Feb",
