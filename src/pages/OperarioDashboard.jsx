@@ -69,8 +69,8 @@ export default function OperarioDashboard({ user }) {
 
   if (loading) {
     return (
-      <div className="loading-screen">
-        <div className="loader"></div>
+      <div className="dashboard-loading-screen">
+        <div className="dashboard-loader"></div>
         <h2>{t("common.loading")}</h2>
       </div>
     );

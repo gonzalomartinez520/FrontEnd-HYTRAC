@@ -17,6 +17,65 @@ export default function Navbar({ user, onLogout }) {
     { code: "pt", label: "Português", flag: "🇧🇷" }
   ];
 
+
+  const [openNotif, setOpenNotif] = useState(false);
+  const [closing, setClosing] = useState(false);
+
+  const handleToggle = () => {
+    if (openNotif) {
+      setClosing(true);
+
+      setTimeout(() => {
+        setOpenNotif(false);
+        setClosing(false);
+      }, 250); // 🔥 igual que CSS
+    } else {
+      setOpenNotif(true);
+    }
+  };
+
+  const [notifications, setNotifications] = useState([
+    { id: 1, texto: "Nueva orden creada", vista: false },
+    { id: 2, texto: "Entrega confirmada", vista: true },
+    { id: 3, texto: "Reporte generado", vista: false },
+  ]);
+
+  const unreadCount = notifications.filter(n => !n.vista).length;
+
+  const BellNormal = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24">
+      <path
+        fill="#ff7a00"
+        d="M12 2a6 6 0 0 0-6 6v4.5l-1.7 2.6A1 1 0 0 0 5 17h14a1 1 0 0 0 .8-1.6L18 12.5V8a6 6 0 0 0-6-6zm0 20a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22z"
+      />
+    </svg>
+  );
+
+  const BellWithNotification = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24">
+      <path
+        fill="#ff7a00"
+        d="M12 2a6 6 0 0 0-6 6v4.5l-1.7 2.6A1 1 0 0 0 5 17h14a1 1 0 0 0 .8-1.6L18 12.5V8a6 6 0 0 0-6-6zm0 20a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22z"
+      />
+      <circle cx="18" cy="6" r="5" fill="#ff3b3b" />
+    </svg>
+  );
+
+  const marcarTodasLeidas = () => {
+    setNotifications(prev =>
+      prev.map(n => ({ ...n, vista: true }))
+    );
+  };
+
+  const marcarLeida = (id) => {
+    setNotifications(prev =>
+      prev.map(n =>
+        n.id === id ? { ...n, vista: true } : n
+      )
+    );
+  };
+
+
   const [menuOpen, setMenuOpen] = useState(false);
   const role = String(user?.normalizedRole || user?.role || "").toUpperCase();
   const [transportistaAction, setTransportistaAction] = useState({
@@ -152,7 +211,24 @@ useEffect(() => {
     },
   };
 
-   const action = role === "TRANSPORTISTA" ? transportistaAction : actionByRole[role];
+  const roleConfig = {
+    OPERADOR: {
+      title: t("historialOrdenes"),
+      to: "/historial-operador",
+      icon: "🕘",
+      label: t("historialOrdenes"),
+    },
+    SUPERVISOR: {
+      title: "Reportes",
+      to: "/reportes",
+      icon: "📈",
+      label: "Reportes",
+    },
+  };
+
+  const config = roleConfig[role];
+
+  const action = role === "TRANSPORTISTA" ? transportistaAction : actionByRole[role];
 
   return (
     <nav className="top-nav">
@@ -215,20 +291,16 @@ useEffect(() => {
             </Link>
           )}
 
-          <Link
-            title={t("historialOrdenes")}
-            to="/historial-operador"
-            onClick={() => setMenuOpen(false)}
-          >
-            {role == "OPERADOR" ? (
-              <>
-                <span className="route-nav-icon" aria-hidden="true">🕘</span> {t("historialOrdenes")}
-              </>
-            ) : (
-              null
-            
-            )}
-          </Link>
+          {config && (
+            <Link
+              title={config.label}
+              to={config.to}
+              onClick={() => setMenuOpen(false)}
+            >
+              <span className="icon">{config.icon}</span> {config.label}
+            </Link>
+          )}
+
         </div>
       </div>
 
@@ -241,6 +313,51 @@ useEffect(() => {
             </option>
           ))}
         </select>
+
+        <div className="notification-container">
+          <button
+            className="notification-btn"
+            onClick={handleToggle}
+          >
+            <div className="bell-wrapper">
+              <BellNormal />
+
+              {unreadCount > 0 && (
+                <span className="notification-badge">
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </span>
+              )}
+            </div>
+          </button>
+
+          {(openNotif || closing) && (
+            <div className={`notification-dropdown ${closing ? "closing" : ""}`}>
+              <div className="notif-header">
+                <strong>Notificaciones</strong>
+                <button onClick={marcarTodasLeidas}>
+                  Marcar todas
+                </button>
+              </div>
+
+              <div className="notif-list">
+                {notifications.length === 0 ? (
+                  <span className="empty">Sin notificaciones</span>
+                ) : (
+                  notifications.map((n) => (
+                    <div
+                      key={n.id}
+                      className={`notif-item ${n.vista ? "" : "unread"}`}
+                      onClick={() => marcarLeida(n.id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {n.texto}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          )}
+        </div>
 
         <div className="user-profile">
           <span className="user-icon">

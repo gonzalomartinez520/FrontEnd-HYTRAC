@@ -102,10 +102,174 @@
   cursor: pointer;
 }
 
+.notification-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 3px;
+  margin-left: 3px;
+  display: flex;
+  align-items: center;
+}
+
+.bell-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background: #ff3b3b;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  padding: 2px 5px;
+  min-width: 18px;
+  text-align: center;
+}
+
+.notification-btn:hover {
+  transform: scale(1.1);
+}
+
+.notification-badge {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.notification-container {
+  position: relative;
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 300px;
+
+  background: #0f172a;
+  color: #e5e7eb;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  z-index: 100;
+  overflow: hidden;
+
+  /* 🔥 animación */
+  animation: fadeSlideIn 0.25s ease;
+  transform-origin: top right;
+}
+
+.notification-dropdown.closing {
+  animation: fadeSlideOut 0.25s ease forwards; /* 🔥 ESTO ES CLAVE */
+}
+
+/* HEADER */
+.notif-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px 14px;
+  font-size: 14px;
+
+  border-bottom: 2px solid #F97316;
+}
+
+.notif-header strong {
+  color: #ffffff;
+}
+
+.notif-header button {
+  background: none;
+  border: none;
+  color: #F97316; /* 🔥 naranja */
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.notif-header button:hover {
+  text-decoration: underline;
+}
+
+/* LISTA */
+.notif-list {
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+/* ITEM BASE */
+.notif-item {
+  padding: 12px 14px;
+  font-size: 14px;
+
+  border-bottom: 1px solid rgba(255,255,255,0.25);
+  transition: all 0.2s ease;
+}
+
+/* 🔥 NO LEÍDAS (protagonistas) */
+.notif-item.unread {
+  background: rgba(249, 115, 22, 0.15); /* naranja suave */
+  border-left: 3px solid #F97316;
+  font-weight: 600;
+  color: #F8FAF6;
+}
+
+/* LEÍDAS */
+.notif-item:not(.unread) {
+  color: #F8FAF6;
+}
+
+/* HOVER */
+.notif-item:hover {
+  background: rgba(255,255,255,0.05);
+  cursor: pointer;
+}
+
+/* VACÍO */
+.empty {
+  display: block;
+  padding: 18px;
+  text-align: center;
+  color: #F8FAF6;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+}
+
 .logout-btn {
   background: #F97316;
   border: 1.5px solid rgba(255, 255, 255, 0.6);
-  color: white;
+  color: #F8FAF6;
   cursor: pointer;
   font-weight: bold;
   display: flex;
