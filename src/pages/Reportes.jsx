@@ -19,107 +19,134 @@ import {
 
 import "../styles/reportes.css";
 
-import { envios, datos } from "@/api";
+import { envios } from "@/api";
 
 export default function Reportes({ user }) {
   const [loading, setLoading] = useState(true);
 
-  const [kpis, setKpis] = useState({
-    total: 0,
-    transito: 0,
-    entregados: 0,
-    demorados: 0,
-    alta: 0,
-    critica: 0
-  });
+  const [enviosData, setEnviosData] = useState([]);
+  
 
-  const estadosData = [
-    { name: "Entregado", value: 240 },
-    { name: "En Tránsito", value: 120 },
-    { name: "En Sucursal", value: 80 },
-    { name: "Demorado", value: 30 }
-  ];
 
-  const prioridadesData = [
-    { prioridad: "Baja", cantidad: 70 },
-    { prioridad: "Media", cantidad: 130 },
-    { prioridad: "Alta", cantidad: 90 },
-    { prioridad: "Crítica", cantidad: 40 }
-  ];
+const totalEnvios = enviosData.length;
 
-  const evolucionMensualData = [
-    { mes: "Ene", envios: 120 },
-    { mes: "Feb", envios: 180 },
-    { mes: "Mar", envios: 210 },
-    { mes: "Abr", envios: 240 },
-    { mes: "May", envios: 300 },
-    { mes: "Jun", envios: 350 }
-  ];
+const estadosContador = {
+  entregada: 0,
+  pendiente: 0,
+  transito: 0,
+  demorada: 0
+};
 
-  const sucursalesData = [
-    { sucursal: "Buenos Aires", envios: 420 },
-    { sucursal: "Córdoba", envios: 280 },
-    { sucursal: "Neuquén", envios: 360 },
-    { sucursal: "Mendoza", envios: 190 },
-    { sucursal: "Comodoro", envios: 160 }
-  ];
+enviosData.forEach((envio) => {
+  const estado =
+    envio.estado?.toLowerCase().trim() || "";
 
-  const rankingData = [
-    {
-      sucursal: "Buenos Aires",
-      envios: 420,
-      porcentaje: "29%"
-    },
-    {
-      sucursal: "Neuquén",
-      envios: 360,
-      porcentaje: "25%"
-    },
-    {
-      sucursal: "Córdoba",
-      envios: 280,
-      porcentaje: "19%"
-    },
-    {
-      sucursal: "Mendoza",
-      envios: 190,
-      porcentaje: "13%"
-    },
-    {
-      sucursal: "Comodoro",
-      envios: 160,
-      porcentaje: "11%"
-    }
-  ];
+  if (estado.includes("entreg")) {
+    estadosContador.entregada++;
+  }
+  else if (estado.includes("trans")) {
+    estadosContador.transito++;
+  }
+  else if (estado.includes("demor")) {
+    estadosContador.demorada++;
+  }
+  else {
+    estadosContador.pendiente++;
+  }
+});
 
-  const rutasData = [
-    {
-      origen: "Buenos Aires",
-      destino: "Neuquén",
-      cantidad: 120
-    },
-    {
-      origen: "Neuquén",
-      destino: "Mendoza",
-      cantidad: 95
-    },
-    {
-      origen: "Córdoba",
-      destino: "Comodoro",
-      cantidad: 82
-    },
-    {
-      origen: "Buenos Aires",
-      destino: "Mendoza",
-      cantidad: 76
-    },
-    {
-      origen: "Neuquén",
-      destino: "Buenos Aires",
-      cantidad: 71
-    }
-  ];
+const estadosData = [
+  {
+    name: "Entregada",
+    value: estadosContador.entregada
+  },
+  {
+    name: "Pendiente",
+    value: estadosContador.pendiente
+  },
+  {
+    name: "En Tránsito",
+    value: estadosContador.transito
+  },
+  {
+    name: "Demorada",
+    value: estadosContador.demorada
+  }
+];
 
+const plantasMap = {};
+
+enviosData.forEach((envio) => {
+  const planta =
+    envio.plantaDespacho || "Sin Planta";
+
+  plantasMap[planta] =
+    (plantasMap[planta] || 0) + 1;
+});
+
+const rankingData =
+  Object.entries(plantasMap)
+    .map(([planta, cantidad]) => ({
+      sucursal: planta,
+      envios: cantidad,
+      porcentaje:
+        totalEnvios > 0
+          ? `${Math.round(
+              (cantidad / totalEnvios) * 100
+            )}%`
+          : "0%"
+    }))
+    .sort(
+      (a, b) =>
+        b.envios - a.envios
+    );
+
+const meses = [
+  "Ene",
+  "Feb",
+  "Mar",
+  "Abr",
+  "May",
+  "Jun",
+  "Jul",
+  "Ago",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dic"
+];
+
+const mesesMap = {};
+
+enviosData.forEach((envio) => {
+
+  if (!envio.fechaCreacion) {
+    return;
+  }
+
+  const fecha =
+    new Date(envio.fechaCreacion);
+
+  const mes =
+    meses[fecha.getMonth()];
+
+  mesesMap[mes] =
+    (mesesMap[mes] || 0) + 1;
+});
+
+const evolucionMensualData =
+  meses
+    .filter(
+      (mes) => mesesMap[mes]
+    )
+    .map((mes) => ({
+      mes,
+      envios: mesesMap[mes]
+    }));
+
+
+
+    
   const COLORS = [
     "#22c55e",
     "#3b82f6",
@@ -127,53 +154,14 @@ export default function Reportes({ user }) {
     "#ef4444"
   ];
 
-  useEffect(() => {
+useEffect(() => {
   const fetchData = async () => {
     try {
 
-      const [enviosRes, incidenciasRes] =
-        await Promise.all([
-          envios.getAllSupervisor(),
-          datos.getIncidencias()
-        ]);
+      const enviosRes =
+        await envios.getAllSupervisor();
 
-      console.log("=================================");
-      console.log("ENVIOS COMPLETOS");
-      console.log(enviosRes);
-      console.table(enviosRes);
-
-      console.log("=================================");
-      console.log("PRIMER ENVIO");
-      console.log(enviosRes?.[0]);
-
-      console.log("=================================");
-      console.log("ENVIOS JSON");
-      console.log(
-        JSON.stringify(
-          enviosRes?.[0],
-          null,
-          2
-        )
-      );
-
-      console.log("=================================");
-      console.log("INCIDENCIAS COMPLETAS");
-      console.log(incidenciasRes);
-      console.table(incidenciasRes);
-
-      console.log("=================================");
-      console.log("PRIMERA INCIDENCIA");
-      console.log(incidenciasRes?.[0]);
-
-      console.log("=================================");
-      console.log("INCIDENCIA JSON");
-      console.log(
-        JSON.stringify(
-          incidenciasRes?.[0],
-          null,
-          2
-        )
-      );
+      setEnviosData(enviosRes || []);
 
       setLoading(false);
 
@@ -186,52 +174,60 @@ export default function Reportes({ user }) {
   fetchData();
 }, []);
 
-  const exportarCSV = () => {
-    const filas = [
-      [
-        "Tipo",
-        "Nombre",
-        "Valor"
-      ],
 
-      ...estadosData.map((item) => [
+
+const exportarCSV = () => {
+
+  const filas = [
+    ["Tipo", "Nombre", "Valor"],
+
+    ...estadosData.map(
+      (item) => [
         "Estado",
         item.name,
         item.value
-      ]),
+      ]
+    ),
 
-      ...prioridadesData.map((item) => [
-        "Prioridad",
-        item.prioridad,
-        item.cantidad
-      ]),
-
-      ...evolucionMensualData.map((item) => [
-        "Mes",
-        item.mes,
-        item.envios
-      ]),
-
-      ...sucursalesData.map((item) => [
+    ...rankingData.map(
+      (item) => [
         "Sucursal",
         item.sucursal,
         item.envios
-      ])
-    ];
+      ]
+    ),
 
-    const csv = filas
-      .map((fila) => fila.join(","))
+    ...evolucionMensualData.map(
+      (item) => [
+        "Mes",
+        item.mes,
+        item.envios
+      ]
+    )
+  ];
+
+  const csv =
+    filas
+      .map(
+        (fila) =>
+          fila.join(",")
+      )
       .join("\n");
 
-    const blob = new Blob(
+  const blob =
+    new Blob(
       [csv],
       {
-        type: "text/csv;charset=utf-8;"
+        type:
+          "text/csv;charset=utf-8;"
       }
     );
 
-    FileSaver.saveAs(blob, "reporte-logistica.csv");
-  };
+  FileSaver.saveAs(
+    blob,
+    "reporte-logistica.csv"
+  );
+};
 
   if (loading) {
     return (
@@ -344,4 +340,3 @@ export default function Reportes({ user }) {
     </div>
   );
 }
-
