@@ -183,6 +183,7 @@ useEffect(() => {
     // 🗑️ Eliminar sesión completa
     localStorage.removeItem("token");
     localStorage.removeItem("legajo");
+    localStorage.removeItem("lugarOperativo");
 
     // 🧠 Limpiar estado en App
     onLogout(null);

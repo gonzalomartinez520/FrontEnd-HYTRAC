@@ -169,7 +169,9 @@
       "documentAlreadyLoaded": "Esse documento já foi carregado",
       "dniLength": "O DNI deve ter entre 7 e 8 dígitos",
       "passwordMismatch": "As senhas não coincidem",
-      "missingDocuments": "Faltam {{count}} documentos obrigatórios"
+      "missingDocuments": "Faltam {{count}} documentos obrigatórios",
+      "cuitInvalid": "Formato de CUIT inválido",
+      "dniNotInCuit": "O DNI não corresponde ao CUIT"
     }
   },
   "management": {
@@ -188,7 +190,8 @@
     "company": "Empresa",
     "status": "Estado",
     "actions": "Ações",
-    "noActions": "Sem ações"
+    "noActions": "Sem ações",
+    "noCompany": "Sem empresa associada"
   },
   "details": {
     "document": "Documento",

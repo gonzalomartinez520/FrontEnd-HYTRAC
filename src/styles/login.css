@@ -189,18 +189,6 @@ body {
   align-items: center;
 }
 
-.forgot-btn {
-  background: transparent;
-  border: none;
-  color: #ff6b0a;
-  font-size: 13px;
-  cursor: pointer;
-}
-
-.forgot-btn:hover {
-  opacity: 0.8;
-}
-
 .input-wrapper {
   width: 100%;
   height: 58px;
@@ -239,6 +227,31 @@ body {
 
 .input-wrapper input::placeholder {
   color: #60708f;
+}
+
+.toggle-password {
+  background: transparent;
+  color: #ff7b00;
+  border-radius: 8px;
+  border: none;
+  font-size: large;
+  font-style: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.toggle-password svg {
+  width: 22px;
+  height: 22px;
+}
+
+.toggle-password:hover {
+  transform: scale(1.1);
 }
 
 .error-message {

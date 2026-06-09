@@ -171,6 +171,16 @@ export default function TransportistaForm() {
         return `${year}-${month}-${day}`;
     };
 
+    function validarDniEnCuit(dni, cuit) {
+        // eliminar guiones si existen
+        const cuitLimpio = cuit.replace(/-/g, "");
+
+        // obtener los 8 dígitos del medio
+        const dniEnCuit = cuitLimpio.substring(2, 10);
+
+        return dniEnCuit === dni;
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
@@ -193,7 +203,14 @@ export default function TransportistaForm() {
         const cuitRegex = /^\d{2}-\d{8}-\d{1}$/;
 
         if (!cuitRegex.test(formData.cuit)) {
-            setErrorCuit("Formato de CUIT invalido");
+            setErrorCuit(tTransportista("transportistaForm.errors.cuitInvalid"));
+            return;
+        } else {
+            setErrorCuit("");
+        }
+
+        if(!validarDniEnCuit(formData.dni, formData.cuit)) {
+            setErrorCuit(tTransportista("transportistaForm.errors.dniNotInCuit"))
             return;
         } else {
             setErrorCuit("");
@@ -304,6 +321,19 @@ export default function TransportistaForm() {
                             />
                             {errorDni && <span className="error">{errorDni}</span>}
                         </div>
+                        <div className="form-group">
+                            <label>{tTransportista("table.cuit")}</label>
+                            <input
+                            type="text"
+                            name="cuit"
+                            value={formData.cuit}
+                            onChange={handleChange}
+                            required
+                            />
+                            {errorCuit && <span className="error">{errorCuit}</span>}
+                        </div>
+
+                        </div>
 
                         <div className="form-group">
                             <label>{tTransportista("transportistaForm.fields.email")}</label>
@@ -315,7 +345,6 @@ export default function TransportistaForm() {
                                 required
                             />
                         </div>
-                    </div>
                 </div>
 
                 {/* 🔹 ACCESO */}
