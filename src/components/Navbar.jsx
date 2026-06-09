@@ -36,6 +36,19 @@ export default function Navbar({ user, onLogout }) {
     }
   };
 
+  const formatearFecha = (fechaString) => {
+    const fecha = new Date(fechaString);
+
+      return fecha.toLocaleString('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -50,7 +63,7 @@ export default function Navbar({ user, onLogout }) {
     fetchData();
   }, []);
 
-  const unreadCount = notificaciones.filter(n => !n.vista).length;
+  const unreadCount = notificaciones.filter(n => !n.visto).length;
 
   const BellNormal = () => (
     <svg width="20" height="20" viewBox="0 0 24 24">
@@ -71,15 +84,19 @@ export default function Navbar({ user, onLogout }) {
     </svg>
   );
 
-  const marcarLeida = (id) => {
-
-    // REEMPLAZAR POR EL LLAMADO A LA API PARA MARCAR COMO VISTO LA NOTIFICACION
-
-    setNotifications(prev =>
+  const marcarLeida = async (id) => {
+    // 🔥 update inmediato
+    setNotificaciones(prev =>
       prev.map(n =>
-        n.id === id ? { ...n, vista: true } : n
+        n.id === id ? { ...n, visto: true } : n
       )
     );
+
+    try {
+      await datos.leerNotificacion(id);
+    } catch (error) {
+      console.log("Error al marcar como vista", error);
+    }
   };
 
 
@@ -350,14 +367,24 @@ useEffect(() => {
                   notificaciones.map((n) => (
                     <div
                       key={n.id}
-                      className={`notif-item ${n.vista ? "" : "unread"}`}
-                      onClick={() => marcarLeida(n.id)}
+                      className={`notif-item ${n.visto ? "" : "unread"}`}
+                      onClick={() => !n.visto && marcarLeida(n.id)}
                       style={{ cursor: "pointer" }}
                     >
-                      {n.texto}
+                      <div className="cuerpo">
+                        <div className="descripcion">
+                          {n.descripcion}
+                        </div>
+
+                        <div className="fecha-notificacion">
+                          {formatearFecha(n.fechaCreacion)}
+                        </div>
+                      </div>
                     </div>
                   ))
                 )}
+              </div>
+              <div className="notif-bottom">
               </div>
             </div>
           )}

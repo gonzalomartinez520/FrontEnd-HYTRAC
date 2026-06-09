@@ -95,7 +95,8 @@ const datos = {
     },
 
     leerNotificacion: async (notificacionId) => {
-        const { data } = await apiClient.put(`/notificaciones/${notificacionId}/leer`)
+        const { data } = await apiClient.put(`/notificaciones/${notificacionId}/leer`);
+        return data;
     }
 };
 
