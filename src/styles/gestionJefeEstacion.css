@@ -75,3 +75,29 @@
     color: #F8FAF6;
 }
 
+.mapa-info-container {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* 🗺️ Mapa más chico */
+.mapa-box {
+  width: 40%;
+}
+
+/* 📄 Info */
+.info-box {
+  width: 60%;
+  color: white; /* opcional si tenés fondo oscuro */
+}
+
+.info-box {
+  background: #1f2937;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.info-box h3 {
+  margin-bottom: 10px;
+}

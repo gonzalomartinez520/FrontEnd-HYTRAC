@@ -271,7 +271,7 @@ export default function EnvioDetail({ user }) {
               </div>
               <div>
                 <small>{t("envioDetail.arrivalDate")}</small>
-                <h2>⏱ {shipment.fechaEntrega ? formatearFecha(shipment.fechaEntrega) : "-"}</h2>
+                <h2>⏱ {shipment.fechaEntregaReal ? formatearFecha(shipment.fechaEntregaReal) : "-"}</h2>
               </div>
             </div>
 
@@ -306,55 +306,55 @@ export default function EnvioDetail({ user }) {
 
           <div className="grid-info">
             <div>
-              <h4 className="sub-title">🚛 UNIDAD DE TRANSPORTE</h4>
+              <h4 className="sub-title">🚛 {t("envioDetail.transportUnit")}</h4>
               <div className="info-row">
-                <span>Patente Camion</span>
+                <span>{t("envioDetail.truckPlate")}</span>
                 <strong>{shipment.camionPatente}</strong>
               </div>
 
               <div className="info-row">
-                <span>Patente Acoplado</span>
+                <span>{t("envioDetail.trailerPlate")}</span>
                 <strong>{shipment.acopladoPatente}</strong>
               </div>
 
               <div className="info-row">
-                <span>Capacidad Total</span>
+                <span>{t("envioDetail.totalCapacity")}</span>
                 <strong>{shipment.capacidadTotalAcoplado} Lts.</strong>
               </div>
 
               <div className="info-row">
-                <span>Peso Máximo</span>
+                <span>{t("envioDetail.maxWeight")}</span>
                 <strong>{shipment.pesoMaximoCamion} Kgs.</strong>
               </div>
             </div>
 
             <div>
-              <h4 className="sub-title">💧 ESPECIFICACIONES DE CARGA</h4>
+              <h4 className="sub-title">💧 {t("envioDetail.cargoSpecs")}</h4>
 
               <div className="info-row">
-                <span>Combustible</span>
+                <span>{t("envioDetail.fuel")}</span>
                 <strong>{shipment.combustible}</strong>
               </div>
 
               <div className="info-row">
-                <span>Clase Peligro</span>
+                <span>{t("envioDetail.dangerClass")}</span>
                 <strong>{shipment.claseRiesgo}</strong>
               </div>
 
               <div className="info-row">
-                <span>Temperatura</span>
+                <span>{t("envioDetail.temperature")}</span>
                 <strong>{combustibleSeleccionado?.temperaturaReferencia} °C</strong>
               </div>
 
               <div className="info-row">
-                <span>Litros Cargados</span>
+                <span>{t("envioDetail.litersLoaded")}</span>
                 <strong>{shipment.litrosCargados} Lts.</strong>
               </div>
             </div>
           </div>
 
           <h3 className="section-title">
-            🚚 SEGUIMIENTO DE LA ORDEN
+            🚚 {t("envioDetail.orderTracking")}
           </h3>
 
           <div className="timeline">

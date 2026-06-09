@@ -1,8 +1,8 @@
 .reportes-layout {
   min-height: calc(100vh - 60px);
   background: #0B1120;
-  padding: 24px;
   color: white;
+  padding: 40px 60px;
 }
 
 .reportes-header {
@@ -16,7 +16,7 @@
 
 .reportes-header h1 {
   margin: 0;
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: white;
 }
 
@@ -133,7 +133,7 @@
   flex-direction: column;
 }
 
-.chart-card h3 {
+.chart-card h2 {
   margin-top: 0;
   margin-bottom: 20px;
   color: white;
@@ -179,26 +179,6 @@
   border-radius: 50px;
 }
 
-.rutas-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.rutas-table th {
-  background: #1E293B;
-  color: white;
-  padding: 12px;
-}
-
-.rutas-table td {
-  padding: 12px;
-  border-bottom: 1px solid #334155;
-  color: #CBD5E1;
-}
-
-.rutas-table tr:hover {
-  background: rgba(255,255,255,0.03);
-}
 
 /* ==========================
    LOADING

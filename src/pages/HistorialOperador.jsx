@@ -572,8 +572,12 @@ export default function HistorialOperador( { user } ) {
                 <tr className="fila-expandida">
                     <td colSpan="7">
                         <div className="detalle-envio">
-                            <p><strong>{tCommon("table.id")}:</strong> {shipment.id}</p>
-                            <p><strong>{tOperador("historial.expanded.carrier")}:</strong> {shipment.transportista}</p>
+                            <p><strong>{tCommon("table.id")}:</strong> {shipment.trackingId}</p>
+                            <p><strong>Camion Asignado:</strong> {shipment.camionPatente}</p>
+                            <p><strong>Acoplado Asignado:</strong> {shipment.acopladoPatente}</p>
+                            <p><strong>Litros Cargados</strong> {shipment.litrosCargados} Lts.</p>
+                            <p><strong>COT:</strong> {shipment.cot}</p>
+                            <p><strong>Número de Remito</strong> {shipment.numeroRemito}</p>
                             {shipment.motivoRechazo && (
                               <div className="motivo-rechazo">
                                 <h3>{tOperador("historial.expanded.rejectionReason")}</h3>

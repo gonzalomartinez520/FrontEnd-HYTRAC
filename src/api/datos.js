@@ -87,6 +87,15 @@ const datos = {
     getEmpresas: async () => {
         const { data } = await apiClient.get('/entidades/empresas');
         return data;
+    },
+
+    getNotificaciones: async (legajo) => {
+        const { data } = await apiClient.get(`/notificaciones/${legajo}`);
+        return data;
+    },
+
+    leerNotificacion: async (notificacionId) => {
+        const { data } = await apiClient.put(`/notificaciones/${notificacionId}/leer`)
     }
 };
 

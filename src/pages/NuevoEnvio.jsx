@@ -235,6 +235,13 @@ export default function NuevoEnvio({ user }) {
         patenteAcoplado: acopladoSeleccionado ? acopladoSeleccionado.patente : "",
         capacidad: acopladoSeleccionado ? acopladoSeleccionado.capacidadMaximaLitros : "",
       }));
+    } else if (name === "cantidad") {
+        let numero = Number(value);
+
+        if (numero > formData.capacidad) {
+          numero = formData.capacidad;
+        }
+
     } else if (name === "tipoCombustible") {
       const combustibleSeleccionado = combustibles.find((combustible) => combustible.id === Number(value));
       setFormData((prev) => ({
@@ -471,7 +478,7 @@ export default function NuevoEnvio({ user }) {
 
             <div className="form-group">
               <label>{t("newOrder.fields.volume")}</label>
-              <input type="number" name="volumenACargar" placeholder="30000" min="0" value={formData.volumenACargar} required disabled={loading} onChange={handleChange} />
+              <input type="number" name="volumenACargar" placeholder="30000" min="0" value={formData.volumenACargar}  max={formData.capacidad} required disabled={loading} onChange={handleChange} />
             </div>
 
             <div className="form-group">
