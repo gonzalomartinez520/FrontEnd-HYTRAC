@@ -6,6 +6,28 @@ import "../styles/gestionJefeEstacion.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
 
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+
+const MapaUbicacion = ({ lat, lng, nombre }) => {
+  if (!lat || !lng) return <p>Ubicación no disponible</p>;
+
+  return (
+    <MapContainer
+      center={[lat, lng]}
+      zoom={13}
+      style={{ height: "250px", width: "100%" }}
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <Marker position={[lat, lng]}>
+        <Popup>{nombre}</Popup>
+      </Marker>
+    </MapContainer>
+  );
+};
+
 
 export default function GestionJefeEstacion( { user } ) {
     const { t } = useTranslation("jefeEstacion");
@@ -42,6 +64,7 @@ export default function GestionJefeEstacion( { user } ) {
 
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState(""); 
+    const [expandedId, setExpandedId] = useState(null); 
 
     const [showModal, setShowModal] = useState(false);
     const [selectedUsuario, setSelectedUsuario] = useState(null);
@@ -183,6 +206,10 @@ export default function GestionJefeEstacion( { user } ) {
       };
     }, [showModal]);
 
+    const toggleExpand = (id) => {
+        setExpandedId((prev) => (prev === id ? null : id));
+    };
+
     const filteredUsers = jefesEstacion.filter((user) => {
         const searchText = (search || "").toLowerCase().trim();
 
@@ -289,6 +316,47 @@ export default function GestionJefeEstacion( { user } ) {
                                         <td>
                                             <div className="actions-table">
                                                 {usuario.activo ? (
+
+                                                    <button 
+                                                        className="confirmar-detalles"
+                                                        onClick={() => toggleExpand(usuario.id)}
+                                                    >
+                                                        {expandedId === usuario.id ? (
+                                                            // OJO TACHADO
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                height="24"
+                                                                viewBox="0 0 24 24"
+                                                                width="24"
+                                                                fill="currentColor"
+                                                            >
+                                                                {/* línea del ojo */}
+                                                                <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z" opacity="0.3"/>
+                                                            
+                                                                {/* línea tachada */}
+                                                                <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" strokeWidth="2"/>
+
+                                                                {/* pupila */}
+                                                                <circle cx="12" cy="12" r="3"/>
+                                                            </svg>
+                                                        ) : (
+                                                            // OJO ABIERTO
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                height="24"
+                                                                viewBox="0 0 24 24"
+                                                                width="24"
+                                                                fill="currentColor"
+                                                            >
+                                                                <path d="M12 6c-4.79 0-8.73 3.11-10 6 1.27 2.89 5.21 6 10 6s8.73-3.11 10-6c-1.27-2.89-5.21-6-10-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                                                                <circle cx="12" cy="12" r="2.5"/>
+                                                            </svg>
+                                                        )}
+                                                    </button>
+                                                ) : (
+                                                    null
+                                                )}
+                                                {usuario.activo ? (
                                                     <button 
                                                     className="editar-envio"
                                                     onClick={async () => {
@@ -381,6 +449,46 @@ export default function GestionJefeEstacion( { user } ) {
                                             </div>
                                         </td>
                                     </tr>
+
+                                    {expandedId === usuario.id && (
+                                    <tr className="fila-expandida">
+                                        <td colSpan="7">
+                                        <div className="detalle-envio">
+                                            {(() => {
+                                            const lugar = lugaresOperativosTotales.find(
+                                                (l) => l.nombre === usuario.lugarOperativo
+                                            );
+
+                                            return lugar ? (
+                                                <div className="mapa-info-container">
+                                                
+                                                {/* 🗺️ Mapa */}
+                                                <div className="mapa-box">
+                                                    <MapaUbicacion
+                                                    lat={lugar.latitud}
+                                                    lng={lugar.longitud}
+                                                    nombre={lugar.nombre}
+                                                    />
+                                                </div>
+
+                                                {/* 📄 Info */}
+                                                <div className="info-box">
+                                                    <h3>📍 Información de la ubicación</h3>
+
+                                                    <p><strong>Provincia:</strong> {lugar.provinciaNombre}</p>
+                                                    <p><strong>Localidad:</strong> {lugar.localidadNombre}</p>
+                                                    <p><strong>Dirección:</strong> {lugar.direccion}</p>
+                                                </div>
+
+                                                </div>
+                                            ) : (
+                                                <p>No se encontró la ubicación</p>
+                                            );
+                                            })()}
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    )}
                                 </Fragment>
                             ))}
                         </tbody>

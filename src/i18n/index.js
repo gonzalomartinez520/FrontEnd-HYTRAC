@@ -29,6 +29,10 @@ import esJefeEstacion from "./locales/es/jefeEstacion.json";
 import enJefeEstacion from "./locales/en/jefeEstacion.json";
 import ptJefeEstacion from "./locales/pt/jefeEstacion.json";
 
+import esReportes from "./locales/es/reportes.json";
+import enReportes from "./locales/en/reportes.json";
+import ptReportes from "./locales/pt/reportes.json";
+
 i18n.use(initReactI18next).init({
   resources: {
     es: {
@@ -39,6 +43,7 @@ i18n.use(initReactI18next).init({
       supervisor: esSupervisor,
       operador: esOperador,
       jefeEstacion: esJefeEstacion,
+      reportes: esReportes,
     },
     en: {
       navbar: enNavbar,
@@ -48,7 +53,7 @@ i18n.use(initReactI18next).init({
       supervisor: enSupervisor,
       operador: enOperador,
       jefeEstacion: enJefeEstacion,
-
+      reportes: enReportes,
     },
     pt: {
       navbar: ptNavbar,
@@ -58,12 +63,12 @@ i18n.use(initReactI18next).init({
       supervisor: ptSupervisor,
       operador: ptOperador,
       jefeEstacion: ptJefeEstacion,
-
+      reportes: ptReportes,
     },
     },
   lng: localStorage.getItem("lang") || "es",
   fallbackLng: "es",
-    ns: ["navbar", "common", "form", "transportista", "supervisor", "operador", "jefeEstacion"],
+    ns: ["navbar", "common", "form", "transportista", "supervisor", "operador", "jefeEstacion", "reportes"],
   defaultNS: "navbar",
   interpolation: {
     escapeValue: false,

@@ -20,31 +20,34 @@ import {
 import "../styles/reportes.css";
 
 import { envios , datos } from "@/api";
+import { useTranslation } from "react-i18next";
 
 export default function Reportes({ user }) {
+  const { t } = useTranslation("reportes");
+  const { t: tCommon } = useTranslation("common");
+
   const [loading, setLoading] = useState(true);
 
   const [enviosData, setEnviosData] = useState([]);
   const [incidenciasData, setIncidenciasData] = useState([]);
 
 
-const totalEnvios = enviosData.length;
-
-
-
-
+  const totalEnvios = enviosData.filter(
+    (envio) => envio.confirmado === true
+  ).length;
 
 const obtenerEstadoReal = (envio) => {
 
-  if (!envio.confirmado) {
-    return "Pendiente de confirmación";
+  if(envio.confirmado && envio.estado === "Pendiente") {
+    return envio.estado;
   }
 
-  return envio.estado || "Otro";
+  if(envio.confirmado) {
+    return envio.estado || "Otro";
+  }
 };
 
 const estadosContador = {
-  pendienteConfirmacion: 0,
   pendiente: 0,
   pendienteInicioViaje: 0,
   enCurso: 0,
@@ -60,10 +63,6 @@ enviosData.forEach((envio) => {
 
   switch (estadoReal) {
 
-    case "Pendiente de confirmación":
-      estadosContador.pendienteConfirmacion++;
-      break;
-
     case "Pendiente":
       estadosContador.pendiente++;
       break;
@@ -72,12 +71,12 @@ enviosData.forEach((envio) => {
       estadosContador.pendienteInicioViaje++;
       break;
 
-    case "En Curso":
-      estadosContador.enCurso++;
-      break;
-
     case "Pendiente de confirmacion de entrega":
       estadosContador.pendienteEntrega++;
+      break;
+
+    case "En Curso":
+      estadosContador.enCurso++;
       break;
 
     case "Entregada":
@@ -95,38 +94,33 @@ enviosData.forEach((envio) => {
 
 const estadosData = [
   {
-    name: "Pendiente de confirmación",
-    value:
-      estadosContador.pendienteConfirmacion
-  },
-  {
-    name: "Pendiente",
+    name: tCommon("status.pendiente"),
     value:
       estadosContador.pendiente
   },
   {
-    name: "Pendiente de inicio de viaje",
+    name: tCommon("status.pendiente_inicio_viaje"),
     value:
       estadosContador.pendienteInicioViaje
   },
   {
-    name: "En Curso",
-    value:
-      estadosContador.enCurso
-  },
-  {
     name:
-      "Pendiente de confirmación de entrega",
+      tCommon("status.pendiente_confirmacion_entrega"),
     value:
       estadosContador.pendienteEntrega
   },
   {
-    name: "Entregada",
+    name: tCommon("status.en_curso"),
+    value:
+      estadosContador.enCurso
+  },
+  {
+    name: tCommon("status.entregada"),
     value:
       estadosContador.entregada
   },
   {
-    name: "Cancelada",
+    name: tCommon("status.cancelada"),
     value:
       estadosContador.cancelada
   }
@@ -137,13 +131,15 @@ const estadosData = [
 
 const plantasMap = {};
 
-enviosData.forEach((envio) => {
-  const planta =
-    envio.plantaDespacho || "Sin Planta";
+enviosData
+  .filter((envio) => envio.confirmado === true)
+  .forEach((envio) => {
+    const planta =
+      envio.plantaDespacho || t("misc.noPlant");
 
-  plantasMap[planta] =
-    (plantasMap[planta] || 0) + 1;
-});
+    plantasMap[planta] =
+      (plantasMap[planta] || 0) + 1;
+  });
 
 const rankingData =
   Object.entries(plantasMap)
@@ -157,12 +153,10 @@ const rankingData =
             )}%`
           : "0%"
     }))
-    .sort(
-      (a, b) =>
-        b.envios - a.envios
-    );
+    .sort((a, b) => b.envios - a.envios)
+    .slice(0, 5); 
 
-    const totalIncidencias = incidenciasData.length;
+const totalIncidencias = incidenciasData.length;
 
 const incidenciasResueltas =
   incidenciasData.filter(
@@ -176,11 +170,11 @@ const incidenciasNoResueltas =
 
 const incidenciasEstadoData = [
   {
-    name: "Resueltas",
+    name: t("incidents.resolved"),
     value: incidenciasResueltas
   },
   {
-    name: "No Resueltas",
+    name: t("incidents.unresolved"),
     value: incidenciasNoResueltas
   }
 ];
@@ -190,7 +184,7 @@ const tiposIncidenciasMap = {};
 incidenciasData.forEach((incidencia) => {
   const tipo =
     incidencia.tipoIncidencia ||
-    "Sin Clasificar";
+    t("incidents.unclassified");
 
   tiposIncidenciasMap[tipo] =
     (tiposIncidenciasMap[tipo] || 0) + 1;
@@ -208,25 +202,23 @@ const rankingIncidenciasData =
             )}%`
           : "0%"
     }))
-    .sort(
-      (a, b) =>
-        b.cantidad - a.cantidad
-    );
+    .sort((a, b) => b.envios - a.envios)
+    .slice(0, 5); 
 
 
 const meses = [
-  "Ene",
-  "Feb",
-  "Mar",
-  "Abr",
-  "May",
-  "Jun",
-  "Jul",
-  "Ago",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dic"
+  t("months.jan"),
+  t("months.feb"),
+  t("months.mar"),
+  t("months.apr"),
+  t("months.may"),
+  t("months.jun"),
+  t("months.jul"),
+  t("months.aug"),
+  t("months.sep"),
+  t("months.oct"),
+  t("months.nov"),
+  t("months.dec")
 ];
 
 const mesesMap = {};
@@ -260,14 +252,18 @@ const evolucionMensualData =
 
 
     
-  const COLORS = [
-  "#22c55e",
-  "#3b82f6",
+  const ESTADOS = [
+  "#b45309",
   "#f59e0b",
-  "#ef4444",
-  "#8b5cf6",
-  "#14b8a6",
-  "#f97316"
+  "#fde68a",
+  "#3B82F6",
+  "#10B981",
+  "#EF4444",
+  ];
+
+  const INCIDENCIAS = [
+    "#10B981",
+    "#f59e0b",
   ];
 
 useEffect(() => {
@@ -303,11 +299,13 @@ useEffect(() => {
 const exportarCSV = () => {
 
   const filas = [
-    ["Tipo", "Nombre", "Valor"],
+    [ t("csv.type"),
+      t("csv.name"),
+      t("csv.value")],
 
     ...estadosData.map(
       (item) => [
-        "Estado",
+        t("csv.status"),
         item.name,
         item.value
       ]
@@ -315,7 +313,7 @@ const exportarCSV = () => {
 
     ...rankingData.map(
       (item) => [
-        "Sucursal",
+        t("csv.branch"),
         item.sucursal,
         item.envios
       ]
@@ -323,7 +321,7 @@ const exportarCSV = () => {
     
    ...incidenciasEstadoData.map(
       (item) => [
-        "Incidencia Estado",
+        t("csv.incidentStatus"),
         item.name,
         item.value
       ]
@@ -331,7 +329,7 @@ const exportarCSV = () => {
 
     ...rankingIncidenciasData.map(
       (item) => [
-        "Tipo Incidencia",
+        t("csv.incidentType"),
         item.tipo,
         item.cantidad
       ]
@@ -341,7 +339,7 @@ const exportarCSV = () => {
 
     ...evolucionMensualData.map(
       (item) => [
-        "Mes",
+        t("csv.month"),
         item.mes,
         item.envios
       ]
@@ -367,7 +365,7 @@ const exportarCSV = () => {
 
   FileSaver.saveAs(
     blob,
-    "reporte-logistica.csv"
+    t("csv.fileName")
   );
 };
 
@@ -375,7 +373,7 @@ const exportarCSV = () => {
     return (
       <div className="reportes-loading-screen">
         <div className="reportes-loader"></div>
-        <h2>Cargando reportes...</h2>
+        <h2>{t("loading")}</h2>
       </div>
     );
   }
@@ -385,9 +383,9 @@ const exportarCSV = () => {
 
       <div className="reportes-header">
         <div>
-          <h1>Reportes</h1>
+          <h1>{t("title")}</h1>
           <p>
-            Aquí podras visualizar el rendimiento de tus envíos, analizar tendencias y tomar decisiones informadas para optimizar tu logística.
+            {t("description")}
           </p>
         </div>
 
@@ -395,7 +393,7 @@ const exportarCSV = () => {
           className="btn-exportar"
           onClick={exportarCSV}
         >
-          Exportar Reporte CSV
+          {t("buttons.export")}
         </button>
       </div>
 
@@ -403,7 +401,7 @@ const exportarCSV = () => {
       <section className="reportes-grid-cuadrado">
 
         <div className="chart-card square-card">
-          <h2>Estados de Envíos</h2>
+          <h2>{t("charts.shipmentStatus")}</h2>
 
           <ResponsiveContainer width="100%" height={320}>
             <PieChart>
@@ -412,41 +410,53 @@ const exportarCSV = () => {
                 dataKey="value"
                 outerRadius={110}
                 label
+                cx="40%" // mueve el gráfico a la izquierda
               >
                 {estadosData.map((entry, index) => (
                   <Cell
                     key={index}
-                    fill={COLORS[index % COLORS.length]}
+                    fill={ESTADOS[index % ESTADOS.length]}
                   />
                 ))}
               </Pie>
 
               <Tooltip />
-              <Legend />
+
+              <Legend
+                layout="vertical"
+                verticalAlign="middle"
+                align="right"
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>
 
         <div className="chart-card square-card">
-          <h2>Ranking de Cargas</h2>
+          <h2>{t("charts.shipmentRanking")}</h2>
 
           <table className="reportes-table">
             <thead>
               <tr>
-                <th>Sucursal</th>
-                <th>Envíos</th>
+                <th>#</th>
+                <th>{t("table.branch")}</th>
+                <th>{t("table.shipments")}</th>
                 <th>%</th>
               </tr>
             </thead>
 
             <tbody>
-              {rankingData.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.sucursal}</td>
-                  <td>{item.envios}</td>
-                  <td>{item.porcentaje}</td>
-                </tr>
-              ))}
+              {rankingData.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td>
+                    {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1}
+                    </td>
+                    <td>{item.sucursal}</td>
+                    <td>{item.envios}</td>
+                    <td>{item.porcentaje}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -457,7 +467,7 @@ const exportarCSV = () => {
       <section className="reportes-grid-cuadrado">
 
       <div className="chart-card square-card">
-        <h2>Estado de Incidencias</h2>
+        <h2>{t("charts.incidentsStatus")}</h2>
 
         <ResponsiveContainer
           width="100%"
@@ -469,14 +479,15 @@ const exportarCSV = () => {
               dataKey="value"
               outerRadius={110}
               label
+              cx="30%"
             >
               {incidenciasEstadoData.map(
                 (entry, index) => (
                   <Cell
                     key={index}
                     fill={
-                      COLORS[
-                        index % COLORS.length
+                      INCIDENCIAS[
+                        index % INCIDENCIAS.length
                       ]
                     }
                   />
@@ -485,19 +496,25 @@ const exportarCSV = () => {
             </Pie>
 
             <Tooltip />
-            <Legend />
+            <Legend
+                layout="vertical"
+                verticalAlign="middle"
+                align="right"
+                wrapperStyle={{ right: 183 }}
+              />
           </PieChart>
         </ResponsiveContainer>
       </div>
 
       <div className="chart-card square-card">
-        <h2>Ranking de Incidencias</h2>
+        <h2>{t("charts.incidentsRanking")}</h2>
 
         <table className="reportes-table">
           <thead>
             <tr>
-              <th>Tipo</th>
-              <th>Cantidad</th>
+              <th>#</th>
+              <th>{t("table.type")}</th>
+              <th>{t("table.quantity")}</th>
               <th>%</th>
             </tr>
           </thead>
@@ -506,6 +523,9 @@ const exportarCSV = () => {
             {rankingIncidenciasData.map(
               (item, index) => (
                 <tr key={index}>
+                  <td>
+                    {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1}
+                  </td>
                   <td>{item.tipo}</td>
                   <td>{item.cantidad}</td>
                   <td>{item.porcentaje}</td>
@@ -522,13 +542,24 @@ const exportarCSV = () => {
       <section className="charts-grid">
 
       <div className="chart-card full-width">
-        <h2>Evolución Mensual</h2>
+        <h2>{t("charts.monthlyEvolution")}</h2>
 
         <ResponsiveContainer width="100%" height={350}>
           <LineChart data={evolucionMensualData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="mes" />
-            <YAxis />
+            <CartesianGrid stroke="#444" />
+              <XAxis 
+                dataKey="mes"
+                tick={{ fill: "#fff" }}
+                axisLine={{ stroke: "#fff" }}
+                tickLine={{ stroke: "#fff" }}
+              />
+
+              <YAxis 
+                tick={{ fill: "#fff" }}
+                axisLine={{ stroke: "#fff" }}
+                tickLine={{ stroke: "#fff" }}
+              />
+
             <Tooltip />
 
             <Line

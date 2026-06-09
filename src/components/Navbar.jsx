@@ -5,6 +5,7 @@ import "../styles/navbar.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 import i18n from "../i18n";
 import { useTranslation } from "react-i18next";
+import { datos } from '@/api';
 
 export default function Navbar({ user, onLogout }) {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export default function Navbar({ user, onLogout }) {
   ];
 
 
+  const [notificaciones, setNotificaciones] = useState([]);
   const [openNotif, setOpenNotif] = useState(false);
   const [closing, setClosing] = useState(false);
 
@@ -34,13 +36,21 @@ export default function Navbar({ user, onLogout }) {
     }
   };
 
-  const [notifications, setNotifications] = useState([
-    { id: 1, texto: "Nueva orden creada", vista: false },
-    { id: 2, texto: "Entrega confirmada", vista: true },
-    { id: 3, texto: "Reporte generado", vista: false },
-  ]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await datos.getNotificaciones(localStorage.getItem("legajo"));
+        console.log("Datos obtenidos de la API:", response);
+        setNotificaciones(response);
+      } catch (error) {
+        console.error("Error al obtener notificaciones:", error);
+      }
+    };
 
-  const unreadCount = notifications.filter(n => !n.vista).length;
+    fetchData();
+  }, []);
+
+  const unreadCount = notificaciones.filter(n => !n.vista).length;
 
   const BellNormal = () => (
     <svg width="20" height="20" viewBox="0 0 24 24">
@@ -61,13 +71,10 @@ export default function Navbar({ user, onLogout }) {
     </svg>
   );
 
-  const marcarTodasLeidas = () => {
-    setNotifications(prev =>
-      prev.map(n => ({ ...n, vista: true }))
-    );
-  };
-
   const marcarLeida = (id) => {
+
+    // REEMPLAZAR POR EL LLAMADO A LA API PARA MARCAR COMO VISTO LA NOTIFICACION
+
     setNotifications(prev =>
       prev.map(n =>
         n.id === id ? { ...n, vista: true } : n
@@ -219,10 +226,10 @@ useEffect(() => {
       label: t("historialOrdenes"),
     },
     SUPERVISOR: {
-      title: "Reportes",
+      title: t("reportes"),
       to: "/reportes",
       icon: "📈",
-      label: "Reportes",
+      label: t("reportes"),
     },
   };
 
@@ -333,17 +340,14 @@ useEffect(() => {
           {(openNotif || closing) && (
             <div className={`notification-dropdown ${closing ? "closing" : ""}`}>
               <div className="notif-header">
-                <strong>Notificaciones</strong>
-                <button onClick={marcarTodasLeidas}>
-                  Marcar todas
-                </button>
+                <strong>{t("notificaciones")}</strong>
               </div>
 
               <div className="notif-list">
-                {notifications.length === 0 ? (
-                  <span className="empty">Sin notificaciones</span>
+                {notificaciones.length === 0 ? (
+                  <span className="empty">{t("sinNotificaciones")}</span>
                 ) : (
-                  notifications.map((n) => (
+                  notificaciones.map((n) => (
                     <div
                       key={n.id}
                       className={`notif-item ${n.vista ? "" : "unread"}`}

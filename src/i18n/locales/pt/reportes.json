@@ -1,0 +1,57 @@
+{
+  "title": "Relatórios",
+  "description": "Aqui você poderá visualizar o desempenho de seus envios, analisar tendências e tomar decisões informadas para otimizar sua logística.",
+  "loading": "Carregando relatórios...",
+
+  "buttons": {
+    "export": "Exportar Relatório CSV"
+  },
+
+  "charts": {
+    "shipmentStatus": "Status dos Envios",
+    "shipmentRanking": "Ranking de Cargas",
+    "incidentsStatus": "Status das Incidências",
+    "incidentsRanking": "Ranking de Incidências",
+    "monthlyEvolution": "Evolução Mensal"
+  },
+
+  "table": {
+    "branch": "Filial",
+    "shipments": "Envios",
+    "type": "Tipo",
+    "quantity": "Quantidade"
+  },
+  "csv": {
+    "type": "Tipo",
+    "name": "Nome",
+    "value": "Valor",
+    "status": "Estado",
+    "branch": "Filial",
+    "incidentStatus": "Estado da Incidência",
+    "incidentType": "Tipo de Incidência",
+    "month": "Mês",
+    "fileName": "relatorio-logistica.csv"
+  },
+  "incidents": {
+  "resolved": "Resolvidas",
+  "unresolved": "Não Resolvidas",
+  "unclassified": "Não Classificadas"
+},
+"misc": {
+  "noPlant": "Sem Unidade"
+},
+"months": {
+  "jan": "Jan",
+  "feb": "Fev",
+  "mar": "Mar",
+  "apr": "Abr",
+  "may": "Mai",
+  "jun": "Jun",
+  "jul": "Jul",
+  "aug": "Ago",
+  "sep": "Set",
+  "oct": "Out",
+  "nov": "Nov",
+  "dec": "Dez"
+}
+}
