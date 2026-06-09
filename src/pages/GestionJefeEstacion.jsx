@@ -311,9 +311,9 @@ export default function GestionJefeEstacion( { user } ) {
                                         <td>{usuario.dni}</td>
                                         <td>{usuario.lugarOperativo}</td>
                                         {usuario.activo ? (
-                                            <td><StatusBadge estado={t("status.active")} /></td>
+                                            <td><StatusBadge estado="ACTIVO" /></td>
                                         ) : (
-                                            <td><StatusBadge estado={t("status.inactive")}></StatusBadge></td>
+                                            <td><StatusBadge estado="NO ACTIVO"></StatusBadge></td>
                                         )}
                                         <td>
                                             <div className="actions-table">
