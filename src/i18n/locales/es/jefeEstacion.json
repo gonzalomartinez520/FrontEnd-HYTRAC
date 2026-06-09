@@ -23,5 +23,13 @@
   "messages": {
   "confirmDeactivate": "¿Seguro que desea dar de baja al usuario {{name}}?",
   "confirmEdit": "¿Seguro que desea editar los datos del usuario {{name}}?"
-}
+  },
+  "details": {
+    "noLocation": "Ubicación no disponible",
+    "locationInfo": "📍 Información de la ubicación",
+    "province": "Provincia",
+    "locality": "Localidad",
+    "address": "Dirección",
+    "notFound": "No se encontró la ubicación"
+  }
 }

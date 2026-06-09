@@ -5,7 +5,6 @@ import "../styles/jefeEstacionDashboard.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
 import { envios } from '@/api'; 
-{/* aca tengo que pedir solo los envios de esta estacion */}
 
 
 export default function JefeEstacionDashboard({ user }) {
@@ -27,7 +26,13 @@ export default function JefeEstacionDashboard({ user }) {
         try {
           const response = await envios.getAll();
           console.log("Datos obtenidos de la API:", response);
-          setShipments(response);
+
+          // 🔽 Filtrar por estación destino = lugar operativo del usuario
+          const filtrados = response.filter(envio => 
+            envio.estacionDestino === localStorage.getItem("lugarOperativo")
+          );
+
+          setShipments(filtrados);
         } catch (error) {
           console.error("Error al obtener envíos:", error);
         } finally {
@@ -39,7 +44,7 @@ export default function JefeEstacionDashboard({ user }) {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [user]);
 
   const formatearFecha = (fechaString) => {
     const fecha = new Date(fechaString);
@@ -86,9 +91,7 @@ export default function JefeEstacionDashboard({ user }) {
         fields.some(field =>
             (field || "").toLowerCase().includes(searchText)
           );
-        {/* aca muestro solo los envios de la estacion del jefe (tengo que ver la locacion del jefe) */}
-        {/* puedo llamar todos los envios y despues los filtro por los que son de esta estacion */}
-      return shipment.confirmado && matchesSearch;   {/* aca muestro solo los envios de su estacion */}
+      return shipment.confirmado && matchesSearch;
   });
 
   if (loading) {
@@ -193,39 +196,13 @@ export default function JefeEstacionDashboard({ user }) {
                               setShowModal(true);
                             }}
                           >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              height="22"
-                              viewBox="0 0 24 24"
-                              width="22"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <path d="M20 6L9 17l-5-5" />
-                            </svg>
-                          </button>
-
-                          {/* ❌ CANCELAR */}
-                          <button
-                            className="rechazar-envio"
-                            onClick={() => console.log("Cancelar", shipment.id)}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              height="22"
-                              viewBox="0 0 24 24"
-                              width="22"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            >
-                              <line x1="6" y1="6" x2="18" y2="18" />
-                              <line x1="18" y1="6" x2="6" y2="18" />
+                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none">
+                             
+                              <rect x="2" y="5" width="20" height="15" rx="3" fill="currentColor" opacity="0.15"/>                             
+                              <rect x="2" y="5" width="20" height="15" rx="3" stroke="currentColor" stroke-width="2"/>                                
+                              <path d="M2 10h20" stroke="currentColor" stroke-width="2"/>                           
+                              <path d="M8 14l3 3 5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                              
                             </svg>
                           </button>
                         </>

@@ -238,7 +238,7 @@ export default function GestionTransportista( { user } ) {
                                         {usuario.tipoVinculo === "Tercerizado" ? (
                                              <td>{usuario.empresa}</td>
                                         ) : (
-                                            <td><strong>Sin empresa asociada</strong></td>
+                                            <td><strong>{t("table.noCompany")}</strong></td>
                                         )}
                                         {usuario.activo ? (
                                             <td><StatusBadge estado="ACTIVO"></StatusBadge></td>

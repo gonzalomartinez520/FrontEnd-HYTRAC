@@ -10,7 +10,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 const MapaUbicacion = ({ lat, lng, nombre }) => {
-  if (!lat || !lng) return <p>Ubicación no disponible</p>;
+  if (!lat || !lng) return <p>{t("details.noLocation")}</p>;
 
   return (
     <MapContainer
@@ -475,16 +475,16 @@ export default function GestionJefeEstacion( { user } ) {
 
                                                 {/* 📄 Info */}
                                                 <div className="info-box">
-                                                    <h3>📍 Información de la ubicación</h3>
+                                                    <h3>{t("details.locationInfo")}</h3>
 
-                                                    <p><strong>Provincia:</strong> {lugar.provinciaNombre}</p>
-                                                    <p><strong>Localidad:</strong> {lugar.localidadNombre}</p>
-                                                    <p><strong>Dirección:</strong> {lugar.direccion}</p>
+                                                    <p><strong>{t("details.province")}:</strong> {lugar.provinciaNombre}</p>
+                                                    <p><strong>{t("details.locality")}:</strong> {lugar.localidadNombre}</p>
+                                                    <p><strong>{t("details.address")}:</strong> {lugar.direccion}</p>
                                                 </div>
 
                                                 </div>
                                             ) : (
-                                                <p>No se encontró la ubicación</p>
+                                                <p>{t("deatils.notFound")}</p>
                                             );
                                             })()}
                                         </div>

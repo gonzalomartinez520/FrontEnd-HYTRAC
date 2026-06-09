@@ -23,5 +23,13 @@
   "messages": {
   "confirmDeactivate": "Tem certeza de que deseja desativar o usuário {{name}}?",
   "confirmEdit": "Tem certeza de que deseja editar os dados do usuário {{name}}?"
-}
+  },
+  "details": {
+    "noLocation": "Localização não disponível",
+    "locationInfo": "📍 Informações da localização",
+    "province": "Província",
+    "locality": "Localidade",
+    "address": "Endereço",
+    "notFound": "Localização não encontrada"
+  }
 }

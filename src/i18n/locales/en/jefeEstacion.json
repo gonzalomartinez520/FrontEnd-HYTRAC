@@ -23,5 +23,13 @@
 "messages": {
   "confirmDeactivate": "Are you sure you want to deactivate user {{name}}?",
   "confirmEdit": "Are you sure you want to edit user {{name}}?"
-}
-}
+  },
+  "details": {
+    "noLocation": "Location not available",
+    "locationInfo": "📍 Location Information",
+    "province": "Province",
+    "locality": "City",
+    "address": "Address",
+    "notFound": "Location not found"
+  }
+} 

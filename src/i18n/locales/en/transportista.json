@@ -169,7 +169,9 @@
       "documentAlreadyLoaded": "That document has already been uploaded",
       "dniLength": "The ID must have between 7 and 8 digits",
       "passwordMismatch": "Passwords do not match",
-      "missingDocuments": "Missing {{count}} mandatory documents"
+      "missingDocuments": "Missing {{count}} mandatory documents",
+      "cuitInvalid": "Invalid CUIT format",
+      "dniNotInCuit": "The DNI does not match the CUIT"
     }
   },
   "management": {
@@ -188,7 +190,8 @@
     "company": "Company",
     "status": "Status",
     "actions": "Actions",
-    "noActions": "No actions"
+    "noActions": "No actions",
+    "noCompany": "No associated company"
   },
   "details": {
     "document": "Document",

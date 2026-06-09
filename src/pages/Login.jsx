@@ -36,6 +36,7 @@ export default function Login({ onLogin }) {
   const { t } = useTranslation("common");
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
   const API_URL = import.meta.env.VITE_API_URL
@@ -111,6 +112,7 @@ console.log("LEGAJO DEL TOKEN:", {
 
     localStorage.setItem("token", JSON.stringify(userData));
     localStorage.setItem("legajo", userData.legajo);
+    localStorage.setItem("lugarOperativo", tokenPayload.lugarOperativo);
 
     } catch (error) {
       console.error(error);
@@ -222,10 +224,43 @@ console.log("LEGAJO DEL TOKEN:", {
                 <span>🔒</span>
 
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <button
+                  type="button"
+                  className="toggle-password"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            fill="currentColor"
+                            >
+                            {/* línea del ojo */}
+                            <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z" opacity="0.3"/>
+                                                    
+                            {/* línea tachada */}
+                            <line x1="3" y1="3" x2="21" y2="21" stroke="currentColor" strokeWidth="2"/>
+
+                            {/* pupila */}
+                            <circle cx="12" cy="12" r="3"/>
+                            </svg> :                         
+                            
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            fill="currentColor"
+                            >
+                                <path d="M12 6c-4.79 0-8.73 3.11-10 6 1.27 2.89 5.21 6 10 6s8.73-3.11 10-6c-1.27-2.89-5.21-6-10-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+                                <circle cx="12" cy="12" r="2.5"/>
+                            </svg>}
+                </button>
               </div>
             </div>
 
