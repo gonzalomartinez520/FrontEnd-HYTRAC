@@ -157,7 +157,9 @@ export default function GestionTransportista( { user } ) {
     });
 
     const darBajaUsuario = (usuario) => {
-        const confirmacion = window.confirm(`¿Seguro que desea dar de baja al usuario: ${usuario.nombre} ${usuario.apellido} ?`)
+        const confirmacion = window.confirm(t("messages.confirmDeactivate", {
+            name: `${usuario.nombre} ${usuario.apellido}`
+        }))
 
         if (confirmacion) {
             const fetchConfirmar = async () => {
@@ -386,7 +388,7 @@ export default function GestionTransportista( { user } ) {
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 6.75A2.25 2.25 0 015.25 4.5h13.5A2.25 2.25 0 0121 6.75v10.5A2.25 2.25 0 0118.75 19.5H5.25A2.25 2.25 0 013 17.25V6.75z" />
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 9h3m-3 3h6m-6 3h4" />
                                     </svg>
-                                    Datos Personales
+                                    {tForm("newOrder.sections.personalData")}
                                 </h3>
                             </div>
 
@@ -416,7 +418,7 @@ export default function GestionTransportista( { user } ) {
 
                             <div className="form-row">
                             <div className="form-group">
-                                <label>DNI</label>
+                                <label htmlFor="dni">{tForm("newOrder.fields.dni")}</label>
                                 <input
                                 type="text"
                                 name="dni"
@@ -431,7 +433,7 @@ export default function GestionTransportista( { user } ) {
                                 {errorDni && <span className="error">{errorDni}</span>}
                             </div>
                             <div className="form-group">
-                                <label>CUIT</label>
+                                <label htmlFor="cuit">{tForm("newOrder.fields.cuit")}</label>
                                 <input
                                 type="text"
                                 name="cuit"
@@ -444,7 +446,7 @@ export default function GestionTransportista( { user } ) {
 
                             </div>
                             <div className="form-group">
-                                <label>Correo Electrónico</label>
+                                <label htmlFor="email">{tForm("newOrder.fields.email")}</label>
                                 <input
                                 type="email"
                                 name="email"
@@ -462,12 +464,12 @@ export default function GestionTransportista( { user } ) {
                                     <svg className="admin-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V7.875a4.125 4.125 0 10-8.25 0V10.5M6.75 10.5h10.5A1.5 1.5 0 0118.75 12v6A1.5 1.5 0 0117.25 19.5H6.75A1.5 1.5 0 015.25 18v-6A1.5 1.5 0 016.75 10.5z" />
                                     </svg>
-                                    Datos de Acceso
+                                    {tForm("newOrder.sections.accessData")}
                                 </h3>
                             </div>
 
                             <div className="form-group">
-                            <label>Contraseña</label>
+                            <label>{tForm("newOrder.fields.password")}</label>
                             <input
                                 type="password"
                                 name="passwordTemporal"
@@ -478,7 +480,7 @@ export default function GestionTransportista( { user } ) {
                             </div>
 
                             <div className="form-group">
-                                <label>Confirmar Contraseña</label>
+                                <label>{tForm("newOrder.fields.confirmPassword")}</label>
                                 <input
                                     type="password"
                                     name="confirmarPassword"
@@ -512,16 +514,16 @@ export default function GestionTransportista( { user } ) {
                                             d="M9 9h6M9 12h6M9 15h4"
                                         />
                                         </svg>
-                                Documentación
+                                {t("transportistaForm.sections.documentation")}
                                 </h3>
                             </div>
 
                             {/* 🔸 Vinculación (NO se resetea) */}
                             <div className="form-row">
                                 <div className="form-group">
-                                    <label>Tipo de vínculo</label>
+                                    <label>{t("transportistaForm.fields.linkType")}</label>
                                         <select onChange={handleSelectVinculo} value={formData.tipoVinculo?.id || ""}>
-                                            <option value="">Seleccionar una opción</option>
+                                            <option value="">{t("transportistaForm.fields.selectOption")}</option>
                                             {tipoVinculo.map(tv => (
                                                 <option key={tv.id} value={tv.id}>
                                                     {tv.nombre}
@@ -533,9 +535,9 @@ export default function GestionTransportista( { user } ) {
 
                             {formData.tipoVinculo?.nombre === "Tercerizado" && (
                                 <div className="form-group">
-                                    <label>Empresa de trabajo</label>
+                                    <label>{t("transportistaForm.fields.workCompany")}</label>
                                     <select onChange={handleSelectEmpresa} value={formData.empresa?.id || ""}>
-                                        <option value="">Seleccionar empresa</option>
+                                        <option value="">{t("transportistaForm.fields.selectCompany")}</option>
                                         {empresas.map(emp => (
                                             <option key={emp.id} value={emp.id}>
                                                 {emp.nombreFantasia}
@@ -558,7 +560,9 @@ export default function GestionTransportista( { user } ) {
                             onClick={ async () => {
                                 try {
                                     console.log(selectedUsuario);
-                                    const confirmacion = window.confirm(`¿Seguro que desea editar los datos del usuario: ${selectedUsuario.nombre} ${selectedUsuario.apellido} ?`);
+                                    const confirmacion = window.confirm(t("messages.confirmEdit", {
+                                        name: `${selectedUsuario.nombre} ${selectedUsuario.apellido}`
+                                    }));
 
 
                                     const payload = {

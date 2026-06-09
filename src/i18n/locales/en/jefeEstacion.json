@@ -19,5 +19,9 @@
   "status": {
     "active": "ACTIVE",
     "inactive": "INACTIVE"
-  }
+  },
+"messages": {
+  "confirmDeactivate": "Are you sure you want to deactivate user {{name}}?",
+  "confirmEdit": "Are you sure you want to edit user {{name}}?"
+}
 }

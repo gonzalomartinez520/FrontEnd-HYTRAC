@@ -278,7 +278,7 @@ export default function JefeEstacionForm() {
                 </div>
 
                 <div className="form-group">
-                    <label>Confirmar Contraseña</label>
+                    <label>{tForm("newOrder.fields.confirmPassword")}</label>
                     <input
                         type="password"
                         name="confirmarPassword"

@@ -19,5 +19,9 @@
   "status": {
     "active": "ACTIVO",
     "inactive": "NO ACTIVO"
-  }
+  },
+  "messages": {
+  "confirmDeactivate": "¿Seguro que desea dar de baja al usuario {{name}}?",
+  "confirmEdit": "¿Seguro que desea editar los datos del usuario {{name}}?"
+}
 }

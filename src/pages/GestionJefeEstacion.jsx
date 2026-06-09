@@ -231,7 +231,9 @@ export default function GestionJefeEstacion( { user } ) {
     });
 
     const darBajaUsuario = (usuario) => {
-        const confirmacion = window.confirm(`¿Seguro que desea dar de baja al usuario: ${usuario.nombre} ${usuario.apellido} ?`)
+        const confirmacion = window.confirm(t("messages.confirmDeactivate", {
+            name: `${usuario.nombre} ${usuario.apellido}`
+        }))
 
         if (confirmacion) {
             const fetchConfirmar = async () => {
@@ -588,7 +590,7 @@ export default function GestionJefeEstacion( { user } ) {
                             </div>
 
                             <div className="form-group">
-                                <label>Confirmar Contraseña</label>
+                                <label>{tForm("newOrder.fields.confirmPassword")}</label>
                                 <input
                                     type="password"
                                     name="confirmarPassword"
@@ -682,7 +684,9 @@ export default function GestionJefeEstacion( { user } ) {
                             onClick={ async () => {
                                 try {
                                     console.log(selectedUsuario);
-                                    const confirmacion = window.confirm(`¿Seguro que desea editar los datos del usuario: ${selectedUsuario.nombre} ${selectedUsuario.apellido} ?`);
+                                    const confirmacion = window.confirm(t("messages.confirmEdit", {
+                                        name: `${selectedUsuario.nombre} ${selectedUsuario.apellido}`
+                                    }));
 
 
                                     const payload = {
