@@ -148,5 +148,47 @@
       "confirm": "Confirm",
       "cancel": "Cancel"
     }
-  }
+  },
+  "newOrder": {
+    "sections": {
+      "personalData": "Personal data",
+      "accessData": "Access data"
+    },
+    "fields": {
+      "password": "Password",
+      "confirmPassword": "Confirm Password"
+    },
+    "buttons": {
+      "create": "Create"
+    },
+    "messages": {
+      "passwordMismatch": "Passwords do not match"
+    }
+  },
+
+  "status": {
+    "active": "ACTIVE",
+    "inactive": "INACTIVE"
+  },
+  "management": {
+    "title": "Supervisor Management",
+    "description": "Manage supervisors registered in the system",
+    "loading": "Loading supervisors...",
+    "registeredUsers": "Registered Supervisors:",
+    "search": "Search"
+  },
+  "table": {
+    "legajo": "Employee ID",
+    "supervisor": "Supervisor",
+    "email": "Email",
+    "dni": "National ID",
+    "status": "Status",
+    "actions": "Actions",
+    "noActions": "No actions"
+  },
+"messages": {
+  "confirmDeactivate": "Are you sure you want to deactivate user {{name}}?",
+  "confirmEdit": "Are you sure you want to edit user {{name}}?"
+}
+
 }

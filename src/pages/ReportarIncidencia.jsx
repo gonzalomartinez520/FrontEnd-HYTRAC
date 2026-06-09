@@ -6,29 +6,23 @@ import { useTranslation } from "react-i18next";
 
 const normalizeEnvios = (payload) => {
   if (!payload) return [];
-
   if (Array.isArray(payload)) return payload;
-
   if (Array.isArray(payload?.envios)) return payload.envios;
   if (Array.isArray(payload?.data)) return payload.data;
   if (Array.isArray(payload?.result)) return payload.result;
   if (Array.isArray(payload?.items)) return payload.items;
-
   if (payload?.envio || payload?.shipment) {
     return [payload.envio || payload.shipment];
   }
-
   return [payload];
 };
-
-const getField = (envio, keys, fallback = "Pendiente") => {
+const getField = (envio, keys, fallback = "-") => {
   for (const key of keys) {
     const value = envio?.[key];
     if (value !== undefined && value !== null && value !== "") {
       return value;
     }
   }
-
   return fallback;
 };
 
@@ -66,7 +60,7 @@ export default function ReportarIncidencia({ user }) {
       }
 
       setLoading(true);
-
+    
       try {
         const response = await transportistaApi.getEnviosAsignados(transportistaId, user?.legajo);
         const normalized = normalizeEnvios(response);
@@ -76,7 +70,6 @@ export default function ReportarIncidencia({ user }) {
         }
       } catch (requestError) {
         console.error(requestError);
-
         if (isMounted) {
           setEnvios([]);
         }
@@ -144,11 +137,13 @@ export default function ReportarIncidencia({ user }) {
   return (
     <main className="incidencia-screen">
       <section className="incidencia-card">
-        <button type="button" className="back-link" onClick={() => navigate("/transportista")}>← Volver a la ruta</button>
+        <button type="button" className="back-link" onClick={() => navigate("/transportista")}>
+          ← {tTransportista("reportarIncidencia.back")}
+        </button>
 
         <div className="incidencia-header">
           <div>
-            <p className="eyebrow">Reportar incidencia</p>
+            <p className="eyebrow">{tTransportista("reportarIncidencia.eyebrow")}</p>
             <h1>{tTransportista("reportarIncidencia.title")}</h1>
             <p>
               {tTransportista("reportarIncidencia.subtitle")}
@@ -156,7 +151,7 @@ export default function ReportarIncidencia({ user }) {
           </div>
 
           <div className="summary-box">
-            <span>Transportista</span>
+            <span>{tTransportista("reportarIncidencia.summary.label")}</span>
             <strong>{user?.nombre ? `${user.nombre} ${user.apellido || ""}` : tTransportista("reportarIncidencia.summary.fallbackUser")}</strong>
             <small>
               {transportistaId

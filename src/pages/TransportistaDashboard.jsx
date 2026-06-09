@@ -6,21 +6,21 @@ import "../styles/transportistaDashboard.css";
 import RouteMap from "../components/RouteMap";
 import { useTranslation } from "react-i18next";
 
-const formatDate = (value) => {
-  if (!value) return "Pendiente";
+const formatDate = (value, fallbackText = "-", locale = "es-AR") => {
+  if (!value) return fallbackText;
 
   const date = new Date(value);
 
   if (Number.isNaN(date.getTime())) {
     return String(value);
   }
-
-  return date.toLocaleString("es-AR", {
+  return date.toLocaleString(locale, {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    hour12: false
   });
 };
 
@@ -37,11 +37,9 @@ const normalizeEnvios = (payload) => {
   if (payload?.envio || payload?.shipment) {
     return [payload.envio || payload.shipment];
   }
-
   return [payload];
 };
-
-const getField = (envio, keys, fallback = "Pendiente") => {
+const getField = (envio, keys, fallback = null) => {
   for (const key of keys) {
     const value = envio?.[key];
     if (value !== undefined && value !== null && value !== "") {
@@ -54,7 +52,10 @@ const getField = (envio, keys, fallback = "Pendiente") => {
 
 export default function TransportistaDashboard({ user }) {
   const navigate = useNavigate();
-  const { t: tTransportista } = useTranslation("transportista");
+  
+  // 🔹 3. Instanciamos i18n para saber el idioma actual
+  const { t: tTransportista, i18n } = useTranslation("transportista");
+  const currentLocale = i18n.language || "es-AR";
 
   const [fullRoute, setFullRoute] = useState(null);
   const [isMapLoading, setIsMapLoading] = useState(false);
@@ -116,10 +117,8 @@ export default function TransportistaDashboard({ user }) {
       const resolveSavedRouteData = async () => {
         if (!activeEnvio) return;
   
-        // 🔍 DEBUG LOG: Check your developer console to see the exact payload layout!
         console.log("Shipment payload data received:", activeEnvio);
   
-        // Checking potential database field permutations
         const targetRutaId = activeEnvio.rutaId || activeEnvio.ruta_id || activeEnvio.ruta?.id || activeEnvio.ruta;
   
         console.log("Resolved targetRutaId:", targetRutaId);
@@ -177,32 +176,22 @@ export default function TransportistaDashboard({ user }) {
     return `${hours}h ${minutes.toString().padStart(2, "0")}m`;
   };
 
-  const formatearFecha = (fechaString) => {
-    if (!fechaString) return "--/--/---- --:--";
-    const fecha = new Date(fechaString);
-    return fecha.toLocaleString('es-AR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-    });
-  };
-
   const renderEnvioDetail = (envio) => {
-    const origen = getField(envio, ["plantaDespacho", "puntoOrigen", "plantaOrigen", "salida"]);
-    const destino = getField(envio, ["destino", "estacionDestino", "plantaDestino", "llegada"]);
+    const noDataText = tTransportista("dashboard.detail.noData");
+    const pendingText = tTransportista("dashboard.detail.pending");
+
+    const origen = getField(envio, ["plantaDespacho", "puntoOrigen", "plantaOrigen", "salida"], noDataText);
+    const destino = getField(envio, ["destino", "estacionDestino", "plantaDestino", "llegada"], noDataText);
 
     return (
       <article className="envio-detail-card" key={envio?.id ?? `${getField(envio, ["cot", "numeroCot"])}`}>
         <div className="envio-detail-top">
           <div>
             <span className="section-label">{tTransportista("dashboard.detail.sectionLabel")}</span>
-            <h2>{getField(envio, ["cot", "numeroCot", "numero_cot", "cotizacion"], tTransportista("dashboard.detail.noData"))}</h2>
+            <h2>{getField(envio, ["cot", "numeroCot", "numero_cot", "cotizacion"], noDataText)}</h2>
           </div>
           <span className="detail-pill">
-            {tTransportista("dashboard.detail.remito")} {getField(envio, ["nro_remito", "numeroRemito", "remito"], tTransportista("dashboard.detail.noData"))}
+            {tTransportista("dashboard.detail.remito")} {getField(envio, ["nro_remito", "numeroRemito", "remito"], noDataText)}
           </span>
         </div>
 
@@ -221,19 +210,19 @@ export default function TransportistaDashboard({ user }) {
           </div>
           <div className="detail-item">
             <span>{tTransportista("dashboard.detail.fuel")}</span>
-            <strong>{getField(envio, ["tipoCombustible", "combustible", "combustibleNombre"], tTransportista("dashboard.detail.noData"))}</strong>
+            <strong>{getField(envio, ["tipoCombustible", "combustible", "combustibleNombre"], noDataText)}</strong>
           </div>
           <div className="detail-item">
             <span>{tTransportista("dashboard.detail.litersLoaded")}</span>
-            <strong>{getField(envio, ["litrosCargados", "litros_cargados", "volumen"], tTransportista("dashboard.detail.pending"))}</strong>
+            <strong>{getField(envio, ["litrosCargados", "litros_cargados", "volumen"], pendingText)}</strong>
           </div>
           <div className="detail-item">
             <span>{tTransportista("dashboard.detail.departureDate")}</span>
-            <strong>{formatDate(getField(envio, ["fechaSalida", "fecha_salida", "fechaSalidaPlanta", "salida"]))}</strong>
+            <strong>{formatDate(getField(envio, ["fechaSalida", "fecha_salida", "fechaSalidaPlanta", "salida"]), pendingText, currentLocale)}</strong>
           </div>
           <div className="detail-item">
             <span>{tTransportista("dashboard.detail.arrivalDate")}</span>
-            <strong>{formatDate(getField(envio, ["fechaEntregaEstimada", "fecha_llegada", "fechaEntrega", "llegada"]))}</strong>
+            <strong>{formatDate(getField(envio, ["fechaEntregaEstimada", "fecha_llegada", "fechaEntrega", "llegada"]), pendingText, currentLocale)}</strong>
           </div>
         </div>
       </article>
@@ -315,7 +304,9 @@ export default function TransportistaDashboard({ user }) {
                       <h2>
                         {fullRoute?.distanciaKm
                           ? `${Number(fullRoute.distanciaKm).toFixed(1)} km`
-                          : activeEnvio.distanciaKm ? `${Number(activeEnvio.distanciaKm).toFixed(1)} km` : tTransportista("dashboard.summary.defaultDistance")}
+                          : activeEnvio?.distanciaKm 
+                            ? `${Number(activeEnvio.distanciaKm).toFixed(1)} km` 
+                            : tTransportista("dashboard.summary.defaultDistance")}
                       </h2>
                     </div>
                     <div>
@@ -327,18 +318,29 @@ export default function TransportistaDashboard({ user }) {
                   <div className="dates">
                     <div>
                       <small>{tTransportista("dashboard.summary.departureDate")}</small>
-                      <h2>⏱ {activeEnvio.fechaSalidaPlanta ? formatearFecha(activeEnvio.fechaSalidaPlanta) : tTransportista("dashboard.summary.defaultDate")}</h2>
+                      <h2>
+                        ⏱ {formatDate(
+                             getField(activeEnvio, ["fechaSalida", "fecha_salida", "fechaSalidaPlanta", "salida"]), 
+                             tTransportista("dashboard.summary.defaultDate"), 
+                             currentLocale
+                           )}
+                      </h2>
                     </div>
                     <div>
                       <small>{tTransportista("dashboard.summary.arrivalDate")}</small>
-                      <h2>⏱ {activeEnvio.fechaEntrega ? formatearFecha(activeEnvio.fechaEntrega) : tTransportista("dashboard.summary.defaultDate")}</h2>
+                      <h2>     
+                        ⏱ {formatDate(
+                             getField(activeEnvio, ["fechaEntregaEstimada", "fecha_llegada", "fechaEntrega", "llegada"]), 
+                             tTransportista("dashboard.summary.defaultDate"), 
+                             currentLocale
+                           )}
+                      </h2>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             
-
             <div className="action-row">
               <button
                 type="button"

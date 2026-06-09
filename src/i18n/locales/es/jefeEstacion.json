@@ -1,0 +1,27 @@
+ {
+  "management": {
+    "title": "Gestión de Jefes de Estación",
+    "description": "Administra los jefes de estación registrados en el sistema",
+    "loading": "Cargando jefes de estación...",
+    "registeredUsers": "Jefes de Estación Registrados:",
+    "search": "Buscador"
+  },
+  "table": {
+    "legajo": "Legajo",
+    "stationChief": "Jefe de Estación",
+    "email": "Email",
+    "dni": "DNI",
+    "operationalLocation": "Ubicación Operativa",
+    "status": "Estado",
+    "actions": "Acciones",
+    "noActions": "Sin acciones"
+  },
+  "status": {
+    "active": "ACTIVO",
+    "inactive": "NO ACTIVO"
+  },
+  "messages": {
+  "confirmDeactivate": "¿Seguro que desea dar de baja al usuario {{name}}?",
+  "confirmEdit": "¿Seguro que desea editar los datos del usuario {{name}}?"
+}
+}

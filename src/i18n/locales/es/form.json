@@ -61,6 +61,8 @@
       "dni": "Documento Nacional de Identidad (DNI)",
       "email": "Correo Electrónico",
       "passwordTemporal": "Contraseña",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar Contraseña",
       "telefono": "Teléfono"
     },
 

@@ -21,15 +21,6 @@ export default function NuevoUsuario( { user } ) {
         { value: "JEFE_ESTACION", label: tCommon("roles.JEFE_ESTACION") }
     ];
 
-
-    const [formData, setFormData] = useState({
-        nombre: "", //LUEGO RELLENAR CON LOS CAMPOS NECESARIOS.
-    });
-
-
-
-
-
     return (
         <div className="nuevo-usuario-layout">
 

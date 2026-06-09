@@ -5,6 +5,7 @@ import "../styles/navbar.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 import i18n from "../i18n";
 import { useTranslation } from "react-i18next";
+import { datos } from '@/api';
 
 export default function Navbar({ user, onLogout }) {
   const navigate = useNavigate();
@@ -16,6 +17,88 @@ export default function Navbar({ user, onLogout }) {
     { code: "en", label: "English", flag: "🇺🇸" },
     { code: "pt", label: "Português", flag: "🇧🇷" }
   ];
+
+
+  const [notificaciones, setNotificaciones] = useState([]);
+  const [openNotif, setOpenNotif] = useState(false);
+  const [closing, setClosing] = useState(false);
+
+  const handleToggle = () => {
+    if (openNotif) {
+      setClosing(true);
+
+      setTimeout(() => {
+        setOpenNotif(false);
+        setClosing(false);
+      }, 250); // 🔥 igual que CSS
+    } else {
+      setOpenNotif(true);
+    }
+  };
+
+  const formatearFecha = (fechaString) => {
+    const fecha = new Date(fechaString);
+
+      return fecha.toLocaleString('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await datos.getNotificaciones(localStorage.getItem("legajo"));
+        console.log("Datos obtenidos de la API:", response);
+        setNotificaciones(response);
+      } catch (error) {
+        console.error("Error al obtener notificaciones:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const unreadCount = notificaciones.filter(n => !n.visto).length;
+
+  const BellNormal = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24">
+      <path
+        fill="#ff7a00"
+        d="M12 2a6 6 0 0 0-6 6v4.5l-1.7 2.6A1 1 0 0 0 5 17h14a1 1 0 0 0 .8-1.6L18 12.5V8a6 6 0 0 0-6-6zm0 20a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22z"
+      />
+    </svg>
+  );
+
+  const BellWithNotification = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24">
+      <path
+        fill="#ff7a00"
+        d="M12 2a6 6 0 0 0-6 6v4.5l-1.7 2.6A1 1 0 0 0 5 17h14a1 1 0 0 0 .8-1.6L18 12.5V8a6 6 0 0 0-6-6zm0 20a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22z"
+      />
+      <circle cx="18" cy="6" r="5" fill="#ff3b3b" />
+    </svg>
+  );
+
+  const marcarLeida = async (id) => {
+    // 🔥 update inmediato
+    setNotificaciones(prev =>
+      prev.map(n =>
+        n.id === id ? { ...n, visto: true } : n
+      )
+    );
+
+    try {
+      await datos.leerNotificacion(id);
+    } catch (error) {
+      console.log("Error al marcar como vista", error);
+    }
+  };
+
 
   const [menuOpen, setMenuOpen] = useState(false);
   const role = String(user?.normalizedRole || user?.role || "").toUpperCase();
@@ -152,7 +235,24 @@ useEffect(() => {
     },
   };
 
-   const action = role === "TRANSPORTISTA" ? transportistaAction : actionByRole[role];
+  const roleConfig = {
+    OPERADOR: {
+      title: t("historialOrdenes"),
+      to: "/historial-operador",
+      icon: "🕘",
+      label: t("historialOrdenes"),
+    },
+    SUPERVISOR: {
+      title: t("reportes"),
+      to: "/reportes",
+      icon: "📈",
+      label: t("reportes"),
+    },
+  };
+
+  const config = roleConfig[role];
+
+  const action = role === "TRANSPORTISTA" ? transportistaAction : actionByRole[role];
 
   return (
     <nav className="top-nav">
@@ -215,20 +315,16 @@ useEffect(() => {
             </Link>
           )}
 
-          <Link
-            title={t("historialOrdenes")}
-            to="/historial-operador"
-            onClick={() => setMenuOpen(false)}
-          >
-            {role == "OPERADOR" ? (
-              <>
-                <span className="route-nav-icon" aria-hidden="true">🕘</span> {t("historialOrdenes")}
-              </>
-            ) : (
-              null
-            
-            )}
-          </Link>
+          {config && (
+            <Link
+              title={config.label}
+              to={config.to}
+              onClick={() => setMenuOpen(false)}
+            >
+              <span className="icon">{config.icon}</span> {config.label}
+            </Link>
+          )}
+
         </div>
       </div>
 
@@ -241,6 +337,58 @@ useEffect(() => {
             </option>
           ))}
         </select>
+
+        <div className="notification-container">
+          <button
+            className="notification-btn"
+            onClick={handleToggle}
+          >
+            <div className="bell-wrapper">
+              <BellNormal />
+
+              {unreadCount > 0 && (
+                <span className="notification-badge">
+                  {unreadCount > 99 ? "99+" : unreadCount}
+                </span>
+              )}
+            </div>
+          </button>
+
+          {(openNotif || closing) && (
+            <div className={`notification-dropdown ${closing ? "closing" : ""}`}>
+              <div className="notif-header">
+                <strong>{t("notificaciones")}</strong>
+              </div>
+
+              <div className="notif-list">
+                {notificaciones.length === 0 ? (
+                  <span className="empty">{t("sinNotificaciones")}</span>
+                ) : (
+                  notificaciones.map((n) => (
+                    <div
+                      key={n.id}
+                      className={`notif-item ${n.visto ? "" : "unread"}`}
+                      onClick={() => !n.visto && marcarLeida(n.id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="cuerpo">
+                        <div className="descripcion">
+                          {n.descripcion}
+                        </div>
+
+                        <div className="fecha-notificacion">
+                          {formatearFecha(n.fechaCreacion)}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+              <div className="notif-bottom">
+              </div>
+            </div>
+          )}
+        </div>
 
         <div className="user-profile">
           <span className="user-icon">

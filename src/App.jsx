@@ -20,6 +20,7 @@ import ConfirmarEnvio from "./pages/ConfirmarEnvio.jsx";
 import ConfirmarEntregas from "./pages/ConfirmarEntregas.jsx";
 import ConfirmarInicioViaje from "./pages/ConfirmarInicioViaje.jsx";
 import ConfirmarIncidencias from "./pages/ConfirmarIncidencias.jsx";
+import Reportes from "./pages/Reportes.jsx";
 import Administrador from "./pages/Administrador.jsx";
 import GestionOperario from "./pages/GestionOperario.jsx";
 import GestionSupervisor from "./pages/GestionSupervisor.jsx";
@@ -250,6 +251,16 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["SUPERVISOR"]}>
               <ConfirmarInicioViaje user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* REPORTES */}
+        <Route
+          path="/reportes"
+          element={
+            <ProtectedRoute allowedRoles={["SUPERVISOR"]}>
+              <Reportes user={parsedUser} />
             </ProtectedRoute>
           }
         />

@@ -155,6 +155,29 @@ export default function EnvioDetail({ user }) {
     return `${hours}h ${minutes.toString().padStart(2, "0")}m`;
   };
 
+  const renderMotivo = (motivo) => {
+    if (!motivo) return "-";
+
+    const regex = /(Código generado:\s*)(\d+)/i;
+    const match = motivo.match(regex);
+
+    if (!match) return motivo;
+
+    const [fullMatch, texto, numero] = match;
+
+    const before = motivo.substring(0, match.index);
+    const after = motivo.substring(match.index + fullMatch.length);
+
+    return (
+      <>
+        {before}
+        <span className="codigo-texto">{texto}</span>
+        <span className="codigo-naranja">{numero}</span>
+        {after}
+      </>
+    );
+  };
+
   const formatearFecha = (fechaString) => {
     if (!fechaString) return "--/--/---- --:--";
     const fecha = new Date(fechaString);
@@ -248,7 +271,7 @@ export default function EnvioDetail({ user }) {
               </div>
               <div>
                 <small>{t("envioDetail.arrivalDate")}</small>
-                <h2>⏱ {shipment.fechaEntrega ? formatearFecha(shipment.fechaEntrega) : "-"}</h2>
+                <h2>⏱ {shipment.fechaEntregaReal ? formatearFecha(shipment.fechaEntregaReal) : "-"}</h2>
               </div>
             </div>
 
@@ -283,55 +306,55 @@ export default function EnvioDetail({ user }) {
 
           <div className="grid-info">
             <div>
-              <h4 className="sub-title">🚛 UNIDAD DE TRANSPORTE</h4>
+              <h4 className="sub-title">🚛 {t("envioDetail.transportUnit")}</h4>
               <div className="info-row">
-                <span>Patente Camion</span>
+                <span>{t("envioDetail.truckPlate")}</span>
                 <strong>{shipment.camionPatente}</strong>
               </div>
 
               <div className="info-row">
-                <span>Patente Acoplado</span>
+                <span>{t("envioDetail.trailerPlate")}</span>
                 <strong>{shipment.acopladoPatente}</strong>
               </div>
 
               <div className="info-row">
-                <span>Capacidad Total</span>
+                <span>{t("envioDetail.totalCapacity")}</span>
                 <strong>{shipment.capacidadTotalAcoplado} Lts.</strong>
               </div>
 
               <div className="info-row">
-                <span>Peso Máximo</span>
+                <span>{t("envioDetail.maxWeight")}</span>
                 <strong>{shipment.pesoMaximoCamion} Kgs.</strong>
               </div>
             </div>
 
             <div>
-              <h4 className="sub-title">💧 ESPECIFICACIONES DE CARGA</h4>
+              <h4 className="sub-title">💧 {t("envioDetail.cargoSpecs")}</h4>
 
               <div className="info-row">
-                <span>Combustible</span>
+                <span>{t("envioDetail.fuel")}</span>
                 <strong>{shipment.combustible}</strong>
               </div>
 
               <div className="info-row">
-                <span>Clase Peligro</span>
+                <span>{t("envioDetail.dangerClass")}</span>
                 <strong>{shipment.claseRiesgo}</strong>
               </div>
 
               <div className="info-row">
-                <span>Temperatura</span>
+                <span>{t("envioDetail.temperature")}</span>
                 <strong>{combustibleSeleccionado?.temperaturaReferencia} °C</strong>
               </div>
 
               <div className="info-row">
-                <span>Litros Cargados</span>
+                <span>{t("envioDetail.litersLoaded")}</span>
                 <strong>{shipment.litrosCargados} Lts.</strong>
               </div>
             </div>
           </div>
 
           <h3 className="section-title">
-            🚚 SEGUIMIENTO DE LA ORDEN
+            🚚 {t("envioDetail.orderTracking")}
           </h3>
 
           <div className="timeline">
@@ -399,7 +422,9 @@ export default function EnvioDetail({ user }) {
                           👤 {actor.label}: <strong>{actor.value}</strong>
                         </p>
 
-                        <p className="motivo">📝 {item.motivo}</p>
+                        <p className="motivo">
+                          📝 {renderMotivo(item.motivo)}
+                        </p>
 
                         <p className="fecha">
                           🕒 {formatearFecha(item.fechaCambio)}

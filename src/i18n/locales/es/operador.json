@@ -19,5 +19,25 @@
     "messages": {
       "editSuccess": "Envío con ID: {{id}} editado correctamente"
     }
-  }
+  },
+  "management": {
+    "title": "Gestión de Operarios",
+    "description": "Administra los operarios registrados en el sistema",
+    "loading": "Cargando operarios...",
+    "registeredUsers": "Operarios Registrados:",
+    "search": "Buscador"
+  },
+  "table": {
+    "legajo": "Legajo",
+    "operator": "Operador",
+    "email": "Email",
+    "dni": "DNI",
+    "status": "Estado",
+    "actions": "Acciones",
+    "noActions": "Sin acciones"
+  },
+  "messages": {
+  "confirmDeactivate": "¿Seguro que desea dar de baja al usuario {{name}}?",
+  "confirmEdit": "¿Seguro que desea editar los datos del usuario {{name}}?"
+}
 }

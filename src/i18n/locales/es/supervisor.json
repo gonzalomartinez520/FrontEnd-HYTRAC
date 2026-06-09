@@ -148,5 +148,46 @@
       "confirm": "Confirmar",
       "cancel": "Cancelar"
     }
-  }
+  },
+  "newOrder": {
+    "sections": {
+      "personalData": "Datos personales",
+      "accessData": "Datos de acceso"
+    },
+    "fields": {
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña"
+    },
+    "buttons": {
+      "create": "Crear"
+    },
+    "messages": {
+      "passwordMismatch": "Las contraseñas no coinciden"
+    }
+  }, 
+ 
+  "status": {
+    "active": "ACTIVO",
+    "inactive": "NO ACTIVO"
+  },
+  "management": {
+    "title": "Gestión de Supervisores",
+    "description": "Administra los supervisores registrados en el sistema",
+    "loading": "Cargando supervisores...",
+    "registeredUsers": "Supervisores Registrados:",
+    "search": "Buscador"
+  },
+  "table": {
+    "legajo": "Legajo",
+    "supervisor": "Supervisor",
+    "email": "Email",
+    "dni": "DNI",
+    "status": "Estado",
+    "actions": "Acciones",
+    "noActions": "Sin acciones"
+  },
+  "messages": {
+  "confirmDeactivate": "¿Seguro que desea dar de baja al usuario {{name}}?",
+  "confirmEdit": "¿Seguro que desea editar los datos del usuario {{name}}?"
+}
 }

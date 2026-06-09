@@ -1,0 +1,57 @@
+{
+  "title": "Reports",
+  "description": "Here you can view the performance of your shipments, analyze trends, and make informed decisions to optimize your logistics.",
+  "loading": "Loading reports...",
+
+  "buttons": {
+    "export": "Export CSV Report"
+  },
+
+  "charts": {
+    "shipmentStatus": "Shipment Statuses",
+    "shipmentRanking": "Shipment Ranking",
+    "incidentsStatus": "Incident Status",
+    "incidentsRanking": "Incident Ranking",
+    "monthlyEvolution": "Monthly Evolution"
+  },
+
+  "table": {
+    "branch": "Branch",
+    "shipments": "Shipments",
+    "type": "Type",
+    "quantity": "Quantity"
+  },
+  "csv": {
+    "type": "Type",
+    "name": "Name",
+    "value": "Value",
+    "status": "Status",
+    "branch": "Branch",
+    "incidentStatus": "Incident Status",
+    "incidentType": "Incident Type",
+    "month": "Month",
+    "fileName": "logistics-report.csv"
+  },
+  "incidents": {
+  "resolved": "Resolved",
+  "unresolved": "Unresolved",
+  "unclassified": "Unclassified"
+},
+"misc": {
+  "noPlant": "No Plant"
+},
+"months": {
+  "jan": "Jan",
+  "feb": "Feb",
+  "mar": "Mar",
+  "apr": "Apr",
+  "may": "May",
+  "jun": "Jun",
+  "jul": "Jul",
+  "aug": "Aug",
+  "sep": "Sep",
+  "oct": "Oct",
+  "nov": "Nov",
+  "dec": "Dec"
+}
+}

@@ -10,5 +10,9 @@
   "notificarEntrega": "Notify Delivery",
   "gestionUsuarios": "User Management",
   "usuarioNuevo": "New User",
-  "salir": "Logout"
+  "reportes": "Reports",
+  "salir": "Logout",
+
+  "notificaciones": "Notifications",
+  "sinNotificaciones": "No notifications"
 }

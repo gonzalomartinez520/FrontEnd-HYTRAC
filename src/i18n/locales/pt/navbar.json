@@ -10,5 +10,9 @@
   "notificarEntrega": "Notificar Entrega",
   "gestionUsuarios": "Gestão de Usuários",
   "usuarioNuevo": "Novo Usuário",
-  "salir": "Sair"
+  "reportes": "Relatórios",
+  "salir": "Sair",
+
+  "notificaciones": "Notificações",
+  "sinNotificaciones": "Sem notificações"
 }

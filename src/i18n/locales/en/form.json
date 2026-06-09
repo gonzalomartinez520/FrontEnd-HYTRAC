@@ -24,7 +24,7 @@
         "OPERADOR": "Complete the following information to register a new operator in the system.",
         "SUPERVISOR": "Complete the following information to register a new supervisor in the system.",
         "TRANSPORTISTA": "Please complete the following fields to create a new driver.",
-        "JEFE_ESTACION": "Complete the following information to register a new station manager in the system."
+        "JEFE_ESTACION": "Complete the following information to register a new station chief in the system."
       }
     },
 
@@ -60,6 +60,8 @@
       "apellido": "Last Name",
       "dni": "National ID Document (DNI)",
       "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
       "passwordTemporal": "Password",
       "telefono": "Phone"
     },

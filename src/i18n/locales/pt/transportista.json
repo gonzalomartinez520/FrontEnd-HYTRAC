@@ -136,5 +136,66 @@
   "actions": {
     "confirmShipment": "Confirmar envio",
     "notifyDelivery": "Notificar entrega"
-  }
+  },
+  "transportistaForm": {
+    "sections": {
+      "personalData": "Dados Pessoais",
+      "accessData": "Dados de Acesso",
+      "documentation": "Documentação"
+    },
+    "fields": {
+      "dni": "DNI",
+      "email": "E-mail",
+      "password": "Senha",
+      "confirmPassword": "Confirmar Senha",
+      "linkType": "Tipo de vínculo",
+      "selectOption": "Selecione uma opção",
+      "workCompany": "Empresa",
+      "selectCompany": "Selecionar empresa",
+      "documentType": "Tipo de documento",
+      "selectDocument": "Selecionar documento",
+      "documentNumber": "Número do Documento",
+      "expirationDate": "Data de vencimento",
+      "fileUrl": "URL do Arquivo",
+      "numberLabel": "Número:",
+      "expiresLabel": "Vence:"
+    },
+    "buttons": {
+      "addDocument": "Adicionar Documento",
+      "createUser": "Criar Usuário"
+    },
+    "errors": {
+      "completeDocumentFields": "Preencha todos os campos do documento",
+      "documentAlreadyLoaded": "Esse documento já foi carregado",
+      "dniLength": "O DNI deve ter entre 7 e 8 dígitos",
+      "passwordMismatch": "As senhas não coincidem",
+      "missingDocuments": "Faltam {{count}} documentos obrigatórios"
+    }
+  },
+  "management": {
+    "title": "Gestão de Transportadoras",
+    "description": "Gerencie as transportadoras registradas no sistema",
+    "loading": "Carregando transportadoras...",
+    "registeredUsers": "Transportadoras Registradas:",
+    "search": "Pesquisar"
+  },
+  "table": {
+    "legajo": "Matrícula",
+    "carrier": "Transportadora",
+    "dni": "Documento",
+    "cuit": "CNPJ/CPF",
+    "relationshipType": "Tipo de Vínculo",
+    "company": "Empresa",
+    "status": "Estado",
+    "actions": "Ações",
+    "noActions": "Sem ações"
+  },
+  "details": {
+    "document": "Documento",
+    "test": "Teste"
+  },
+  "messages": {
+  "confirmDeactivate": "Tem certeza de que deseja desativar o usuário {{name}}?",
+  "confirmEdit": "Tem certeza de que deseja editar os dados do usuário {{name}}?"
+}
 }

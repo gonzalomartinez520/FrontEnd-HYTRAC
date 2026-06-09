@@ -1,22 +1,60 @@
 import { useNavigate } from "react-router-dom"; 
 import { useState, useEffect, Fragment } from "react";
 import { administrador } from '@/api';
+import { useTranslation } from 'react-i18next';
 import "../styles/gestionOperarios.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
-
 import { datos } from '@/api';
 
 export default function GestionOperador( { user } ) {
+    const { t } = useTranslation("operador");
     const navigate = useNavigate();
+    const { t: tForm } = useTranslation("form");
+    const { t: tCommon } = useTranslation("common");
 
     const [operarios, setOperarios] = useState([]);
+
+    const [errorDni, setErrorDni] = useState("");
+    const [errorPassword, setErrorPassword] = useState("");
+
+    const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
 
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState(""); 
 
     const [showModal, setShowModal] = useState(false);
-    const [selectedUsuarioId, setSelectedUsuarioId] = useState(null);
+    const [selectedUsuario, setSelectedUsuario] = useState(null);
+
+    const [formData, setFormData] = useState({
+        nombre: "",
+        apellido: "",
+        dni: "",
+        email: "",
+        passwordTemporal: "",
+        confirmarPassword: ""
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+    useEffect(() => {
+      if (showModal) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
+
+      return () => {
+        document.body.style.overflow = "auto";
+      };
+    }, [showModal]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -53,12 +91,33 @@ export default function GestionOperador( { user } ) {
         return matchesSearch;
     });
 
+    const darBajaUsuario = (usuario) => {
+        const confirmacion = window.confirm(
+        t("messages.confirmDeactivate", {
+            name: `${usuario.nombre} ${usuario.apellido}`
+        })
+        );
+        if (confirmacion) {
+            const fetchConfirmar = async () => {
+                try {
+                    await administrador.darBajaUsuario(usuario.id);
+                    console.log("Usuario dado de baja con éxito");
+
+                    window.location.reload();
+                } catch (error) {
+                    console.log("Error al dar de baja el usuario", error);
+                }
+            };
+            fetchConfirmar();
+        }
+    };
+
 
     if (loading) {
         return (
             <div className="confirmar-loading-screen">
                 <div className="confirmar-loader"></div>
-                <h2>Cargando operarios...</h2>
+                <h2>{t("management.loading")}</h2>
             </div>
         );
     }
@@ -68,24 +127,21 @@ export default function GestionOperador( { user } ) {
             <main className="gestion-operarios-content">
                 <section className="gestion-operarios-header">
                     <div>
-                        <h1>Gestión de Operarios</h1>
-                        <p>
-                            Administra los operarios registrados en el sistema
-                        </p>
+                        <h1>{t("management.title")}</h1>
+                            <p>
+                                {t("management.description")}
+                            </p>
                     </div>
                 </section>
-
                 <section className="gestion-operarios-table">
                     <div className="table-header">
                         <div>
-                            <h2>Operarios Registrados: {operarios.length}</h2>
+                            <h2>{t("management.registeredUsers")} {operarios.length}</h2>                        
                         </div>
-
                         <div className="search-container">
                             <input
                                 type="text"
-                                placeholder="🔎 Buscador"
-                                value={search}
+                                placeholder={`🔎 ${t("management.search")}`}                                value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
@@ -94,12 +150,12 @@ export default function GestionOperador( { user } ) {
                     <table>
                         <thead>
                             <tr>
-                                <th>Legajo</th>
-                                <th>Operador</th>
-                                <th>Email</th>
-                                <th>DNI</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
+                                <th>{t("table.legajo")}</th>
+                                <th>{t("table.operator")}</th>
+                                <th>{t("table.email")}</th>
+                                <th>{t("table.dni")}</th>
+                                <th>{t("table.status")}</th>
+                                <th>{t("table.actions")}</th>
                             </tr>
                         </thead>
 
@@ -120,9 +176,21 @@ export default function GestionOperador( { user } ) {
                                         <td>
                                             <div className="actions-table">
                                                 {usuario.activo ? (
-                                                    <button className="editar-envio">
+                                                    <button className="editar-envio"
+                                                    onClick={() => {
+                                                        setSelectedUsuario(usuario);
 
+                                                        setFormData(prev => ({
+                                                            ...prev,
+                                                            nombre: usuario.nombre,
+                                                            apellido: usuario.apellido,
+                                                            dni: usuario.dni,
+                                                            email: usuario.email,
+                                                        }))
 
+                                                        setShowModal(true);
+                                                    }}
+                                                    >
                                                         <svg 
                                                             xmlns="http://www.w3.org/2000/svg" 
                                                             width="18" 
@@ -141,8 +209,9 @@ export default function GestionOperador( { user } ) {
                                                 )}
 
                                                 {usuario.activo ? (
-                                                    <button
+                                                <button
                                                 className="rechazar-envio" 
+                                                onClick={() => darBajaUsuario(usuario)}
                                                 >
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +230,7 @@ export default function GestionOperador( { user } ) {
 
                                                 </button>
                                                 ) : (
-                                                    <strong className="">Sin acciones</strong>
+                                                    <strong>{t("table.noActions")}</strong>
                                                 )}
                                             </div>
                                         </td>
@@ -172,6 +241,159 @@ export default function GestionOperador( { user } ) {
                     </table>
                 </section>
             </main>
+
+            {showModal && selectedUsuario && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        
+                    {/* 🔹 DATOS PERSONALES */}
+                    <div className="form-section">
+                        <div className="form-section-title">
+                            <h3>
+                                <svg className="admin-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 6.75A2.25 2.25 0 015.25 4.5h13.5A2.25 2.25 0 0121 6.75v10.5A2.25 2.25 0 0118.75 19.5H5.25A2.25 2.25 0 013 17.25V6.75z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 9h3m-3 3h6m-6 3h4" />
+                                </svg>
+                                    {tForm("newOrder.sections.personalData")}
+                            </h3>
+                        </div>
+
+                        <div className="form-row">
+                        <div className="form-group">
+                            <label htmlFor="nombre">{tForm("newOrder.fields.nombre")}</label>
+                            <input
+                            type="text"
+                            name="nombre"
+                            value={formData.nombre}
+                            onChange={handleChange}
+                            required
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="apellido">{tForm("newOrder.fields.apellido")}</label>
+                            <input
+                            type="text"
+                            name="apellido"
+                            value={formData.apellido}
+                            onChange={handleChange}
+                            required
+                            />
+                        </div>
+                        </div>
+
+                        <div className="form-row">
+                        <div className="form-group">
+                            <label htmlFor="dni">{tForm("newOrder.fields.dni")}</label>
+                            <input
+                            type="text"
+                            name="dni"
+                            value={formData.dni}
+                            onChange={(e) => {
+                                const value = e.target.value.replace(/\D/g, "");
+                                setFormData((prev) => ({ ...prev, dni: value }));
+                            }}
+                            inputMode="numeric"
+                            required
+                            />
+                            {errorDni && <span className="error">{errorDni}</span>}
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="email">{tForm("newOrder.fields.email")}</label>
+                            <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                            />
+                        </div>
+                        </div>
+                    </div>
+
+                    {/* 🔹 ACCESO */}
+                    <div className="form-section">
+                        <div className="form-section-title">
+                            <h3> 
+                                <svg className="admin-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V7.875a4.125 4.125 0 10-8.25 0V10.5M6.75 10.5h10.5A1.5 1.5 0 0118.75 12v6A1.5 1.5 0 0117.25 19.5H6.75A1.5 1.5 0 015.25 18v-6A1.5 1.5 0 016.75 10.5z" />
+                                </svg>
+                                {tForm("newOrder.sections.accessData")}
+                            </h3>
+                        </div>
+
+                        <div className="form-group">
+                        <label>{tForm("newOrder.fields.password")}</label>
+                        <input
+                            type="password"
+                            name="passwordTemporal"
+                            value={formData.passwordTemporal}
+                            onChange={handleChange}
+                            required
+                        />
+                        </div>
+
+                        <div className="form-group">
+                            <label>{tForm("newOrder.fields.confirmPassword")}</label>
+                            <input
+                                type="password"
+                                name="confirmarPassword"
+                                value={formData.confirmarPassword}
+                                onChange={handleChange}
+                                required
+                            />
+                            {errorPassword && <span className="error">{errorPassword}</span>}
+                        </div>
+                    </div>
+                        {error && <div className="error-alert">❌ {error}</div>}
+                        {success && <div className="success-alert">✅ {success}</div>}
+
+                        <div className="modal-actions">
+                            <button className="cancelar-edicion" onClick={() => setShowModal(false)}>
+                                {tForm("newOrder.buttons.cancel")}
+                            </button>
+                            
+                            <button
+                            className="guardar-edicion"
+                            onClick={ async () => {
+                                try {
+                                    console.log(selectedUsuario);
+                                    const confirmacion = window.confirm(
+                                    t("messages.confirmEdit", {
+                                        name: `${selectedUsuario.nombre} ${selectedUsuario.apellido}`
+                                    })
+                                    );
+
+                                    const payload = {
+                                        nombre: formData.nombre,
+                                        apellido: formData.apellido,
+                                        dni: Number(formData.dni),
+                                        email: formData.email,
+                                        passwordTemporal: formData.passwordTemporal,
+                                        rolNombre: selectedUsuario.rol
+                                    };
+                                    console.log(payload);
+
+                                    const usuarioEditado = await administrador.editarUsuario(selectedUsuario.id, payload);
+
+                                    console.log(usuarioEditado);
+                                    window.location.reload();
+
+                                    setShowModal(false);
+                                } catch (error) {
+                                    console.error("Error al editar envío:", error);
+                                    console.log("DATA:", error.response?.data);
+                                    console.log("STATUS:", error.response?.status);
+                                }
+                            }}
+                            >
+                                {tForm("newOrder.buttons.save")}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

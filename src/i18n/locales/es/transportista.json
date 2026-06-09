@@ -136,5 +136,66 @@
   "actions": {
     "confirmShipment": "Confirmar envio",
     "notifyDelivery": "Notificar entrega"
-  }
+  },
+  "transportistaForm": {
+    "sections": {
+      "personalData": "Datos Personales",
+      "accessData": "Datos de Acceso",
+      "documentation": "Documentación"
+    },
+    "fields": {
+      "dni": "DNI",
+      "email": "Correo Electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar Contraseña",
+      "linkType": "Tipo de vínculo",
+      "selectOption": "Seleccionar una opción",
+      "workCompany": "Empresa de trabajo",
+      "selectCompany": "Seleccionar empresa",
+      "documentType": "Tipo de documento",
+      "selectDocument": "Seleccionar documento",
+      "documentNumber": "Número del Documento",
+      "expirationDate": "Fecha vencimiento",
+      "fileUrl": "Archivo URL",
+      "numberLabel": "Número:",
+      "expiresLabel": "Vence:"
+    },
+    "buttons": {
+      "addDocument": "Agregar Documento",
+      "createUser": "Crear Usuario"
+    },
+    "errors": {
+      "completeDocumentFields": "Completá todos los campos del documento",
+      "documentAlreadyLoaded": "Ese documento ya fue cargado",
+      "dniLength": "El DNI debe tener entre 7 y 8 dígitos",
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "missingDocuments": "Faltan {{count}} documentos obligatorios"
+    }
+  },
+  "management": {
+    "title": "Gestión de Transportistas",
+    "description": "Administra los transportistas registrados en el sistema",
+    "loading": "Cargando transportistas...",
+    "registeredUsers": "Transportistas Registrados:",
+    "search": "Buscador"
+  },
+  "table": {
+    "legajo": "Legajo",
+    "carrier": "Transportista",
+    "dni": "DNI",
+    "cuit": "CUIT",
+    "relationshipType": "Tipo de Vínculo",
+    "company": "Empresa",
+    "status": "Estado",
+    "actions": "Acciones",
+    "noActions": "Sin acciones"
+  },
+  "details": {
+    "document": "Documento",
+    "test": "Prueba"
+  },
+  "messages": {
+  "confirmDeactivate": "¿Seguro que desea dar de baja al usuario {{name}}?",
+  "confirmEdit": "¿Seguro que desea editar los datos del usuario {{name}}?"
+}
 }

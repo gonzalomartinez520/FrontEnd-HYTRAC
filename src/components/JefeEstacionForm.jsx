@@ -278,7 +278,7 @@ export default function JefeEstacionForm() {
                 </div>
 
                 <div className="form-group">
-                    <label>Confirmar Contraseña</label>
+                    <label>{tForm("newOrder.fields.confirmPassword")}</label>
                     <input
                         type="password"
                         name="confirmarPassword"
@@ -290,7 +290,6 @@ export default function JefeEstacionForm() {
                 </div>
             </div>
 
-            {/* 🔹 UBICACIÓN */}
             <div className="form-section">
                 <div className="form-section-title">
                     <h3>
@@ -358,11 +357,9 @@ export default function JefeEstacionForm() {
                 </div>
             </div>
 
-            {/* 🔹 ALERTAS */}
             {error && <div className="error-alert">❌ {error}</div>}
             {success && <div className="success-alert">✅ {success}</div>}
 
-            {/* 🔹 BOTÓN */}
             <div className="form-actions">
                 <button type="submit" className="btn-submit">
                 {tForm("newOrder.buttons.create")}
