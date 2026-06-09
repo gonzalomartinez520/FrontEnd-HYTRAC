@@ -35,5 +35,9 @@
     "status": "Estado",
     "actions": "Ações",
     "noActions": "Sem ações"
-  }
+  },
+  "messages": {
+  "confirmDeactivate": "Tem certeza de que deseja desativar o usuário {{name}}?",
+  "confirmEdit": "Tem certeza de que deseja editar os dados do usuário {{name}}?"
+}
 }

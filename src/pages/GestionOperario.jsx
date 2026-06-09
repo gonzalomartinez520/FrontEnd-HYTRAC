@@ -92,8 +92,11 @@ export default function GestionOperador( { user } ) {
     });
 
     const darBajaUsuario = (usuario) => {
-        const confirmacion = window.confirm(`¿Seguro que desea dar de baja al usuario: ${usuario.nombre} ${usuario.apellido} ?`)
-
+        const confirmacion = window.confirm(
+        t("messages.confirmDeactivate", {
+            name: `${usuario.nombre} ${usuario.apellido}`
+        })
+        );
         if (confirmacion) {
             const fetchConfirmar = async () => {
                 try {
@@ -251,7 +254,7 @@ export default function GestionOperador( { user } ) {
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M3 6.75A2.25 2.25 0 015.25 4.5h13.5A2.25 2.25 0 0121 6.75v10.5A2.25 2.25 0 0118.75 19.5H5.25A2.25 2.25 0 013 17.25V6.75z" />
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 9h3m-3 3h6m-6 3h4" />
                                 </svg>
-                                Datos Personales
+                                    {tForm("newOrder.sections.personalData")}
                             </h3>
                         </div>
 
@@ -316,12 +319,12 @@ export default function GestionOperador( { user } ) {
                                 <svg className="admin-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V7.875a4.125 4.125 0 10-8.25 0V10.5M6.75 10.5h10.5A1.5 1.5 0 0118.75 12v6A1.5 1.5 0 0117.25 19.5H6.75A1.5 1.5 0 015.25 18v-6A1.5 1.5 0 016.75 10.5z" />
                                 </svg>
-                                Datos de Acceso
+                                {tForm("newOrder.sections.accessData")}
                             </h3>
                         </div>
 
                         <div className="form-group">
-                        <label>Contraseña</label>
+                        <label>{tForm("newOrder.fields.password")}</label>
                         <input
                             type="password"
                             name="passwordTemporal"
@@ -332,7 +335,7 @@ export default function GestionOperador( { user } ) {
                         </div>
 
                         <div className="form-group">
-                            <label>Confirmar Contraseña</label>
+                            <label>{tForm("newOrder.fields.confirmPassword")}</label>
                             <input
                                 type="password"
                                 name="confirmarPassword"
@@ -356,8 +359,11 @@ export default function GestionOperador( { user } ) {
                             onClick={ async () => {
                                 try {
                                     console.log(selectedUsuario);
-                                    const confirmacion = window.confirm(`¿Seguro que desea editar los datos del usuario: ${selectedUsuario.nombre} ${selectedUsuario.apellido} ?`);
-
+                                    const confirmacion = window.confirm(
+                                    t("messages.confirmEdit", {
+                                        name: `${selectedUsuario.nombre} ${selectedUsuario.apellido}`
+                                    })
+                                    );
 
                                     const payload = {
                                         nombre: formData.nombre,
