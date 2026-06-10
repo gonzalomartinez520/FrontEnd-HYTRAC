@@ -406,7 +406,7 @@ export default function ConfirmarEnvio({ user }) {
                                 };
 
                                 console.log(payload);
-                                const newOrder = envios.rechazarEnvio(selectedShipmentId, payload);
+                                await rechazarEnvio(selectedShipmentId, payload);
                             } catch (error) {
                                 console.error("Error al rechazar el envío:", error);
                             }
