@@ -161,15 +161,6 @@ export default function OperarioDashboard({ user }) {
               ))}
             </tbody>
           </table>
-
-          {/* LUEGO SE VERA COMO HACER PARA PASAR DE PAGINA Y VER OTROS ENVIOS, POR AHORA QUEDA COMENTADO */}
-          {/* <div className="pagination">
-            <button>Anterior</button>
-            <button className="active-page">1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>Siguiente</button>
-          </div> */}
         </section>
       </main>
     </div>
