@@ -195,7 +195,9 @@
   },
   "details": {
     "document": "Documento",
-    "test": "Prueba"
+    "test": "Prueba",
+    "expiration": "Fecha Vencimiento",
+    "noDocuments": "Sin Documentos"
   },
   "messages": {
   "confirmDeactivate": "¿Seguro que desea dar de baja al usuario {{name}}?",

@@ -16,6 +16,8 @@ export default function GestionTransportista( { user } ) {
     const { t: tCommon } = useTranslation("common");
 
     const [transportistas, setTransportistas] = useState([]);
+    const [transportistasSearch, setTransportistasSearch] = useState([]);
+    const [documentos, setDocumentos] = useState({});
 
     const [tipoVinculo, setTipoVinculo] = useState([]);
     const [empresas, setEmpresas] = useState([]);
@@ -56,17 +58,21 @@ export default function GestionTransportista( { user } ) {
             try {
                 const [
                     tipoVinculoData,
-                    empresasData
+                    empresasData,
+                    transportistaData
                 ] = await Promise.all([
                     datos.getTipoVinculo(),
-                    datos.getEmpresas()
+                    datos.getEmpresas(),
+                    datos.getTransportistas()
                 ]);
 
                 console.log(tipoVinculoData);
                 console.log(empresasData);
+                console.log(transportistaData);
 
                 setTipoVinculo(tipoVinculoData);
                 setEmpresas(empresasData);
+                setTransportistasSearch(transportistaData);
 
             } catch (error) {
                 console.error("Error cargando datos:", error);
@@ -130,8 +136,61 @@ export default function GestionTransportista( { user } ) {
       };
     }, [showModal]);
 
-    const toggleExpand = (id) => {
-        setExpandedId((prev) => (prev === id ? null : id));
+    const toggleExpand = async (legajo) => {
+        if (expandedId === legajo) {
+            setExpandedId(null);
+            return;
+        }
+
+        setExpandedId(legajo);
+
+        try {
+            if (!transportistasSearch?.length) {
+                console.warn("transportistasSearch vacío");
+                return;
+            }
+
+            console.log("LEGAJO recibido:", legajo);
+            console.log("transportistasSearch:", transportistasSearch);
+
+            // 🔹 Buscar transportista por LEGAJO
+            const transportista = transportistasSearch.find(
+                (t) => String(t.legajo).trim() === String(legajo).trim()
+            );
+
+            if (!transportista) {
+                console.warn("Transportista no encontrado por legajo");
+                return;
+            }
+
+            // 🔹 Evitar repetir llamada
+            if (documentos[legajo]) return;
+
+            // 🔹 Llamada a API con ID real
+            const docs = await datos.getDocumentos(transportista.id);
+            console.log("DOCS API:", docs);
+
+            // 🔹 Guardar por legajo
+            setDocumentos((prev) => ({
+                ...prev,
+                [legajo]: docs.data || docs
+            }));
+
+        } catch (error) {
+            console.error("Error al obtener documentos:", error);
+        }
+    };
+
+    const getEstadoDocumento = (fechaVencimiento) => {
+        const hoy = new Date();
+        const vencimiento = new Date(fechaVencimiento);
+
+        const diffTiempo = vencimiento - hoy;
+        const diffDias = diffTiempo / (1000 * 60 * 60 * 24);
+
+        if (diffDias < 0) return "vencido";          // 🔴 rojo
+        if (diffDias <= 30) return "proximo";        // 🟠 naranja
+        return "vigente";                            // 🟢 verde
     };
 
     const filteredUsers = transportistas.filter((user) => {
@@ -251,9 +310,9 @@ export default function GestionTransportista( { user } ) {
 
                                                     <button 
                                                         className="confirmar-detalles"
-                                                        onClick={() => toggleExpand(usuario.id)}
+                                                        onClick={() => toggleExpand(usuario.legajo)}
                                                     >
-                                                        {expandedId === usuario.id ? (
+                                                        {expandedId === usuario.legajo ? (
                                                             // OJO TACHADO
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -361,11 +420,33 @@ export default function GestionTransportista( { user } ) {
                                     </tr>
 
                                     {/* ACA SE MOSTRARAN TODOS LOS DOCUMENTOS DEL TRANSPORTISTA */}
-                                    {expandedId === usuario.id && (
+                                    {expandedId === usuario.legajo && (
                                         <tr className="fila-expandida">
                                             <td colSpan="8">
                                                 <div className="detalle-envio">
-                                                    <p><strong>{t("details.document")}:</strong> {t("details.test")}</p>
+                                                {documentos[usuario.legajo]?.length > 0 ? (
+                                                    <div className="documentos-container">
+                                                    {documentos[usuario.legajo].map((doc, index) => {
+                                                        const estado = getEstadoDocumento(doc.fechaVencimiento);
+
+                                                        return (
+                                                        <div key={index} className={`doc-card ${estado}`}>
+                                                            <p>
+                                                            <strong>{t("details.document")}:</strong> {doc.tipoDocumentoNombre}
+                                                            </p>
+                                                            <p>
+                                                            <strong>N°:</strong> {doc.nroDocumento}
+                                                            </p>
+                                                            <p>
+                                                            <strong>{t("details.expiration")}:</strong> {doc.fechaVencimiento}
+                                                            </p>
+                                                        </div>
+                                                        );
+                                                    })}
+                                                    </div>
+                                                ) : (
+                                                    <p>{t("details.noDocuments")}</p>
+                                                )}
                                                 </div>
                                             </td>
                                         </tr>

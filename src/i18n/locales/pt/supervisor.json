@@ -43,7 +43,11 @@
       "trailerPlate": "Placa do Reboque",
       "litersLoaded": "Litros Carregados",
       "remito": "Número da Nota de Remessa",
-      "cot": "COT"
+      "cot": "COT",
+      "documents": "Documentos do transportador",
+      "loadingDocuments": "Carregando documentos...",
+      "noDocuments": "Sem documentos",
+      "details": "Dados do pedido"
     },
     "modal": {
       "title": "Motivo da rejeição",
