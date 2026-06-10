@@ -29,8 +29,8 @@
   background: #2d8b57;
 }
 
-.badge.status-cancelada
-.badge.status-cancelado {
+.badge.status-cancelado,
+.badge.status-cancelada {
   background: #c44444;
 }
 
