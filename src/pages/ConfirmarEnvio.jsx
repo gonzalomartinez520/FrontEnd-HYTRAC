@@ -4,11 +4,12 @@ import { useTranslation } from "react-i18next";
 import "../styles/confirmarEnvio.css";
 import "../styles/statusBadge.css";
 import StatusBadge from "@/components/StatusBadge";
-import { envios } from '@/api';
+import { envios, datos } from '@/api';  
 
 export default function ConfirmarEnvio({ user }) {
     const navigate = useNavigate();
     const { t } = useTranslation("supervisor");
+    const { t: tTransportista} = useTranslation("transportista");
 
     const [legajoSupervisor, setLegajoSupervisor] = useState("");
 
@@ -16,6 +17,10 @@ export default function ConfirmarEnvio({ user }) {
     const [shipments, setShipments] = useState([]);
     const [search, setSearch] = useState("");
     const [expandedId, setExpandedId] = useState(null); 
+
+    const [transportistas, setTransportistas] = useState([]);
+    const [documentosTransportista, setDocumentosTransportista] = useState([]);
+    const [loadingDocs, setLoadingDocs] = useState(false);
 
     const [showModal, setShowModal] = useState(false);
     const [motivo, setMotivo] = useState("");
@@ -26,8 +31,10 @@ export default function ConfirmarEnvio({ user }) {
             const fetchData = async () => {
                 try {
                     const response = await envios.getAll();
+                    const transportistasData = await datos.getTransportistas();
                     console.log("Datos obtenidos de la API:", response);
                     setShipments(response);
+                    setTransportistas(transportistasData);
                     setLegajoSupervisor(localStorage.getItem("legajo"));
                 } catch (error) {
                     console.error("Error al obtener envíos:", error);
@@ -42,9 +49,56 @@ export default function ConfirmarEnvio({ user }) {
         return () => clearTimeout(timer);
     }, []);
 
+    const getEstadoDocumento = (fechaVencimiento) => {
+        const hoy = new Date();
+        const vencimiento = new Date(fechaVencimiento);
+
+        if (vencimiento < hoy) return "vencido";
+
+        const diff = (vencimiento - hoy) / (1000 * 60 * 60 * 24);
+
+        if (diff <= 30) return "proximo";
+
+        return "vigente";
+    };
+
     // Función para alternar la fila expandida
-    const toggleExpand = (id) => {
-        setExpandedId((prev) => (prev === id ? null : id));
+    const toggleExpand = async (shipment) => {
+        const isOpening = expandedId !== shipment.id;
+
+        setExpandedId((prev) => (prev === shipment.id ? null : shipment.id));
+
+        if (isOpening) {
+            try {
+                setLoadingDocs(true);
+
+                // 🔹 1. Obtener legajo del shipment
+                const legajo = shipment.transportistaLegajo;
+
+                // 🔹 2. Buscar transportista en estado
+                const transportista = transportistas.find(t => t.legajo === legajo);
+
+                if (!transportista) {
+                    console.warn("Transportista no encontrado");
+                    setDocumentosTransportista([]);
+                    return;
+                }
+
+                // 🔹 3. Llamar API de documentos
+                const docs = await datos.getDocumentos(transportista.id);
+
+                console.log("Documentos:", docs);
+
+                // 🔹 4. Guardar documentos
+                setDocumentosTransportista(docs);
+
+            } catch (error) {
+                console.error("Error al obtener documentos:", error);
+                setDocumentosTransportista([]);
+            } finally {
+                setLoadingDocs(false);
+            }
+        }
     };
 
     const confirmarEnvio = (id) => {
@@ -188,7 +242,7 @@ export default function ConfirmarEnvio({ user }) {
                                             <div className="actions-table">
                                             <button
                                                 className="confirmar-detalles"
-                                                onClick={() => toggleExpand(shipment.id)}
+                                                onClick={() => toggleExpand(shipment)}
                                             >
                                                 {expandedId === shipment.id ? (
                                                     // OJO TACHADO
@@ -268,11 +322,58 @@ export default function ConfirmarEnvio({ user }) {
                                         <tr className="fila-expandida">
                                             <td colSpan="7">
                                                 <div className="detalle-envio">
-                                                    <p><strong>{t("confirmarEnvio.expanded.truckPlate")}:</strong> {shipment.camionPatente}</p>
-                                                    <p><strong>{t("confirmarEnvio.expanded.trailerPlate")}:</strong> {shipment.acopladoPatente}</p>
-                                                    <p><strong>{t("confirmarEnvio.expanded.litersLoaded")}:</strong> {shipment.litrosCargados} Lts.</p>
-                                                    <p><strong>{t("confirmarEnvio.expanded.remito")}:</strong> {shipment.numeroRemito}</p>
-                                                    <p><strong>{t("confirmarEnvio.expanded.cot")}:</strong> {shipment.cot}</p>
+
+                                                    <div className="detalle-flex">
+
+                                                        {/* IZQUIERDA → DATOS */}
+                                                        <div className="detalle-info">
+                                                            <h3>{t("confirmarEnvio.expanded.details")}</h3>
+
+                                                            <p><strong>{t("confirmarEnvio.expanded.truckPlate")}:</strong> {shipment.camionPatente}</p>
+                                                            <p><strong>{t("confirmarEnvio.expanded.trailerPlate")}:</strong> {shipment.acopladoPatente}</p>
+                                                            <p><strong>{t("confirmarEnvio.expanded.litersLoaded")}:</strong> {shipment.litrosCargados} Lts.</p>
+                                                            <p><strong>{t("confirmarEnvio.expanded.remito")}:</strong> {shipment.numeroRemito}</p>
+                                                            <p><strong>{t("confirmarEnvio.expanded.cot")}:</strong> {shipment.cot}</p>
+                                                        </div>
+
+                                                        {/* DERECHA → DOCUMENTOS */}
+                                                        <div className="detalle-documentos">
+                                                            <h3>{t("confirmarEnvio.expanded.documents")}</h3>
+
+                                                            <div className="documentos-wrapper">
+                                                            {documentosTransportista.length > 0 ? (
+                                                                <div className="documentos-container">
+                                                                    {documentosTransportista.map((doc) => {
+                                                                        const estado = getEstadoDocumento(doc.fechaVencimiento);
+
+                                                                        return (
+                                                                            <div key={doc.id} className={`doc-card ${estado}`}>
+                                                                                <p>
+                                                                                    <strong>{tTransportista("details.document")}:</strong>{" "}
+                                                                                    {doc.tipoDocumentoNombre}
+                                                                                </p>
+
+                                                                                <p>
+                                                                                    <strong>N°:</strong> {doc.nroDocumento}
+                                                                                </p>
+
+                                                                                <p>
+                                                                                    <strong>{tTransportista("details.expiration")}:</strong>{" "}
+                                                                                    {doc.fechaVencimiento}
+                                                                                </p>
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            ) : (
+                                                                <p style={{ marginTop: "10px" }}>
+                                                                    {t("confirmarEnvio.expanded.noDocuments")}
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                        </div>
+
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>

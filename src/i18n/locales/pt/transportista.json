@@ -195,7 +195,9 @@
   },
   "details": {
     "document": "Documento",
-    "test": "Teste"
+    "test": "Teste",
+    "expiration": "Data de Validade",
+    "sinDocumentos": "Sem documentação"
   },
   "messages": {
   "confirmDeactivate": "Tem certeza de que deseja desativar o usuário {{name}}?",

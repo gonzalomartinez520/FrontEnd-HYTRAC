@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 export default function NuevoEnvio({ user }) {
   const navigate = useNavigate();
   const { t } = useTranslation("form");
+  const { t: tTransportista } = useTranslation("transportista");
 
   const [combustibles, setCombustibles] = useState([]);
   const [provincias, setProvincias] = useState([]);
@@ -20,6 +21,8 @@ export default function NuevoEnvio({ user }) {
   const [transportistas, setTransportistas] = useState([]);
   const [plantasOrigen, setPlantasOrigen] = useState([]);
   const [estacionesDestino, setEstacionesDestino] = useState([]);
+
+  const [documentos, setDocumentos] = useState({});
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -179,6 +182,44 @@ export default function NuevoEnvio({ user }) {
     return `${hours}h ${minutes.toString().padStart(2, "0")}m`;
   };
 
+  const fetchDocumentosTransportista = async (transportistaId) => {
+    try {
+      if (!transportistaId) return;
+
+      // 🔹 Evitar llamadas repetidas
+      if (documentos[transportistaId]) return;
+
+      const docs = await datos.getDocumentos(transportistaId);
+      console.log("DOCS:", docs);
+
+      setDocumentos((prev) => ({
+        ...prev,
+        [transportistaId]: docs.data || docs
+      }));
+
+    } catch (error) {
+      console.error("Error al obtener documentos:", error);
+    }
+  };
+
+  const getEstadoDocumento = (fechaVencimiento) => {
+    if (!fechaVencimiento) return "vencido";
+
+    const hoy = new Date();
+    const vencimiento = new Date(fechaVencimiento);
+
+    // Normalizamos horas para evitar errores de comparación
+    hoy.setHours(0, 0, 0, 0);
+    vencimiento.setHours(0, 0, 0, 0);
+
+    const diffTime = vencimiento - hoy;
+    const diffDias = diffTime / (1000 * 60 * 60 * 24);
+
+    if (diffDias < 0) return "vencido";        // 🔴 ya venció
+    if (diffDias <= 30) return "proximo";      // 🟠 vence en menos de 1 mes
+    return "vigente";                          // 🟢 al día
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (name === "acceptedTerms") {
@@ -254,7 +295,10 @@ export default function NuevoEnvio({ user }) {
         riesgo: combustibleSeleccionado ? combustibleSeleccionado.claseRiesgo : "",
       }));
     } else if (name === "choferAsignado") {
-      const transportistaSeleccionado = transportistas.find((t) => t.nombre === value);
+      const transportistaSeleccionado = transportistas.find(
+        (t) => t.id === Number(value)
+      );
+
       setFormData((prev) => ({
         ...prev,
         transportista: transportistaSeleccionado,
@@ -262,6 +306,11 @@ export default function NuevoEnvio({ user }) {
         cuitTransportista: transportistaSeleccionado ? transportistaSeleccionado.cuit : "",
         tipoVinculoTransportista: transportistaSeleccionado ? transportistaSeleccionado.tipoVinculo : "",
       }));
+
+      // 🔥 ACA LLAMÁS A LOS DOCUMENTOS
+      if (transportistaSeleccionado) {
+        fetchDocumentosTransportista(transportistaSeleccionado.id);
+      }
     } else if (name === "estacionDestino") {
       const estacionSeleccionada = estacionesDestino.find(
         (e) => Number(e.id) === Number(value)
@@ -422,7 +471,9 @@ export default function NuevoEnvio({ user }) {
               <select name="choferAsignado" value={formData.choferAsignado} disabled={loading} onChange={handleChange} required>
                 <option value="">{t("newOrder.placeholders.selectTransport")}</option>
                 {transportistas.map((trans) => (
-                  <option key={trans.cuit} value={trans.nombre}>{trans.nombre} {trans.apellido}</option>
+                  <option key={trans.id} value={trans.id}>
+                    {trans.nombre} {trans.apellido}
+                  </option>
                 ))}
               </select>
             </div>
@@ -436,6 +487,38 @@ export default function NuevoEnvio({ user }) {
               <label>{t("newOrder.fields.relationship")}</label>
               <input type="text" value={formData.tipoVinculoTransportista} disabled />
             </div>
+
+            {formData.transportista?.id && (
+              <div className="documentos-wrapper">
+                {documentos[formData.transportista.id]?.length > 0 ? (
+                  <div className="documentos-container">
+                    {documentos[formData.transportista.id].map((doc, index) => {
+                      const estado = getEstadoDocumento(doc.fechaVencimiento);
+
+                      return (
+                        <div key={index} className={`doc-card ${estado}`}>
+                          <p>
+                            <strong>{tTransportista("details.document")}:</strong>{" "}
+                            {doc.tipoDocumentoNombre}
+                          </p>
+                          <p>
+                            <strong>N°:</strong> {doc.nroDocumento}
+                          </p>
+                          <p>
+                            <strong>{tTransportista("details.expiration")}:</strong>{" "}
+                            {doc.fechaVencimiento}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p style={{ marginTop: "10px" }}>
+                    {tTransportista("details.noDocuments")}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </section>
 

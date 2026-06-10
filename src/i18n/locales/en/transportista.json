@@ -195,7 +195,9 @@
   },
   "details": {
     "document": "Document",
-    "test": "Test"
+    "test": "Test",
+    "expiration": "Expiration Date",
+    "noDocuments": "No Documents"
   },
 "messages": {
   "confirmDeactivate": "Are you sure you want to deactivate user {{name}}?",

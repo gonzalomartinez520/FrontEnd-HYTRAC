@@ -43,7 +43,11 @@
       "trailerPlate": "Patente del Acoplado",
       "litersLoaded": "Litros Cargados",
       "remito": "Número de Remito",
-      "cot": "COT"
+      "cot": "COT",
+      "documents": "Documentos del transportista",
+      "loadingDocuments": "Cargando documentos...",
+      "noDocuments": "Sin documentos",
+      "details": "Datos de la orden"
     },
     "modal": {
       "title": "Motivo de rechazo",

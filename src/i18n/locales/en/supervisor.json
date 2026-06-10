@@ -43,7 +43,11 @@
       "trailerPlate": "Trailer Plate",
       "litersLoaded": "Liters Loaded",
       "remito": "Delivery Note Number",
-      "cot": "COT"
+      "cot": "COT",
+      "documents": "Driver documents",
+      "loadingDocuments": "Loading documents...",
+      "noDocuments": "No documents",
+      "details": "Order details"
     },
     "modal": {
       "title": "Rejection reason",

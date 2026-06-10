@@ -172,6 +172,38 @@ th {
   margin-top: 5px;
 }
 
+.detalle-flex {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* IZQUIERDA */
+.detalle-info {
+    flex: 1;
+    padding: 16px;
+    border-radius: 10px;
+}
+
+/* DERECHA */
+.detalle-documentos {
+    flex: 2;
+}
+
+.detalle-documentos h3 {
+  margin-bottom: 10px;
+}
+
+.detalle-info h3 {
+  margin-bottom: 10px;
+}
+
+.documentos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 15px;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;

@@ -35,6 +35,11 @@ const datos = {
         return data;    
     },
 
+    seleccionarOptimos: async () => {
+        const { data } = await apiClient.post('/transportistas/seleccionar-optimos');
+        return data;
+    },
+
     //Lugares Operativos
     getPlantas: async () => {
         const { data } = await apiClient.get('/lugares-operativos/plantas/get');  
@@ -89,6 +94,7 @@ const datos = {
         return data;
     },
 
+    //Notificaciones
     getNotificaciones: async (legajo) => {
         const { data } = await apiClient.get(`/notificaciones/${legajo}`);
         return data;
@@ -96,6 +102,12 @@ const datos = {
 
     leerNotificacion: async (notificacionId) => {
         const { data } = await apiClient.put(`/notificaciones/${notificacionId}/leer`);
+        return data;
+    },
+
+    //Documentos
+    getDocumentos: async (transportistaId) => {
+        const { data } = await apiClient.get(`/transportistas/${transportistaId}/documentos`);
         return data;
     }
 };
