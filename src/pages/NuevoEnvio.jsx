@@ -302,7 +302,7 @@ export default function NuevoEnvio({ user }) {
       setFormData((prev) => ({
         ...prev,
         transportista: transportistaSeleccionado,
-        choferAsignado: transportistaSeleccionado ? transportistaSeleccionado.nombre : "",
+        choferAsignado: transportistaSeleccionado ? transportistaSeleccionado.id : "",
         cuitTransportista: transportistaSeleccionado ? transportistaSeleccionado.cuit : "",
         tipoVinculoTransportista: transportistaSeleccionado ? transportistaSeleccionado.tipoVinculo : "",
       }));
