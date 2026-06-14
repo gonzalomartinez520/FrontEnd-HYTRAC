@@ -214,68 +214,306 @@
   }
 }
 
-/* ==========================
-   TABLET
-========================== */
 
-@media (max-width: 1200px) {
 
-  .kpi-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
 
-  .graficos-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .chart-card.full-width {
-    grid-column: span 1;
-  }
-
-  .reportes-grid-cuadrado {
-    grid-template-columns: 1fr 1fr;
-  }
-
-}
 
 /* ==========================
-   MOBILE
+   SAMSUNG S8 VERTICAL
+   360x740 aprox
 ========================== */
 
-@media (max-width: 768px) {
+@media screen and (max-width: 380px) {
 
   .reportes-layout {
-    padding: 15px;
+    padding: 12px;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .reportes-header {
     flex-direction: column;
     align-items: stretch;
+    gap: 15px;
+  }
+
+  .reportes-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .reportes-header p {
+    font-size: 0.9rem;
   }
 
   .btn-exportar {
     width: 100%;
   }
 
-  .kpi-grid {
-    grid-template-columns: 1fr;
+  /* TODOS LOS BLOQUES EN COLUMNA */
+  .reportes-grid-cuadrado,
+  .graficos-grid,
+  .charts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
-  .graficos-grid {
-    grid-template-columns: 1fr;
+  .chart-card,
+  .square-card,
+  .chart-card.full-width {
+    width: 100%;
+    min-height: auto;
+    padding: 15px;
   }
 
+  .chart-card h2 {
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  /* PIE CHARTS */
+  /* SOLO TORTAS */
+  .square-card .recharts-responsive-container {
+    width: 225% !important;
+  }
+
+  /* EVOLUCIÓN MENSUAL */
+  .chart-card.full-width .recharts-responsive-container {
+    width: 100% !important;
+  }
+
+  /* ==========================
+    RANKINGS MOBILE
+  ========================== */
+
+  .reportes-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 0.72rem;
+  }
+
+  /* FORZAR TABLA REAL */
+  .reportes-table thead {
+    display: table-header-group;
+  }
+
+  .reportes-table tbody {
+    display: table-row-group;
+  }
+
+  .reportes-table tr {
+    display: table-row;
+  }
+
+  .reportes-table th,
+  .reportes-table td {
+    display: table-cell;
+
+    padding: 6px 4px;
+
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+
+    vertical-align: middle;
+  }
+
+  /* elimina posibles etiquetas responsive */
+  .reportes-table td::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  /* # */
+  .reportes-table th:nth-child(1),
+  .reportes-table td:nth-child(1) {
+    width: 12%;
+    text-align: center;
+  }
+
+  /* Sucursal / Tipo */
+  .reportes-table th:nth-child(2),
+  .reportes-table td:nth-child(2) {
+    width: 58%;
+    text-align: left;
+  }
+
+  /* Envíos / Cantidad */
+  .reportes-table th:nth-child(3),
+  .reportes-table td:nth-child(3) {
+    width: 15%;
+    text-align: center;
+  }
+
+  /* % */
+  .reportes-table th:nth-child(4),
+  .reportes-table td:nth-child(4) {
+    width: 15%;
+    text-align: center;
+  }
+
+  /* EVITA SCROLL HORIZONTAL */
   .chart-card {
-    overflow-x: auto;
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
 
-  .ranking-table,
-  .rutas-table {
-    min-width: 600px;
+  /* LINE CHART */
+  .chart-card.full-width {
+    min-height: 300px;
   }
 
-  .reportes-grid-cuadrado {
-    grid-template-columns: 1fr;
+  /* LEYENDAS DE RECHARTS */
+  .recharts-legend-wrapper {
+    position: relative !important;
+    width: 45% !important;
+    right: auto !important;
+    left: auto !important;
+    top: auto !important;
+    margin-top: 10px;
+    text-align: center;
   }
 
+
+  .recharts-default-legend {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 6px;
+  }
+
+  .square-card {
+    height: 550px;
+    min-height: 550px;
+  }
+}
+
+
+
+/* ==========================
+   SAMSUNG S8 HORIZONTAL
+   740x360 aprox
+========================== */
+
+@media screen and (max-height: 420px) and (orientation: landscape) {
+
+  .reportes-layout {
+    padding: 16px;
+  }
+
+  .reportes-header {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  /* TODOS LOS GRÁFICOS EN COLUMNA */
+  .reportes-grid-cuadrado,
+  .graficos-grid,
+  .charts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .chart-card,
+  .square-card,
+  .chart-card.full-width {
+    width: 100%;
+  }
+
+  /* ALTURA SIMILAR A DESKTOP */
+  .square-card {
+    min-height: 420px;
+    height: auto;
+  }
+
+  /* TORTAS COMO DESKTOP */
+  .square-card .recharts-responsive-container {
+    width: 100% !important;
+  }
+
+  /* EVOLUCIÓN MENSUAL COMO DESKTOP */
+  .chart-card.full-width .recharts-responsive-container {
+    width: 100% !important;
+  }
+
+  /* ==========================
+    RANKINGS HORIZONTAL
+  ========================== */
+
+  .reportes-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 0.9rem;
+  }
+
+  /* Fuerza estructura de tabla */
+  .reportes-table thead {
+    display: table-header-group;
+  }
+
+  .reportes-table tbody {
+    display: table-row-group;
+  }
+
+  .reportes-table tr {
+    display: table-row !important;
+  }
+
+  .reportes-table th,
+  .reportes-table td {
+    display: table-cell !important;
+    padding: 10px;
+    vertical-align: middle;
+  }
+
+  /* Elimina etiquetas responsive */
+  .reportes-table td::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  /* Columnas */
+  .reportes-table th:nth-child(1),
+  .reportes-table td:nth-child(1) {
+    width: 10%;
+    text-align: center;
+  }
+
+  .reportes-table th:nth-child(2),
+  .reportes-table td:nth-child(2) {
+    width: 60%;
+    text-align: left;
+  }
+
+  .reportes-table th:nth-child(3),
+  .reportes-table td:nth-child(3) {
+    width: 15%;
+    text-align: center;
+  }
+
+  .reportes-table th:nth-child(4),
+  .reportes-table td:nth-child(4) {
+    width: 15%;
+    text-align: center;
+  }
+
+  /* LEYENDAS COMO DESKTOP */
+  .recharts-legend-wrapper {
+    position: absolute !important;
+    width: auto !important;
+    text-align: left;
+  }
+
+  .recharts-default-legend {
+    display: block !important;
+  }
+
+  /* EVITA RECORTES */
+  .chart-card {
+    overflow: visible;
+  }
 }

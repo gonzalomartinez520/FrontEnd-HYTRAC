@@ -211,4 +211,118 @@ th {
   }
 }
 
-/* Responsive Design */
+/* =========================
+   RESPONSIVE S8 VERTICAL
+   ========================= */
+@media (max-width: 480px) {
+
+  /* Fondo completamente azul */
+  html,
+  body,
+  #root,
+  .confirmar-incidencias-container {
+    width: 100%;
+    min-height: 100vh;
+    background: #0B1120;
+    overflow-x: hidden;
+  }
+
+  .incidencias-dashboard-content {
+    padding: 15px;
+  }
+
+  .incidencias-header {
+    margin-bottom: 20px;
+  }
+
+  .incidencias-header h1 {
+    font-size: 1.6rem;
+    line-height: 1.2;
+  }
+
+  .incidencias-header p {
+    font-size: 0.9rem;
+  }
+
+  .incidencias-table-section {
+    padding: 15px;
+    border-radius: 16px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* Contador arriba y buscador debajo */
+  .incidencias-table-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .incidencias-table-header h2 {
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+
+  /* Buscador más chico */
+  .confirmar-incidencias-buscador {
+    width: 100%;
+  }
+
+  .confirmar-incidencias-buscador input {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  /* Tabla scroll horizontal */
+  .incidencias-table-section {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 850px;
+  }
+
+  th,
+  td {
+    padding: 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Botones más compactos */
+  .incidencias-actions-table {
+    gap: 6px;
+  }
+
+  .incidencias-detalles,
+  .confirmar-incidencias,
+  .rechazar-incidencias {
+    width: 34px;
+    height: 34px;
+  }
+
+  .incidencias-detalles svg,
+  .confirmar-incidencias svg,
+  .rechazar-incidencias svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Modal responsive */
+  .modal {
+    width: 95%;
+    max-width: 340px;
+    padding: 15px;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .confirmar,
+  .cancelar {
+    width: 100%;
+  }
+}

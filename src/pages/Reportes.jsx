@@ -479,7 +479,7 @@ const exportarCSV = () => {
               dataKey="value"
               outerRadius={110}
               label
-              cx="30%"
+              cx="40%"
             >
               {incidenciasEstadoData.map(
                 (entry, index) => (
@@ -500,7 +500,7 @@ const exportarCSV = () => {
                 layout="vertical"
                 verticalAlign="middle"
                 align="right"
-                wrapperStyle={{ right: 183 }}
+                
               />
           </PieChart>
         </ResponsiveContainer>
