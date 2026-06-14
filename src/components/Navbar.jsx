@@ -13,9 +13,9 @@ export default function Navbar({ user, onLogout }) {
   const { t : tCommon } = useTranslation("common");
 
   const languages = [
-    { code: "es", label: "Español", flag: "🇦🇷" },
-    { code: "en", label: "English", flag: "🇺🇸" },
-    { code: "pt", label: "Português", flag: "🇧🇷" }
+    { code: "es", short: "AR" },
+    { code: "en", short: "US" },
+    { code: "pt", short: "BR" }
   ];
 
 
@@ -283,7 +283,8 @@ useEffect(() => {
               </>
             ) : role === "JEFE_ESTACION" ? (
               <>
-                <span className="icon">⛽</span> {t("panelEstacion")}
+                <span className="icon">⛽</span>
+                 <span className="nav-text">{t("panelEstacion")}</span> 
               </>
             ) : role === "ADMIN" ? (
               <>
@@ -297,11 +298,14 @@ useEffect(() => {
               >
                 <path d="M16 11c1.66 0 3-1.57 3-3.5S17.66 4 16 4s-3 1.57-3 3.5S14.34 11 16 11zm-8 0c1.66 0 3-1.57 3-3.5S9.66 4 8 4 5 5.57 5 7.5 6.34 11 8 11zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
               </svg> 
-                <span>{t("gestionUsuarios")}</span>
+                <span className="nav-text">
+                {t("gestionUsuarios")}
+                </span>
               </>
             ) : (
               <>
-                <span className="icon">📊</span> {t("panelControl")}
+                <span className="icon">📊</span>
+                <span className="nav-text">{t("panelControl")}</span>
               </>
             )}
           </Link>
@@ -312,7 +316,8 @@ useEffect(() => {
               to={action.to}
               onClick={() => setMenuOpen(false)}
             >
-              <span className="icon">{action.icon}</span> {action.label}
+              <span className="icon">{action.icon}</span> 
+              <span className="nav-text">{action.label}</span>
             </Link>
           )}
 
@@ -322,7 +327,8 @@ useEffect(() => {
               to={config.to}
               onClick={() => setMenuOpen(false)}
             >
-              <span className="icon">{config.icon}</span> {config.label}
+              <span className="icon">{config.icon}</span> 
+              <span className="nav-text">{config.label}</span>
             </Link>
           )}
 
@@ -334,7 +340,7 @@ useEffect(() => {
         <select className="language-select" onChange={handleChangeLanguage} value={i18n.language}>
           {languages.map((lang) => (
             <option key={lang.code} value={lang.code}>
-              {lang.flag} {lang.label}
+              {lang.short}
             </option>
           ))}
         </select>
@@ -412,8 +418,12 @@ useEffect(() => {
           </div>
         </div>
 
-        <button className="logout-btn" onClick={handleLogout}>
-          {t("salir")}
+        <button
+          className="logout-btn"
+          onClick={handleLogout}
+          title={t("salir")}
+        >
+          ↪
         </button>
       </div>
     </nav>
