@@ -33,3 +33,56 @@
   flex-direction: column;
   gap: 15px;
 }
+
+
+/* ===================================
+   MOBILE VERTICAL
+   Galaxy S8 360x740
+=================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .supervisor-container {
+    width: 95%;
+    margin: 15px auto;
+    padding: 16px;
+  }
+
+  .supervisor-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .supervisor-header p {
+    font-size: 0.9rem;
+  }
+
+  .supervisor-form {
+    width: 100%;
+  }
+}
+
+/* ===================================
+   MOBILE LANDSCAPE
+=================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+  .supervisor-container {
+    width: 95%;
+    max-width: 100%;
+    margin: 10px auto;
+    padding: 16px;
+  }
+
+  .supervisor-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .supervisor-header p {
+    font-size: 0.85rem;
+  }
+
+  .supervisor-form {
+    width: 100%;
+  }
+}
