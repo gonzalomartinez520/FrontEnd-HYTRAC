@@ -113,6 +113,20 @@ td:nth-child(3) {
 
 @media (max-width: 768px) and (orientation: portrait) {
 
+  .gestion-supervisores-layout,
+  .gestion-supervisores-content,
+  .gestion-supervisores-table,
+  table,
+  tbody,
+  tr {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .gestion-supervisores-layout {
+    overflow-x: hidden;
+  }
+
   .gestion-supervisores-content {
     padding: 16px;
   }
@@ -131,17 +145,23 @@ td:nth-child(3) {
 
   .gestion-supervisores-table {
     padding: 16px;
-    overflow: visible;
+    overflow: hidden;
   }
 
   .table-header {
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+    width: 100%;
+  }
+
+  .search-container {
+    width: 100%;
   }
 
   .search-container input {
     width: 100%;
+    max-width: 100%;
   }
 
   table,
@@ -153,6 +173,14 @@ td:nth-child(3) {
     display: block;
   }
 
+
+  tbody tr td.tracking {
+    width: 100%;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
   thead {
     display: none;
   }
@@ -161,10 +189,11 @@ td:nth-child(3) {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    width: 100%;
   }
 
   /* ==========================
-    TARJETA DEL SUPERVISOR
+     TARJETA DEL SUPERVISOR
   ========================== */
 
   tbody tr {
@@ -175,16 +204,23 @@ td:nth-child(3) {
     padding: 18px;
 
     box-shadow: 0 4px 12px rgba(0,0,0,.25);
+
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
   }
 
   /* ==========================
-    CADA CAMPO
+     CADA CAMPO
   ========================== */
 
   tbody td {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    width: 100%;
+    max-width: 100%;
 
     padding: 12px 0;
 
@@ -201,8 +237,6 @@ td:nth-child(3) {
     overflow-wrap: anywhere;
   }
 
-  /* separación visual entre campos */
-
   tbody td:not(:last-child) {
     border-bottom: 1px solid #1e293b;
     margin-bottom: 10px;
@@ -210,7 +244,7 @@ td:nth-child(3) {
   }
 
   /* ==========================
-    ETIQUETA
+     ETIQUETA
   ========================== */
 
   tbody td::before {
@@ -230,40 +264,27 @@ td:nth-child(3) {
   }
 
   /* ==========================
-    VALORES IMPORTANTES
+     VALORES IMPORTANTES
   ========================== */
 
   .legajo {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     color: #ff7b00;
   }
 
   /* ==========================
-    EMAILS LARGOS
+     EMAILS LARGOS
   ========================== */
 
   tbody td:nth-child(3) {
-    overflow-wrap: anywhere;
     word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
   /* ==========================
-    ACCIONES
+     LABELS
   ========================== */
-
-
-  .editar-envio,
-  .rechazar-envio {
-    min-width: 44px;
-    min-height: 44px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-
 
   tbody td:nth-child(1)::before {
     content: "Legajo";
@@ -281,18 +302,10 @@ td:nth-child(3) {
     content: "Estado";
   }
 
+  /* ==========================
+     ACCIONES
+  ========================== */
 
-  .editar-envio,
-  .rechazar-envio {
-    min-width: 42px;
-    min-height: 42px;
-  }
-
-  .legajo {
-    font-size: 15px;
-    font-weight: 700;
-  }
-  
   .actions-table {
     display: flex;
     justify-content: flex-start;
@@ -300,9 +313,23 @@ td:nth-child(3) {
     gap: 10px;
     margin-top: 6px;
     flex-wrap: nowrap;
+
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .editar-envio,
+  .rechazar-envio {
+    min-width: 42px;
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
   }
 }
-  
 
 /* =====================================================
    GALAXY S8 - HORIZONTAL
