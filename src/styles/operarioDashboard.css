@@ -294,13 +294,27 @@ a {
     border: none;
     font-size: 0.96rem;
     color: #e5e7eb;
+
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  tbody tr {
+  width: 100%;
+  max-width: 100%;
+  }
+
+  tbody tr {
+  width: 100%;
+  max-width: 100%;
   }
 
   tbody tr td::before {
     content: attr(data-label);
     color: #94a3b8;
     font-size: 0.82rem;
-    flex: 1 0 auto;
+
+    flex: 0 0 auto;
     white-space: nowrap;
   }
 
@@ -351,8 +365,71 @@ a {
 }
 
 
-/* responsive vertical s8 */
+/* ========================================= */
+/* GALAXY S8 VERTICAL */
+/* ========================================= */
 @media (max-width: 768px) and (orientation: portrait) {
+
+  .dashboard-content {
+    padding: 12px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .table-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    overflow-x: hidden;
+  }
+
+  table,
+  tbody,
+  tr {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  tbody tr {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  tbody tr td {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  tbody tr td::before {
+    flex-shrink: 0;
+    margin-right: 12px;
+  }
+
+  tbody tr td strong,
+  tbody tr td span,
+  tbody tr td div {
+    min-width: 0;
+    max-width: 60%;
+    text-align: right;
+
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .tracking {
+    width: 100%;
+    max-width: 100%;
+  }
+
   tbody tr td.tracking::before {
     content: "ID #";
     display: block;
