@@ -207,74 +207,8 @@ a {
   }
 }
 
-@media (max-width: 1366px) {
-  .dashboard-content {
-    padding: 35px 50px;
-  }
 
-  .dashboard-header h1 {
-    font-size: 2.2rem;
-  }
-
-  .dashboard-header p {
-    font-size: 1rem;
-  }
-
-  .table-actions input {
-    width: 220px;
-  }
-
-  th,
-  td {
-    padding: 15px;
-    font-size: 0.95rem;
-  }
-}
-
-@media (max-width: 1100px) {
-  .dashboard-content {
-    padding: 25px 35px;
-  }
-
-  .dashboard-header h1 {
-    font-size: 2rem;
-  }
-
-  .dashboard-header p {
-    font-size: 0.95rem;
-  }
-
-  .table-card {
-    padding: 20px;
-  }
-
-  .table-top {
-    gap: 15px;
-  }
-
-  .table-top h2 {
-    font-size: 1.1rem;
-  }
-
-  .table-actions input {
-    width: 180px;
-    padding: 10px 12px;
-  }
-
-  .table-actions button {
-    width: 44px;
-  }
-
-  th,
-  td {
-    padding: 12px 10px;
-    font-size: 0.9rem;
-  }
-
-  th {
-    font-size: 0.85rem;
-  }
-}
+/* responsive horizontal s8 */
 
 @media (max-width: 768px) {
   .dashboard-content {
@@ -416,6 +350,8 @@ a {
   }
 }
 
+
+/* responsive vertical s8 */
 @media (max-width: 768px) and (orientation: portrait) {
   tbody tr td.tracking::before {
     content: "ID #";
