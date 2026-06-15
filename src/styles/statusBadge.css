@@ -64,20 +64,7 @@
   background: #c44444;
 }
 
-/* Media Queries for Responsive Design */
-@media (max-width: 1366px) {
-  .badge {
-    padding: 7px 12px;
-    font-size: 0.8rem;
-  }
-}
 
-@media (max-width: 1100px) {
-  .badge {
-    padding: 6px 10px;
-    font-size: 0.75rem;
-  }
-}
 
 @media (max-width: 768px) {
   .badge {
