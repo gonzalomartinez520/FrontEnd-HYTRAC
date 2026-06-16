@@ -22,6 +22,7 @@ export default function Navbar({ user, onLogout }) {
   const [notificaciones, setNotificaciones] = useState([]);
   const [openNotif, setOpenNotif] = useState(false);
   const [closing, setClosing] = useState(false);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
 
   const handleToggle = () => {
     if (openNotif) {
@@ -397,25 +398,56 @@ useEffect(() => {
           )}
         </div>
 
-        <div className="user-profile">
-          <span className="user-icon">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="orange"
-            >
-              <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/>
-            </svg>
-          </span>
-          <div className="user-info">
-            <strong>
-              {user?.nombre || "Usuario"} {user?.apellido || ""}
-            </strong>
-            <span>
-              {tCommon(`roles.${(user?.normalizedRole || user?.role || "OPERADOR").toUpperCase()}`)}
+        <div className="user-profile-container">
+          <button
+            className="user-profile"
+            onClick={() => setOpenUserMenu(!openUserMenu)}
+          >
+            <span className="user-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="orange"
+              >
+                <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/>
+              </svg>
             </span>
-          </div>
+
+            <div className="user-info">
+              <strong>
+                {user?.nombre || "Usuario"} {user?.apellido || ""}
+              </strong>
+
+              <span>
+                {tCommon(
+                  `roles.${(
+                    user?.normalizedRole ||
+                    user?.role ||
+                    "OPERADOR"
+                  ).toUpperCase()}`
+                )}
+              </span>
+            </div>
+          </button>
+
+          {openUserMenu && (
+            <div className="user-dropdown">
+              <strong>
+                {user?.nombre || "Usuario"} {user?.apellido || ""}
+              </strong>
+
+              <span>
+                {tCommon(
+                  `roles.${(
+                    user?.normalizedRole ||
+                    user?.role ||
+                    "OPERADOR"
+                  ).toUpperCase()}`
+                )}
+              </span>
+            </div>
+          )}
         </div>
 
         <button

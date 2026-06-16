@@ -440,6 +440,10 @@
     display: none;
   }
 
+  .user-dropdown {
+    display: flex;
+  }
+
   .user-profile {
     width: 34px;
     height: 34px;
@@ -492,6 +496,9 @@
   }
 }
 
+.user-dropdown {
+  display: none;
+}
 
 /* responsive horizontal (landscape) */
 
@@ -517,4 +524,49 @@
     max-width: calc(100vw - 20px);
     right: 0;
   }
+}
+
+
+/*boton usuario en responsive*/
+.user-profile-container {
+  position: relative;
+}
+
+.user-profile {
+  background: #0B1120;
+  border: none;
+  color: #F8FAF6;
+  cursor: pointer;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 48px;
+  right: 0;
+
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,0.1);
+
+  border-radius: 10px;
+
+  padding: 12px 16px;
+
+  min-width: 180px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,.4);
+
+  z-index: 1000;
+}
+
+.user-dropdown strong {
+  color: #F8FAF6;
+}
+
+.user-dropdown span {
+  color: #94a3b8;
+  font-size: 0.85rem;
 }
