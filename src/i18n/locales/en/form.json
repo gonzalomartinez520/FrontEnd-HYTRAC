@@ -5,15 +5,17 @@
     "new": "NEW ORDER",
 
     "sections": {
-      "unitDriver": "Unit & Driver",
-      "unitDriverDesc": "Vehicle data and document verification.",
+      "unitDriver": "Vehicle Unit",
+      "unitDriverDesc": "Vehicle unit data.",
       "cargoSpecs": "Cargo specifications",
       "cargoSpecsDesc": "Fuel, hazardous transport code and conditions.",
       "logistics": "Logistics & Documentation",
       "logisticsDesc": "Origin, destination and fiscal documents.",
       "personalData": "Personal Data",
       "accessData": "Access Data",
-      "operationalLocation": "Operational Location"
+      "operationalLocation": "Operational Location",
+      "driver": "Driver",
+      "driverDesc": "Optimal driver selection and document verification."
     },
 
     "users": {
