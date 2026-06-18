@@ -30,6 +30,7 @@ import NuevoUsuario from "./pages/NuevoUsuario.jsx";
 import AccesoDenegado from "./pages/AccesoDenegado.jsx"; 
 import Navbar from "./components/Navbar.jsx";
 import JefeEstacionDashboard from "./pages/JefeEstacionDashboard.jsx"; //importo pantalla
+import TerminosModal from "./components/TerminosModal.jsx";
 
 // 🔐 Validar expiración del token
 const isTokenValid = (tokenString) => {
@@ -79,7 +80,12 @@ const getHomePath = (userLike) => {
 };
 
 function App() {
-  const [user, setUser] = useState(getUserFromStorage());
+  // const [user, setUser] = useState(getUserFromStorage());
+  const [user, setUser] = useState({ 
+  nombre: "Emanuel", 
+  rol: "TRANSPORTISTA", 
+  aceptoTerminos: false // <-- Esto va a clavar el modal en la pantalla al toque
+});
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -88,6 +94,16 @@ function App() {
   const handleLogin = (userData) => {
     setUser(userData);
     navigate(getHomePath(userData));
+  };
+
+  // 🔐 Función para cerrar el modal actualizando el estado local y el storage
+  const handleAceptarTerminos = () => {
+    setUser((prev) => {
+      const updatedUser = { ...prev, aceptoTerminos: true };
+      // Actualizamos el localStorage para que persista el true de la aceptación
+      localStorage.setItem("token", JSON.stringify(updatedUser));
+      return updatedUser;
+    });
   };
 
   // 🔐 Protección por rol
@@ -112,6 +128,14 @@ function App() {
 
   return (
     <>
+      {/* 📜 MODAL DE TÉRMINOS Y LEY 25.326 (ONBOARDING)
+            Si hay usuario logueado pero no aceptó los términos, se clava en la pantalla */}
+        {user && !user.aceptoTerminos && (
+          <TerminosModal 
+            user={user} 
+            onAceptar={handleAceptarTerminos} 
+          />
+      )}
       {/* ✅ Navbar visible siempre si hay sesión válida */}
       {location.pathname !== "/login" && parsedUser && (
         <Navbar user={parsedUser} onLogout={setUser} />

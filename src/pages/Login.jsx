@@ -106,6 +106,7 @@ console.log("LEGAJO DEL TOKEN:", {
         normalizedRole: String(data.rol || data.role || "").toUpperCase(),
         transportistaId,
         legajo,
+        aceptoTerminos: data. aceptoTerminos ?? false,
       };
 
       onLogin(userData);
