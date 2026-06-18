@@ -90,7 +90,7 @@ export default function EnvioDetail({ user }) {
     if (!combustibles.length || !shipment) return;
 
     const nombreBuscado =
-      shipment?.combustibleNombre || shipment?.combustible;
+      shipment?.combustible;
 
     if (!nombreBuscado) return;
 

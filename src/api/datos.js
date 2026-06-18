@@ -35,8 +35,8 @@ const datos = {
         return data;    
     },
 
-    seleccionarOptimos: async () => {
-        const { data } = await apiClient.post('/transportistas/seleccionar-optimos');
+    seleccionarOptimos: async (payload) => {
+        const { data } = await apiClient.post('/transportistas/seleccionar-optimos', payload);
         return data;
     },
 

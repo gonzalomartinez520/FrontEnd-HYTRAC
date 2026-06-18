@@ -79,27 +79,56 @@ export default function NuevoEnvio({ user }) {
           provinciasData,
           camionesData,
           acopladosData,
-          transportistasData,
         ] = await Promise.all([
           datos.getCombustibles(),
           datos.getProvincias(),
           datos.getCamiones(),
           datos.getAcoplados(),
-          datos.getTransportistas(),
         ]);
 
         setCombustibles(combustiblesData);
         setProvincias(provinciasData);
         setCamiones(camionesData);
         setAcoplados(acopladosData);
-        setTransportistas(transportistasData);
-        console.log(transportistasData);
       } catch (error) {
         console.error("Error cargando datos:", error);
       }
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // 🔹 Validaciones previas
+    if (
+      !formData?.combustible ||
+      !formData?.volumenACargar ||
+      !routeData?.tiempoEstimadoHoras
+    ) {
+      return; // no ejecuta nada si falta algún dato
+    }
+
+    const fetchTransportistas = async () => {
+      try {
+        const payload = {
+          volumenCargaLitros: parseFloat(formData.volumenACargar),
+          tiempoEfectivoEstimadoHoras: Math.round(routeData.tiempoEstimadoHoras),
+          combustibleId: formData.combustible?.id,
+        };
+
+        console.log(payload);
+        const response = await datos.seleccionarOptimos(payload);
+
+        // 🔹 Guardamos en estado
+        setTransportistas(response);
+      } catch (error) {
+        console.error("Error al obtener transportistas óptimos:", error);
+      }
+    };
+
+    fetchTransportistas();
+
+    // 🔹 Dependencias
+  }, [formData.combustible, formData.volumenACargar, routeData.tiempoEstimadoHoras]);
 
   useEffect(() => {
     const fetchLocalidadesOrigen = async () => {
