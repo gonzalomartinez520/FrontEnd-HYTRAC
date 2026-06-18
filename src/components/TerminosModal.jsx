@@ -1,12 +1,15 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { usuarios } from "../api/apiClient";
 import "../styles/TerminosModal.css";
 
 export default function TerminosModal({ user, onAceptar }) {
     const canvasRef = useRef(null);
+    const navigate = useNavigate();
     const [dibujando, setDibujando] = useState(false);
     const [firmado, setFirmado] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [mostrarAlerta, setMostrarAlerta] = useState(false);
 
     // ─── Canvas drawing ───────────────────────────────────────────
     const getPos = (e, canvas) => {
@@ -50,6 +53,13 @@ export default function TerminosModal({ user, onAceptar }) {
         const ctx = canvas.getContext("2d");
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         setFirmado(false);
+    };
+
+    // ─── Confirmar Salida ────────────────────────────────────────
+    const confirmarSalida = () => {
+        localStorage.clear(); // Limpia token, legajo y lugar operativo de una
+        navigate("/login");
+        window.location.reload();
     };
 
     // ─── Aceptar ──────────────────────────────────────────────────
@@ -128,6 +138,9 @@ export default function TerminosModal({ user, onAceptar }) {
                     <p className="terminos-usuario">
                         {user.nombre} {user.apellido} — Legajo {user.legajo}
                     </p>
+                    <button className="volver-btn" onClick={() => setMostrarAlerta(true)}>
+                        Volver
+                    </button>
                     <button
                         className="aceptar-btn"
                         onClick={handleAceptar}
@@ -138,6 +151,24 @@ export default function TerminosModal({ user, onAceptar }) {
                 </div>
 
             </div>
+
+            {mostrarAlerta && (
+                <div className="alerta-overlay">
+                    <div className="alerta-card">
+                        <div className="alerta-icono">⚠️</div>
+                        <h3>Atención</h3>
+                        <p>Debe aceptar los términos y condiciones para poder continuar utilizando la plataforma.</p>
+                        <div className="alerta-acciones">
+                            <button className="alerta-btn-cancelar" onClick={() => setMostrarAlerta(false)}>
+                                Cancelar
+                            </button>
+                            <button className="alerta-btn-salir" onClick={confirmarSalida}>
+                                Volver al Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

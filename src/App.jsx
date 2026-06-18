@@ -80,12 +80,7 @@ const getHomePath = (userLike) => {
 };
 
 function App() {
-  // const [user, setUser] = useState(getUserFromStorage());
-  const [user, setUser] = useState({ 
-  nombre: "Emanuel", 
-  rol: "TRANSPORTISTA", 
-  aceptoTerminos: false // <-- Esto va a clavar el modal en la pantalla al toque
-});
+  const [user, setUser] = useState(getUserFromStorage());
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -130,7 +125,7 @@ function App() {
     <>
       {/* 📜 MODAL DE TÉRMINOS Y LEY 25.326 (ONBOARDING)
             Si hay usuario logueado pero no aceptó los términos, se clava en la pantalla */}
-        {user && !user.aceptoTerminos && (
+        {user && !user.aceptoTerminos && getNormalizedRole(user) !== "ADMIN" && (
           <TerminosModal 
             user={user} 
             onAceptar={handleAceptarTerminos} 
