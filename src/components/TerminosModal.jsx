@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-//import { usuarios } from "@/api";
+import { usuarios } from "../api/apiClient";
 import "../styles/TerminosModal.css";
 
 export default function TerminosModal({ user, onAceptar }) {

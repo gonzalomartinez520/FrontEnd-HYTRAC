@@ -66,4 +66,9 @@ apiClient.interceptors.response.use(
   }
 );
 
+export const usuarios = {
+  aceptarTerminos: (legajo) => 
+    apiClient.post('/auth/aceptar-terminos', { legajo }).then((r) => r.data),
+};
+
 export default apiClient;

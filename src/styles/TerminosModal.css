@@ -1,18 +1,18 @@
 .terminos-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(2, 8, 23, 0.85); /* Cambiado a tu azul de fondo oscuro con opacidad */
+    background: rgba(2, 8, 23, 0.85); 
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
     padding: 20px;
-    backdrop-filter: blur(4px); /* Suaviza el fondo para centrar la atención en el modal */
+    backdrop-filter: blur(4px); 
 }
 
 .terminos-modal {
-    background: #061126; /* Cambiado al fondo de tus tarjetas e inputs del login */
-    border: 1px solid #1e3357; /* Tu borde de foco secundario */
+    background: #061126; 
+    border: 1px solid #1e3357; 
     border-radius: 16px;
     width: 100%;
     max-width: 640px;
@@ -28,14 +28,14 @@
     align-items: center;
     gap: 12px;
     padding: 20px 24px;
-    background: linear-gradient(135deg, #1e2a44 0%, #121c30 100%); /* Gradiente de tu panel izquierdo */
-    border-bottom: 2px solid #ff6b0a; /* Línea divisoria con tu naranja corporativo */
+    background: linear-gradient(135deg, #1e2a44 0%, #121c30 100%); 
+    border-bottom: 2px solid #ff6b0a; 
     color: white;
 }
 
 .terminos-header span { 
     font-size: 2rem; 
-    color: #ff6b0a; /* El ícono ahora resalta en naranja */
+    color: #ff6b0a; 
 }
 
 .terminos-header h2 { 
@@ -48,7 +48,7 @@
 .terminos-header p { 
     margin: 0; 
     font-size: 0.8rem; 
-    color: #9ca9c0; /* Tu gris de subtítulos */
+    color: #9ca9c0;
 }
 
 .terminos-body {
@@ -57,13 +57,13 @@
     flex: 1;
     font-size: 0.88rem;
     line-height: 1.6;
-    color: #d2d9e8; /* Tu texto claro del panel izquierdo */
-    background: #020817; /* Fondo ultra oscuro idéntico al panel derecho */
+    color: #d2d9e8; 
+    background: #020817;
 }
 
 .terminos-body h3 {
     font-size: 0.95rem;
-    color: #ff6b0a; /* Títulos internos en tu naranja destacado */
+    color: #ff6b0a; 
     margin: 20px 0 8px;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -71,23 +71,23 @@
 
 .terminos-firma {
     padding: 20px 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08); /* Borde sutil transparente */
+    border-top: 1px solid rgba(255, 255, 255, 0.08); 
     background: #061126;
 }
 
 .terminos-firma p {
     font-size: 0.85rem;
-    color: #c4cede; /* Tu gris claro */
+    color: #c4cede; 
     margin-bottom: 12px;
 }
 
 .firma-canvas {
     width: 100%;
     height: 130px;
-    border: 1.5px dashed #ff6b0a; /* Recuadro de firma en líneas discontinuas naranjas */
+    border: 1.5px dashed #ff6b0a; 
     border-radius: 10px;
     cursor: crosshair;
-    background: #020817; /* Fondo oscuro interno para que resalte el trazo de la firma */
+    background: #020817; 
     touch-action: none;
 }
 
@@ -95,7 +95,7 @@
     margin-top: 10px;
     background: transparent;
     border: none;
-    color: #ff6b0a; /* Texto interactivo en tu naranja */
+    color: #ff6b0a; 
     font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
@@ -105,7 +105,7 @@
 }
 
 .limpiar-firma:hover {
-    color: #ff7c24; /* Efecto hover aclarando el naranja */
+    color: #ff7c24; 
 }
 
 .terminos-footer {
@@ -120,12 +120,12 @@
 
 .terminos-usuario {
     font-size: 0.8rem;
-    color: #60708f; /* Tu gris de placeholders */
+    color: #60708f;
     margin: 0;
 }
 
 .aceptar-btn {
-    background: #ff6b0a; /* Botón en naranja LogiTrack puro */
+    background: #ff6b0a; 
     color: white;
     border: none;
     padding: 12px 24px;
@@ -139,7 +139,7 @@
 }
 
 .aceptar-btn:disabled {
-    background: #1e3357; /* Deshabilitado adopta el color de tus bordes oscuros */
+    background: #1e3357;
     color: #60708f;
     cursor: not-allowed;
     box-shadow: none;
@@ -147,6 +147,6 @@
 }
 
 .aceptar-btn:hover:not(:disabled) { 
-    background: #ff7c24; /* Mismo hover dinámico que tus botones del login */
+    background: #ff7c24; 
     transform: translateY(-1px);
 }
