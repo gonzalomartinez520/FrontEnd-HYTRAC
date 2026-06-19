@@ -155,6 +155,12 @@ const transportista = {
 
     return data;
   },
+
+  escanearDocumento: async (payload) => {
+    const { data } = await apiClient.post("/scanner/scan", payload);
+    
+    return data;
+  },
 };
 
 export default transportista;

@@ -15,24 +15,83 @@
     align-items: center;
 }
 
-.editor-wrapper {
+/* CONTENEDOR DEL EDITOR */
+.editor-externo {
     width: 100%;
-    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 
-    overflow: hidden;
-
+    /* estado base oculto */
     max-height: 0;
     opacity: 0;
     transform: translateY(-10px);
+    overflow: hidden;
 
-    transition: all 0.35s ease;
+    transition: 
+        max-height 0.4s ease,
+        opacity 0.3s ease,
+        transform 0.3s ease;
 }
 
-/* CUANDO SE ABRE */
-.editor-wrapper.open {
-    max-height: 80px;
+/* 👇 entrada */
+.editor-externo.visible {
+    max-height: 200px;
     opacity: 1;
     transform: translateY(0);
+    margin-top: 12px;
+}
+
+/* 👇 salida */
+.editor-externo.oculto {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* INPUT FILE CUSTOM */
+.input-file {
+    background: #2c3e50;
+    color: #f7f9fc;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+}
+
+.input-file input {
+    display: none;
+}
+
+.input-file:hover {
+    background: #34495e;
+}
+
+/* BOTÓN PRINCIPAL */
+.btn-actualizar {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    color: #f7f9fc;
+    background: #ff7b00;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-actualizar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.btn-actualizar:disabled {
+    background: #f39c12;
+    cursor: not-allowed;
+    box-shadow: none;
 }
 
 .documentos {
@@ -82,7 +141,6 @@
 }
 
 .documento-card.activa {
-    transform: scale(1.08);
     z-index: 10;
     position: relative;
 }
