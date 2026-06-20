@@ -242,3 +242,72 @@
     opacity: 0.4;
     cursor: not-allowed;
 }
+
+/* 📱 TABLETS / CELULARES GRANDES */
+@media (max-width: 768px) {
+
+    .documentos {
+        grid-template-columns: 1fr; /* 🔥 una sola columna */
+        max-width: 100%;
+        padding: 0 16px;
+        gap: 16px;
+    }
+
+    .documento-card {
+        width: 100%;
+        padding: 14px;
+    }
+
+    .documentos-header h1 {
+        font-size: 26px;
+    }
+
+    .documentos-header p {
+        font-size: 1rem;
+    }
+
+    /* editor más compacto */
+    .editor-externo.visible {
+        max-height: 250px;
+    }
+
+    /* input fecha */
+    .editar-fecha {
+        width: 100%;
+        margin-left: 0;
+        flex-direction: column;
+    }
+
+    .editar-fecha button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+    .documentos {
+        grid-template-columns: 1fr; /* 1 sola columna */
+    }
+
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+
+    .documentos {
+        grid-template-columns: repeat(2, 1fr); /* 🔥 2 columnas */
+        gap: 12px;
+    }
+
+    .documento-card {
+        padding: 12px;
+    }
+
+    .documentos-header h1 {
+        font-size: 22px;
+    }
+
+    .documentos-header p {
+        font-size: 0.95rem;
+    }
+
+}
