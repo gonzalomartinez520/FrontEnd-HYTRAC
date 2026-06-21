@@ -38,9 +38,12 @@ export default function TerminosModal({ user, onAceptar }) {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
         const pos = getPos(e, canvas);
+        const strokeColor = getComputedStyle(document.documentElement)
+        .getPropertyValue("--text-primary")
+        .trim();
         ctx.lineWidth = 2;
         ctx.lineCap = "round";
-        ctx.strokeStyle = "#fefeff";
+        ctx.strokeStyle = strokeColor || "#fefeff";
         ctx.lineTo(pos.x, pos.y);
         ctx.stroke();
         setFirmado(true);

@@ -192,13 +192,14 @@
 }
 
 .notif-header strong {
-  color: #ffffff;
+  color: var(--text-primary); 
+  transition: color 0.3s ease;
 }
 
 .notif-header button {
   background: none;
   border: none;
-  color: var(--accent); /* 🔥 naranja */
+  color: var(--accent);
   font-weight: 500;
   cursor: pointer;
 }
