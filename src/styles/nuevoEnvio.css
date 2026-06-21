@@ -589,3 +589,69 @@ small {
     margin-top: 2px;
   }
 }
+
+
+
+/* ===================================================== */
+/* MOBILE VERTICAL / CORRECCION DE MAPA */
+/* ===================================================== */
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .map-integration-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    gap: 16px !important;
+  }
+
+  .map-integration-grid > div:first-child {
+    width: 100%;
+  }
+
+  .hytrac-map-fluid-canvas {
+    width: 100% !important;
+    height: min(80vw, 350px) !important;
+  }
+
+  .route-telemetry-panel {
+    width: 100% !important;
+    min-height: auto !important;
+  }
+
+  .remito-cot-centered {
+    margin-top: 20px !important;
+  }
+}
+
+
+/* ===================================================== */
+/* MOBILE HORIZONTAL / LANDSCAPE / CORRECCION DE MAPA */
+/* ===================================================== */
+@media (max-width: 768px) and (orientation: landscape) {
+
+  .map-integration-grid {
+    display: grid !important;
+    grid-template-columns: 1.2fr 1fr !important;
+    gap: 16px !important;
+
+    /* elimina el problema de superposición */
+    height: auto !important;
+
+    align-items: stretch;
+    margin-bottom: 24px !important;
+  }
+
+  .hytrac-map-fluid-canvas {
+    height: 260px !important;
+    min-height: 260px !important;
+  }
+
+  .route-telemetry-panel {
+    min-height: 260px !important;
+  }
+
+  .remito-cot-centered {
+    margin-top: 24px !important;
+    clear: both;
+  }
+}
