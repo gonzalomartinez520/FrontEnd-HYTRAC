@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { datos, transportista } from '@/api';
+import { useTranslation } from "react-i18next";
 import "../styles/transportistaDocumentos.css";
 
 export default function TransportistaDocumentos( { user } ) {
     const navigate = useNavigate();
+    const { t } = useTranslation("transportista");
     const legajoTransportista = localStorage.getItem("legajo");
 
     const [transportistas, setTransportistas] = useState([]);
@@ -153,6 +155,20 @@ export default function TransportistaDocumentos( { user } ) {
 
             console.log("Respuesta backend:", res);
 
+            const fechaVencimiento = res.parsedPayload.vencimiento;
+
+            await transportista.actualizarDocumento(doc.id, {
+                fechaVencimiento: fechaVencimiento
+            });
+
+            setDocumentos(prev =>
+                prev.map(d =>
+                    d.id === doc.id
+                        ? { ...d, fechaVencimiento: fechaVencimiento }
+                        : d
+                )
+            );
+
             setEditandoId(null);
             setArchivo(null);
             setImagenBase64("");
@@ -167,8 +183,8 @@ export default function TransportistaDocumentos( { user } ) {
         <main className="transportista-screen">
             <section className="transportista-content">
                 <div className="documentos-header">
-                    <h1>Documentos</h1>
-                    <p>Aquí podrá visualizar sus documentos ingresados al sistema y gestionarlos</p>
+                    <h1>{t("documents.title")}</h1>
+                    <p>{t("documents.subtitle")}</p>
                 </div>
 
                 <div className="documentos">
@@ -190,7 +206,7 @@ export default function TransportistaDocumentos( { user } ) {
 
                                     <div className="fecha-row">
                                         <p>
-                                            <strong>Vencimiento:</strong> {doc.fechaVencimiento}
+                                            <strong>{t("details.expiration")}:</strong> {doc.fechaVencimiento}
                                         </p>
 
                                         <button
@@ -210,7 +226,7 @@ export default function TransportistaDocumentos( { user } ) {
                                     </div>
 
                                     <a href={doc.url} target="_blank" rel="noopener noreferrer">
-                                        Ver documento
+                                        {t("documents.seeDocument")}
                                     </a>
                                 </div>
 
@@ -226,7 +242,7 @@ export default function TransportistaDocumentos( { user } ) {
                                             accept="image/*"
                                             onChange={handleFileChange}
                                         />
-                                        <span>Seleccionar imagen</span>
+                                        <span>{t("documents.selectImage")}</span>
                                     </label>
 
                                     <button 
@@ -234,7 +250,7 @@ export default function TransportistaDocumentos( { user } ) {
                                         onClick={() => escanearDocumento(doc)}
                                         disabled={!imagenBase64}
                                     >
-                                        Actualizar documento
+                                        {t("documents.updateDocument")}
                                     </button>
                                 </div>
                             </div>

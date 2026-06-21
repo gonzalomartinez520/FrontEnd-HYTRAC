@@ -161,6 +161,12 @@ const transportista = {
     
     return data;
   },
+
+  actualizarDocumento: async (documentoId, payload) => {
+    const { data } = await apiClient.put(`/transportistas/documentacion/${documentoId}/vencimiento`, payload);
+    
+    return data;
+  },
 };
 
 export default transportista;
