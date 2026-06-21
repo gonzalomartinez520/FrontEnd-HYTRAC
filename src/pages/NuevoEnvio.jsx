@@ -724,7 +724,7 @@ export default function NuevoEnvio({ user }) {
                       100% { transform: rotate(360deg); }
                     }
                   `}</style>
-                  <span style={{ fontSize: "14px", color: "#94a3b8", fontWeight: "500", letterSpacing: "0.3px" }}>
+                  <span style={{ fontSize: "14px", color: "#var(--text-muted)", fontWeight: "500", letterSpacing: "0.3px" }}>
                     {t("newOrder.route.calculating")}
                   </span>
                 </div>
@@ -741,7 +741,7 @@ export default function NuevoEnvio({ user }) {
                   </p>
 
                   {(!formData.refineriaOrigen || !formData.estacionDestino) && (
-                    <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "12px", fontStyle: "italic" }}>
+                    <span style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "12px", fontStyle: "italic" }}>
                       {t("newOrder.route.incomplete")}
                     </span>
                   )}

@@ -15,12 +15,12 @@ body {
   height: 100vh;
   display: flex;
   overflow: hidden;
+  background-color: var(--bg-primary);
 }
 
-/* =========================
-   LEFT PANEL
-========================= */
-
+/* ======================================================
+   💼 PANEL IZQUIERDO (Identidad Invariable de HYTRAC)
+   ====================================================== */
 .left-panel {
   width: 55%;
   position: relative;
@@ -60,7 +60,7 @@ body {
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: #ff6b0a;
+  background: #ff6b0a; /* Fijo institucional */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -114,7 +114,7 @@ body {
 .metrics {
   margin-top: 58px;
   padding-top: 28px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   gap: 54px;
 }
@@ -130,17 +130,18 @@ body {
   font-size: 15px;
 }
 
-/* =========================
-   RIGHT PANEL
-========================= */
-
+/* ======================================================
+   📝 PANEL DERECHO (Formulario Dinámico Adaptable)
+   ====================================================== */
 .right-panel {
   width: 45%;
-  background: #020817;
+  background: var(--bg-primary); /* Se adapta según index.css */
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 32px;
+  position: relative;
+  transition: background-color 0.3s ease;
 }
 
 .login-card {
@@ -159,13 +160,13 @@ body {
 }
 
 .login-card h1 {
-  color: white;
+  color: var(--text-primary); /* Dinámico */
   font-size: 52px;
   margin-bottom: 12px;
 }
 
 .login-subtitle {
-  color: #9ca9c0;
+  color: var(--text-secondary); /* Dinámico */
   font-size: 20px;
   margin-bottom: 42px;
 }
@@ -177,7 +178,7 @@ body {
 .input-group label {
   display: block;
   margin-bottom: 10px;
-  color: #d9e2f2;
+  color: var(--text-primary); /* Dinámico */
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -192,9 +193,9 @@ body {
 .input-wrapper {
   width: 100%;
   height: 58px;
-  border: 1px solid #1e3357;
+  border: 1px solid var(--border-color); /* Dinámico */
   border-radius: 14px;
-  background: #061126;
+  background: var(--bg-input); /* Dinámico */
   display: flex;
   align-items: center;
   padding: 0 18px;
@@ -202,17 +203,17 @@ body {
 }
 
 .input-wrapper:hover {
-  border-color: #31528c;
+  border-color: var(--text-secondary);
 }
 
 .input-wrapper:focus-within {
-  border-color: #ff6b0a;
-  box-shadow: 0 0 0 4px rgba(255, 107, 10, 0.1);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-accent);
 }
 
 .input-wrapper span {
   margin-right: 12px;
-  color: #a9b7ce;
+  color: var(--text-secondary);
   font-size: 16px;
 }
 
@@ -221,18 +222,17 @@ body {
   background: transparent;
   border: none;
   outline: none;
-  color: white;
+  color: var(--text-primary); /* Dinámico */
   font-size: 16px;
 }
 
 .input-wrapper input::placeholder {
-  color: #60708f;
+  color: var(--text-muted);
 }
 
 .toggle-password {
   background: transparent;
-  color: #ff7b00;
-  border-radius: 8px;
+  color: var(--accent);
   border: none;
   font-size: large;
   font-style: bold;
@@ -243,6 +243,7 @@ body {
   height: 40px;
   padding: 0;
   cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
 .toggle-password svg {
@@ -256,7 +257,7 @@ body {
 
 .error-message {
   margin-bottom: 18px;
-  color: #ff7272;
+  color: var(--danger);
   font-size: 14px;
 }
 
@@ -265,126 +266,130 @@ body {
   height: 58px;
   border: none;
   border-radius: 14px;
-  background: #ff6b0a;
+  background: var(--accent); /* Dinámico */
   color: white;
   font-size: 19px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.25s ease;
   margin-top: 8px;
-  box-shadow: 0 10px 25px rgba(255, 107, 10, 0.25);
+  box-shadow: var(--shadow-accent);
 }
 
 .login-btn:hover {
   transform: translateY(-2px);
-  background: #ff7c24;
+  background: var(--accent-hover);
 }
 
 .login-footer {
   margin-top: 34px;
   padding-top: 24px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
-  color: #8b98ae;
+  color: var(--text-muted);
   font-size: 13px;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* ======================================================
+   🎛️ CONTROLES DEL TOGGLE DE TEMA INTERNO
+   ====================================================== */
+.login-theme-toggle {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+}
 
+.theme-switch {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  outline: none;
+}
+
+.theme-switch-track {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  border-radius: 999px;
+  background: #061126; /* Fondo oscuro duro base fijo */
+  border: 1.5px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  justify-content: space-between;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+:root[data-theme="light"] .theme-switch-track {
+  background: #cbd5e1; /* Gris aluminio suave de día */
+}
+
+.theme-switch-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.theme-switch-icon.sun { color: #f5a623; }
+.theme-switch-icon.moon { color: #94a3b8; }
+
+.theme-switch-thumb {
+  position: absolute;
+  top: 1.5px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 🌙 Sincronización Direccional del Switch */
+/* Modo Oscuro por defecto: Círculo viaja a la derecha (sobre la Luna) */
+:root .theme-switch-thumb {
+  transform: translateX(24px);
+}
+
+/* Modo Claro: Círculo vuelve a la izquierda (sobre el Sol) */
+:root[data-theme="light"] .theme-switch-thumb {
+  transform: translateX(0);
+}
+
+/* ======================================================
+   📱 RESPONSIVE DESIGN (MEDIA QUERIES)
+   ====================================================== */
 @media (max-width: 1366px) {
-  .hero-text h1 {
-    font-size: 52px;
-  }
-
-  .hero-text p {
-    font-size: 16px;
-  }
-
-  .metrics {
-    gap: 36px;
-  }
-
-  .metric-item h3 {
-    font-size: 30px;
-  }
-
-  .login-card h1 {
-    font-size: 44px;
-  }
+  .hero-text h1 { font-size: 52px; }
+  .hero-text p { font-size: 16px; }
+  .metrics { gap: 36px; }
+  .metric-item h3 { font-size: 30px; }
+  .login-card h1 { font-size: 44px; }
 }
 
 @media (max-width: 1100px) {
-  .login-page {
-    flex-direction: column;
-  }
-
-  .left-panel {
-    width: 100%;
-    height: 42%;
-    padding: 28px;
-  }
-
-  .right-panel {
-    width: 100%;
-    height: 58%;
-    padding: 24px;
-  }
-
-  .hero-text h1 {
-    font-size: 42px;
-  }
-
-  .hero-text p {
-    font-size: 15px;
-    margin-top: 18px;
-  }
-
-  .metrics {
-    margin-top: 32px;
-  }
+  .login-page { flex-direction: column; }
+  .left-panel { width: 100%; height: 42%; padding: 28px; }
+  .right-panel { width: 100%; height: 58%; padding: 24px; }
+  .hero-text h1 { font-size: 42px; }
+  .hero-text p { font-size: 15px; margin-top: 18px; }
+  .metrics { margin-top: 32px; }
 }
 
 @media (max-width: 768px) {
-  body {
-    overflow-y: auto;
-  }
-
-  .login-page {
-    height: auto;
-    min-height: 100vh;
-  }
-
-  .left-panel {
-    display: none;
-  }
-
-  .right-panel {
-    width: 100%;
-    min-height: 100vh;
-  }
-
-  .mobile-logo {
-    display: flex;
-  }
-
-  .login-card {
-    max-width: 100%;
-  }
-
-  .login-card h1 {
-    font-size: 38px;
-  }
-
-  .login-subtitle {
-    font-size: 16px;
-    margin-bottom: 28px;
-  }
-
-  .login-footer {
-    flex-direction: column;
-    gap: 8px;
-  }
+  body { overflow-y: auto; }
+  .login-page { height: auto; min-height: 100vh; }
+  .left-panel { display: none; }
+  .right-panel { width: 100%; min-height: 100vh; }
+  .mobile-logo { display: flex; }
+  .login-card { max-width: 100%; }
+  .login-card h1 { font-size: 38px; }
+  .login-subtitle { font-size: 16px; margin-bottom: 28px; }
+  .login-footer { flex-direction: column; gap: 8px; }
 }

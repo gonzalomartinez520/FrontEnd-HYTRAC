@@ -7,7 +7,7 @@
 
 .historial-operador-layout {
   min-height: calc(100vh - 60px); /* 🔥 ajustá el 60px */
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .historial-operador-loading-screen {
@@ -17,7 +17,7 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background: #0B1120;
+  background: var(--bg-primary);
   color: white;
 }
 
@@ -43,17 +43,17 @@
 
 .historial-operador-header h1 {
   font-size: 2.5rem;
-  color: #F8FAF6;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
 .historial-operador-header p {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
 .historial-operador-card {
-  background: #1E293B;
+  background: var(--bg-secondary);
   border-radius: 20px;
   padding: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -68,11 +68,11 @@
 
 .historial-operador-top h2 {
   margin-bottom: 6px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .historial-operador-top span {
-  color: #a3b0c2;
+  color: var(--text-secondary);
 }
 
 .historial-operador-buscador {
@@ -102,7 +102,7 @@ table td {
 }
 
 .historial-operador-detalles, .editar-envio{
-    background-color: #0B1120;
+    background-color: var(--bg-primary);
     border-radius: 8px;
     border: none;
     font-size: large;
@@ -139,7 +139,7 @@ table td {
 
 .fila-expandida td {
   padding: 0;
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .detalle-envio {
@@ -165,7 +165,7 @@ table td {
 
 /* 🔥 MODAL MÁS CHICO Y CENTRADO */
 .modal-content {
-  background: #1E293B;
+  background: var(--bg-secondary);
   color: white;
 
   width: 90%;
@@ -186,7 +186,7 @@ table td {
 }
 
 .modal-content::-webkit-scrollbar-thumb {
-  background: #f97316;
+  background: var(--accent);
   border-radius: 10px;
 }
 
@@ -197,8 +197,8 @@ table td {
   padding: 8px;
   border-radius: 6px;
   border: none;
-  background: #0B1120;
-  color: #F8FAF6;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .modal-actions {
@@ -219,7 +219,7 @@ table td {
 
 .cancelar-edicion {
   background: red;
-  border: 2px solid #1E293B;
+  border: 2px solid var(--bg-secondary);
   color: white;
 }
 
@@ -230,8 +230,8 @@ table td {
 }
 
 .guardar-edicion {
-  background: #F97316;
-  border: 2px solid #1E293B;
+  background: var(--accent);
+  border: 2px solid var(--bg-secondary);
   color: white;
 }
 

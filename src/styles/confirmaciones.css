@@ -1,6 +1,6 @@
 .confirmaciones-layout {
   height: calc(100vh - 60px);
-  background: #0B1120;      
+  background: var(--bg-primary);      
 }
 
 * {
@@ -21,11 +21,11 @@
 
 .confirmaciones-header h1 {
     font-size: 2.5rem;
-    color: #F8FAF6;
+    color: var(--text-primary);
 }
 
 .confirmaciones-header p {
-    color: #a3b0c2;
+    color: var(--text-secondary);
     font-size: 1.1rem;
 }
 
@@ -100,7 +100,7 @@
     background: transparent;
 
     /* color base (se sobrescribe por card) */
-    color: #0f172a;
+    color: var(--bg-card);
 
     /* borde grueso negro */
     -webkit-text-stroke: 5px #000;
@@ -149,12 +149,12 @@
 
 /* TEXTOS */
 .confirmaciones-card h2 {
-    color: #F8FAF6;
+    color: var(--text-primary);
     margin-bottom: 10px;
 }
 
 .confirmaciones-card p {
-    color: #F8FAF6;
+    color: var(--text-primary);
     margin-bottom: 20px;
 }
 
