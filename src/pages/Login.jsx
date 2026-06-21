@@ -176,7 +176,9 @@ console.log("LEGAJO DEL TOKEN:", {
 
         <div className="brand-container">
           <div className="brand-top">
-            <div className="logo-icon">⛟</div>
+            <div className="logo-container-login">
+              <img src={LogiTrackLogo} alt="HYTRAC Logo" className="login-logo-img" />
+            </div>
 
             <div>
               <h2>HYTRAC</h2>
