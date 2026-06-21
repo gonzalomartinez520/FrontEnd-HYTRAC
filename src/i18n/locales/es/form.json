@@ -5,15 +5,17 @@
     "new": "NUEVA ORDEN",
 
     "sections": {
-      "unitDriver": "Unidad & Chofer",
-      "unitDriverDesc": "Datos del vehículo y verificación documental.",
+      "unitDriver": "Unidad Vehicular",
+      "unitDriverDesc": "Datos de la unidad vehicular.",
       "cargoSpecs": "Especificaciones de la carga",
       "cargoSpecsDesc": "Combustible, código de transporte peligroso y condiciones.",
       "logistics": "Logística & Documentación",
       "logisticsDesc": "Origen, destino y comprobantes fiscales.",
       "personalData": "Datos Personales",
       "accessData": "Datos de Acceso",
-      "operationalLocation": "Ubicación Operativa"
+      "operationalLocation": "Ubicación Operativa",
+      "driver": "Chofer",
+      "driverDesc": "Selección de chofer óptimo y verificación documental."
     },
 
     "users": {
