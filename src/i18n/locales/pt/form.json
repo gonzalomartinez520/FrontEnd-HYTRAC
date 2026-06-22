@@ -5,15 +5,17 @@
     "new": "NOVA ORDEM",
 
     "sections": {
-      "unitDriver": "Unidade & Motorista",
-      "unitDriverDesc": "Dados do veículo e verificação documental.",
+      "unitDriver": "Unidade Veicular",
+      "unitDriverDesc": "Dados da unidade veicular.",
       "cargoSpecs": "Especificações da carga",
       "cargoSpecsDesc": "Combustível, código de transporte perigoso e condições.",
       "logistics": "Logística & Documentação",
       "logisticsDesc": "Origem, destino e documentos fiscais.",
       "personalData": "Dados Pessoais",
       "accessData": "Dados de Acesso",
-      "operationalLocation": "Localização Operacional"
+      "operationalLocation": "Localização Operacional",
+      "driver": "Motorista",
+      "driverDesc": "Seleção do motorista ideal e verificação de documentos."
     },
 
     "users": {

@@ -133,6 +133,13 @@
       "documentation": "Documentacion"
     }
   },
+  "documents": {
+    "title": "Documentos",
+    "subtitle": "Aquí podrá visualizar sus documentos ingresados al sistema y gestionarlos",
+    "seeDocument": "Ver Documento",
+    "selectImage": "Seleccionar Imagen",
+    "updateDocument": "Actualizar Documento"
+  },
   "actions": {
     "confirmShipment": "Confirmar envio",
     "notifyDelivery": "Notificar entrega"
@@ -196,7 +203,7 @@
   "details": {
     "document": "Documento",
     "test": "Prueba",
-    "expiration": "Fecha Vencimiento",
+    "expiration": "Vencimiento",
     "noDocuments": "Sin Documentos"
   },
   "messages": {

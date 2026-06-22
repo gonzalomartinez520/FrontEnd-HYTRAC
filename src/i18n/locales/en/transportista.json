@@ -133,6 +133,13 @@
       "documentation": "Documentation"
     }
   },
+    "documents": {
+    "title": "Documents",
+    "subtitle": "Here you can view your documents entered into the system and manage them",
+    "seeDocument": "View Document",
+    "selectImage": "Select Image",
+    "updateDocument": "Update Document"
+  },
   "actions": {
     "confirmShipment": "Confirm shipment",
     "notifyDelivery": "Notify delivery"
