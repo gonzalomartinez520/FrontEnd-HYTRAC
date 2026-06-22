@@ -147,3 +147,151 @@ a {
   }
 }
 
+@media (max-width: 768px) {
+
+  .dashboard-content {
+    padding: 16px;
+  }
+
+  .table-card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .table-top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .table-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .table-actions input {
+    width: 100%;
+  }
+
+  .table-actions button {
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  tbody tr {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    width: 100%;
+
+    background: rgba(255,255,255,0.04);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 16px;
+
+    padding: 16px;
+  }
+
+  tbody tr td {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    border: none;
+
+    padding: 0;
+
+    width: 100%;
+
+    word-break: break-word;
+  }
+
+  tbody tr td::before {
+    content: attr(data-label);
+
+    font-size: 0.82rem;
+
+    color: #94a3b8;
+
+    font-weight: 600;
+
+    flex-shrink: 0;
+
+    min-width: 120px;
+  }
+
+  /* ID */
+
+  tbody tr td.tracking {
+    justify-content: space-between;
+  }
+
+  /* ACCIONES */
+
+  .actions-cell {
+    align-items: center;
+  }
+
+  .actions-table {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .confirmar-detalles,
+  .confirmar-envio,
+  .rechazar-envio {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
+
+  /* IMPORTANTE:
+     NO ocultar fecha ni acciones */
+
+  tbody tr td:nth-child(5),
+  tbody tr td:nth-child(6) {
+    display: flex;
+  }
+}
+
+
+@media (max-width: 768px) and (orientation: landscape) {
+
+  .dashboard-content {
+    padding: 12px;
+  }
+
+  tbody tr {
+    padding: 12px;
+  }
+
+  tbody tr td {
+    font-size: 0.9rem;
+  }
+
+  tbody tr td::before {
+    min-width: 110px;
+  }
+
+  .actions-table {
+    justify-content: flex-end;
+  }
+}
