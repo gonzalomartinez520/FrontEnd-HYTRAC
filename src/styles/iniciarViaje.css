@@ -214,3 +214,30 @@
   cursor: pointer;
   border: none;
 }
+
+.token-modal {
+  text-align: center;
+}
+
+.token-modal-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+
+.token-modal-icon i {
+  font-size: 26px;
+  color: var(--accent);
+}
+
+.token-modal-subtitle {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
