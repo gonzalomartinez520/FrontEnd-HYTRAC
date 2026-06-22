@@ -460,169 +460,6 @@ small {
 }
 
 /* Media Queries for Responsive Design */
-@media (max-width: 1366px) {
-  .nuevo-envio-container {
-    padding-top: 25px;
-    padding-left: 45px;
-    padding-right: 45px;
-    padding-bottom: 25px;
-  }
-
-  .form-header {
-    padding: 25px 0;
-  }
-
-  .form-header h1 {
-    font-size: 2rem;
-  }
-
-  .form-header p {
-    font-size: 1rem;
-  }
-
-  .envio-form-card {
-    padding: 18px;
-  }
-
-  .form-section {
-    margin-bottom: 25px;
-  }
-
-  .form-section h2 {
-    font-size: 1rem;
-  }
-
-  .grid-2 {
-    gap: 18px;
-  }
-
-  .grid-3 {
-    gap: 18px;
-  }
-
-  .form-group label {
-    font-size: 0.8rem;
-  }
-
-  .form-group input,
-  .form-group select {
-    font-size: 0.95rem;
-    padding: 9px;
-  }
-}
-
-@media (max-width: 1100px) {
-  .nuevo-envio-container {
-    padding-top: 20px;
-    padding-left: 35px;
-    padding-right: 35px;
-    padding-bottom: 20px;
-  }
-
-  .form-header {
-    padding: 20px 0;
-  }
-
-  .form-header h1 {
-    font-size: 1.8rem;
-  }
-
-  .form-header p {
-    font-size: 0.95rem;
-  }
-
-  .envio-form-card {
-    padding: 16px;
-  }
-
-  .form-section {
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-  }
-
-  .form-section h2 {
-    font-size: 0.95rem;
-  }
-
-  .step {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-
-  .icon {
-    width: 22px;
-    height: 22px;
-  }
-
-  .grid-2 {
-    gap: 15px;
-  }
-
-  .grid-3 {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-
-  .form-group label {
-    font-size: 0.75rem;
-  }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    font-size: 0.9rem;
-    padding: 8px;
-  }
-
-  .form-group textarea {
-    height: 80px;
-  }
-
-  .document-card {
-    padding: 10px 12px;
-    min-height: 60px;
-  }
-
-  .document-card__label {
-    font-size: 0.85rem;
-  }
-
-  .document-card__status {
-    font-size: 0.8rem;
-    padding: 5px 8px;
-  }
-
-  .btn-cancel,
-  .btn-submit {
-    padding: 12px;
-    font-size: 0.95rem;
-  }
-
-  .terms-section {
-    padding: 12px;
-    margin: 15px 0;
-  }
-
-  .terms-checkbox {
-    font-size: 0.85rem;
-  }
-
-  .info-alert {
-    padding: 12px;
-    font-size: 0.85rem;
-    margin-bottom: 20px;
-  }
-
-  .error-alert {
-    padding: 12px;
-    font-size: 0.85rem;
-  }
-
-  .success-alert {
-    padding: 12px;
-    font-size: 0.85rem;
-  }
-}
 
 @media (max-width: 768px) {
   .nuevo-envio-container {
@@ -820,4 +657,69 @@ small {
     margin-top: 2px;
   }
 }
+
+
+
+/* ===================================================== */
+/* MOBILE VERTICAL / CORRECCION DE MAPA */
+/* ===================================================== */
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .map-integration-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    gap: 16px !important;
+  }
+
+  .map-integration-grid > div:first-child {
+    width: 100%;
+  }
+
+  .hytrac-map-fluid-canvas {
+    width: 100% !important;
+    height: min(80vw, 350px) !important;
+  }
+
+  .route-telemetry-panel {
+    width: 100% !important;
+    min-height: auto !important;
+  }
+
+  .remito-cot-centered {
+    margin-top: 20px !important;
+  }
+}
+
+
+/* ===================================================== */
+/* MOBILE HORIZONTAL / LANDSCAPE / CORRECCION DE MAPA */
+/* ===================================================== */
+@media (max-width: 768px) and (orientation: landscape) {
+
+  .map-integration-grid {
+    display: grid !important;
+    grid-template-columns: 1.2fr 1fr !important;
+    gap: 16px !important;
+
+    /* elimina el problema de superposición */
+    height: auto !important;
+
+    align-items: stretch;
+    margin-bottom: 24px !important;
+  }
+
+  .hytrac-map-fluid-canvas {
+    height: 260px !important;
+    min-height: 260px !important;
+  }
+
+  .route-telemetry-panel {
+    min-height: 260px !important;
+  }
+
+  .remito-cot-centered {
+    margin-top: 24px !important;
+    clear: both;
+  }
 }

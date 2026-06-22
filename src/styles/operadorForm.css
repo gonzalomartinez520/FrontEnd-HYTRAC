@@ -33,3 +33,89 @@
   flex-direction: column;
   gap: 15px;
 }
+
+
+/* ===================================
+   GALAXY S8 - VERTICAL
+   360x740
+=================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .operador-container {
+    width: 95%;
+    max-width: 100%;
+
+    margin: 15px auto;
+    padding: 16px;
+  }
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .form-group {
+    width: 100%;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .operador-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .operador-header p {
+    font-size: 0.9rem;
+  }
+
+  .btn-submit {
+    width: 100%;
+    min-height: 48px;
+  }
+}
+
+
+/* ===================================
+   GALAXY S8 - HORIZONTAL
+   740x360
+=================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+  .operador-container {
+    width: 95%;
+    max-width: 100%;
+
+    margin: 15px auto;
+    padding: 16px;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 12px;
+  }
+
+  .form-row .form-group {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .btn-submit {
+    width: 100%;
+    min-height: 44px;
+  }
+}

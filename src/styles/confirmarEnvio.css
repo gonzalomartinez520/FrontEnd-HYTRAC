@@ -95,7 +95,8 @@ th {
 }
 
 .confirmar-loading-screen {
-  height: calc(100vh - 60px); /* 🔥 ajustá el 60px */
+  min-height: 100vh;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -287,4 +288,27 @@ th {
   }
 }
 
-/* Responsive Design */
+/* Responsive vertical s8 */
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .table-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .confirmar-actions {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .confirmar-actions input {
+    width: 100%;
+    max-width: 260px;
+    padding: 10px 12px;
+    font-size: 14px;
+    margin: 0 auto;
+    display: block;
+  }
+
+}

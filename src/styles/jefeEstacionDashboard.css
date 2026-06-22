@@ -148,119 +148,26 @@ a {
   }
 }
 
-@media (max-width: 1366px) {
-  .dashboard-content {
-    padding: 35px 50px;
-  }
-
-  .dashboard-header h1 {
-    font-size: 2.2rem;
-  }
-
-  .dashboard-header p {
-    font-size: 1rem;
-  }
-
-  .table-actions input {
-    width: 220px;
-  }
-
-  th,
-  td {
-    padding: 15px;
-    font-size: 0.95rem;
-  }
-}
-
-@media (max-width: 1100px) {
-  .dashboard-content {
-    padding: 25px 35px;
-  }
-
-  .dashboard-header h1 {
-    font-size: 2rem;
-  }
-
-  .dashboard-header p {
-    font-size: 0.95rem;
-  }
-
-  .table-card {
-    padding: 20px;
-  }
-
-  .table-top {
-    gap: 15px;
-  }
-
-  .table-top h2 {
-    font-size: 1.1rem;
-  }
-
-  .table-actions input {
-    width: 180px;
-    padding: 10px 12px;
-  }
-
-  .table-actions button {
-    width: 44px;
-  }
-
-  th,
-  td {
-    padding: 12px 10px;
-    font-size: 0.9rem;
-  }
-
-  th {
-    font-size: 0.85rem;
-  }
-}
-
 @media (max-width: 768px) {
+
   .dashboard-content {
-    padding: 20px 15px;
-  }
-
-  .dashboard-header {
-    flex-direction: column;
-    gap: 15px;
-    align-items: flex-start;
-    margin-bottom: 20px;
-  }
-
-  .dashboard-header h1 {
-    font-size: 1.8rem;
-  }
-
-  .dashboard-header p {
-    font-size: 0.9rem;
+    padding: 16px;
   }
 
   .table-card {
-    padding: 15px;
+    padding: 12px;
     border-radius: 12px;
   }
 
   .table-top {
     flex-direction: column;
-    gap: 12px;
     align-items: stretch;
-    align-items: flex-start;
-  }
-
-  .table-top h2 {
-    font-size: 1rem;
-  }
-
-  .table-top span {
-    font-size: 0.85rem;
+    gap: 12px;
   }
 
   .table-actions {
     width: 100%;
     flex-direction: column;
-    gap: 10px;
   }
 
   .table-actions input {
@@ -273,90 +180,80 @@ a {
 
   table {
     width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
   }
 
   thead {
     display: none;
   }
 
+  tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
   tbody tr {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    width: 100%;
+
+    background: rgba(255,255,255,0.04);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 16px;
+
     padding: 16px;
-    margin-bottom: 14px;
   }
 
   tbody tr td {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    padding: 0;
+    align-items: flex-start;
+
+    gap: 12px;
+
     border: none;
-    font-size: 0.96rem;
-    color: #e5e7eb;
+
+    padding: 0;
+
+    width: 100%;
+
+    word-break: break-word;
   }
 
   tbody tr td::before {
     content: attr(data-label);
     color: var(--text-muted);
     font-size: 0.82rem;
-    flex: 1 0 auto;
-    white-space: nowrap;
+
+    color: #94a3b8;
+
+    font-weight: 600;
+
+    flex-shrink: 0;
+
+    min-width: 120px;
   }
 
-  tbody tr td:nth-child(5),
-  tbody tr td:nth-child(6) {
-    display: none;
-  }
-
-  tbody tr td:nth-child(7) {
-    justify-content: flex-end;
-  }
-
-  tbody tr td a {
-    background: #ff7b00;
-    color: #fff;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 0.95rem;
-    white-space: nowrap;
-  }
+  /* ID */
 
   tbody tr td.tracking {
-    justify-content: center;
-    text-align: center;
-    flex-direction: column;
+    justify-content: space-between;
   }
 
-  th,
-  td {
-    padding: 10px 8px;
-    font-size: 0.8rem;
+  /* ACCIONES */
+
+  .actions-cell {
+    align-items: center;
   }
 
-  th {
-    font-size: 0.75rem;
-  }
-
-  .pagination {
-    justify-content: center;
-    gap: 5px;
-    margin-top: 20px;
-  }
-
-  .pagination button {
-    padding: 8px 10px;
-    font-size: 0.8rem;
-  }
-}
-
+  .actions-table {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 @media (max-width: 768px) and (orientation: portrait) {
   tbody tr td.tracking::before {
     content: "ID #";
@@ -365,17 +262,22 @@ a {
     font-size: 0.8rem;
     margin-bottom: 4px;
   }
-}
 
-/* ========================= */
-/* BOTONES DE ACCIONES       */
-/* ========================= */
+  .confirmar-detalles,
+  .confirmar-envio,
+  .rechazar-envio {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+  }
 
-.actions-table {
-  display: flex;
-  gap: 10px;
-}
+  /* IMPORTANTE:
+     NO ocultar fecha ni acciones */
 
+  tbody tr td:nth-child(5),
+  tbody tr td:nth-child(6) {
+    display: flex;
+  }
 .confirmar-detalles,
 .confirmar-envio,
 .rechazar-envio {
@@ -390,36 +292,26 @@ a {
   cursor: pointer;
 }
 
-/* Colores */
-.confirmar-detalles {
-  color: #ff7b00; /* naranja */
-}
 
-.confirmar-envio {
-  color: #22c55e; /* verde más moderno */
-}
+@media (max-width: 768px) and (orientation: landscape) {
 
-.rechazar-envio {
-  color: #ef4444; /* rojo más moderno */
-}
+  .dashboard-content {
+    padding: 12px;
+  }
 
-/* Tamaño del icono */
-.confirmar-detalles svg,
-.confirmar-envio svg,
-.rechazar-envio svg {
-  width: 22px;
-  height: 22px;
-}
+  tbody tr {
+    padding: 12px;
+  }
 
-/* Hover (opcional pero recomendado) */
-.confirmar-detalles:hover {
-  background-color: rgba(255, 123, 0, 0.1);
-}
+  tbody tr td {
+    font-size: 0.9rem;
+  }
 
-.confirmar-envio:hover {
-  background-color: rgba(34, 197, 94, 0.1);
-}
+  tbody tr td::before {
+    min-width: 110px;
+  }
 
-.rechazar-envio:hover {
-  background-color: rgba(239, 68, 68, 0.1);
+  .actions-table {
+    justify-content: flex-end;
+  }
 }

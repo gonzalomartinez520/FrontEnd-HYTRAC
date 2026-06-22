@@ -18,6 +18,12 @@
   background: var(--bg-primary);
 }
 
+.form-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .top-section {
   display: flex;
   flex-direction: column;
@@ -84,5 +90,242 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+
+/* ===================================
+   MOBILE VERTICAL
+   Galaxy S8 360x740
+=================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .nuevo-usuario-layout {
+    min-height: calc(100vh - 56px);
+    background: #0B1120;
+  }
+
+  .nuevo-usuario-content {
+    min-height: 100%;
+    background: #0B1120;
+
+    padding-top: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 30px;
+  }
+
+  .nuevo-usuario-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .nuevo-usuario-header p {
+    font-size: 0.95rem;
+  }
+
+  #nuevo-usuario {
+    font-size: 0.75rem;
+  }
+
+  .role-selector {
+    width: 100%;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .role-tab {
+    font-size: 0.85rem;
+
+    padding: 10px 14px;
+
+    flex: 1 1 140px;
+
+    max-width: 180px;
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+
+
+/* ===================================
+   MOBILE LANDSCAPE
+=================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+  .nuevo-usuario-layout {
+    min-height: calc(100vh - 50px);
+    background: #0B1120;
+  }
+
+  .nuevo-usuario-content {
+    background: #0B1120;
+
+    padding-top: 15px;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-bottom: 20px;
+  }
+
+  .nuevo-usuario-header h1 {
+    font-size: 1.7rem;
+  }
+
+  .nuevo-usuario-header p {
+    font-size: 0.9rem;
+  }
+
+  .role-selector {
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .role-tab {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+}
+
+
+
+@media (max-width: 768px) {
+
+  .nuevo-usuario-layout,
+  .nuevo-usuario-content,
+  .form-container {
+    overflow-x: hidden;
+  }
+}
+
+
+/* ===================================
+   FORMULARIOS RESPONSIVE
+=================================== */
+
+@media (max-width: 768px) {
+
+  .form-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Inputs */
+  .form-container input,
+  .form-container select,
+  .form-container textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-height: 44px;
+
+    font-size: 16px;
+
+    box-sizing: border-box;
+  }
+
+  /* Labels */
+  .form-container label {
+    display: block;
+    width: 100%;
+
+    font-size: 0.9rem;
+
+    margin-bottom: 6px;
+
+    word-wrap: break-word;
+  }
+
+  /* Filas flex */
+  .form-container .row,
+  .form-container .form-row,
+  .form-container .input-row,
+  .form-container .fields-row {
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100%;
+
+    gap: 12px;
+  }
+
+  /* Grids */
+  .form-container [class*="grid"] {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Columnas */
+  .form-container [class*="column"],
+  .form-container [class*="col"] {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Botones */
+  .form-container button {
+    min-height: 44px;
+
+    width: 100%;
+
+    font-size: 0.95rem;
+  }
+
+  /* Selects */
+  .form-container select {
+    white-space: normal;
+  }
+
+  /* Textareas */
+  .form-container textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+}
+
+
+/* ===================================
+   MOBILE LANDSCAPE
+=================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+  .form-container {
+    width: 100%;
+  }
+
+  .form-container input,
+  .form-container select,
+  .form-container textarea {
+    width: 100%;
+  }
+
+  .form-container button {
+    min-height: 44px;
+  }
+
+  .form-container [class*="grid-2"],
+  .form-container [class*="two-columns"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px;
   }
 }

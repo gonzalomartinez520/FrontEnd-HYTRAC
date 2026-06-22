@@ -154,3 +154,114 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .label {
   color: var(--text-muted);
 }
+
+/* ===================================
+   MOBILE VERTICAL
+   Galaxy S8 360x740
+=================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .transportista-container {
+    width: 95%;
+    max-width: 100%;
+    margin: 15px auto;
+    padding: 16px;
+  }
+
+  .transportista-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .transportista-header p {
+    font-size: 0.9rem;
+  }
+
+  .transportista-form {
+    width: 100%;
+  }
+
+  .btn-documento {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .doc-body {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .doc-field {
+    flex-wrap: wrap;
+  }
+
+  .documento-card {
+    width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  .custom-date-picker {
+    width: 100%;
+  }
+}
+
+
+/* ===================================
+   MOBILE LANDSCAPE
+=================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+  .transportista-container {
+    width: 95%;
+    max-width: 100%;
+    margin: 10px auto;
+    padding: 16px;
+  }
+
+  .transportista-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .transportista-header p {
+    font-size: 0.85rem;
+  }
+
+  .transportista-form {
+    width: 100%;
+  }
+
+  .btn-documento {
+    min-height: 44px;
+  }
+
+  .doc-body {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .documento-card {
+    width: 100%;
+  }
+}
+
+
+/* ===================================
+   PREVENCIÓN DE SCROLL HORIZONTAL
+=================================== */
+
+@media (max-width: 900px) {
+
+  .transportista-container,
+  .transportista-form,
+  .documentos-list,
+  .documento-card,
+  .custom-date-picker {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .doc-title {
+    word-break: break-word;
+  }
+}
