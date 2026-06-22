@@ -1,8 +1,8 @@
 .supervisor-container {
-  background: #1E293B;
+  background: var(--bg-secondary);
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #1E293B;
+  border-color: var(--bg-secondary);
   border-radius: 12px 12px 12px 12px;
   width: 50%;
   margin: 20px auto;
@@ -19,12 +19,12 @@
 }
 
 .supervisor-header h2 {
-    color: #F8FAF6;
+    color: var(--text-primary);
 }
 
 .supervisor-header p {
     margin-top: 5px;
-    color: #a3b0c2;
+    color: var(--text-secondary);
     font-size: large;
 }
 

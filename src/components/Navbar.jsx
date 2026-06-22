@@ -6,11 +6,13 @@ import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 import i18n from "../i18n";
 import { useTranslation } from "react-i18next";
 import { datos } from '@/api';
+import { useTheme } from "../hooks/useTheme";
 
 export default function Navbar({ user, onLogout }) {
   const navigate = useNavigate();
   const { t } = useTranslation("navbar");
   const { t : tCommon } = useTranslation("common");
+  const { theme, toggleTheme } = useTheme();
 
   const languages = [
     { code: "es", label: "Español", flag: "🇦🇷" },
@@ -68,7 +70,7 @@ export default function Navbar({ user, onLogout }) {
   const BellNormal = () => (
     <svg width="20" height="20" viewBox="0 0 24 24">
       <path
-        fill="#ff7a00"
+        fill="#var(--accent-hover)"
         d="M12 2a6 6 0 0 0-6 6v4.5l-1.7 2.6A1 1 0 0 0 5 17h14a1 1 0 0 0 .8-1.6L18 12.5V8a6 6 0 0 0-6-6zm0 20a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22z"
       />
     </svg>
@@ -77,7 +79,7 @@ export default function Navbar({ user, onLogout }) {
   const BellWithNotification = () => (
     <svg width="20" height="20" viewBox="0 0 24 24">
       <path
-        fill="#ff7a00"
+        fill="#var(--accent-hover)"
         d="M12 2a6 6 0 0 0-6 6v4.5l-1.7 2.6A1 1 0 0 0 5 17h14a1 1 0 0 0 .8-1.6L18 12.5V8a6 6 0 0 0-6-6zm0 20a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22z"
       />
       <circle cx="18" cy="6" r="5" fill="#ff3b3b" />
@@ -330,6 +332,30 @@ useEffect(() => {
       </div>
 
       <div className="nav-right">
+
+        <button
+              className="theme-switch"
+              onClick={toggleTheme}
+              role="switch"
+              aria-checked={theme === "light"}
+              title={theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+          >
+              <span className="theme-switch-track">
+                  <span className="theme-switch-icon sun">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                          <circle cx="12" cy="12" r="5"/>
+                          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                              stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none"/>
+                      </svg>
+                  </span>
+                  <span className="theme-switch-icon moon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                      </svg>
+                  </span>
+                  <span className="theme-switch-thumb" />
+              </span>
+         </button>
 
         <select className="language-select" onChange={handleChangeLanguage} value={i18n.language}>
           {languages.map((lang) => (

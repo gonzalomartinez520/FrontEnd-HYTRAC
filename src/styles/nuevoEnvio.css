@@ -4,11 +4,11 @@
   padding-right: 60px;
   padding-bottom: 30px;
   flex-direction: column;
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .form-header {
-  color: #F8FAF6;
+  color: var(--text-primary);
   padding: 30px;
   padding-left: 0px;
   padding-top: 0px;
@@ -17,11 +17,11 @@
 }
 
 .form-header h1 {
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .form-header p {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: large;
 }
 
@@ -31,10 +31,10 @@
 }
 
 .envio-form-card {
-  background: #1E293B;
+  background: var(--bg-secondary);
   padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #1E293B;
+  border-color: var(--bg-secondary);
   border-radius: 12px 12px 12px 12px;
 }
 
@@ -50,13 +50,13 @@
   align-items: center;
   gap: 2px;
   font-size: 1.1rem;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .icon {
   width: 25px;
   height: 25px;
-  fill: #f97316;
+  fill: var(--accent);
 }
 
 .step {
@@ -64,7 +64,7 @@
   padding: 10px 14px;
   border-radius: 10px;
   font-weight: bold;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .section-title {
@@ -86,7 +86,7 @@
 .section-icon--orange {
   width: 24px;
   height: 24px;
-  fill: #f97316;
+  fill: var(--accent);
 }
 
 .section-text p {
@@ -178,7 +178,7 @@
 .form-group label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #F8FAF6;
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
@@ -188,8 +188,8 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
-  background-color: #0B1120;
-  color: #F8FAF6;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .form-group input {
@@ -262,7 +262,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .btn-cancel {
   background: red;
-  border: 2px solid #1E293B;
+  border: 2px solid var(--bg-secondary);
   color: white;
 }
 
@@ -273,8 +273,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .btn-submit {
-  background: #F97316;
-  border: 2px solid #1E293B;
+  background: var(--accent);
+  border: 2px solid var(--bg-secondary);
   color: white;
 }
 
@@ -312,7 +312,7 @@ input[type="number"]::-webkit-inner-spin-button {
   padding: 15px;
   border-radius: 8px;
   margin: 20px 0;
-  border-left: 4px solid #f97316;
+  border-left: 4px solid var(--accent);
 }
 
 .terms-checkbox {
@@ -329,7 +329,7 @@ input[type="number"]::-webkit-inner-spin-button {
   cursor: pointer;
   width: 18px;
   height: 18px;
-  accent-color: #f97316;
+  accent-color: var(--accent);
 }
 
 .terms-checkbox span {
@@ -389,6 +389,74 @@ small {
   color: #999;
   font-style: italic;
   margin-top: 3px;
+}
+.route-telemetry-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px;
+  border-radius: 12px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+  color: var(--text-primary);
+  position: relative;
+
+
+.route-telemetry-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 100%;
+}
+
+.route-telemetry-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--accent-light);
+  border-top: 3px solid var(--accent);
+  border-radius: 50%;
+  animation: route-telemetry-spin 0.8s linear infinite;
+}
+
+@keyframes route-telemetry-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.route-telemetry-loading-text {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.route-telemetry-title {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #3b82f6;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.route-telemetry-row {
+  margin: 6px 0;
+  font-size: 15px;
+  color: var(--text-secondary);
+}
+
+.route-telemetry-row strong {
+  color: var(--text-primary);
+}
+
+.route-telemetry-warning {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 12px;
+  font-style: italic;
 }
 
 /* Media Queries for Responsive Design */
@@ -697,7 +765,7 @@ small {
   .terms-section {
     padding: 12px;
     margin: 15px 0;
-    border-left: 3px solid #f97316;
+    border-left: 3px solid var(--accent);
   }
 
   .terms-checkbox {
@@ -751,4 +819,5 @@ small {
     font-size: 0.7rem;
     margin-top: 2px;
   }
+}
 }

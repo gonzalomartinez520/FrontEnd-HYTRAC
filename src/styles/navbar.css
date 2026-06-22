@@ -2,8 +2,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #1E293B;
-  color: #F8FAF6;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   padding: 10px 40px;
   height: 60px;
   position: sticky;
@@ -40,7 +40,7 @@
 }
 
 .nav-links a {
-  color: #F8FAF6;
+  color: var(--text-primary);
   text-decoration: none;
   font-size: 0.9rem;
   display: flex;
@@ -72,7 +72,7 @@
 }
 
 .user-profile {
-  background: #0B1120;
+  background: var(--bg-primary);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -93,9 +93,9 @@
 }
 
 .language-select {
-  background: #0B1120;
+  background: var(--bg-primary);
   border: none;
-  color: #F8FAF6;
+  color: var(--text-primary);
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -155,7 +155,7 @@
   right: 0;
   width: 420px;
 
-  background: #0f172a;
+  background: var(--bg-card);
   color: #e5e7eb;
 
   border-radius: 10px;
@@ -183,22 +183,23 @@
   padding: 12px 14px;
   font-size: 16px;
 
-  border-bottom: 2px solid #F97316;
+  border-bottom: 2px solid var(--accent);
 }
 
 .notif-bottom {
   padding: 20px 14px;
-  border-top: 2px solid #F97316;
+  border-top: 2px solid var(--accent);
 }
 
 .notif-header strong {
-  color: #ffffff;
+  color: var(--text-primary); 
+  transition: color 0.3s ease;
 }
 
 .notif-header button {
   background: none;
   border: none;
-  color: #F97316; /* 🔥 naranja */
+  color: var(--accent);
   font-weight: 500;
   cursor: pointer;
 }
@@ -225,14 +226,14 @@
 /* 🔥 NO LEÍDAS (protagonistas) */
 .notif-item.unread {
   background: rgba(249, 115, 22, 0.15); /* naranja suave */
-  border-left: 3px solid #F97316;
+  border-left: 3px solid var(--accent);
   font-weight: 600;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 /* LEÍDAS */
 .notif-item:not(.unread) {
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 /* HOVER */
@@ -249,7 +250,7 @@
 
 .fecha-notificacion {
   font-size: 12px;
-  color: #a3b0c2;
+  color: var(--text-secondary);
   display: flex;
   justify-content: end;
 }
@@ -259,7 +260,7 @@
   display: block;
   padding: 18px;
   text-align: center;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 @keyframes fadeSlideIn {
@@ -285,9 +286,9 @@
 }
 
 .logout-btn {
-  background: #F97316;
+  background: var(--accent);
   border: 1.5px solid rgba(255, 255, 255, 0.6);
-  color: #F8FAF6;
+  color: var(--text-primary);
   cursor: pointer;
   font-weight: bold;
   display: flex;
@@ -304,7 +305,7 @@
 
 
 .logout-btn:hover {
-  border-color: #F8FAF6;
+  border-color: var(--text-primary);
   background: #F98500;
 }
 
@@ -318,7 +319,7 @@
   display: none;
   border: none;
   background: transparent;
-  color: #F8FAF6;
+  color: var(--text-primary);
   font-size: 1.2rem;
   cursor: pointer;
   padding: 8px;
@@ -331,6 +332,63 @@
 
 .nav-links.active {
   display: flex;
+}
+
+ .theme-switch {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.theme-switch-track {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  justify-content: space-between;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-switch-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.theme-switch-icon.sun { color: #f5a623; }
+.theme-switch-icon.moon { color: #94a3b8; }
+
+.theme-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+}
+
+/* Dark mode*/
+:root[data-theme="dark"] .theme-switch-thumb {
+  transform: translateX(24px);
+}
+
+/* Light mode*/
+:root[data-theme="light"] .theme-switch-thumb {
+  transform: translateX(0);
 }
 
 /* Media Queries for Responsive Design */
@@ -424,7 +482,7 @@
     top: 100%;
     left: 0;
     right: 0;
-    background: #1E293B;
+    background: var(--bg-secondary);
     padding: 12px 15px;
     flex-direction: column;
     border-bottom-left-radius: 14px;

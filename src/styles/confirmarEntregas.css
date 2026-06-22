@@ -7,7 +7,7 @@
 
 .confirmar-edicion-container  {
   min-height: calc(100vh - 60px); /* 🔥 ajustá el 60px */
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .edicion-dashboard-content {
@@ -23,17 +23,17 @@
 
 .edicion-header h1 {
   font-size: 2.5rem;
-  color: #F8FAF6;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
 .edicion-header p {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
 .edicion-table-section {
-  background: #1E293B;
+  background: var(--bg-secondary);
   border-radius: 20px;
   padding: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -48,7 +48,7 @@
 
 .edicion-table-header h2 {
   margin-bottom: 6px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .confirmar-edicion-buscador {
@@ -70,7 +70,7 @@ table {
 }
 
 thead {
-  background: #1E293B;
+  background: var(--bg-secondary);
 }
 
 th,
@@ -81,11 +81,11 @@ td {
 }
 
 td {
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 th {
-  color: #F8FAF6;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -101,7 +101,7 @@ th {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background: #0B1120;
+  background: var(--bg-primary);
   color: white;
 }
 
@@ -115,7 +115,7 @@ th {
 }
 
 .edicion-detalles, .confirmar-edicion, .rechazar-edicion {
-    background-color: #0B1120;
+    background-color: var(--bg-primary);
     border-radius: 8px;
     font-size: large;
     font-style: bold;
@@ -167,7 +167,7 @@ th {
 
 .fila-expandida td {
   padding: 0;
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .datos-editados {
@@ -198,15 +198,15 @@ th {
 }
 
 .modal {
-  background: #1E293B;
+  background: var(--bg-secondary);
   padding: 20px;
   border-radius: 10px;
   width: 400px;
 }
 
 .modal textarea {
-  background-color: #0B1120;
-  color: #F8FAF6;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   width: 100%;
   height: 100px;
   margin-top: 10px;
@@ -231,7 +231,7 @@ th {
 
 .cancelar {
   background: red;
-  border: 2px solid #1E293B;
+  border: 2px solid var(--bg-secondary);
   color: white;
 }
 
@@ -242,8 +242,8 @@ th {
 }
 
 .confirmar {
-  background: #F97316;
-  border: 2px solid #1E293B;
+  background: var(--accent);
+  border: 2px solid var(--bg-secondary);
   color: white;
 }
 

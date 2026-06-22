@@ -33,7 +33,7 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background: #0B1120;
+  background: var(--bg-primary);
   color: white;
   font-weight: bold;
   font-size: x-large;
@@ -67,7 +67,7 @@
 
 .details-right {
   width: 45%;
-  background-color: #0B1120;
+  background-color: var(--bg-primary);
   padding: 20px;
   overflow-y: auto;
 
@@ -88,9 +88,9 @@
   padding: 10px 15px;
   margin-bottom: 12px;
 
-  color: #F8FAF6;
+  color: var(--text-primary);
   font-weight: bold;
-  background-color: #f97316;
+  background-color: var(--accent);
   border-radius: 10px;
   max-width: fit-content;
 }
@@ -137,12 +137,12 @@
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  color: #94a3b8;
+  color: var(--text-muted);
   border: 1px solid #334155;
 }
 
 .map-loading {
-  background: #1e293b;
+  background: var(--bg-secondary);
 }
 
 .map-error {
@@ -197,11 +197,11 @@
 
 .details-header-right h1 {
   margin-bottom: 2px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .details-header-right small {
-  color: #a3b0c2;
+  color: var(--text-secondary);
 }
 
 /* ========================= */
@@ -210,7 +210,7 @@
 
 .card {
   margin-top: 10px;
-  background: #1E293B;
+  background: var(--bg-secondary);
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
@@ -223,13 +223,13 @@
 .card-header {
   font-weight: bold;
   margin-bottom: 15px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .card-header span,
 .card-header strong,
 .card-header h2 {
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 /* ========================= */
@@ -259,17 +259,17 @@
 
 .row small,
 .dates small {
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .row h2 {
   margin-top: 5px;
-  color: #f97316;
+  color: var(--accent);
 }
 
 .dates h2 {
   margin-top: 5px;
-  color: #f97316;
+  color: var(--accent);
 }
 
 .info p {
@@ -277,12 +277,12 @@
   justify-content: space-between;
   font-size: 12px;
   margin-top: 5px;
-  color: #a3b0c2;
+  color: var(--text-secondary);
 }
 
 .info strong {
   font-size: small;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 /* ========================= */
@@ -299,7 +299,7 @@
 
 .section-title {
   font-size: 14px;
-  color: #F8FAF6;
+  color: var(--text-primary);
   margin-bottom: 10px;
   margin-top: 20px;
 }
@@ -308,7 +308,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  background: #1E293B;
+  background: var(--bg-secondary);
   padding: 15px;
   border-radius: 12px;
   margin-bottom: 25px;
@@ -316,11 +316,11 @@
 
 .driver-card h4, .historial-detalle h4 {
   margin-bottom: 5px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .driver-card p, .historial-detalle p {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
@@ -370,7 +370,7 @@
 
 /* 🔴 Rechazado */
 .timeline-dot.reject {
-  background: #ef4444;
+  background: var(--danger);
   box-shadow: 0 0 8px rgba(239, 68, 68, 0.7);
 }
 
@@ -384,7 +384,7 @@
 
 /* RIGHT SIDE (card) */
 .timeline-content {
-  background: #1E293B;
+  background: var(--bg-secondary);
   border-radius: 10px;
   padding: 12px 16px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
@@ -406,7 +406,7 @@
 
 .timeline-header .arrow {
   font-size: 14px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .timeline-body p {
@@ -415,11 +415,11 @@
 }
 
 .actor, .codigo-texto {
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .actor strong {
-  color: #f97316;
+  color: var(--accent);
 }
 
 .motivo {
@@ -432,7 +432,7 @@
 }
 
 .codigo-naranja {
-  color: #f97316; 
+  color: var(--accent); 
   font-weight: bold;
 }
 
@@ -448,7 +448,7 @@
 
 .sub-title {
   font-size: 13px;
-  color: #F8FAF6;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
@@ -464,17 +464,17 @@
 }
 
 .info-row span {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
 .info-row strong {
   font-size: 14px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .historial-detalle {
-  background: #1E293B;
+  background: var(--bg-secondary);
   padding: 15px; 
   border-radius: 12px;
 }
@@ -514,8 +514,8 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
-  background-color: #0B1120;
-  color: #F8FAF6;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .status-form button {
@@ -541,11 +541,11 @@
 
 .info-section {
   margin-top: 20px;
-  background-color: #1E293B;
+  background-color: var(--bg-secondary);
 }
 
 .info-section label {
-  color: #a3b0c2;
+  color: var(--text-secondary);
 }
 
 /* ========================= */
@@ -682,13 +682,13 @@
   .details-left {
     width: 100%;
     padding: 15px;
-    background-color: #0B1120;
+    background-color: var(--bg-primary);
   }
 
   .details-right {
     width: 100%;
     padding: 15px;
-    background-color: #0B1120;
+    background-color: var(--bg-primary);
   }
 
   .back-link {
@@ -871,8 +871,8 @@
 
   .details-left .card,
   .details-left .map-placeholder {
-    background: #1E293B;
-    color: #F8FAF6;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
   }
 
   .details-left .card {
@@ -883,7 +883,7 @@
   .details-right {
     width: 60%;
     padding: 20px;
-    background-color: #0B1120;
+    background-color: var(--bg-primary);
   }
 
   .summary-toggle-btn {

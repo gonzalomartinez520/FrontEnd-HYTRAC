@@ -7,7 +7,7 @@
 
 .hytrac-layout {
   min-height: calc(100vh - 60px);
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .dashboard-content {
@@ -23,17 +23,17 @@
 
 .dashboard-header h1 {
   font-size: 2.5rem;
-  color: #F8FAF6;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
 .dashboard-header p {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
 .table-card {
-  background: #1E293B;
+  background: var(--bg-secondary);
   border-radius: 20px;
   padding: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -48,11 +48,11 @@
 
 .table-top h2 {
   margin-bottom: 6px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .table-top span {
-  color: #a3b0c2;
+  color: var(--text-secondary);
 }
 
 .table-actions {
@@ -82,7 +82,7 @@ table {
 }
 
 thead {
-  background: #1E293B;
+  background: var(--bg-secondary);
 }
 
 th,
@@ -93,11 +93,11 @@ td {
 }
 
 td {
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 th {
-  color: #F8FAF6;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -111,8 +111,8 @@ th {
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 1rem;
-  background-color: #0B1120;
-  color: #F8FAF6;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .loading-screen {
@@ -122,8 +122,9 @@ th {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background: #0B1120;
-  color: white;
+  background: var(--bg-primary);
+  color: var(--text-primary); 
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .loader {
@@ -304,7 +305,7 @@ a {
 
   tbody tr td::before {
     content: attr(data-label);
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 0.82rem;
     flex: 1 0 auto;
     white-space: nowrap;
@@ -360,7 +361,7 @@ a {
   tbody tr td.tracking::before {
     content: "ID #";
     display: block;
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 0.8rem;
     margin-bottom: 4px;
   }
@@ -378,7 +379,7 @@ a {
 .confirmar-detalles,
 .confirmar-envio,
 .rechazar-envio {
-  background-color: #0B1120;
+  background-color: var(--bg-primary);
   border: none;
   border-radius: 8px;
   display: flex;

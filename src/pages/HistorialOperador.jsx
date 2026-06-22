@@ -678,7 +678,7 @@ export default function HistorialOperador( { user } ) {
                               height="18" 
                               viewBox="0 0 24 24" 
                               fill="none" 
-                              stroke="#f97316"
+                              stroke="#var(--accent)"
                               strokeWidth="2"
                             >
                               <path d="M12 20h9"/>
@@ -968,7 +968,7 @@ export default function HistorialOperador( { user } ) {
                       100% { transform: rotate(360deg); }
                     }
                   `}</style>
-                  <span style={{ fontSize: "14px", color: "#94a3b8", fontWeight: "500", letterSpacing: "0.3px" }}>
+                  <span style={{ fontSize: "14px", color: "#var(--text-muted)", fontWeight: "500", letterSpacing: "0.3px" }}>
                     {tForm("newOrder.route.calculating")}
                   </span>
                 </div>
@@ -985,7 +985,7 @@ export default function HistorialOperador( { user } ) {
                   </p>
 
                   {(!formData.refineriaOrigen || !formData.estacionDestino) && (
-                    <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "12px", fontStyle: "italic" }}>
+                    <span style={{ fontSize: "12px", color: "#var(--text-muted)", marginTop: "12px", fontStyle: "italic" }}>
                       {tForm("newOrder.route.incomplete")}
                     </span>
                   )}
