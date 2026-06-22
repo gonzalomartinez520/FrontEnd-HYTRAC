@@ -7,7 +7,7 @@
 
 .gestion-operarios-layout  {
   min-height: calc(100vh - 60px); /* 🔥 ajustá el 60px */
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .gestion-operarios-content {
@@ -23,18 +23,18 @@
 
 .gestion-operarios-header h1 {
   font-size: 2.5rem;
-  color: #F8FAF6;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
 .gestion-operarios-header p {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
 
 .gestion-operarios-table {
-  background: #1E293B;
+  background: var(--bg-secondary);
   border-radius: 20px;
   padding: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -49,7 +49,7 @@
 
 .table-header h2 {
   margin-bottom: 6px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .search-container {
@@ -72,7 +72,7 @@
 
 .no-actions {
     font-size: larger;
-    color: #F8FAF6;
+    color: var(--text-primary);
 }
 
 .modal-content .form-section {

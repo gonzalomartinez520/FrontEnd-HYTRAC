@@ -413,7 +413,7 @@ export default function GestionJefeEstacion( { user } ) {
                                                             height="18" 
                                                             viewBox="0 0 24 24" 
                                                             fill="none" 
-                                                            stroke="#f97316"
+                                                            stroke="#var(--accent)"
                                                             strokeWidth="2"
                                                             >
                                                             <path d="M12 20h9"/>

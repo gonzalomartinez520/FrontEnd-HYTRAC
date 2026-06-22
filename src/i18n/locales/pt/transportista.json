@@ -133,6 +133,13 @@
       "documentation": "Documentacao"
     }
   },
+  "documents": {
+    "title": "Documentos",
+    "subtitle": "Aqui você pode visualizar seus documentos inseridos no sistema e gerenciá-los",
+    "seeDocument": "Ver Documento",
+    "selectImage": "Selecionar Imagem",
+    "updateDocument": "Atualizar Documento"
+  },
   "actions": {
     "confirmShipment": "Confirmar envio",
     "notifyDelivery": "Notificar entrega"

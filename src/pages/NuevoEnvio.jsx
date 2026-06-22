@@ -25,9 +25,9 @@ export default function NuevoEnvio({ user }) {
   const [documentos, setDocumentos] = useState({});
 
   const [loading, setLoading] = useState(false);
+  const [loadingTransportistas, setLoadingTransportistas] = useState(true);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   // --- NEW STATE FOR ROUTE LOADING ---
   const [isRouteLoading, setIsRouteLoading] = useState(false);
@@ -67,8 +67,6 @@ export default function NuevoEnvio({ user }) {
     provinciaDestino: null,
     localidadDestino: null,
     estacionDestino: null,
-    remito: "",
-    cot: "",
   });
 
   useEffect(() => {
@@ -79,27 +77,58 @@ export default function NuevoEnvio({ user }) {
           provinciasData,
           camionesData,
           acopladosData,
-          transportistasData,
         ] = await Promise.all([
           datos.getCombustibles(),
           datos.getProvincias(),
           datos.getCamiones(),
           datos.getAcoplados(),
-          datos.getTransportistas(),
         ]);
 
         setCombustibles(combustiblesData);
         setProvincias(provinciasData);
         setCamiones(camionesData);
         setAcoplados(acopladosData);
-        setTransportistas(transportistasData);
-        console.log(transportistasData);
       } catch (error) {
         console.error("Error cargando datos:", error);
       }
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // 🔹 Validaciones previas
+    if (
+      !formData?.combustible ||
+      !formData?.volumenACargar ||
+      !routeData?.tiempoEstimadoHoras
+    ) {
+      return; // no ejecuta nada si falta algún dato
+    }
+
+    const fetchTransportistas = async () => {
+      try {
+        const payload = {
+          volumenCargaLitros: parseFloat(formData.volumenACargar),
+          tiempoEfectivoEstimadoHoras: Math.round(routeData.tiempoEstimadoHoras),
+          combustibleId: formData.combustible?.id,
+        };
+
+        const response = await datos.seleccionarOptimos(payload);
+        console.log(response);
+
+        // 🔹 Guardamos en estado
+        setTransportistas(response);
+      } catch (error) {
+        console.error("Error al obtener transportistas óptimos:", error);
+      } finally {
+        setLoadingTransportistas(false);
+      }
+    };
+
+    fetchTransportistas();
+
+    // 🔹 Dependencias
+  }, [formData.combustible, formData.volumenACargar, routeData.tiempoEstimadoHoras]);
 
   useEffect(() => {
     const fetchLocalidadesOrigen = async () => {
@@ -221,12 +250,8 @@ export default function NuevoEnvio({ user }) {
   };
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (name === "acceptedTerms") {
-      setAcceptedTerms(checked);
-    } else if (type === "checkbox") {
-      setFormData((prev) => ({ ...prev, [name]: checked }));
-    } else if (name === "provinciaOrigen") {
+    const { name, value } = e.target;
+    if (name === "provinciaOrigen") {
       setFormData((prev) => ({
         ...prev,
         provinciaOrigen: value,
@@ -338,22 +363,33 @@ export default function NuevoEnvio({ user }) {
     setError("");
   };
 
+  const preciosCombustible = {
+    1: 950,
+    2: 1050,
+    3: 1200
+  };
+
+  const calcularValorMercaderia = (formData) => {
+    const litros = Number(formData.volumenACargar) || 0;
+    const combustibleId = formData.combustible?.id;
+
+    if (!combustibleId || !preciosCombustible[combustibleId]) {
+      return 0;
+    }
+
+    const precioPorLitro = preciosCombustible[combustibleId];
+
+    return litros * precioPorLitro;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setSuccess("");
 
-    if (!acceptedTerms) {
-      setError(t("newOrder.messages.termsError"));
-      setLoading(false);
-      return;
-    }
-
     try {
       const payload = {
-        numeroRemito: formData.remito,
-        cot: formData.cot,
         camionId: formData.camion?.id || null,
         acopladoId: formData.acoplado?.id || null,
         transportistaId: formData.transportista?.id || null,
@@ -369,6 +405,7 @@ export default function NuevoEnvio({ user }) {
         temperaturaCarga: formData.temperatura ? parseFloat(formData.temperatura) : null,
         densidadCarga: formData.densidad ? parseFloat(formData.densidad) : null,
         litrosCargados: formData.volumenACargar ? parseFloat(formData.volumenACargar) : null,
+        valorMercaderia: calcularValorMercaderia(formData),
         litrosEntregados: null,
         fieAdjunta: true,
         observaciones: "",
@@ -376,6 +413,7 @@ export default function NuevoEnvio({ user }) {
       };
 
       const newEnvio = await envios.create(payload);
+      console.log(newEnvio);
       setSuccess(t("newOrder.messages.success", { id: newEnvio.id }));
 
       setTimeout(() => {
@@ -463,62 +501,6 @@ export default function NuevoEnvio({ user }) {
                 <input type="number" name="pesoMaximo" value={formData.pesoMaximo} disabled={true} />
               </div>
             </div>
-          </div>
-
-          <div className="chofer-full-width">
-            <div className="form-group">
-              <label>{t("newOrder.fields.driver")}</label>
-              <select name="choferAsignado" value={formData.choferAsignado} disabled={loading} onChange={handleChange} required>
-                <option value="">{t("newOrder.placeholders.selectTransport")}</option>
-                {transportistas.map((trans) => (
-                  <option key={trans.id} value={trans.id}>
-                    {trans.nombre} {trans.apellido}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>{t("newOrder.fields.cuit")}</label>
-              <input type="text" value={formData.cuitTransportista} disabled />
-            </div>
-
-            <div className="form-group">
-              <label>{t("newOrder.fields.relationship")}</label>
-              <input type="text" value={formData.tipoVinculoTransportista} disabled />
-            </div>
-
-            {formData.transportista?.id && (
-              <div className="documentos-wrapper">
-                {documentos[formData.transportista.id]?.length > 0 ? (
-                  <div className="documentos-container">
-                    {documentos[formData.transportista.id].map((doc, index) => {
-                      const estado = getEstadoDocumento(doc.fechaVencimiento);
-
-                      return (
-                        <div key={index} className={`doc-card ${estado}`}>
-                          <p>
-                            <strong>{tTransportista("details.document")}:</strong>{" "}
-                            {doc.tipoDocumentoNombre}
-                          </p>
-                          <p>
-                            <strong>N°:</strong> {doc.nroDocumento}
-                          </p>
-                          <p>
-                            <strong>{tTransportista("details.expiration")}:</strong>{" "}
-                            {doc.fechaVencimiento}
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <p style={{ marginTop: "10px" }}>
-                    {tTransportista("details.noDocuments")}
-                  </p>
-                )}
-              </div>
-            )}
           </div>
         </section>
 
@@ -675,75 +657,119 @@ export default function NuevoEnvio({ user }) {
               )}
             </div>
 
-            <div className="route-telemetry-panel" style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px", borderRadius: "8px", background: "#1a2332", color: "#fff", position: "relative" }}>
+            <div className="route-telemetry-panel">
+                {isRouteLoading ? (
+                            <div className="route-telemetry-loading">
+                              <div className="route-telemetry-spinner" />
+                              <span className="route-telemetry-loading-text">
+                                {t("newOrder.route.calculating")}
+                              </span>
+                            </div>
+                          ) : (
+                            <>
+                              <h3 className="route-telemetry-title">
+                                {t("newOrder.route.title")}
+                              </h3>
+                              <p className="route-telemetry-row">
+                                <strong>{t("newOrder.route.distance")}:</strong>{" "}
+                                {routeData.distanciaKm ? `${Number(routeData.distanciaKm).toFixed(1)} km` : "--"}
+                              </p>
+                              <p className="route-telemetry-row">
+                                <strong>{t("newOrder.route.time")}:</strong>{" "}
+                                {routeData.tiempoEstimadoHoras ? formatRouteTime(routeData.tiempoEstimadoHoras) : "--"}
+                              </p>
 
-              {/* LIVE REFINERY BUFFERING INDICATOR */}
-              {isRouteLoading ? (
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "12px", height: "100%" }}>
-                  {/* CSS Inline Animated Spinner */}
-                  <div style={{
-                    width: "36px",
-                    height: "36px",
-                    border: "3px solid rgba(59, 130, 246, 0.2)",
-                    borderTop: "3px solid #3b82f6",
-                    borderRadius: "50%",
-                    animation: "spin 0.8s linear infinite"
-                  }} />
-                  <style>{`
-                    @keyframes spin {
-                      0% { transform: rotate(0deg); }
-                      100% { transform: rotate(360deg); }
-                    }
-                  `}</style>
-                  <span style={{ fontSize: "14px", color: "#94a3b8", fontWeight: "500", letterSpacing: "0.3px" }}>
-                    {t("newOrder.route.calculating")}
-                  </span>
-                </div>
-              ) : (
-                <>
-                  <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", color: "#3b82f6", letterSpacing: "0.5px", textTransform: "uppercase" }}>
-                    {t("newOrder.route.title")}
-                  </h3>
-                  <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
-                    <strong style={{ color: "#fff" }}>{t("newOrder.route.distance")}:</strong> {routeData.distanciaKm ? `${Number(routeData.distanciaKm).toFixed(1)} km` : "--"}
-                  </p>
-                  <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
-                    <strong style={{ color: "#fff" }}>{t("newOrder.route.time")}:</strong> {routeData.tiempoEstimadoHoras ? formatRouteTime(routeData.tiempoEstimadoHoras) : "--"}
-                  </p>
+                              {(!formData.refineriaOrigen || !formData.estacionDestino) && (
+                                <span className="route-telemetry-warning">
+                                  {t("newOrder.route.incomplete")}
+                                </span>
+                              )}
+                            </>
+                          )}
+              </div>
+          </div>
+        </section>
 
-                  {(!formData.refineriaOrigen || !formData.estacionDestino) && (
-                    <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "12px", fontStyle: "italic" }}>
-                      {t("newOrder.route.incomplete")}
-                    </span>
-                  )}
-                </>
-              )}
+        {/* 04 Datos del chofer*/}
+        <section className="form-section">
+          <div className="section-title">
+            <span className="step">04</span>
+            <div className="section-text">
+              <h2>
+                <svg
+                  className="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="orange"
+                >
+                  <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/>
+                </svg>
+                {t("newOrder.sections.driver")}
+              </h2>
+              <p>{t("newOrder.sections.driverDesc")}</p>
             </div>
           </div>
 
-          <div className="grid-2 remito-cot-centered">
+          <div className="chofer-full-width">
             <div className="form-group">
-              <label>{t("newOrder.fields.remito")}</label>
-              <input type="text" name="remito"  value={formData.remito} required disabled={loading} onChange={handleChange} />
+              <label>{t("newOrder.fields.driver")}</label>
+              <select name="choferAsignado" value={formData.choferAsignado} disabled={loadingTransportistas} onChange={handleChange} required>
+                <option value="">{t("newOrder.placeholders.selectTransport")}</option>
+                {transportistas.map((trans) => (
+                  <option key={trans.id} value={trans.id}>
+                    {trans.nombre} {trans.apellido} 🔸 {trans.probabilidadExito}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="form-group">
-              <label>{t("newOrder.fields.cot")}</label>
-              <input type="text" name="cot" value={formData.cot} required disabled={loading} onChange={handleChange} />
+              <label>{t("newOrder.fields.cuit")}</label>
+              <input type="text" value={formData.cuitTransportista} disabled />
             </div>
+
+            <div className="form-group">
+              <label>{t("newOrder.fields.relationship")}</label>
+              <input type="text" value={formData.tipoVinculoTransportista} disabled />
+            </div>
+
+            {formData.transportista?.id && (
+              <div className="documentos-wrapper">
+                {documentos[formData.transportista.id]?.length > 0 ? (
+                  <div className="documentos-container">
+                    {documentos[formData.transportista.id].map((doc, index) => {
+                      const estado = getEstadoDocumento(doc.fechaVencimiento);
+
+                      return (
+                        <div key={index} className={`doc-card ${estado}`}>
+                          <p>
+                            <strong>{tTransportista("details.document")}:</strong>{" "}
+                            {doc.tipoDocumentoNombre}
+                          </p>
+                          <p>
+                            <strong>N°:</strong> {doc.nroDocumento}
+                          </p>
+                          <p>
+                            <strong>{tTransportista("details.expiration")}:</strong>{" "}
+                            {doc.fechaVencimiento}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p style={{ marginTop: "10px" }}>
+                    {tTransportista("details.noDocuments")}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </section>
 
         {/* 04 - Finalizar */}
         <section className="form-section">
-          <div className="terms-section">
-            <label className="terms-checkbox">
-              <input name="acceptedTerms" type="checkbox" checked={acceptedTerms} onChange={handleChange} required />
-              <span>
-                {t("newOrder.terms")}
-              </span>
-            </label>
-          </div>
           <div className="info-alert">
             <strong>Información:</strong> {t("newOrder.info")} <strong>{user?.nombre || "operario-web"} {user?.apellido || ""}</strong>
           </div>

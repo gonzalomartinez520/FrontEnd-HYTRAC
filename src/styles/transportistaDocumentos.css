@@ -1,0 +1,313 @@
+.documentos {
+    display: grid;
+    grid-template-columns: repeat(3, 300px);
+    justify-content: center;
+    gap: 24px;
+
+    width: 100%;
+    max-width: 1000px; /* 🔥 controla el ancho total */
+    margin: 0 auto;     /* 🔥 centra perfectamente */
+}
+
+.documento-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* CONTENEDOR DEL EDITOR */
+.editor-externo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    /* estado base oculto */
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    overflow: hidden;
+
+    transition: 
+        max-height 0.4s ease,
+        opacity 0.3s ease,
+        transform 0.3s ease;
+}
+
+/* 👇 entrada */
+.editor-externo.visible {
+    max-height: 200px;
+    opacity: 1;
+    transform: translateY(0);
+    margin-top: 12px;
+}
+
+/* 👇 salida */
+.editor-externo.oculto {
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* INPUT FILE CUSTOM */
+.input-file {
+    background: #2c3e50;
+    color: #f7f9fc;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+}
+
+.input-file input {
+    display: none;
+}
+
+.input-file:hover {
+    background: #34495e;
+}
+
+/* BOTÓN PRINCIPAL */
+.btn-actualizar {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    color: #f7f9fc;
+    background: #ff7b00;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn-actualizar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.btn-actualizar:disabled {
+    background: #f39c12;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.documentos {
+    align-items: start; /* 🔥 evita que se estiren todas */
+}
+
+.documentos-header h1 {
+    color: #f7f9fc;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 35px;
+}
+
+.documentos-header p {
+  color: #a3b0c2;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* CARD BASE */
+.documento-card {
+    background: #1e2a38;
+    border-radius: 12px;
+    padding: 16px;
+    color: #f7f9fc;
+    border: 2px solid transparent;
+
+    opacity: 0;
+    transform: translateY(60px);
+    animation: fadeUp 0.5s ease forwards;
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.documento-card {
+    position: relative;
+}
+
+.documento-card h3 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.documento-card strong {
+    color: #ff7b00;
+}
+
+.documento-card.activa {
+    z-index: 10;
+    position: relative;
+}
+
+/* COLORES SEGÚN ESTADO */
+.documento-card.vigente {
+    border-color: #2ecc71; /* verde */
+}
+
+.documento-card.porVencer {
+    border-color: #f39c12; /* naranja */
+}
+
+.documento-card.vencido {
+    border-color: #e74c3c; /* rojo */
+}
+
+/* LINK */
+.documento-card a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #4da6ff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.documento-card a:hover {
+    text-decoration: underline;
+}
+
+/* ANIMACIÓN */
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fecha-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-editar {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn-editar:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.btn-editar:hover {
+    transform: scale(1.2);
+}
+
+.editar-fecha {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    background: #2a3a4d;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.editar-fecha {
+    width: 80%;        /* 🔥 se estira completo */
+    box-sizing: border-box;
+    margin-left: 29px;
+}
+
+.editar-fecha input {
+    flex: 1;
+    padding: 5px;
+    border-radius: 6px;
+    border: none;
+    width: 100%;
+    min-width: 0;  
+    
+    background-color: #0B1120;
+    color: #f7f9fc;
+}
+
+.editar-fecha button {
+    padding: 5px 10px;
+    border-radius: 6px;
+    border: none;
+    background: #ff7b00;
+    color: #f7f9fc;
+    cursor: pointer;
+}
+
+.editar-fecha button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* 📱 TABLETS / CELULARES GRANDES */
+@media (max-width: 768px) {
+
+    .documentos {
+        grid-template-columns: 1fr; /* 🔥 una sola columna */
+        max-width: 100%;
+        padding: 0 16px;
+        gap: 16px;
+    }
+
+    .documento-card {
+        width: 100%;
+        padding: 14px;
+    }
+
+    .documentos-header h1 {
+        font-size: 26px;
+    }
+
+    .documentos-header p {
+        font-size: 1rem;
+    }
+
+    /* editor más compacto */
+    .editor-externo.visible {
+        max-height: 250px;
+    }
+
+    /* input fecha */
+    .editar-fecha {
+        width: 100%;
+        margin-left: 0;
+        flex-direction: column;
+    }
+
+    .editar-fecha button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+    .documentos {
+        grid-template-columns: 1fr; /* 1 sola columna */
+    }
+
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+
+    .documentos {
+        grid-template-columns: repeat(2, 1fr); /* 🔥 2 columnas */
+        gap: 12px;
+    }
+
+    .documento-card {
+        padding: 12px;
+    }
+
+    .documentos-header h1 {
+        font-size: 22px;
+    }
+
+    .documentos-header p {
+        font-size: 0.95rem;
+    }
+
+}

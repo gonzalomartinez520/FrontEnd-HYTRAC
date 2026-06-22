@@ -1,6 +1,6 @@
 .reportes-layout {
   min-height: calc(100vh - 60px);
-  background: #0B1120;
+  background: var(--bg-primary);
   color: white;
   padding: 40px 60px;
 }
@@ -22,11 +22,11 @@
 
 .reportes-header p {
   margin-top: 8px;
-  color: #94A3B8;
+  color: var(--text-muted);
 }
 
 .btn-exportar {
-  background: linear-gradient(135deg, #F97316, #EA580C);
+  background: linear-gradient(135deg, var(--accent), #EA580C);
   color: white;
   border: none;
   padding: 12px 20px;
@@ -50,7 +50,7 @@
 
 .kpi-card {
   background: #111827;
-  border: 1px solid #1E293B;
+  border: 1px solid var(--bg-secondary);
   border-radius: 16px;
   padding: 20px;
   transition: 0.3s;
@@ -72,7 +72,7 @@
 }
 
 .kpi-title {
-  color: #94A3B8;
+  color: var(--text-muted);
   font-size: 0.9rem;
   margin-top: 10px;
 }
@@ -96,11 +96,11 @@
 }
 
 .kpi-demorado {
-  border-left: 4px solid #EF4444;
+  border-left: 4px solid var(--danger);
 }
 
 .kpi-alta {
-  border-left: 4px solid #F97316;
+  border-left: 4px solid var(--accent);
 }
 
 .kpi-critica {
@@ -115,7 +115,7 @@
 
 .chart-card {
   background: #111827;
-  border: 1px solid #1E293B;
+  border: 1px solid var(--bg-secondary);
   border-radius: 18px;
   padding: 20px;
 }
@@ -149,7 +149,7 @@
 }
 
 .ranking-table th {
-  background: #1E293B;
+  background: var(--bg-secondary);
   color: white;
   padding: 12px;
   text-align: left;
@@ -168,14 +168,14 @@
 .porcentaje-barra {
   width: 100%;
   height: 10px;
-  background: #1E293B;
+  background: var(--bg-secondary);
   border-radius: 50px;
   overflow: hidden;
 }
 
 .porcentaje-fill {
   height: 100%;
-  background: linear-gradient(90deg, #F97316, #FB923C);
+  background: linear-gradient(90deg, var(--accent), #FB923C);
   border-radius: 50px;
 }
 
@@ -191,7 +191,7 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background: #0B1120;
+  background: var(--bg-primary);
   color: white;
 }
 

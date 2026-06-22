@@ -258,7 +258,7 @@ const evolucionMensualData =
   "#fde68a",
   "#3B82F6",
   "#10B981",
-  "#EF4444",
+  "#var(--danger)",
   ];
 
   const INCIDENCIAS = [

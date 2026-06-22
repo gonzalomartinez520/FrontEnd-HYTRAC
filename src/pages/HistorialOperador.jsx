@@ -13,6 +13,7 @@ export default function HistorialOperador( { user } ) {
     const { t: tOperador } = useTranslation("operador");
     const { t: tForm } = useTranslation("form");
     const { t: tCommon } = useTranslation("common");
+    const { t: tTransportista } = useTranslation("transportista"); 
 
     const [combustibles, setCombustibles] = useState([]);
     const [provincias, setProvincias] = useState([]);
@@ -26,6 +27,9 @@ export default function HistorialOperador( { user } ) {
 
     const [plantasTotales, setPlantasTotales] = useState([]);
     const [estacionesTotales, setEstacionesTotales] = useState([]);
+
+    const [loadingTransportistas, setLoadingTransportistas] = useState(true);
+    const [documentos, setDocumentos] = useState({});
 
     // --- NEW STATE FOR ROUTE LOADING ---
     const [isRouteLoading, setIsRouteLoading] = useState(false);
@@ -107,7 +111,6 @@ export default function HistorialOperador( { user } ) {
             provinciasData,
             camionesData,
             acopladosData,
-            transportistasData,
             plantasData,
             estacionesData,
           ] = await Promise.all([
@@ -115,7 +118,6 @@ export default function HistorialOperador( { user } ) {
             datos.getProvincias(),
             datos.getCamiones(),
             datos.getAcoplados(),
-            datos.getTransportistas(),
             datos.getPlantas(),
             datos.getEstaciones(),
           ]);
@@ -124,7 +126,6 @@ export default function HistorialOperador( { user } ) {
           setProvincias(provinciasData);
           setCamiones(camionesData);
           setAcoplados(acopladosData);
-          setTransportistas(transportistasData);
           setPlantasTotales(plantasData);
           setEstacionesTotales(estacionesData);
 
@@ -135,6 +136,62 @@ export default function HistorialOperador( { user } ) {
 
       fetchData();
     }, []);
+
+  useEffect(() => {
+    // 🔹 Validaciones previas
+    if (
+      !formData?.combustible ||
+      !formData?.volumenACargar ||
+      !routeData?.tiempoEstimadoHoras
+    ) {
+      return; // no ejecuta nada si falta algún dato
+    }
+
+    const fetchTransportistas = async () => {
+      try {
+        const payload = {
+          volumenCargaLitros: parseFloat(formData.volumenACargar),
+          tiempoEfectivoEstimadoHoras: Math.round(routeData.tiempoEstimadoHoras),
+          combustibleId: formData.combustible?.id,
+        };
+
+        const response = await datos.seleccionarOptimos(payload);
+        console.log(response);
+
+        // 🔹 Guardamos en estado
+        setTransportistas(response);
+      } catch (error) {
+        console.error("Error al obtener transportistas óptimos:", error);
+      } finally {
+        setLoadingTransportistas(false);
+      }
+    };
+
+    fetchTransportistas();
+
+    // 🔹 Dependencias
+  }, [formData.combustible, formData.volumenACargar, routeData.tiempoEstimadoHoras]);
+
+  useEffect(() => {
+    if (
+      transportistas.length > 0 &&
+      selectedShipment?.transportistaLegajo
+    ) {
+      const encontrado = transportistas.find(
+        (t) => t.legajo === selectedShipment.transportistaLegajo
+      );
+
+      if (encontrado) {
+        setFormData((prev) => ({
+          ...prev,
+          transportista: encontrado,
+          choferAsignado: encontrado.id,
+          cuitTransportista: encontrado.cuit,
+          tipoVinculoTransportista: encontrado.tipoVinculo,
+        }));
+      }
+    }
+  }, [transportistas, selectedShipment]);
 
   useEffect(() => {
     const fetchLocalidadesOrigen = async () => {
@@ -214,6 +271,44 @@ export default function HistorialOperador( { user } ) {
     return `${hours}h ${minutes.toString().padStart(2, "0")}m`;
   };
 
+  const fetchDocumentosTransportista = async (transportistaId) => {
+    try {
+      if (!transportistaId) return;
+
+      // 🔹 Evitar llamadas repetidas
+      if (documentos[transportistaId]) return;
+
+      const docs = await datos.getDocumentos(transportistaId);
+      console.log("DOCS:", docs);
+
+      setDocumentos((prev) => ({
+        ...prev,
+        [transportistaId]: docs.data || docs
+      }));
+
+    } catch (error) {
+      console.error("Error al obtener documentos:", error);
+    }
+  };
+
+  const getEstadoDocumento = (fechaVencimiento) => {
+    if (!fechaVencimiento) return "vencido";
+
+    const hoy = new Date();
+    const vencimiento = new Date(fechaVencimiento);
+
+    // Normalizamos horas para evitar errores de comparación
+    hoy.setHours(0, 0, 0, 0);
+    vencimiento.setHours(0, 0, 0, 0);
+
+    const diffTime = vencimiento - hoy;
+    const diffDias = diffTime / (1000 * 60 * 60 * 24);
+
+    if (diffDias < 0) return "vencido";        // 🔴 ya venció
+    if (diffDias <= 30) return "proximo";      // 🟠 vence en menos de 1 mes
+    return "vigente";                          // 🟢 al día
+  };
+
   const handleChange = (e) => {
     const { name, value, type } = e.target;
       if (name === "provinciaOrigen") {
@@ -277,15 +372,29 @@ export default function HistorialOperador( { user } ) {
         densidad: combustibleSeleccionado ? combustibleSeleccionado.densidad : "",
         riesgo: combustibleSeleccionado ? combustibleSeleccionado.claseRiesgo : "",
       }));
+    } else if (name === "cantidad") {
+        let numero = Number(value);
+
+        if (numero > formData.capacidad) {
+          numero = formData.capacidad;
+        }
+
     } else if (name === "choferAsignado") {
-      const transportistaSeleccionado = transportistas.find((t) => t.nombre === value);
+      const transportistaSeleccionado = transportistas.find(
+        (t) => t.id === Number(value)
+      );
       setFormData((prev) => ({
         ...prev,
         transportista: transportistaSeleccionado,
-        choferAsignado: transportistaSeleccionado ? transportistaSeleccionado.nombre : "",
+        choferAsignado: transportistaSeleccionado ? transportistaSeleccionado.id : "",
         cuitTransportista: transportistaSeleccionado ? transportistaSeleccionado.cuit : "",
         tipoVinculoTransportista: transportistaSeleccionado ? transportistaSeleccionado.tipoVinculo : "",
       }));
+
+      // 🔥 ACA LLAMÁS A LOS DOCUMENTOS
+      if (transportistaSeleccionado) {
+        fetchDocumentosTransportista(transportistaSeleccionado.id);
+      }
     } else if (name === "estacionDestino") {
       const estacionSeleccionada = estacionesDestino.find(
         (e) => Number(e.id) === Number(value)
@@ -313,7 +422,26 @@ export default function HistorialOperador( { user } ) {
     setError("");
   };
 
-    useEffect(() => {
+  const preciosCombustible = {
+    1: 950,
+    2: 1050,
+    3: 1200
+  };
+
+  const calcularValorMercaderia = (formData) => {
+    const litros = Number(formData.volumenACargar) || 0;
+    const combustibleId = formData.combustible?.id;
+
+    if (!combustibleId || !preciosCombustible[combustibleId]) {
+      return 0;
+    }
+
+    const precioPorLitro = preciosCombustible[combustibleId];
+
+    return litros * precioPorLitro;
+  };
+
+  useEffect(() => {
       if (showModal) {
         document.body.style.overflow = "hidden";
       } else {
@@ -500,9 +628,7 @@ export default function HistorialOperador( { user } ) {
 
                             const camionEdicionSeleccionado = camiones.find((c) => c.patente === shipment.camionPatente);
                             const acopladoEdicionSeleccionado = acoplados.find((a) => a.patente === shipment.acopladoPatente);
-                            const transportistaEdicionSeleccionado = transportistas.find((t) => t.legajo === shipment.transportistaLegajo); 
                             const combustibleEdicionSeleccionado = combustibles.find((c) => c.nombre === shipment.combustible);
-
 
                             const plantaDespachoEdicionSeleccionada = plantasTotales.find((p) => p.nombre === shipment.plantaDespacho);
                             const estacionDestinoEdicionSeleccionada = estacionesTotales.find((p) => p.nombre === shipment.estacionDestino);
@@ -520,11 +646,6 @@ export default function HistorialOperador( { user } ) {
                                 acoplado: acopladoEdicionSeleccionado || null,
                                 patenteAcoplado: acopladoEdicionSeleccionado ? acopladoEdicionSeleccionado.patente : "",
                                 capacidad: acopladoEdicionSeleccionado ? acopladoEdicionSeleccionado.capacidadMaximaLitros : "",
-                                // Chofer
-                                transportista: transportistaEdicionSeleccionado || null,
-                                choferAsignado: transportistaEdicionSeleccionado ? transportistaEdicionSeleccionado.nombre : "",
-                                cuitTransportista: transportistaEdicionSeleccionado ? transportistaEdicionSeleccionado.cuit : "",
-                                tipoVinculoTransportista: transportistaEdicionSeleccionado ? transportistaEdicionSeleccionado.tipoVinculo : "",
                                 // Carga
                                 combustible: combustibleEdicionSeleccionado || null,
                                 tipoCombustible: combustibleEdicionSeleccionado ? combustibleEdicionSeleccionado.id : "",
@@ -557,7 +678,7 @@ export default function HistorialOperador( { user } ) {
                               height="18" 
                               viewBox="0 0 24 24" 
                               fill="none" 
-                              stroke="#f97316"
+                              stroke="#var(--accent)"
                               strokeWidth="2"
                             >
                               <path d="M12 20h9"/>
@@ -667,77 +788,6 @@ export default function HistorialOperador( { user } ) {
               </div>
             </div>
           </div>
-
-          <div className="chofer-full-width">
-            <div className="form-group">
-              <label>{tForm("newOrder.fields.driver")}</label>
-              <select name="choferAsignado" value={formData.choferAsignado} disabled={loading} onChange={handleChange} required>
-                <option value="">{tForm("newOrder.placeholders.selectTransport")}</option>
-                {transportistas.map((trans) => (
-                  <option key={trans.cuit} value={trans.nombre}>{trans.nombre} {trans.apellido}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label>{tForm("newOrder.fields.cuit")}</label>
-              <input type="text" value={formData.cuitTransportista} disabled />
-            </div>
-
-            <div className="form-group">
-              <label>{tForm("newOrder.fields.relationship")}</label>
-              <input type="text" value={formData.tipoVinculoTransportista} disabled />
-            </div>
-          </div>
-
-{/*           {formData.tipoVinculoTransportista === "Monotributista" && (
-            <section className="transportista-documents">
-              <div className="section-title section-title--transportista">
-                <span className="step">01B</span>
-                <div className="section-text">
-                  <h2>
-                    <svg className="icon" viewBox="0 0 24 24">
-                      <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm0 2c-3.33 0-10 1.667-10 5v3h20v-3c0-3.333-6.67-5-10-5z"/>
-                    </svg>
-                    Documentación del transportista
-                  </h2>
-                  <p>Verificación de fechas y documentos obligatorios.</p>
-                </div>
-              </div>
-
-              <div className="grid-3 transportista-documents-grid">
-                <div className={`document-card ${documentStatus(formData.licenciaConducir) === "En regla" ? "document-card--green" : "document-card--red"}`}>
-                  <div className="document-card__label">Licencia de conducir</div>
-                  <div className="document-card__status">{documentStatus(formData.licenciaConducir)}</div>
-                </div>
-
-                <div className={`document-card ${documentStatus(formData.examenPsicofisico) === "En regla" ? "document-card--green" : "document-card--red"}`}>
-                  <div className="document-card__label">Examen psicofísico</div>
-                  <div className="document-card__status">{documentStatus(formData.examenPsicofisico)}</div>
-                </div>
-
-                <div className={`document-card ${documentStatus(formData.vtv) === "En regla" ? "document-card--green" : "document-card--red"}`}>
-                  <div className="document-card__label">VTV</div>
-                  <div className="document-card__status">{documentStatus(formData.vtv)}</div>
-                </div>
-
-                <div className={`document-card ${booleanStatus(formData.seguroCargaPeligrosa) === "Correcto" ? "document-card--green" : "document-card--red"}`}>
-                  <div className="document-card__label">Seguro carga peligrosa</div>
-                  <div className="document-card__status">{booleanStatus(formData.seguroCargaPeligrosa)}</div>
-                </div>
-
-                <div className={`document-card ${booleanStatus(formData.art) === "Correcto" ? "document-card--green" : "document-card--red"}`}>
-                  <div className="document-card__label">ART</div>
-                  <div className="document-card__status">{booleanStatus(formData.art)}</div>
-                </div>
-
-                <div className={`document-card ${booleanStatus(formData.certificadoAntecedentesPenales) === "Correcto" ? "document-card--green" : "document-card--red"}`}>
-                  <div className="document-card__label">Certificado antecedentes</div>
-                  <div className="document-card__status">{booleanStatus(formData.certificadoAntecedentesPenales)}</div>
-                </div>
-              </div>
-            </section>
-          )} */}
         </section>
 
         {/* 02 - Especificaciones de la carga */}
@@ -918,7 +968,7 @@ export default function HistorialOperador( { user } ) {
                       100% { transform: rotate(360deg); }
                     }
                   `}</style>
-                  <span style={{ fontSize: "14px", color: "#94a3b8", fontWeight: "500", letterSpacing: "0.3px" }}>
+                  <span style={{ fontSize: "14px", color: "#var(--text-muted)", fontWeight: "500", letterSpacing: "0.3px" }}>
                     {tForm("newOrder.route.calculating")}
                   </span>
                 </div>
@@ -935,7 +985,7 @@ export default function HistorialOperador( { user } ) {
                   </p>
 
                   {(!formData.refineriaOrigen || !formData.estacionDestino) && (
-                    <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "12px", fontStyle: "italic" }}>
+                    <span style={{ fontSize: "12px", color: "#var(--text-muted)", marginTop: "12px", fontStyle: "italic" }}>
                       {tForm("newOrder.route.incomplete")}
                     </span>
                   )}
@@ -943,7 +993,84 @@ export default function HistorialOperador( { user } ) {
               )}
             </div>
           </div>
+        </section>
 
+        {/* 04 Datos del chofer*/}
+        <section className="form-section">
+          <div className="section-title">
+            <span className="step">04</span>
+            <div className="section-text">
+              <h2>
+                <svg
+                  className="icon"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="orange"
+                >
+                  <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/>
+                </svg>
+                {tForm("newOrder.sections.driver")}
+              </h2>
+              <p>{tForm("newOrder.sections.driverDesc")}</p>
+            </div>
+          </div>
+
+          <div className="chofer-full-width">
+            <div className="form-group">
+              <label>{tForm("newOrder.fields.driver")}</label>
+              <select name="choferAsignado" value={formData.choferAsignado} disabled={loadingTransportistas} onChange={handleChange} required>
+                <option value="">{tForm("newOrder.placeholders.selectTransport")}</option>
+                {transportistas.map((trans) => (
+                  <option key={trans.id} value={trans.id}>
+                    {trans.nombre} {trans.apellido} 🔸 {trans.probabilidadExito}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label>{tForm("newOrder.fields.cuit")}</label>
+              <input type="text" value={formData.cuitTransportista} disabled />
+            </div>
+
+            <div className="form-group">
+              <label>{tForm("newOrder.fields.relationship")}</label>
+              <input type="text" value={formData.tipoVinculoTransportista} disabled />
+            </div>
+
+            {formData.transportista?.id && (
+              <div className="documentos-wrapper">
+                {documentos[formData.transportista.id]?.length > 0 ? (
+                  <div className="documentos-container">
+                    {documentos[formData.transportista.id].map((doc, index) => {
+                      const estado = getEstadoDocumento(doc.fechaVencimiento);
+
+                      return (
+                        <div key={index} className={`doc-card ${estado}`}>
+                          <p>
+                            <strong>{tTransportista("details.document")}:</strong>{" "}
+                            {doc.tipoDocumentoNombre}
+                          </p>
+                          <p>
+                            <strong>N°:</strong> {doc.nroDocumento}
+                          </p>
+                          <p>
+                            <strong>{tTransportista("details.expiration")}:</strong>{" "}
+                            {doc.fechaVencimiento}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p style={{ marginTop: "10px" }}>
+                    {tTransportista("details.noDocuments")}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
         </section>
 
         <div className="modal-actions">
@@ -958,8 +1085,6 @@ export default function HistorialOperador( { user } ) {
                 console.log(selectedShipment);
                 
                     const payload = {
-                    numeroRemito: selectedShipment.numeroRemito,
-                    cot: selectedShipment.cot,
                     camionId: formData.camion?.id || null,
                     acopladoId: formData.acoplado?.id || null,
                     transportistaId: formData.transportista?.id || null,
@@ -973,11 +1098,12 @@ export default function HistorialOperador( { user } ) {
                     temperaturaCarga: formData.temperatura ? parseFloat(formData.temperatura) : null,
                     densidadCarga: formData.densidad ? parseFloat(formData.densidad) : null,
                     litrosCargados: formData.volumenACargar ? parseFloat(formData.volumenACargar) : null,
+                    valorMercaderia: calcularValorMercaderia(formData),
                     fieAdjunta: true,
                     observaciones: "",
                     confirmado: false,
                 };
-                console.log(payload);
+
                 const envioEditado = await envios.editarEnvio(selectedShipment.id, payload);
 
                 const confirmacion = window.confirm(tOperador("historial.messages.editSuccess", { id: selectedShipment.id }));

@@ -48,12 +48,12 @@
 }
 
 .badge.status-pendiente-confirmar {
-  background: #f97316; /* naranja */
+  background: var(--accent); /* naranja */
 }
 
 .badge.status-pendiente-inicio-viaje,
 .badge.status-pendiente-confirmacion-entrega {
-  background: #f97316; /* naranja moderno */
+  background: var(--accent); /* naranja moderno */
 }
 
 .badge.status-activo {

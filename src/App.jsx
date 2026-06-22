@@ -12,6 +12,7 @@ import OperarioDashboard from "./pages/OperarioDashboard.jsx";
 import TransportistaDashboard from "./pages/TransportistaDashboard.jsx";
 import IniciarViaje from "./pages/IniciarViaje.jsx";
 import ReportarIncidencia from "./pages/ReportarIncidencia.jsx";
+import TransportistaDocumentos from "./pages/TransportistaDocumentos.jsx";
 import EnvioDetail from "./pages/EnvioDetail.jsx";
 import NuevoEnvio from "./pages/NuevoEnvio.jsx";
 import HistorialOperador from "./pages/HistorialOperador.jsx"
@@ -30,6 +31,7 @@ import NuevoUsuario from "./pages/NuevoUsuario.jsx";
 import AccesoDenegado from "./pages/AccesoDenegado.jsx"; 
 import Navbar from "./components/Navbar.jsx";
 import JefeEstacionDashboard from "./pages/JefeEstacionDashboard.jsx"; //importo pantalla
+import TerminosModal from "./components/TerminosModal.jsx";
 
 // 🔐 Validar expiración del token
 const isTokenValid = (tokenString) => {
@@ -90,6 +92,16 @@ function App() {
     navigate(getHomePath(userData));
   };
 
+  // 🔐 Función para cerrar el modal actualizando el estado local y el storage
+  const handleAceptarTerminos = () => {
+    setUser((prev) => {
+      const updatedUser = { ...prev, aceptoTerminos: true };
+      // Actualizamos el localStorage para que persista el true de la aceptación
+      localStorage.setItem("token", JSON.stringify(updatedUser));
+      return updatedUser;
+    });
+  };
+
   // 🔐 Protección por rol
   const ProtectedRoute = ({ allowedRoles, children }) => {
     const userToken = localStorage.getItem("token");
@@ -112,6 +124,14 @@ function App() {
 
   return (
     <>
+      {/* 📜 MODAL DE TÉRMINOS Y LEY 25.326 (ONBOARDING)
+            Si hay usuario logueado pero no aceptó los términos, se clava en la pantalla */}
+        {user && !user.aceptoTerminos && getNormalizedRole(user) !== "ADMIN" && (
+          <TerminosModal 
+            user={user} 
+            onAceptar={handleAceptarTerminos} 
+          />
+      )}
       {/* ✅ Navbar visible siempre si hay sesión válida */}
       {location.pathname !== "/login" && parsedUser && (
         <Navbar user={parsedUser} onLogout={setUser} />
@@ -169,6 +189,15 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["TRANSPORTISTA"]}>
               <IniciarViaje user={parsedUser} />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/transportista/documentos"
+          element={
+            <ProtectedRoute allowedRoles={["TRANSPORTISTA"]}>
+              <TransportistaDocumentos user={parsedUser}/>
             </ProtectedRoute>
           }
         />

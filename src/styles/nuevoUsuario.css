@@ -1,6 +1,6 @@
 .nuevo-usuario-layout {
-  min-height: calc(100vh - 60px);
-  background: #0B1120;
+  height: calc(100vh - 60px);
+  background: var(--bg-primary);    
 }
 
 * {
@@ -15,7 +15,7 @@
   padding-left: 60px;
   padding-right: 60px;
   padding-bottom: 30px; 
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .form-container {
@@ -32,12 +32,12 @@
 }
 
 .nuevo-usuario-header h1 {
-  color: #F8FAF6;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
 .nuevo-usuario-header p {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: large;
 }
 
@@ -55,9 +55,9 @@
 .role-tab {
   padding: 10px 18px;
   border-radius: 999px;
-  border: 1px solid #F8FAF6;
-  background: #1E293B;
-  color: #F8FAF6;
+  border: 1px solid var(--text-primary);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s ease;
   font-weight: 500;
@@ -67,13 +67,13 @@
 /* hover */
 .role-tab:hover {
   border-color: #fb923c;
-  background: #F97316;
+  background: var(--accent);
 }
 
 /* activo */
 .role-tab.active {
-  background: #F97316;
-  color: #F8FAF6;
+  background: var(--accent);
+  color: var(--text-primary);
   border-color: #fb923c;
   box-shadow: 0 4px 12px rgba(251, 146, 60, 0.3);
 }

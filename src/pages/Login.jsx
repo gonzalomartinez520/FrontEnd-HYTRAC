@@ -5,6 +5,9 @@ import { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../styles/login.css";
 import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
+import { useTheme } from "@/hooks/useTheme";
+
+
 
 const decodeJwtPayload = (token) => {
   if (!token || typeof token !== "string") {
@@ -38,6 +41,7 @@ export default function Login({ onLogin }) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const { theme, toggleTheme } = useTheme();
 
   const API_URL = import.meta.env.VITE_API_URL
 
@@ -106,6 +110,7 @@ console.log("LEGAJO DEL TOKEN:", {
         normalizedRole: String(data.rol || data.role || "").toUpperCase(),
         transportistaId,
         legajo,
+        aceptoTerminos: data. aceptoTerminos ?? false,
       };
 
       onLogin(userData);
@@ -139,13 +144,41 @@ console.log("LEGAJO DEL TOKEN:", {
 
   return (
     <div className="login-page">
+
+       <div className="login-theme-toggle">
+        <button
+          className="theme-switch"
+          onClick={toggleTheme}
+          role="switch"
+          aria-checked={theme === "light"}
+          title={theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+        >
+          <span className="theme-switch-track">
+            <span className="theme-switch-icon sun">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <circle cx="12" cy="12" r="5"/>
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                  stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none"/>
+              </svg>
+            </span>
+            <span className="theme-switch-icon moon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+              </svg>
+            </span>
+            <span className="theme-switch-thumb" />
+          </span>
+        </button>
+      </div>
       {/* PANEL IZQUIERDO */}
       <div className="left-panel">
         <div className="grid-overlay"></div>
 
         <div className="brand-container">
           <div className="brand-top">
-            <div className="logo-icon">⛟</div>
+            <div className="logo-container-login">
+              <img src={LogiTrackLogo} alt="HYTRAC Logo" className="login-logo-img" />
+            </div>
 
             <div>
               <h2>HYTRAC</h2>
