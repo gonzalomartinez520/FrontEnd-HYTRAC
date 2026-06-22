@@ -218,71 +218,109 @@ export default function JefeEstacionDashboard({ user }) {
         </section>
       </main>
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <h2>{t("stationDashboard.confirmDelivery")}</h2>
+    <div className="modal-overlay">
+        <div className="modal modal-confirmar-entrega">
 
-            {/* Input de litros */}
-            <input
-              type="number"
-              placeholder={t("stationDashboard.deliveredLiters")}
-              value={litros}
-              onChange={(e) => setLitros(e.target.value)}
-            />
+            {/* Header */}
+            <div className="modal-confirmar-header">
+                <div className="modal-confirmar-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                </div>
+                <div>
+                    <p className="modal-confirmar-title">{t("stationDashboard.confirmDelivery")}</p>
+                    <p className="modal-confirmar-subtitle">{t("stationDashboard.confirmDeliverySubtitle")}</p> 
+                </div>
+            </div>
+
+            {/* Info del envío */}
+            {selectedShipment && (
+                <div className="modal-confirmar-envio-info">
+                    <div>
+                        <span>{t("table.id")}</span>
+                        <strong>{selectedShipment.trackingId}</strong>
+                    </div>
+                    <div>
+                        <span>{t("table.route")}</span>
+                        <strong>{selectedShipment.plantaDespacho} → {selectedShipment.estacionDestino}</strong>
+                    </div>
+                </div>
+            )}
+
+            {/* Litros */}
+            <div className="modal-confirmar-field">
+                <label htmlFor="litros-input">
+                    {t("stationDashboard.deliveredLiters")}
+                </label>
+                <div className="litros-input-wrapper">
+                    <input
+                        id="litros-input"
+                        type="number"
+                        min="0"
+                        placeholder="0"
+                        value={litros}
+                        onChange={(e) => setLitros(e.target.value)}
+                    />
+                  <span className="litros-suffix">L</span>
+                </div>
+                  <p className={`litros-hint ${litros > 0 ? "litros-hint--valid" : ""}`}>
+                    {litros > 0
+                      ? t("stationDashboard.litersToRegister", { count: Number(litros).toLocaleString("es-AR") })
+                      : t("stationDashboard.litersHint")}
+                  </p> 
+            </div>
 
             {/* Observaciones */}
-            <textarea
-              placeholder={t("stationDashboard.observations")}
-              value={observaciones}
-              onChange={(e) => setObservaciones(e.target.value)}
-            />
-
-            <div className="modal-buttons">
-              <button
-                className="confirmar"
-                onClick={async () => {
-                  try {
-                    const payload = {
-                      litrosEntregados: Number(litros),
-                      observaciones: observaciones,
-                    };
-
-                    console.log("PAYLOAD:", payload);
-
-                    await confirmarEntregaJefe(
-                      selectedShipment.id,
-                      payload
-                    );
-
-                    // limpiar estado
-                    setLitros("");
-                    setObservaciones("");
-                    setShowModal(false);
-
-                  } catch (error) {
-                    console.error("Error al confirmar entrega:", error);
-                    console.log("DATA:", error.response?.data);
-                    console.log("STATUS:", error.response?.status);
-                  }
-                }}
-              >
-                {t("buttons.confirm")}
-              </button>
-
-              <button
-                className="cancelar"
-                onClick={() => {
-                  setShowModal(false);
-                  setLitros("");
-                  setObservaciones("");
-                }}
-              >
-                {t("buttons.cancel")}
-              </button>
+            <div className="modal-confirmar-field">
+                <label htmlFor="obs-input">
+                    {t("stationDashboard.observations")}
+                </label>
+                <textarea
+                    id="obs-input"
+                    rows={3}
+                    placeholder={t("stationDashboard.observationsPlaceholder")}
+                    value={observaciones}
+                    onChange={(e) => setObservaciones(e.target.value)}
+                />
             </div>
-          </div>
+
+            {/* Botones */}
+            <div className="modal-buttons">
+                <button
+                    className="cancelar"
+                    onClick={() => {
+                        setShowModal(false);
+                        setLitros("");
+                        setObservaciones("");
+                    }}
+                >
+                    {t("buttons.cancel")}
+                </button>
+                <button
+                    className="confirmar confirmar--success"
+                    disabled={!litros || Number(litros) <= 0}
+                    onClick={async () => {
+                        try {
+                            await confirmarEntregaJefe(selectedShipment.id, {
+                                litrosEntregados: Number(litros),
+                                observaciones,
+                            });
+                            setLitros("");
+                            setObservaciones("");
+                            setShowModal(false);
+                        } catch (error) {
+                            console.error("Error al confirmar entrega:", error);
+                        }
+                    }}
+                >
+                    ✓ {t("buttons.confirm")}
+                </button>
+            </div>
         </div>
-      )}
+    </div>
+)}
     </div>
   );
 }
