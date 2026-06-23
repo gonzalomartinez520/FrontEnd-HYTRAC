@@ -258,7 +258,7 @@ const evolucionMensualData =
   "#fde68a",
   "#3B82F6",
   "#10B981",
-  "#var(--danger)",
+  "#EF4444",
   ];
 
   const INCIDENCIAS = [
@@ -410,7 +410,7 @@ const exportarCSV = () => {
                 dataKey="value"
                 outerRadius={110}
                 label
-                cx="40%" // mueve el gráfico a la izquierda
+                cx="40%"
               >
                 {estadosData.map((entry, index) => (
                   <Cell
@@ -453,7 +453,7 @@ const exportarCSV = () => {
                     </td>
                     <td>{item.sucursal}</td>
                     <td>{item.envios}</td>
-                    <td>{item.porcentaje}</td>
+                    <td className="porcentaje">{item.porcentaje}</td>
                   </tr>
                 );
               })}
@@ -528,7 +528,7 @@ const exportarCSV = () => {
                   </td>
                   <td>{item.tipo}</td>
                   <td>{item.cantidad}</td>
-                  <td>{item.porcentaje}</td>
+                  <td className="porcentaje">{item.porcentaje}</td>
                 </tr>
               )
             )}
@@ -549,13 +549,13 @@ const exportarCSV = () => {
             <CartesianGrid stroke="#444" />
               <XAxis 
                 dataKey="mes"
-                tick={{ fill: "#fff" }}
+                tick={{ fill: "var(--text-primary)" }}
                 axisLine={{ stroke: "#fff" }}
                 tickLine={{ stroke: "#fff" }}
               />
 
               <YAxis 
-                tick={{ fill: "#fff" }}
+                tick={{ fill: "var(--text-primary)" }}
                 axisLine={{ stroke: "#fff" }}
                 tickLine={{ stroke: "#fff" }}
               />

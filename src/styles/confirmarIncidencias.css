@@ -62,6 +62,8 @@
   border-radius: 12px;
   border: 1px solid #ddd;
   outline: none;
+  background: var(--bg-input);
+  color: var(--text-primary);
 }
 
 table {
@@ -102,14 +104,14 @@ th {
   align-items: center;
   gap: 20px;
   background: var(--bg-primary);
-  color: white;
+  color: var(--text-primary);
 }
 
 .confirmar-incidencias-loader {
   width: 70px;
   height: 70px;
-  border: 6px solid rgba(255, 255, 255, 0.2);
-  border-top: 6px solid orange;
+  border: 6px solid var(--text-primary);
+  border-top: 6px solid var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -216,17 +218,6 @@ th {
    ========================= */
 @media (max-width: 480px) {
 
-  /* Fondo completamente azul */
-  html,
-  body,
-  #root,
-  .confirmar-incidencias-container {
-    width: 100%;
-    min-height: 100vh;
-    background: #0B1120;
-    overflow-x: hidden;
-  }
-
   .incidencias-dashboard-content {
     padding: 15px;
   }
@@ -280,8 +271,6 @@ th {
     overflow-x: auto;
   }
 
-
-
   th,
   td {
     padding: 12px;
@@ -291,20 +280,6 @@ th {
   /* Botones más compactos */
   .incidencias-actions-table {
     gap: 6px;
-  }
-
-  .incidencias-detalles,
-  .confirmar-incidencias,
-  .rechazar-incidencias {
-    width: 34px;
-    height: 34px;
-  }
-
-  .incidencias-detalles svg,
-  .confirmar-incidencias svg,
-  .rechazar-incidencias svg {
-    width: 18px;
-    height: 18px;
   }
 
   /* Modal responsive */
@@ -322,5 +297,23 @@ th {
   .confirmar,
   .cancelar {
     width: 100%;
+  }
+
+  tbody tr td::before {
+    content: attr(data-label);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .incidencias-detalles, .confirmar-incidencias, .rechazar-incidencias {
+    border-radius: 8px !important;
+    border: 2px solid var(--text-primary) !important;
+  }
+
+  .confirmar-incidencias-loading-screen {
+    text-align: center;
   }
 }

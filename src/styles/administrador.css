@@ -46,6 +46,7 @@
     cursor: pointer;
 
     box-shadow: none;
+    border: none;
 
     opacity: 0;
     transform: translateY(40px) scale(0.9);
@@ -153,12 +154,12 @@
 
 /* TEXTOS */
 .gestion-usuarios-card h2 {
-    color: var(--text-primary);
+    color: white;
     margin-bottom: 10px;
 }
 
 .gestion-usuarios-card p {
-    color: var(--text-primary);
+    color: white;
     margin-bottom: 20px;
 }
 

@@ -1,5 +1,5 @@
 .confirmaciones-layout {
-  height: calc(100vh - 60px);
+  min-height: calc(100vh - 60px);
   background: var(--bg-primary);      
 }
 
@@ -46,6 +46,7 @@
     cursor: pointer;
 
     box-shadow: none;
+    border: none;
 
     opacity: 0;
     transform: translateY(40px) scale(0.9);
@@ -149,12 +150,12 @@
 
 /* TEXTOS */
 .confirmaciones-card h2 {
-    color: var(--text-primary);
+    color: white;
     margin-bottom: 10px;
 }
 
 .confirmaciones-card p {
-    color: var(--text-primary);
+    color: white;
     margin-bottom: 20px;
 }
 

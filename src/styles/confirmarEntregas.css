@@ -62,6 +62,8 @@
   border-radius: 12px;
   border: 1px solid #ddd;
   outline: none;
+  background: var(--bg-input);
+  color: var(--text-primary);
 }
 
 table {
@@ -102,14 +104,14 @@ th {
   align-items: center;
   gap: 20px;
   background: var(--bg-primary);
-  color: white;
+  color: var(--text-primary);
 }
 
 .confirmar-edicion-loader {
   width: 70px;
   height: 70px;
-  border: 6px solid rgba(255, 255, 255, 0.2);
-  border-top: 6px solid orange;
+  border: 6px solid var(--text-primary);
+  border-top: 6px solid var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -268,28 +270,13 @@ th {
 
 /* Responsive vertical S8 (360x740) */
 @media screen and (max-width: 360px) and (max-height: 740px) {
-
-  /* 🔥 Fondo azul completo */
-  html,
-  body {
-    min-height: 100%;
-    background: #0B1120;
-    overflow-x: hidden;
-  }
-
-  .confirmar-edicion-container {
-    min-height: 100vh;
-    background: #0B1120;
-  }
-
-  .confirmar-edicion-loading-screen {
-    min-height: 100vh;
-    background: #0B1120;
-  }
-
   /* 📦 Ajustes generales */
   .edicion-dashboard-content {
     padding: 15px;
+  }
+
+  .confirmar-edicion-loading-screen {
+    text-align: center;
   }
 
   .edicion-header {
@@ -353,13 +340,6 @@ th {
     gap: 5px;
   }
 
-  .edicion-detalles,
-  .confirmar-edicion,
-  .rechazar-edicion {
-    width: 34px;
-    height: 34px;
-  }
-
   /* 📄 Datos expandidos */
   .datos-editados {
     padding: 12px;
@@ -375,5 +355,19 @@ th {
   .modal-buttons {
     flex-direction: column;
     gap: 10px;
+  }
+
+  tbody tr td::before {
+    content: attr(data-label);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .edicion-detalles, .confirmar-edicion, .rechazar-edicion {
+    border-radius: 8px !important;
+    border: 2px solid var(--text-primary) !important;
   }
 }

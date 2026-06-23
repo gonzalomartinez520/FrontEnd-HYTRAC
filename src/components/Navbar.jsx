@@ -71,7 +71,7 @@ export default function Navbar({ user, onLogout }) {
   const BellNormal = () => (
     <svg width="20" height="20" viewBox="0 0 24 24">
       <path
-        fill="#var(--accent-hover)"
+        fill="#ff7a00"
         d="M12 2a6 6 0 0 0-6 6v4.5l-1.7 2.6A1 1 0 0 0 5 17h14a1 1 0 0 0 .8-1.6L18 12.5V8a6 6 0 0 0-6-6zm0 20a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22z"
       />
     </svg>
@@ -252,6 +252,12 @@ useEffect(() => {
       icon: "📈",
       label: t("reportes"),
     },
+    TRANSPORTISTA: {
+      title: t("documentos"),
+      to: "/transportista/documentos",
+      icon: "📄",
+      label: t("documentos"),
+    },
   };
 
   const config = roleConfig[role];
@@ -399,7 +405,7 @@ useEffect(() => {
                   <span className="empty">{t("sinNotificaciones")}</span>
                 ) : (
                   notificaciones.map((n) => (
-                    <div
+                    <button
                       key={n.id}
                       className={`notif-item ${n.visto ? "" : "unread"}`}
                       onClick={() => !n.visto && marcarLeida(n.id)}
@@ -414,7 +420,7 @@ useEffect(() => {
                           {formatearFecha(n.fechaCreacion)}
                         </div>
                       </div>
-                    </div>
+                    </button>
                   ))
                 )}
               </div>

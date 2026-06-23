@@ -718,7 +718,10 @@ export default function NuevoEnvio({ user }) {
                 <option value="">{t("newOrder.placeholders.selectTransport")}</option>
                 {transportistas.map((trans) => (
                   <option key={trans.id} value={trans.id}>
-                    {trans.nombre} {trans.apellido} 🔸 {trans.probabilidadExito}
+                    {trans.nombre} {trans.apellido} 🔸 {" "}
+                    {trans.probabilidadExito === "-1%" 
+                      ? t("newOrder.fields.novato")
+                      : trans.probabilidadExito}
                   </option>
                 ))}
               </select>

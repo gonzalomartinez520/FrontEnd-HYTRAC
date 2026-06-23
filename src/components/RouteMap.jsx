@@ -18,7 +18,7 @@ const startIcon = L.divIcon({
 // Destination Indicator (Checkered Racing Flag SVG with contrasting dark background)
 const finishIcon = L.divIcon({
     html: `
-    <div style="display: flex; justify-content: center; align-items: center; width: 36px; height: 36px; background: #var(--bg-secondary); border: 3px solid #fff; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.4); overflow: hidden;">
+    <div style="display: flex; justify-content: center; align-items: center; width: 36px; height: 36px; background: black; border: 3px solid #fff; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.4); overflow: hidden;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M5 21V4.5M5 4.5H19L17 9.5L19 14.5H5" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         <path d="M5 7.5H18M5 11.5H18M9 4.5V14.5M13 4.5V14.5" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>

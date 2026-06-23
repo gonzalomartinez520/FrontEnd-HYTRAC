@@ -134,7 +134,6 @@ export default function JefeEstacionDashboard({ user }) {
                 onChange={(e) => setSearch(e.target.value)}
               />
 
-              <button>⏷</button>
             </div>
           </div>
 
@@ -196,7 +195,7 @@ export default function JefeEstacionDashboard({ user }) {
                               setShowModal(true);
                             }}
                           >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                              
                               <rect x="2" y="5" width="20" height="15" rx="3" fill="currentColor" opacity="0.15"/>                             
                               <rect x="2" y="5" width="20" height="15" rx="3" stroke="currentColor" stroke-width="2"/>                                

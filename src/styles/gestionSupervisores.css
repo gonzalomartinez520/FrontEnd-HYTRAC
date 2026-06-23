@@ -63,6 +63,8 @@
   border-radius: 12px;
   border: 1px solid #ddd;
   outline: none;
+  background: var(--bg-input);
+  color: var(--text-primary);
 }
 
 .legajo {
@@ -283,26 +285,6 @@ td:nth-child(3) {
   }
 
   /* ==========================
-     LABELS
-  ========================== */
-
-  tbody td:nth-child(1)::before {
-    content: "Legajo";
-  }
-
-  tbody td:nth-child(2)::before {
-    content: "Ruta Designada";
-  }
-
-  tbody td:nth-child(3)::before {
-    content: "Combustible";
-  }
-
-  tbody td:nth-child(4)::before {
-    content: "Estado";
-  }
-
-  /* ==========================
      ACCIONES
   ========================== */
 
@@ -339,7 +321,7 @@ td:nth-child(3) {
 @media (max-width: 900px) and (orientation: landscape) {
 
   .gestion-supervisores-content {
-    padding: 12px;
+    padding: 40px 60px;
   }
 
   .gestion-supervisores-header {
@@ -347,16 +329,11 @@ td:nth-child(3) {
   }
 
   .gestion-supervisores-header h1 {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
   }
 
   .gestion-supervisores-header p {
-    font-size: 0.85rem;
-  }
-
-  .gestion-supervisores-table {
-    padding: 12px;
-    overflow: visible;
+    font-size: 1.1rem;
   }
 
   .table-header {
@@ -450,22 +427,6 @@ td:nth-child(3) {
     letter-spacing: 1px;
   }
 
-  tbody td:nth-child(1)::before {
-    content: "Legajo";
-  }
-
-  tbody td:nth-child(2)::before {
-    content: "Ruta Designada";
-  }
-
-  tbody td:nth-child(3)::before {
-    content: "Combustible";
-  }
-
-  tbody td:nth-child(4)::before {
-    content: "Estado";
-  }
-
   /* ==========================
      LEGADO
   ========================== */
@@ -532,28 +493,6 @@ td {
 }
 
 tbody td {
-  color: #F8FAF6;
-  font-size: 0.95rem;
-  line-height: 1.4;
-}
-
-
-
-.actions-table {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: nowrap;
-}
-
-.editar-envio,
-.rechazar-envio {
-  flex-shrink: 0;
-}
-
-tbody td {
-  color: #F8FAF6;
   font-size: 0.95rem;
   line-height: 1.4;
 }

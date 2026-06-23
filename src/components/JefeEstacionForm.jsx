@@ -182,7 +182,7 @@ export default function JefeEstacionForm() {
         <div className="jefeEstacion-container">
             <header className="jefeEstacion-header">
                 <div>
-                    <h2>{tCommon('roles.JEFE_ESTACION')} - {tForm('newOrder.new')}</h2>
+                    <h2>{tCommon('roles.JEFE_ESTACION')} - {tForm('newOrder.users.eyebrow')}</h2>
                     <p>{tForm("newOrder.users.descriptions.JEFE_ESTACION")}</p>
                 </div>
             </header>

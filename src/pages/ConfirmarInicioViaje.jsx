@@ -174,17 +174,16 @@ export default function ConfirmarInicioViaje( { user } ) {
                                     
                                     {/* FILA PRINCIPAL */}
                                     <tr>
-                                        <td className="tracking">{shipment.trackingId}</td>
-                                        <td>
+                                        <td className="tracking" data-label={t("confirmarInicioViaje.table.id")}>{shipment.trackingId}</td>
+                                        <td data-label={t("confirmarInicioViaje.table.route")}>
                                             <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                                         </td>
-                                        <td>
-                                            {/* Segun el responsable, aparece el nombre */}
+                                        <td data-label={t("confirmarInicioViaje.table.responsible")}>
                                             {shipment.transportista}
                                         </td>
-                                        <td>{formatearFecha(shipment.fechaCreacion)}</td>  {/* Cambiar por fecha de cambio de estado */}
-                                        <td><StatusBadge estado={shipment.estado}/></td>
-                                        <td>
+                                        <td data-label={t("confirmarInicioViaje.table.requestDate")}>{formatearFecha(shipment.fechaCreacion)}</td>  {/* Cambiar por fecha de cambio de estado */}
+                                        <td data-label={t("confirmarInicioViaje.table.status")}><StatusBadge estado={shipment.estado}/></td>
+                                        <td data-label={t("confirmarInicioViaje.table.actions")}>
                                             <div className="cambio-estado-actions-table">
                                             <button
                                                 className="cambio-estado-detalles"
