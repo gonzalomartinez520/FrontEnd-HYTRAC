@@ -33,6 +33,10 @@ import esReportes from "./locales/es/reportes.json";
 import enReportes from "./locales/en/reportes.json";
 import ptReportes from "./locales/pt/reportes.json";
 
+import esAceptarTerminos from "./locales/es/aceptarTerminos.json";
+import enAceptarTerminos from "./locales/en/aceptarTerminos.json";
+import ptAceptarTerminos from "./locales/pt/aceptarTerminos.json";
+
 i18n.use(initReactI18next).init({
   resources: {
     es: {
@@ -44,6 +48,7 @@ i18n.use(initReactI18next).init({
       operador: esOperador,
       jefeEstacion: esJefeEstacion,
       reportes: esReportes,
+      aceptarTerminos: esAceptarTerminos,
     },
     en: {
       navbar: enNavbar,
@@ -54,6 +59,7 @@ i18n.use(initReactI18next).init({
       operador: enOperador,
       jefeEstacion: enJefeEstacion,
       reportes: enReportes,
+      aceptarTerminos: enAceptarTerminos,
     },
     pt: {
       navbar: ptNavbar,
@@ -64,11 +70,12 @@ i18n.use(initReactI18next).init({
       operador: ptOperador,
       jefeEstacion: ptJefeEstacion,
       reportes: ptReportes,
+      aceptarTerminos: ptAceptarTerminos,
     },
     },
   lng: localStorage.getItem("lang") || "es",
   fallbackLng: "es",
-    ns: ["navbar", "common", "form", "transportista", "supervisor", "operador", "jefeEstacion", "reportes"],
+    ns: ["navbar", "common", "form", "transportista", "supervisor", "operador", "jefeEstacion", "reportes", "aceptarTerminos"],
   defaultNS: "navbar",
   interpolation: {
     escapeValue: false,

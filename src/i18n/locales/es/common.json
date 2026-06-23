@@ -108,7 +108,11 @@
     "confirmDelivery": "Confirmar entrega",
     "deliveredLiters": "Litros entregados",
     "observations": "Observaciones...",
-    "actions": "Acciones"
+    "actions": "Acciones",
+    "confirmDeliverySubtitle": "Verificá los datos físicos ingresados a los tanques.",
+    "litersHint": "Ingresá un volumen válido.",
+    "litersToRegister": "{{count}} litros a registrar",
+    "observationsPlaceholder": "Escribí novedades de la descarga..."
   },
   "envioDetail": {
     "loading": "Cargando Orden...",

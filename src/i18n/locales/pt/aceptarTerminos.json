@@ -1,0 +1,27 @@
+{
+  "title": "Termos e Condições de Uso",
+  "subtitle": "HYTRAC — Black Mesa Research",
+
+  "body": {
+    "title1": "1. Proteção de Dados Pessoais — Lei 25.326",
+    "title2": "2. Uso da Plataforma",
+    "title3": "3. Normas Aplicáveis",
+
+    "text1": "Em conformidade com a Lei 25.326 de Proteção de Dados Pessoais, a HYTRAC informa que seus dados pessoais (nome, DNI, matrícula, email) serão tratados exclusivamente para fins operacionais e logísticos. Você tem o direito de acessar, retificar e excluir seus dados (direitos ARCO).",
+    "text2": "O acesso ao HYTRAC é pessoal e intransferível. O usuário é responsável por manter a confidencialidade de suas credenciais. Qualquer uso indevido da plataforma será registrado nos logs de auditoria do sistema.",
+    "text3": "O uso desta plataforma implica o conhecimento e a aceitação das normas vigentes: Lei 24.449, Lei 24.051, Lei 25.326, Decreto 779/95 e Resolução SE 1102/2004."
+  },
+
+  "extras": {
+    "firma": "Assine abaixo para confirmar que leu e aceitou os termos:",
+    "limpiarFirma": "Limpar assinatura",
+    "volver": "Voltar",
+    "procesando": "Processando...",
+    "aceptoTerminos": "Aceito os Termos e Condições",
+    
+    "atencion": "Atenção",
+    "mensajeAtencion": "Você deve aceitar os termos e condições para continuar usando a plataforma.",
+    "cancelar": "Cancelar",
+    "volverLogin": "Voltar ao Login"
+  }
+}

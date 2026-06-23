@@ -162,16 +162,16 @@ export default function GestionSupervisor( { user } ) {
                                 <Fragment key={usuario.id}>
 
                                     <tr>
-                                        <td className="legajo">{usuario.legajo}</td>
-                                        <td>{usuario.nombre} {usuario.apellido}</td>
-                                        <td>{usuario.email}</td>
-                                        <td>{usuario.dni}</td>
+                                        <td className="legajo" data-label={t("table.legajo")}>{usuario.legajo}</td>
+                                        <td data-label={t("table.supervisor")}>{usuario.nombre} {usuario.apellido}</td>
+                                        <td data-label={t("table.email")}>{usuario.email}</td>
+                                        <td data-label={t("table.dni")}>{usuario.dni}</td>
                                         {usuario.activo ? (
-                                            <td><StatusBadge estado="ACTIVO"></StatusBadge></td>
+                                            <td data-label={t("table.status")}><StatusBadge estado="ACTIVO"></StatusBadge></td>
                                         ) : (
-                                            <td><StatusBadge estado="NO ACTIVO"></StatusBadge></td>
+                                            <td data-label={t("table.status")}><StatusBadge estado="NO ACTIVO"></StatusBadge></td>
                                         )}
-                                        <td>
+                                        <td data-label={t("table.actions")}>
                                             <div className="actions-table">
                                                 {usuario.activo ? (
                                                     <button className="editar-envio"
@@ -195,7 +195,7 @@ export default function GestionSupervisor( { user } ) {
                                                             height="18" 
                                                             viewBox="0 0 24 24" 
                                                             fill="none" 
-                                                            stroke="#f97316"
+                                                            stroke="var(--accent)"
                                                             strokeWidth="2"
                                                             >
                                                             <path d="M12 20h9"/>

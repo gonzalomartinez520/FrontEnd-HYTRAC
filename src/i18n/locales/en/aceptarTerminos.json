@@ -1,0 +1,27 @@
+{
+  "title": "Terms and Conditions of Use",
+  "subtitle": "HYTRAC — Black Mesa Research",
+
+  "body": {
+    "title1": "1. Personal Data Protection — Law 25,326",
+    "title2": "2. Platform Usage",
+    "title3": "3. Applicable Regulations",
+
+    "text1": "In compliance with Personal Data Protection Law 25,326, HYTRAC informs that your personal data (name, ID, employee number, email) will be processed exclusively for operational and logistical purposes. You have the right to access, rectify, and delete your data (ARCO rights).",
+    "text2": "Access to HYTRAC is personal and non-transferable. The user is responsible for maintaining the confidentiality of their credentials. Any misuse of the platform will be recorded in the system's audit logs.",
+    "text3": "The use of this platform implies knowledge and acceptance of current regulations: Law 24,449, Law 24,051, Law 25,326, Decree 779/95, and Resolution SE 1102/2004."
+  },
+
+  "extras": {
+    "firma": "Sign below to confirm that you have read and accepted the terms:",
+    "limpiarFirma": "Clear signature",
+    "volver": "Back",
+    "procesando": "Processing...",
+    "aceptoTerminos": "I accept the Terms and Conditions",
+    
+    "atencion": "Attention",
+    "mensajeAtencion": "You must accept the terms and conditions to continue using the platform.",
+    "cancelar": "Cancel",
+    "volverLogin": "Back to Login"
+  }
+}

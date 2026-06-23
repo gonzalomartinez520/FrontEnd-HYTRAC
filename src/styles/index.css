@@ -1,4 +1,4 @@
-/* index.css - reset + neutral baseline */
+/* index.css */
 
 * {
   box-sizing: border-box;
@@ -6,12 +6,59 @@
   padding: 0;
 }
 
-html,
-body,
-#root {
+html, body, #root {
   height: 100%;
 }
 
 body {
   font-family: Arial, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* MODO OSCURO */
+:root {
+  --bg-primary:        #0b1120; 
+  --bg-secondary:      #1e293b; 
+  --bg-card:           #1e293b;
+  --bg-input:          #061126; 
+  --text-primary:      #f8faf6; 
+  --text-secondary:    #a3b0c2; 
+  --text-muted:        #64748b;
+
+  --border-color:      rgba(255, 255, 255, 0.08);
+  
+  --accent:            #f97316; 
+  --accent-hover:      #f98500;
+  --accent-light:      rgba(249, 115, 22, 0.15);
+
+  --danger:            #ff3b3b;
+  --danger-hover:      #dc2626;
+
+  --shadow:            0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/*  MODO CLARO  */
+:root[data-theme="light"] {
+  --bg-primary:        #eef2f6;
+  --bg-secondary:      #ffffff;   
+  --bg-card:           #ffffff;
+  --bg-input:          #f1f5f9;
+
+ 
+  --text-primary:      #0f172a;   
+  --text-secondary:    #3f4f63;   
+  --text-muted:        #64748b;  
+
+  --border-color:      #d8e1e9;
+
+  --accent:            #d65400;   
+  --accent-hover:      #b84800;
+  --accent-light:      rgba(214, 84, 0, 0.08);
+
+  --danger:            #c81e3a;
+  --danger-hover:      #a51530;
+
+  --shadow:            0 4px 20px rgba(15, 23, 42, 0.06);
 }

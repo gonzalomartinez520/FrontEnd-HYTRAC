@@ -36,6 +36,13 @@
     "actions": "Ações",
     "noActions": "Sem ações"
   },
+  "details": {
+    "camionAsignado": "Caminhão Atribuído",
+    "acopladoAsignado": "Reboque Atribuído",
+    "litrosCargados": "Litros Carregados",
+    "cot": "COT",
+    "numeroRemito": "Número do Romaneio"
+  },
   "messages": {
   "confirmDeactivate": "Tem certeza de que deseja desativar o usuário {{name}}?",
   "confirmEdit": "Tem certeza de que deseja editar os dados do usuário {{name}}?"

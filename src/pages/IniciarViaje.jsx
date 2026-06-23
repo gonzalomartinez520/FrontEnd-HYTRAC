@@ -10,6 +10,7 @@ import {
 } from "@/api";
 import "../styles/iniciarViaje.css";
 import { useTranslation } from "react-i18next";
+import TokenInput from "@/components/TokenInput";
 
 // 🔹 1. Actualizado para usar locale y fallback dinámicos
 const formatDate = (value, fallbackText = "-", locale = "es-AR") => {
@@ -111,7 +112,17 @@ export default function IniciarViaje({ user }) {
   const primaryActionKey = useMemo(() => getPrimaryActionKey(shipment), [shipment]);
 
   const [showTokenModal, setShowTokenModal] = useState(false);
-  const [token, setToken] = useState("");
+  const [token, setTokenKey] = useState(0);
+  const handleTokenComplete = async (code) => {
+    try {
+        setErrorToken("");
+        await handlePrimaryAction(code);
+        setShowTokenModal(false);
+    } catch (err) {
+        setErrorToken("El token es incorrecto");
+        setTokenKey((k) => k + 1); // remonta el componente y limpia los casilleros
+    }
+};
 
   const reloadShipment = async () => {
     if (!ordenId) {
@@ -341,60 +352,36 @@ export default function IniciarViaje({ user }) {
         )}
       </section>
         {showTokenModal && (
-                <div className="modal-overlay">
-                  <div className="modal">
-                    <h2>Confirmación</h2>
+              <div className="modal-overlay">
+                  <div className="modal token-modal">
+                      <div className="token-modal-icon">
+                          <i className="ti ti-shield-lock"></i>
+                      </div>
 
-                    <div className="input-container">
-                      <input
-                        type="text"
-                        value={token}
-                       onChange={(e) => {
-                        setToken(e.target.value);
-                        setErrorToken("");
-                      }}
-                        placeholder="Ingrese el token"
-                      />
+                      <h2>Confirmar entrega</h2>
+                      <p className="token-modal-subtitle">
+                          Ingresá el código de 6 dígitos que te entrega el Jefe de Estación.
+                      </p>
+
+                      <TokenInput key={token} length={6} onComplete={handleTokenComplete} />
+
                       {errorToken && <span className="error">{errorToken}</span>}
-                    </div>
 
-                    <div className="modal-buttons">
-                      <button
-                        className="cancelar"
-                        type="button"
-                        onClick={() => {
-                          setShowTokenModal(false);
-                          setToken("");
-                        }}
-                      >
-                        Cancelar
-                      </button>
-
-                      <button
-                        className="confirmar"
-                        type="button"
-                        onClick={async () => {
-                          try {
-                            setErrorToken(""); // limpiar error anterior
-
-                            await handlePrimaryAction(token);
-
-                            // Si no tiró error → token válido
-                            setShowTokenModal(false);
-                            setToken("");
-                          } catch (err) {
-                            // Si falla → mostrar error y NO cerrar modal
-                            setErrorToken("El token es incorrecto");
-                          }
-                        }}
-                        disabled={!token}
-                      >
-                        Confirmar
-                      </button>
-                    </div>
+                      <div className="modal-buttons">
+                          <button
+                              className="cancelar"
+                              type="button"
+                              onClick={() => {
+                                  setShowTokenModal(false);
+                                  setErrorToken("");
+                              }}
+                          >
+                              Cancelar
+                          </button>
+                      </div>
                   </div>
-                </div>
-              )}
+              </div>
+          )}
     </main>
   );
 }

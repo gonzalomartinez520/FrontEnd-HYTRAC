@@ -65,7 +65,9 @@
       "password": "Password",
       "confirmPassword": "Confirm Password",
       "passwordTemporal": "Password",
-      "telefono": "Phone"
+      "telefono": "Phone",
+
+      "novato": "Rookie"
     },
 
     "placeholders": {

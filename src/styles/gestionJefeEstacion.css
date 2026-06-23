@@ -7,7 +7,7 @@
 
 .gestion-jefeEstacion-layout  {
   min-height: calc(100vh - 60px); /* 🔥 ajustá el 60px */
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .gestion-jefeEstacion-content {
@@ -23,18 +23,18 @@
 
 .gestion-jefeEstacion-header h1 {
   font-size: 2.5rem;
-  color: #F8FAF6;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
 .gestion-jefeEstacion-header p {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
 
 .gestion-jefeEstacion-table {
-  background: #1E293B;
+  background: var(--bg-secondary);
   border-radius: 20px;
   padding: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -49,7 +49,7 @@
 
 .table-header h2 {
   margin-bottom: 6px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .search-container {
@@ -63,6 +63,8 @@
   border-radius: 12px;
   border: 1px solid #ddd;
   outline: none;
+  background: var(--bg-input);
+  color: var(--text-primary);
 }
 
 .legajo {
@@ -72,7 +74,7 @@
 
 .no-actions {
     font-size: larger;
-    color: #F8FAF6;
+    color: var(--text-primary);
 }
 
 .mapa-info-container {
@@ -89,11 +91,11 @@
 /* 📄 Info */
 .info-box {
   width: 60%;
-  color: white; /* opcional si tenés fondo oscuro */
+  color: var(--text-primary); /* opcional si tenés fondo oscuro */
 }
 
 .info-box {
-  background: #1f2937;
+  background: var(--bg-secondary);
   padding: 15px;
   border-radius: 10px;
 }
@@ -101,3 +103,417 @@
 .info-box h3 {
   margin-bottom: 10px;
 }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 14px;
+  vertical-align: middle;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.actions-table {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.editar-envio,
+.rechazar-envio {
+  flex-shrink: 0;
+}
+
+tbody td {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* =====================================================
+   GALAXY S8 - VERTICAL
+   360x740
+===================================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .gestion-jefeEstacion-layout,
+  .gestion-jefeEstacion-content,
+  .gestion-jefeEstacion-table,
+  table,
+  tbody,
+  tr {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .gestion-jefeEstacion-layout {
+    overflow-x: hidden;
+  }
+
+  .gestion-jefeEstacion-content {
+    padding: 16px;
+  }
+
+  .gestion-jefeEstacion-header {
+    margin-bottom: 20px;
+  }
+
+  .gestion-jefeEstacion-header h1 {
+    font-size: 1.6rem;
+  }
+
+  .gestion-jefeEstacion-header p {
+    font-size: 0.9rem;
+  }
+
+  .gestion-jefeEstacion-table {
+    padding: 16px;
+    overflow: hidden;
+  }
+
+  .table-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .search-container {
+    width: 100%;
+  }
+
+  .search-container input {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+
+  tbody tr td.tracking {
+    width: 100%;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  /* ==========================
+     TARJETA DEL SUPERVISOR
+  ========================== */
+
+  tbody tr {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 18px;
+
+    padding: 18px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
+
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* ==========================
+     CADA CAMPO
+  ========================== */
+
+  tbody td {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    width: 100%;
+    max-width: 100%;
+
+    padding: 12px 0;
+
+    border: none;
+
+    color: #F8FAF6;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    line-height: 1.6;
+
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  tbody td:not(:last-child) {
+    border-bottom: 1px solid #1e293b;
+    margin-bottom: 10px;
+    padding-bottom: 14px;
+  }
+
+  /* ==========================
+     ETIQUETA
+  ========================== */
+
+  tbody td::before {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+  }
+
+  tbody tr td::before {
+    content: attr(data-label);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  /* ==========================
+     VALORES IMPORTANTES
+  ========================== */
+
+  .legajo {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ff7b00;
+  }
+
+  /* ==========================
+     EMAILS LARGOS
+  ========================== */
+
+  tbody td:nth-child(3) {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  /* ==========================
+     ACCIONES
+  ========================== */
+
+  .actions-table {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+    flex-wrap: nowrap;
+
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .editar-envio,
+  .rechazar-envio {
+    min-width: 42px;
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+  }
+
+  .mapa-info-container {
+    flex-direction: column; /* 🔥 clave */
+  }
+
+  .info-box {
+    order: 1;
+    width: 250px !important;
+    max-width: 250px !important;
+
+    margin-left: 18px;
+  }
+
+  .mapa-box {
+    order: 2;
+    width: 330px !important;
+    max-width: 330px !important;
+
+    margin-left: 50px;
+  }
+}
+
+/* =====================================================
+   GALAXY S8 - HORIZONTAL
+   740x360
+===================================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+  .gestion-jefeEstacion-content {
+    padding: 40px 60px;
+  }
+
+  .gestion-jefeEstacion-header {
+    margin-bottom: 15px;
+  }
+
+  .gestion-jefeEstacion-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .gestion-jefeEstacion-header p {
+    font-size: 1.1rem;
+  }
+
+  .table-header {
+    flex-direction: row;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .search-container input {
+    width: 220px;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* ==========================
+     TARJETA
+  ========================== */
+
+  tbody tr {
+    background: #0f172a;
+    border: 1px solid #334155;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  }
+
+  /* ==========================
+     CAMPOS
+  ========================== */
+
+  tbody td {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 10px 0;
+
+    border: none;
+
+    color: #F8FAF6;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    line-height: 1.5;
+
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  tbody td:not(:last-child) {
+    border-bottom: 1px solid #1e293b;
+    margin-bottom: 8px;
+    padding-bottom: 12px;
+  }
+
+  /* ==========================
+     LABELS
+  ========================== */
+
+  tbody td::before {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    color: #94a3b8;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+  }
+
+  /* ==========================
+     LEGADO
+  ========================== */
+
+  .legajo {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ff7b00;
+  }
+
+  /* ==========================
+     ACCIONES
+  ========================== */
+
+  .actions-table {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 4px;
+
+    flex-wrap: nowrap;
+  }
+
+  .editar-envio,
+  .rechazar-envio {
+    min-width: 40px;
+    min-height: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+

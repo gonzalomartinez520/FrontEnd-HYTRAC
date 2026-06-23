@@ -657,50 +657,36 @@ export default function NuevoEnvio({ user }) {
               )}
             </div>
 
-            <div className="route-telemetry-panel" style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px", borderRadius: "8px", background: "#1a2332", color: "#fff", position: "relative" }}>
+            <div className="route-telemetry-panel">
+                {isRouteLoading ? (
+                            <div className="route-telemetry-loading">
+                              <div className="route-telemetry-spinner" />
+                              <span className="route-telemetry-loading-text">
+                                {t("newOrder.route.calculating")}
+                              </span>
+                            </div>
+                          ) : (
+                            <>
+                              <h3 className="route-telemetry-title">
+                                {t("newOrder.route.title")}
+                              </h3>
+                              <p className="route-telemetry-row">
+                                <strong>{t("newOrder.route.distance")}:</strong>{" "}
+                                {routeData.distanciaKm ? `${Number(routeData.distanciaKm).toFixed(1)} km` : "--"}
+                              </p>
+                              <p className="route-telemetry-row">
+                                <strong>{t("newOrder.route.time")}:</strong>{" "}
+                                {routeData.tiempoEstimadoHoras ? formatRouteTime(routeData.tiempoEstimadoHoras) : "--"}
+                              </p>
 
-              {/* LIVE REFINERY BUFFERING INDICATOR */}
-              {isRouteLoading ? (
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "12px", height: "100%" }}>
-                  {/* CSS Inline Animated Spinner */}
-                  <div style={{
-                    width: "36px",
-                    height: "36px",
-                    border: "3px solid rgba(59, 130, 246, 0.2)",
-                    borderTop: "3px solid #3b82f6",
-                    borderRadius: "50%",
-                    animation: "spin 0.8s linear infinite"
-                  }} />
-                  <style>{`
-                    @keyframes spin {
-                      0% { transform: rotate(0deg); }
-                      100% { transform: rotate(360deg); }
-                    }
-                  `}</style>
-                  <span style={{ fontSize: "14px", color: "#94a3b8", fontWeight: "500", letterSpacing: "0.3px" }}>
-                    {t("newOrder.route.calculating")}
-                  </span>
-                </div>
-              ) : (
-                <>
-                  <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", color: "#3b82f6", letterSpacing: "0.5px", textTransform: "uppercase" }}>
-                    {t("newOrder.route.title")}
-                  </h3>
-                  <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
-                    <strong style={{ color: "#fff" }}>{t("newOrder.route.distance")}:</strong> {routeData.distanciaKm ? `${Number(routeData.distanciaKm).toFixed(1)} km` : "--"}
-                  </p>
-                  <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
-                    <strong style={{ color: "#fff" }}>{t("newOrder.route.time")}:</strong> {routeData.tiempoEstimadoHoras ? formatRouteTime(routeData.tiempoEstimadoHoras) : "--"}
-                  </p>
-
-                  {(!formData.refineriaOrigen || !formData.estacionDestino) && (
-                    <span style={{ fontSize: "12px", color: "#94a3b8", marginTop: "12px", fontStyle: "italic" }}>
-                      {t("newOrder.route.incomplete")}
-                    </span>
-                  )}
-                </>
-              )}
-            </div>
+                              {(!formData.refineriaOrigen || !formData.estacionDestino) && (
+                                <span className="route-telemetry-warning">
+                                  {t("newOrder.route.incomplete")}
+                                </span>
+                              )}
+                            </>
+                          )}
+              </div>
           </div>
         </section>
 
@@ -732,7 +718,10 @@ export default function NuevoEnvio({ user }) {
                 <option value="">{t("newOrder.placeholders.selectTransport")}</option>
                 {transportistas.map((trans) => (
                   <option key={trans.id} value={trans.id}>
-                    {trans.nombre} {trans.apellido} 🔸 {trans.probabilidadExito}
+                    {trans.nombre} {trans.apellido} 🔸 {" "}
+                    {trans.probabilidadExito === "-1%" 
+                      ? t("newOrder.fields.novato")
+                      : trans.probabilidadExito}
                   </option>
                 ))}
               </select>

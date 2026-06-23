@@ -262,7 +262,7 @@ export default function TransportistaForm() {
         <div className="transportista-container">
             <header className="transportista-header">
                 <div>
-                    <h2>{tCommon('roles.TRANSPORTISTA')} - {tForm('newOrder.new')}</h2>
+                    <h2>{tCommon('roles.TRANSPORTISTA')} - {tForm('newOrder.users.eyebrow')}</h2>
                     <p>{tForm("newOrder.users.descriptions.TRANSPORTISTA")}</p>
                 </div>
             </header>
@@ -481,7 +481,7 @@ export default function TransportistaForm() {
                             );
 
                             return (
-                                <div key={i} className="documento-card">
+                                <div key={i} className="docForm-card">
                                     <div className="doc-header">
                                         <div className="doc-title-container">
                                             <span className="doc-icon">📄</span>

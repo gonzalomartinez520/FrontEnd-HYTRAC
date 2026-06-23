@@ -7,7 +7,7 @@
 
 .gestion-operarios-layout  {
   min-height: calc(100vh - 60px); /* 🔥 ajustá el 60px */
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .gestion-operarios-content {
@@ -23,18 +23,18 @@
 
 .gestion-operarios-header h1 {
   font-size: 2.5rem;
-  color: #F8FAF6;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
 .gestion-operarios-header p {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
 
 .gestion-operarios-table {
-  background: #1E293B;
+  background: var(--bg-secondary);
   border-radius: 20px;
   padding: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -49,7 +49,7 @@
 
 .table-header h2 {
   margin-bottom: 6px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .search-container {
@@ -63,6 +63,8 @@
   border-radius: 12px;
   border: 1px solid #ddd;
   outline: none;
+  background: var(--bg-input);
+  color: var(--text-primary);
 }
 
 .legajo {
@@ -72,10 +74,78 @@
 
 .no-actions {
     font-size: larger;
-    color: #F8FAF6;
+    color: var(--text-primary);
 }
 
 .modal-content .form-section {
   margin-bottom: 10px;
 }
 
+@media (max-width: 360px) and (orientation: portrait) {
+  .gestion-operarios-content {
+    padding: 20px 15px;
+  }
+
+  .gestion-operarios-header {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .gestion-operarios-headerh1 {
+    font-size: 1.8rem;
+  }
+
+  .gestion-operarios-header p {
+    font-size: 0.9rem;
+  }
+
+  .gestion-operarios-table {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .table-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .table-header h2 {
+    font-size: 1rem;
+  }
+
+  .table-header span {
+    font-size: 0.85rem;
+  }
+
+  .search-container {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-container input {
+    width: 100%;
+  }
+
+  .search-container button {
+    width: 100%;
+  }
+
+  tbody tr td::before {
+    content: attr(data-label);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .editar-envio {
+    border-radius: 8px;
+    border: 2px solid var(--text-primary);
+  }
+}

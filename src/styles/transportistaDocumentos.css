@@ -52,13 +52,14 @@
 
 /* INPUT FILE CUSTOM */
 .input-file {
-    background: #2c3e50;
-    color: #f7f9fc;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
     padding: 10px 16px;
     border-radius: 8px;
     cursor: pointer;
     transition: 0.3s;
     font-size: 14px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
 .input-file input {
@@ -66,7 +67,7 @@
 }
 
 .input-file:hover {
-    background: #34495e;
+    transform: translateY(2px);
 }
 
 /* BOTÓN PRINCIPAL */
@@ -80,12 +81,11 @@
     cursor: pointer;
     font-weight: bold;
     transition: 0.3s;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
 }
 
 .btn-actualizar:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
 }
 
 .btn-actualizar:disabled {
@@ -99,14 +99,14 @@
 }
 
 .documentos-header h1 {
-    color: #f7f9fc;
+    color: var(--text-primary);
     text-align: center;
     margin-bottom: 5px;
     font-size: 35px;
 }
 
 .documentos-header p {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: 1.1rem;
   margin-bottom: 20px;
   text-align: center;
@@ -114,10 +114,10 @@
 
 /* CARD BASE */
 .documento-card {
-    background: #1e2a38;
+    background: var(--bg-secondary);
     border-radius: 12px;
     padding: 16px;
-    color: #f7f9fc;
+    color: var(--text-primary);
     border: 2px solid transparent;
 
     opacity: 0;
@@ -200,47 +200,6 @@
 
 .btn-editar:hover {
     transform: scale(1.2);
-}
-
-.editar-fecha {
-    margin-top: 10px;
-    display: flex;
-    gap: 8px;
-    background: #2a3a4d;
-    padding: 10px;
-    border-radius: 8px;
-}
-
-.editar-fecha {
-    width: 80%;        /* 🔥 se estira completo */
-    box-sizing: border-box;
-    margin-left: 29px;
-}
-
-.editar-fecha input {
-    flex: 1;
-    padding: 5px;
-    border-radius: 6px;
-    border: none;
-    width: 100%;
-    min-width: 0;  
-    
-    background-color: #0B1120;
-    color: #f7f9fc;
-}
-
-.editar-fecha button {
-    padding: 5px 10px;
-    border-radius: 6px;
-    border: none;
-    background: #ff7b00;
-    color: #f7f9fc;
-    cursor: pointer;
-}
-
-.editar-fecha button:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
 }
 
 /* 📱 TABLETS / CELULARES GRANDES */

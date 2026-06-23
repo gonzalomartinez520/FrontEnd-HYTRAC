@@ -1,18 +1,18 @@
 .terminos-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(2, 8, 23, 0.85); 
+    background: rgba(2, 8, 23, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
     padding: 20px;
-    backdrop-filter: blur(4px); 
+    backdrop-filter: blur(4px);
 }
 
 .terminos-modal {
-    background: #061126; 
-    border: 1px solid #1e3357; 
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     width: 100%;
     max-width: 640px;
@@ -20,7 +20,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    box-shadow: var(--shadow);
 }
 
 .terminos-header {
@@ -28,27 +28,27 @@
     align-items: center;
     gap: 12px;
     padding: 20px 24px;
-    background: linear-gradient(135deg, #1e2a44 0%, #121c30 100%); 
-    border-bottom: 2px solid #ff6b0a; 
-    color: white;
+    background: var(--bg-secondary);
+    border-bottom: 2px solid var(--accent);
+    color: var(--text-primary);
 }
 
-.terminos-header span { 
-    font-size: 2rem; 
-    color: #ff6b0a; 
+.terminos-header span {
+    font-size: 2rem;
+    color: var(--accent);
 }
 
-.terminos-header h2 { 
-    margin: 0; 
-    font-size: 1.2rem; 
-    color: white;
+.terminos-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--text-primary);
     font-weight: 700;
 }
 
-.terminos-header p { 
-    margin: 0; 
-    font-size: 0.8rem; 
-    color: #9ca9c0;
+.terminos-header p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
 }
 
 .terminos-body {
@@ -57,13 +57,13 @@
     flex: 1;
     font-size: 0.88rem;
     line-height: 1.6;
-    color: #d2d9e8; 
-    background: #020817;
+    color: var(--text-secondary);
+    background: var(--bg-primary);
 }
 
 .terminos-body h3 {
     font-size: 0.95rem;
-    color: #ff6b0a; 
+    color: var(--accent);
     margin: 20px 0 8px;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -71,35 +71,35 @@
 
 .terminos-firma {
     padding: 20px 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08); 
-    background: #061126;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-input);
     display: flex;
     flex-direction: column;
 }
 
 .terminos-firma p {
     font-size: 0.85rem;
-    color: #c4cede; 
+    color: var(--text-secondary);
     margin-bottom: 12px;
 }
 
 .firma-canvas {
     width: 100%;
-    max-width: 480px; 
+    max-width: 480px;
     height: 120px;
-    border: 1.5px dashed #ff6b0a; 
+    border: 1.5px dashed var(--accent);
     border-radius: 10px;
     cursor: crosshair;
-    background: #020817; 
+    background: var(--bg-primary);
     touch-action: none;
-    align-self: center; 
+    align-self: center;
 }
 
 .limpiar-firma {
     margin-top: 10px;
     background: transparent;
     border: none;
-    color: #ff6b0a; 
+    color: var(--accent);
     font-size: 0.8rem;
     font-weight: 600;
     cursor: pointer;
@@ -110,49 +110,49 @@
 }
 
 .limpiar-firma:hover {
-    color: #ff7c24; 
+    color: var(--accent-hover);
 }
 
 .terminos-footer {
     padding: 20px 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    background: #061126;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-input);
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
 }
 
 .terminos-usuario {
     font-size: 0.8rem;
-    color: #60708f;
+    color: var(--text-muted);
     margin: 0;
-    flex: 1 1 100%; 
+    flex: 1 1 100%;
 }
 
 .volver-btn {
-    background: #1e3357;
-    color: #c4cede;
-    border: 1px solid #31528c;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
     padding: 12px 24px;
     border-radius: 10px;
     font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.25s ease;
-    flex: 1; 
+    flex: 1;
     text-align: center;
 }
 
 .volver-btn:hover {
-    background: #31528c;
-    color: white;
+    background: var(--border-color);
+    color: var(--text-primary);
 }
 
 .aceptar-btn {
-    background: #ff6b0a; 
-    color: white;
+    background: var(--accent);
+    color: #fff;
     border: none;
     padding: 12px 24px;
     border-radius: 10px;
@@ -161,21 +161,21 @@
     cursor: pointer;
     transition: all 0.25s ease;
     white-space: nowrap;
-    box-shadow: 0 6px 20px rgba(255, 107, 10, 0.2);
-    flex: 2; 
+    box-shadow: var(--shadow-accent, 0 6px 20px rgba(249, 115, 22, 0.2));
+    flex: 2;
     text-align: center;
 }
 
 .aceptar-btn:disabled {
-    background: #1e3357;
-    color: #60708f;
+    background: var(--bg-secondary);
+    color: var(--text-muted);
     cursor: not-allowed;
     box-shadow: none;
     transform: none !important;
 }
 
-.aceptar-btn:hover:not(:disabled) { 
-    background: #ff7c24; 
+.aceptar-btn:hover:not(:disabled) {
+    background: var(--accent-hover);
     transform: translateY(-1px);
 }
 
@@ -189,21 +189,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10000; 
+    z-index: 10000;
     padding: 16px;
     backdrop-filter: blur(6px);
     animation: fadeIn 0.2s ease-out;
 }
 
 .alerta-card {
-    background: #061126;
-    border: 1px solid #ff6b0a; 
+    background: var(--bg-input);
+    border: 1px solid var(--accent);
     border-radius: 14px;
     padding: 24px;
     width: 100%;
     max-width: 380px;
     text-align: center;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
     animation: scaleUp 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -213,14 +213,14 @@
 }
 
 .alerta-card h3 {
-    color: white;
+    color: var(--text-primary);
     font-size: 1.25rem;
     margin-bottom: 8px;
     font-weight: 700;
 }
 
 .alerta-card p {
-    color: #9ca9c0;
+    color: var(--text-secondary);
     font-size: 0.88rem;
     line-height: 1.5;
     margin-bottom: 20px;
@@ -232,7 +232,7 @@
 }
 
 .alerta-acciones button {
-    flex: 1; /* Botones de igual tamaño en celulares */
+    flex: 1;
     padding: 11px;
     font-size: 0.85rem;
     border-radius: 8px;
@@ -243,70 +243,41 @@
 
 .alerta-btn-cancelar {
     background: transparent;
-    color: #8b98ae;
-    border: 1px solid #1e3357;
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
     transition: all 0.2s;
 }
 
 .alerta-btn-cancelar:hover {
-    background: rgba(30, 51, 87, 0.3);
-    color: white;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 .alerta-btn-salir {
-    background: #ff6b0a;
-    color: white;
+    background: var(--accent);
+    color: #fff;
     border: none;
     transition: background 0.2s;
-    box-shadow: 0 4px 12px rgba(255, 107, 10, 0.2);
+    box-shadow: 0 4px 12px var(--accent-light);
 }
 
 .alerta-btn-salir:hover {
-    background: #ff7c24;
+    background: var(--accent-hover);
 }
 
 /* ======================================================
    RESPONSIVE MEDIA QUERIES (MÓVILES)
    ====================================================== */
 @media (max-width: 520px) {
-    .terminos-overlay {
-        padding: 10px; 
-    }
-
-    .terminos-modal {
-        max-height: 95vh; 
-    }
-
-    .terminos-header {
-        padding: 14px 18px;
-    }
-
-    .terminos-body {
-        padding: 18px;
-    }
-
-    .terminos-firma {
-        padding: 14px 18px;
-    }
-
-    
-    .firma-canvas {
-        height: 100px; 
-    }
-
-    .terminos-footer {
-        padding: 16px 18px;
-        gap: 10px;
-    }
-
-    .volver-btn, .aceptar-btn {
-        padding: 12px 10px;
-        font-size: 0.85rem;
-    }
-    
-    .alerta-card {
-        padding: 20px;
-    }
+    .terminos-overlay { padding: 10px; }
+    .terminos-modal { max-height: 95vh; }
+    .terminos-header { padding: 14px 18px; }
+    .terminos-body { padding: 18px; }
+    .terminos-firma { padding: 14px 18px; }
+    .firma-canvas { height: 100px; }
+    .terminos-footer { padding: 16px 18px; gap: 10px; }
+    .volver-btn, .aceptar-btn { padding: 12px 10px; font-size: 0.85rem; }
+    .alerta-card { padding: 20px; }
 }
 
 /* Animaciones */

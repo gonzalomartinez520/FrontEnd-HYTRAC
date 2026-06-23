@@ -6,22 +6,25 @@ import LogiTrackLogo from "../assets/LogiTrack_Logo_colored.png";
 import i18n from "../i18n";
 import { useTranslation } from "react-i18next";
 import { datos } from '@/api';
+import { useTheme } from "../hooks/useTheme";
 
 export default function Navbar({ user, onLogout }) {
   const navigate = useNavigate();
   const { t } = useTranslation("navbar");
   const { t : tCommon } = useTranslation("common");
+  const { theme, toggleTheme } = useTheme();
 
   const languages = [
-    { code: "es", label: "Español", flag: "🇦🇷" },
-    { code: "en", label: "English", flag: "🇺🇸" },
-    { code: "pt", label: "Português", flag: "🇧🇷" }
+    { code: "es", short: "AR" },
+    { code: "en", short: "US" },
+    { code: "pt", short: "BR" }
   ];
 
 
   const [notificaciones, setNotificaciones] = useState([]);
   const [openNotif, setOpenNotif] = useState(false);
   const [closing, setClosing] = useState(false);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
 
   const handleToggle = () => {
     if (openNotif) {
@@ -77,7 +80,7 @@ export default function Navbar({ user, onLogout }) {
   const BellWithNotification = () => (
     <svg width="20" height="20" viewBox="0 0 24 24">
       <path
-        fill="#ff7a00"
+        fill="#var(--accent-hover)"
         d="M12 2a6 6 0 0 0-6 6v4.5l-1.7 2.6A1 1 0 0 0 5 17h14a1 1 0 0 0 .8-1.6L18 12.5V8a6 6 0 0 0-6-6zm0 20a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22z"
       />
       <circle cx="18" cy="6" r="5" fill="#ff3b3b" />
@@ -249,6 +252,12 @@ useEffect(() => {
       icon: "📈",
       label: t("reportes"),
     },
+    TRANSPORTISTA: {
+      title: t("documentos"),
+      to: "/transportista/documentos",
+      icon: "📄",
+      label: t("documentos"),
+    },
   };
 
   const config = roleConfig[role];
@@ -283,7 +292,8 @@ useEffect(() => {
               </>
             ) : role === "JEFE_ESTACION" ? (
               <>
-                <span className="icon">⛽</span> {t("panelEstacion")}
+                <span className="icon">⛽</span>
+                 <span className="nav-text">{t("panelEstacion")}</span> 
               </>
             ) : role === "ADMIN" ? (
               <>
@@ -297,11 +307,14 @@ useEffect(() => {
               >
                 <path d="M16 11c1.66 0 3-1.57 3-3.5S17.66 4 16 4s-3 1.57-3 3.5S14.34 11 16 11zm-8 0c1.66 0 3-1.57 3-3.5S9.66 4 8 4 5 5.57 5 7.5 6.34 11 8 11zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
               </svg> 
-                <span>{t("gestionUsuarios")}</span>
+                <span className="nav-text">
+                {t("gestionUsuarios")}
+                </span>
               </>
             ) : (
               <>
-                <span className="icon">📊</span> {t("panelControl")}
+                <span className="icon">📊</span>
+                <span className="nav-text">{t("panelControl")}</span>
               </>
             )}
           </Link>
@@ -312,7 +325,8 @@ useEffect(() => {
               to={action.to}
               onClick={() => setMenuOpen(false)}
             >
-              <span className="icon">{action.icon}</span> {action.label}
+              <span className="icon">{action.icon}</span> 
+              <span className="nav-text">{action.label}</span>
             </Link>
           )}
 
@@ -322,7 +336,8 @@ useEffect(() => {
               to={config.to}
               onClick={() => setMenuOpen(false)}
             >
-              <span className="icon">{config.icon}</span> {config.label}
+              <span className="icon">{config.icon}</span> 
+              <span className="nav-text">{config.label}</span>
             </Link>
           )}
 
@@ -331,10 +346,34 @@ useEffect(() => {
 
       <div className="nav-right">
 
+        <button
+              className="theme-switch"
+              onClick={toggleTheme}
+              role="switch"
+              aria-checked={theme === "light"}
+              title={theme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
+          >
+              <span className="theme-switch-track">
+                  <span className="theme-switch-icon sun">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                          <circle cx="12" cy="12" r="5"/>
+                          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                              stroke="currentColor" strokeWidth="2" strokeLinecap="round" fill="none"/>
+                      </svg>
+                  </span>
+                  <span className="theme-switch-icon moon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                      </svg>
+                  </span>
+                  <span className="theme-switch-thumb" />
+              </span>
+         </button>
+
         <select className="language-select" onChange={handleChangeLanguage} value={i18n.language}>
           {languages.map((lang) => (
             <option key={lang.code} value={lang.code}>
-              {lang.flag} {lang.label}
+              {lang.short}
             </option>
           ))}
         </select>
@@ -366,7 +405,7 @@ useEffect(() => {
                   <span className="empty">{t("sinNotificaciones")}</span>
                 ) : (
                   notificaciones.map((n) => (
-                    <div
+                    <button
                       key={n.id}
                       className={`notif-item ${n.visto ? "" : "unread"}`}
                       onClick={() => !n.visto && marcarLeida(n.id)}
@@ -381,7 +420,7 @@ useEffect(() => {
                           {formatearFecha(n.fechaCreacion)}
                         </div>
                       </div>
-                    </div>
+                    </button>
                   ))
                 )}
               </div>
@@ -391,29 +430,64 @@ useEffect(() => {
           )}
         </div>
 
-        <div className="user-profile">
-          <span className="user-icon">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="orange"
-            >
-              <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/>
-            </svg>
-          </span>
-          <div className="user-info">
-            <strong>
-              {user?.nombre || "Usuario"} {user?.apellido || ""}
-            </strong>
-            <span>
-              {tCommon(`roles.${(user?.normalizedRole || user?.role || "OPERADOR").toUpperCase()}`)}
+        <div className="user-profile-container">
+          <button
+            className="user-profile"
+            onClick={() => setOpenUserMenu(!openUserMenu)}
+          >
+            <span className="user-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="orange"
+              >
+                <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/>
+              </svg>
             </span>
-          </div>
+
+            <div className="user-info">
+              <strong>
+                {user?.nombre || "Usuario"} {user?.apellido || ""}
+              </strong>
+
+              <span>
+                {tCommon(
+                  `roles.${(
+                    user?.normalizedRole ||
+                    user?.role ||
+                    "OPERADOR"
+                  ).toUpperCase()}`
+                )}
+              </span>
+            </div>
+          </button>
+
+          {openUserMenu && (
+            <div className="user-dropdown">
+              <strong>
+                {user?.nombre || "Usuario"} {user?.apellido || ""}
+              </strong>
+
+              <span>
+                {tCommon(
+                  `roles.${(
+                    user?.normalizedRole ||
+                    user?.role ||
+                    "OPERADOR"
+                  ).toUpperCase()}`
+                )}
+              </span>
+            </div>
+          )}
         </div>
 
-        <button className="logout-btn" onClick={handleLogout}>
-          {t("salir")}
+        <button
+          className="logout-btn"
+          onClick={handleLogout}
+          title={t("salir")}
+        >
+          ↪
         </button>
       </div>
     </nav>

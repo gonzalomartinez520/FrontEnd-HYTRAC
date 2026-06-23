@@ -228,17 +228,17 @@ export default function ConfirmarEnvio({ user }) {
                                     
                                     {/* FILA PRINCIPAL */}
                                     <tr>
-                                        <td className="tracking">{shipment.trackingId}</td>
-                                        <td>
+                                        <td className="tracking" data-label={t("confirmarEnvio.table.id")}>{shipment.trackingId}</td>
+                                        <td data-label={t("confirmarEnvio.table.route")}>
                                             <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                                         </td>
-                                        <td>{shipment.combustible}</td>
-                                        <td>
+                                        <td data-label={t("confirmarEnvio.table.fuelType")}>{shipment.combustible}</td>
+                                        <td data-label={t("confirmarEnvio.table.carrier")}>
                                             {shipment.transportistaNombre} {shipment.transportistaApellido}
                                         </td>
-                                        <td>{formatearFecha(shipment.fechaCreacion)}</td>
-                                        <td><StatusBadge estado="PENDIENTE A CONFIRMAR"></StatusBadge></td>
-                                        <td>
+                                        <td data-label={t("confirmarEnvio.table.createdAt")}>{formatearFecha(shipment.fechaCreacion)}</td>
+                                        <td data-label={t("confirmarEnvio.table.status")}><StatusBadge estado="PENDIENTE A CONFIRMAR"></StatusBadge></td>
+                                        <td data-label={t("confirmarEnvio.table.actions")}>
                                             <div className="actions-table">
                                             <button
                                                 className="confirmar-detalles"

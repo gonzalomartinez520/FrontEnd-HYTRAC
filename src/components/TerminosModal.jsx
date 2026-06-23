@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { usuarios } from "../api/apiClient";
 import "../styles/TerminosModal.css";
 
+import { useTranslation } from "react-i18next";
+
 export default function TerminosModal({ user, onAceptar }) {
+    const { t } = useTranslation("aceptarTerminos");
+
     const canvasRef = useRef(null);
     const navigate = useNavigate();
     const [dibujando, setDibujando] = useState(false);
@@ -38,9 +42,12 @@ export default function TerminosModal({ user, onAceptar }) {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
         const pos = getPos(e, canvas);
+        const strokeColor = getComputedStyle(document.documentElement)
+        .getPropertyValue("--text-primary")
+        .trim();
         ctx.lineWidth = 2;
         ctx.lineCap = "round";
-        ctx.strokeStyle = "#fefeff";
+        ctx.strokeStyle = strokeColor || "#fefeff";
         ctx.lineTo(pos.x, pos.y);
         ctx.stroke();
         setFirmado(true);
@@ -83,37 +90,30 @@ export default function TerminosModal({ user, onAceptar }) {
                 <div className="terminos-header">
                     <span>⛟</span>
                     <div>
-                        <h2>Términos y Condiciones de Uso</h2>
-                        <p>HYTRAC — Black Mesa Research</p>
+                        <h2>{t("title")}</h2>
+                        <p>{t("subtitle")}</p>
                     </div>
                 </div>
 
                 <div className="terminos-body">
-                    <h3>1. Protección de Datos Personales — Ley 25.326</h3>
+                    <h3>{t("body.title1")}</h3>
                     <p>
-                        En cumplimiento de la <strong>Ley 25.326 de Protección de Datos Personales</strong>, 
-                        HYTRAC informa que sus datos personales (nombre, DNI, legajo, email) serán 
-                        tratados exclusivamente con fines operativos y logísticos. Usted tiene derecho 
-                        a acceder, rectificar y suprimir sus datos (derechos ARCO).
+                        {t("body.text1")}
                     </p>
 
-                    <h3>2. Uso de la Plataforma</h3>
+                    <h3>{t("body.title2")}</h3>
                     <p>
-                        El acceso a HYTRAC es personal e intransferible. El usuario es responsable 
-                        de mantener la confidencialidad de sus credenciales. Cualquier uso indebido 
-                        de la plataforma será registrado en los logs de auditoría del sistema.
+                        {t("body.text2")}
                     </p>
 
-                    <h3>3. Normativa aplicable</h3>
+                    <h3>{t("body.title3")}</h3>
                     <p>
-                        El uso de esta plataforma implica el conocimiento y aceptación de las 
-                        normativas vigentes: Ley 24.449, Ley 24.051, Ley 25.326, Decreto 779/95 
-                        y Resolución SE 1102/2004.
+                        {t("body.text3")}
                     </p>
                 </div>
 
                 <div className="terminos-firma">
-                    <p>Firmá a continuación para confirmar que leíste y aceptás los términos:</p>
+                    <p>{t("extras.firma")}</p>
 
                     <canvas
                         ref={canvasRef}
@@ -130,7 +130,7 @@ export default function TerminosModal({ user, onAceptar }) {
                     />
 
                     <button className="limpiar-firma" onClick={limpiarFirma}>
-                        Limpiar firma
+                        {t("extras.limpiarFirma")}
                     </button>
                 </div>
 
@@ -139,14 +139,14 @@ export default function TerminosModal({ user, onAceptar }) {
                         {user.nombre} {user.apellido} — Legajo {user.legajo}
                     </p>
                     <button className="volver-btn" onClick={() => setMostrarAlerta(true)}>
-                        Volver
+                        {t("extras.volver")}
                     </button>
                     <button
                         className="aceptar-btn"
                         onClick={handleAceptar}
                         disabled={!firmado || loading}
                     >
-                        {loading ? "Procesando..." : "Acepto los Términos y Condiciones"}
+                        {loading ? t("extras.procesando") : t("extras.aceptoTerminos")}
                     </button>
                 </div>
 
@@ -156,14 +156,14 @@ export default function TerminosModal({ user, onAceptar }) {
                 <div className="alerta-overlay">
                     <div className="alerta-card">
                         <div className="alerta-icono">⚠️</div>
-                        <h3>Atención</h3>
-                        <p>Debe aceptar los términos y condiciones para poder continuar utilizando la plataforma.</p>
+                        <h3>{t("extras.atencion")}</h3>
+                        <p>{t("extras.mensajeAtencion")}</p>
                         <div className="alerta-acciones">
                             <button className="alerta-btn-cancelar" onClick={() => setMostrarAlerta(false)}>
-                                Cancelar
+                                {t("extras.cancelar")}
                             </button>
                             <button className="alerta-btn-salir" onClick={confirmarSalida}>
-                                Volver al Login
+                                {t("extras.volverLogin")}
                             </button>
                         </div>
                     </div>

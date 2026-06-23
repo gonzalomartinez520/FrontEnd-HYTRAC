@@ -289,22 +289,30 @@ export default function GestionTransportista( { user } ) {
                                 <Fragment key={usuario.id}>
 
                                     <tr>
-                                        <td className="legajo">{usuario.legajo}</td>
-                                        <td>{usuario.nombre} {usuario.apellido}</td>
-                                        <td>{usuario.dni}</td>
-                                        <td>{usuario.cuit}</td>
-                                        <td>{usuario.tipoVinculo}</td>
-                                        {usuario.tipoVinculo === "Tercerizado" ? (
-                                             <td>{usuario.empresa}</td>
+                                        <td className="legajo" data-label={t("table.legajo")}>{usuario.legajo}</td>
+                                        <td data-label={t("table.carrier")}>{usuario.nombre} {usuario.apellido}</td>
+                                        <td data-label={t("table.dni")}>{usuario.dni}</td>
+                                        {usuario.cuit === null ? (
+                                            <td data-label={t("table.cuit")}>-</td>
                                         ) : (
-                                            <td><strong>{t("table.noCompany")}</strong></td>
+                                            <td data-label={t("table.cuit")}>{usuario.cuit}</td>
+                                        )}
+                                        {usuario.tipoVinculo === null ? (
+                                            <td data-label={t("table.relationshipType")}>-</td>
+                                        ) : (
+                                            <td data-label={t("table.relationshipType")}>{usuario.tipoVinculo}</td>
+                                        )}
+                                        {usuario.tipoVinculo === "Tercerizado" ? (
+                                             <td data-label={t("table.company")}>{usuario.empresa}</td>
+                                        ) : (
+                                            <td data-label={t("table.company")}><strong>{t("table.noCompany")}</strong></td>
                                         )}
                                         {usuario.activo ? (
-                                            <td><StatusBadge estado="ACTIVO"></StatusBadge></td>
+                                            <td data-label={t("table.status")}><StatusBadge estado="ACTIVO"></StatusBadge></td>
                                         ) : (
-                                            <td><StatusBadge estado="NO ACTIVO"></StatusBadge></td>
+                                            <td datal-label={t("table.status")}><StatusBadge estado="NO ACTIVO"></StatusBadge></td>
                                         )}
-                                        <td>
+                                        <td datal-label={t("table.actions")}>
                                             <div className="actions-table">
                                                 {usuario.activo ? (
 
@@ -380,7 +388,7 @@ export default function GestionTransportista( { user } ) {
                                                             height="18" 
                                                             viewBox="0 0 24 24" 
                                                             fill="none" 
-                                                            stroke="#f97316"
+                                                            stroke="var(--accent)"
                                                             strokeWidth="2"
                                                             >
                                                             <path d="M12 20h9"/>

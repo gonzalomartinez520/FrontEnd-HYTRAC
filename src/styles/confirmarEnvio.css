@@ -7,7 +7,7 @@
 
 .confirmar-envio-container  {
   min-height: calc(100vh - 60px); /* 🔥 ajustá el 60px */
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .confirmar-dashboard-content {
@@ -23,17 +23,17 @@
 
 .confirmar-header h1 {
   font-size: 2.5rem;
-  color: #F8FAF6;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
 .confirmar-header p {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
 .shipments-table {
-  background: #1E293B;
+  background: var(--bg-secondary);
   border-radius: 20px;
   padding: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -48,7 +48,7 @@
 
 .table-header h2 {
   margin-bottom: 6px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .confirmar-actions {
@@ -62,6 +62,8 @@
   border-radius: 12px;
   border: 1px solid #ddd;
   outline: none;
+  background: var(--bg-input);
+  color: var(--text-primary);
 }
 
 table {
@@ -70,7 +72,7 @@ table {
 }
 
 thead {
-  background: #1E293B;
+  background: var(--bg-secondary);
 }
 
 th,
@@ -81,11 +83,11 @@ td {
 }
 
 td {
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 th {
-  color: #F8FAF6;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -95,27 +97,28 @@ th {
 }
 
 .confirmar-loading-screen {
-  height: calc(100vh - 60px); /* 🔥 ajustá el 60px */
+  min-height: 100vh;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background: #0B1120;
-  color: white;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .confirmar-loader {
   width: 70px;
   height: 70px;
-  border: 6px solid rgba(255, 255, 255, 0.2);
-  border-top: 6px solid orange;
+  border: 6px solid var(--text-primary);
+  border-top: 6px solid var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 .confirmar-detalles, .confirmar-envio, .rechazar-envio {
-    background-color: #0B1120;
+    background-color: var(--bg-primary);
     border-radius: 8px;
     font-size: large;
     font-style: bold;
@@ -126,18 +129,31 @@ th {
     height: 40px;
     padding: 0;
     cursor: pointer;
+    border: none;
 }
 
 .confirmar-detalles {
     color: #ff7b00;
 }
 
+.confirmar-detalles:hover {
+  background-color: #ff7b001a;
+}
+
 .confirmar-envio {
     color: green;
 }
 
+.confirmar-envio:hover {
+  background-color: #00ff7b1a;
+}
+
 .rechazar-envio {
     color: red;
+}
+
+.rechazar-envio:hover {
+  background-color: #ff00001a;
 }
 
 .confirmar-detalles svg {
@@ -154,7 +170,7 @@ th {
 
 .fila-expandida td {
   padding: 0;
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .detalle-envio {
@@ -217,16 +233,16 @@ th {
 }
 
 .modal {
-  background: #1E293B;
-  color: #F8FAF6;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   padding: 20px;
   border-radius: 10px;
   width: 400px;
 }
 
 .modal textarea {
-  background-color: #0B1120;
-  color: #F8FAF6;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   width: 100%;
   height: 100px;
   margin-top: 10px;
@@ -252,7 +268,7 @@ th {
 
 .cancelar {
   background: red;
-  border: 2px solid #1E293B;
+  border: 2px solid var(--bg-secondary);
   color: white;
 }
 
@@ -263,8 +279,8 @@ th {
 }
 
 .confirmar {
-  background: #F97316;
-  border: 2px solid #1E293B;
+  background: var(--accent);
+  border: 2px solid var(--bg-secondary);
   color: white;
 }
 
@@ -287,4 +303,162 @@ th {
   }
 }
 
-/* Responsive Design */
+/* Responsive vertical s8 */
+@media (max-width: 768px) {
+  .confirmar-dashboard-content {
+    padding: 20px 15px;
+  }
+
+  .confirmar-header {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .confirmar-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .confirmar-header p {
+    font-size: 0.9rem;
+  }
+
+  .shiptments-table {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .table-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .table-header h2 {
+    font-size: 1rem;
+  }
+
+  .table-header span {
+    font-size: 0.85rem;
+  }
+
+  .confirmar-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .confirmar-actions input {
+    width: 100%;
+  }
+
+  .confirmar-actions button {
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    background: var(--bg-primary);
+    border: 1px solid var(--text-primary);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+
+  tbody tr td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    border: none;
+    font-size: 0.96rem;
+    color: var(--text-primary);
+
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  tbody tr {
+  width: 100%;
+  max-width: 100%;
+  }
+
+  tbody tr {
+  width: 100%;
+  max-width: 100%;
+  }
+
+  tbody tr td::before {
+    content: attr(data-label);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  tbody tr td a {
+    background: #ff7b00;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+
+  tbody tr td.tracking {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  th,
+  td {
+    padding: 10px 8px;
+    font-size: 0.8rem;
+  }
+
+  th {
+    font-size: 0.75rem;
+  }
+
+  .confirmar-detalles, .confirmar-envio, .rechazar-envio {
+    border-radius: 8px;
+    border: 2px solid var(--text-primary);
+  }
+}
+
+@media (max-width: 360px) and (orientation: portrait) {
+
+  .confirmar-detalles, .confirmar-envio, .rechazar-envio {
+    border-radius: 8px !important;
+    border: 2px solid var(--text-primary) !important;
+  }
+
+  tbody tr td::before {
+    content: attr(data-label);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .confirmar-loading-screen h2{
+    width: 90%;
+    text-align: center;
+  }
+}

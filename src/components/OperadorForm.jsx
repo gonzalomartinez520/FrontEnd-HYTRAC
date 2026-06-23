@@ -83,7 +83,7 @@ export default function OperadorForm() {
         <div className="operador-container">
             <header className="operador-header">
                 <div>
-                    <h2>{tCommon('roles.OPERADOR')} - {tForm('newOrder.new')}</h2>
+                    <h2>{tCommon('roles.OPERADOR')} - {tForm('newOrder.users.eyebrow')}</h2>
                     <p>{tForm("newOrder.users.descriptions.OPERADOR")}</p>
                 </div>
             </header>

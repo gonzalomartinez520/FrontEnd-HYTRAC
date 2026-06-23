@@ -7,7 +7,7 @@
 
 .confirmar-edicion-container  {
   min-height: calc(100vh - 60px); /* 🔥 ajustá el 60px */
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .edicion-dashboard-content {
@@ -23,17 +23,17 @@
 
 .edicion-header h1 {
   font-size: 2.5rem;
-  color: #F8FAF6;
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
 .edicion-header p {
-  color: #a3b0c2;
+  color: var(--text-secondary);
   font-size: 1.1rem;
 }
 
 .edicion-table-section {
-  background: #1E293B;
+  background: var(--bg-secondary);
   border-radius: 20px;
   padding: 25px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
@@ -48,7 +48,7 @@
 
 .edicion-table-header h2 {
   margin-bottom: 6px;
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 .confirmar-edicion-buscador {
@@ -62,6 +62,8 @@
   border-radius: 12px;
   border: 1px solid #ddd;
   outline: none;
+  background: var(--bg-input);
+  color: var(--text-primary);
 }
 
 table {
@@ -70,7 +72,7 @@ table {
 }
 
 thead {
-  background: #1E293B;
+  background: var(--bg-secondary);
 }
 
 th,
@@ -81,11 +83,11 @@ td {
 }
 
 td {
-  color: #F8FAF6;
+  color: var(--text-primary);
 }
 
 th {
-  color: #F8FAF6;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -101,21 +103,21 @@ th {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  background: #0B1120;
-  color: white;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .confirmar-edicion-loader {
   width: 70px;
   height: 70px;
-  border: 6px solid rgba(255, 255, 255, 0.2);
-  border-top: 6px solid orange;
+  border: 6px solid var(--text-primary);
+  border-top: 6px solid var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
 
 .edicion-detalles, .confirmar-edicion, .rechazar-edicion {
-    background-color: #0B1120;
+    background-color: var(--bg-primary);
     border-radius: 8px;
     font-size: large;
     font-style: bold;
@@ -167,7 +169,7 @@ th {
 
 .fila-expandida td {
   padding: 0;
-  background: #0B1120;
+  background: var(--bg-primary);
 }
 
 .datos-editados {
@@ -198,15 +200,15 @@ th {
 }
 
 .modal {
-  background: #1E293B;
+  background: var(--bg-secondary);
   padding: 20px;
   border-radius: 10px;
   width: 400px;
 }
 
 .modal textarea {
-  background-color: #0B1120;
-  color: #F8FAF6;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   width: 100%;
   height: 100px;
   margin-top: 10px;
@@ -231,7 +233,7 @@ th {
 
 .cancelar {
   background: red;
-  border: 2px solid #1E293B;
+  border: 2px solid var(--bg-secondary);
   color: white;
 }
 
@@ -242,8 +244,8 @@ th {
 }
 
 .confirmar {
-  background: #F97316;
-  border: 2px solid #1E293B;
+  background: var(--accent);
+  border: 2px solid var(--bg-secondary);
   color: white;
 }
 
@@ -266,4 +268,106 @@ th {
   }
 }
 
-/* Responsive Design */
+/* Responsive vertical S8 (360x740) */
+@media screen and (max-width: 360px) and (max-height: 740px) {
+  /* 📦 Ajustes generales */
+  .edicion-dashboard-content {
+    padding: 15px;
+  }
+
+  .confirmar-edicion-loading-screen {
+    text-align: center;
+  }
+
+  .edicion-header {
+    margin-bottom: 20px;
+  }
+
+  .edicion-header h1 {
+    font-size: 1.6rem;
+    text-align: center;
+  }
+
+  .edicion-header p {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  /* 🔥 Contador arriba y buscador abajo */
+  .edicion-table-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .edicion-table-header h2 {
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  /* 🔍 Buscador más chico */
+  .confirmar-edicion-buscador {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .confirmar-edicion-buscador input {
+    width: 220px;
+    max-width: 100%;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* 📋 Recuadro principal */
+  .edicion-table-section {
+    padding: 15px;
+    border-radius: 15px;
+  }
+
+  /* 📊 Tabla */
+  table {
+    font-size: 0.8rem;
+  }
+
+  th,
+  td {
+    padding: 10px 6px;
+  }
+
+  /* 🔘 Botones */
+  .edicion-actions-table {
+    gap: 5px;
+  }
+
+  /* 📄 Datos expandidos */
+  .datos-editados {
+    padding: 12px;
+    font-size: 0.85rem;
+  }
+
+  /* 🪟 Modal */
+  .modal {
+    width: 92%;
+    max-width: 320px;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  tbody tr td::before {
+    content: attr(data-label);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .edicion-detalles, .confirmar-edicion, .rechazar-edicion {
+    border-radius: 8px !important;
+    border: 2px solid var(--text-primary) !important;
+  }
+}
