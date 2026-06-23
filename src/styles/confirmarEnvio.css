@@ -62,6 +62,8 @@
   border-radius: 12px;
   border: 1px solid #ddd;
   outline: none;
+  background: var(--bg-input);
+  color: var(--text-primary);
 }
 
 table {
@@ -103,14 +105,14 @@ th {
   align-items: center;
   gap: 20px;
   background: var(--bg-primary);
-  color: white;
+  color: var(--text-primary);
 }
 
 .confirmar-loader {
   width: 70px;
   height: 70px;
-  border: 6px solid rgba(255, 255, 255, 0.2);
-  border-top: 6px solid orange;
+  border: 6px solid var(--text-primary);
+  border-top: 6px solid var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -127,18 +129,31 @@ th {
     height: 40px;
     padding: 0;
     cursor: pointer;
+    border: none;
 }
 
 .confirmar-detalles {
     color: #ff7b00;
 }
 
+.confirmar-detalles:hover {
+  background-color: #ff7b001a;
+}
+
 .confirmar-envio {
     color: green;
 }
 
+.confirmar-envio:hover {
+  background-color: #00ff7b1a;
+}
+
 .rechazar-envio {
     color: red;
+}
+
+.rechazar-envio:hover {
+  background-color: #ff00001a;
 }
 
 .confirmar-detalles svg {
@@ -289,26 +304,161 @@ th {
 }
 
 /* Responsive vertical s8 */
-@media (max-width: 768px) and (orientation: portrait) {
+@media (max-width: 768px) {
+  .confirmar-dashboard-content {
+    padding: 20px 15px;
+  }
+
+  .confirmar-header {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .confirmar-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .confirmar-header p {
+    font-size: 0.9rem;
+  }
+
+  .shiptments-table {
+    padding: 15px;
+    border-radius: 12px;
+  }
 
   .table-header {
     flex-direction: column;
-    align-items: stretch;
     gap: 12px;
+    align-items: stretch;
+  }
+
+  .table-header h2 {
+    font-size: 1rem;
+  }
+
+  .table-header span {
+    font-size: 0.85rem;
   }
 
   .confirmar-actions {
     width: 100%;
-    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .confirmar-actions input {
     width: 100%;
-    max-width: 260px;
-    padding: 10px 12px;
-    font-size: 14px;
-    margin: 0 auto;
-    display: block;
   }
 
+  .confirmar-actions button {
+    width: 100%;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    background: var(--bg-primary);
+    border: 1px solid var(--text-primary);
+    border-radius: 18px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+
+  tbody tr td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+    border: none;
+    font-size: 0.96rem;
+    color: var(--text-primary);
+
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  tbody tr {
+  width: 100%;
+  max-width: 100%;
+  }
+
+  tbody tr {
+  width: 100%;
+  max-width: 100%;
+  }
+
+  tbody tr td::before {
+    content: attr(data-label);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  tbody tr td a {
+    background: #ff7b00;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+
+  tbody tr td.tracking {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  th,
+  td {
+    padding: 10px 8px;
+    font-size: 0.8rem;
+  }
+
+  th {
+    font-size: 0.75rem;
+  }
+
+  .confirmar-detalles, .confirmar-envio, .rechazar-envio {
+    border-radius: 8px;
+    border: 2px solid var(--text-primary);
+  }
+}
+
+@media (max-width: 360px) and (orientation: portrait) {
+
+  .confirmar-detalles, .confirmar-envio, .rechazar-envio {
+    border-radius: 8px !important;
+    border: 2px solid var(--text-primary) !important;
+  }
+
+  tbody tr td::before {
+    content: attr(data-label);
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .confirmar-loading-screen h2{
+    width: 90%;
+    text-align: center;
+  }
 }

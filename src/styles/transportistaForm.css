@@ -68,8 +68,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .btn-documento {
-  background: var(--accent);
-  border: 2px solid var(--bg-secondary);
+  background: linear-gradient(135deg, #4fd1a0 0%, #1f9a72 10%);
+  border: none;
   color: white;
   flex: 1;
   padding: 10px;
@@ -80,7 +80,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .btn-documento:hover {
-  background: var(--accent-hover);
+  background: linear-gradient(135deg, #4fd1a0 0%, #1f9a72 100%);
 }
 
 .documentos-list {
@@ -90,15 +90,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-top: 10px;
 }
 
-.documento-card {
-  background: var(--bg-card);
+.docForm-card {
+  background: var(--bg-primary);
   border: 1px solid var(--accent-hover);
   border-radius: 10px;
   padding: 12px 16px;
   transition: 0.2s ease;
 }
 
-.documento-card:hover {
+.docForm-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
 }
@@ -195,7 +195,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     flex-wrap: wrap;
   }
 
-  .documento-card {
+  .docForm-card {
     width: 100%;
     overflow-wrap: break-word;
   }
@@ -240,7 +240,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     gap: 12px;
   }
 
-  .documento-card {
+  .ddocForm-card {
     width: 100%;
   }
 }
@@ -255,7 +255,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   .transportista-container,
   .transportista-form,
   .documentos-list,
-  .documento-card,
+  .docForm-card,
   .custom-date-picker {
     max-width: 100%;
     overflow-x: hidden;

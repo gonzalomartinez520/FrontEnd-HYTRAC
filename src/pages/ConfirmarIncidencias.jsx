@@ -199,25 +199,25 @@ export default function ConfirmarIncidencias({ user }) {
                 <Fragment key={incidencia.id}>
 
                   <tr>
-                    <td className="tracking">{shipment.trackingId}</td>
+                    <td className="tracking" data-label={t("confirmarIncidencias.table.id")}>{shipment.trackingId}</td>
 
-                    <td>
+                    <td data-label={t("confirmarIncidencias.table.route")}>
                       <strong>
                         {shipment.plantaDespacho} - {shipment.estacionDestino}
                       </strong>
                     </td>
 
-                    <td>{shipment.transportistaNombre} {shipment.transportistaApellido}</td>
+                    <td data-label={t("confirmarIncidencias.table.responsible")}>{shipment.transportistaNombre} {shipment.transportistaApellido}</td>
 
-                    <td>{formatearFecha(incidencia.fechaIncidente)}</td>
+                    <td data-label={t("confirmarIncidencias.table.incidentDate")}>{formatearFecha(incidencia.fechaIncidente)}</td>
 
-                    <td>
+                    <td data-label={t("confirmarIncidencias.table.incidentType")}>
                       <span className="badge-incidencia">
                         {incidencia.tipoIncidencia}
                       </span>
                     </td>
 
-                    <td>
+                    <td data-label={t("confirmarIncidencias.table.actions")}>
                       <div className="incidencias-actions-table">
 
                         <button

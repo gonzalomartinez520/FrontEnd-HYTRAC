@@ -34,7 +34,7 @@
   align-items: center;
   gap: 20px;
   background: var(--bg-primary);
-  color: white;
+  color: var(--text-primary);
   font-weight: bold;
   font-size: x-large;
 }
@@ -42,8 +42,8 @@
 .loader-detail {
   width: 70px;
   height: 70px;
-  border: 6px solid rgba(255, 255, 255, 0.2);
-  border-top: 6px solid orange;
+  border: 6px solid var(--text-primary);
+  border-top: 6px solid var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -88,7 +88,7 @@
   padding: 10px 15px;
   margin-bottom: 12px;
 
-  color: var(--text-primary);
+  color: white;
   font-weight: bold;
   background-color: var(--accent);
   border-radius: 10px;
@@ -102,10 +102,6 @@
 .summary-toggle-btn {
   display: none; /* solo en móvil */
   z-index: 20;
-}
-
-.summary-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
 }
 
 /* ========================= */
@@ -423,11 +419,11 @@
 }
 
 .motivo {
-  color: #c6d0de;
+  color: var(--text-secondary);
 }
 
 .fecha {
-  color: #c6d0de;
+  color: var(--text-secondary);
   font-size: 12px;
 }
 
@@ -940,6 +936,15 @@
   /* ROUTE SUMMARY FIXED */
   /* ========================= */
 
+  .summary-toggle-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    width: 150px;
+    height: 30px;
+    border-radius: 12px;
+  }
+
   .route-summary {
     position: absolute;
     top: 70px;
@@ -1068,6 +1073,4 @@
   .timeline {
     margin-bottom: 20px;
   }
-
-  
 }

@@ -8,6 +8,7 @@ import { envios } from '@/api';
 import { datos } from '@/api';
 import RouteMap from "../components/RouteMap";
 
+
 export default function HistorialOperador( { user } ) {
     const navigate = useNavigate();
     const { t: tOperador } = useTranslation("operador");
@@ -537,8 +538,6 @@ export default function HistorialOperador( { user } ) {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-
-              <button>⏷</button>
             </div>
           </div>
 
@@ -664,7 +663,7 @@ export default function HistorialOperador( { user } ) {
                             }));
 
                             setRouteData({
-                              rutaId: shipment.rutaId || null,
+                              rutaId: shipment.ruta || null,
                               geometria: shipment.geometria || null,
                               distanciaKm: shipment.distanciaKm || null,
                               tiempoEstimadoHoras: shipment.tiempoEstimadoHoras || null
@@ -677,8 +676,8 @@ export default function HistorialOperador( { user } ) {
                               width="18" 
                               height="18" 
                               viewBox="0 0 24 24" 
-                              fill="none" 
-                              stroke="#var(--accent)"
+                              fill="currentColor" 
+                              stroke="currentColor"
                               strokeWidth="2"
                             >
                               <path d="M12 20h9"/>
@@ -694,11 +693,11 @@ export default function HistorialOperador( { user } ) {
                     <td colSpan="7">
                         <div className="detalle-envio">
                             <p><strong>{tCommon("table.id")}:</strong> {shipment.trackingId}</p>
-                            <p><strong>Camion Asignado:</strong> {shipment.camionPatente}</p>
-                            <p><strong>Acoplado Asignado:</strong> {shipment.acopladoPatente}</p>
-                            <p><strong>Litros Cargados</strong> {shipment.litrosCargados} Lts.</p>
-                            <p><strong>COT:</strong> {shipment.cot}</p>
-                            <p><strong>Número de Remito</strong> {shipment.numeroRemito}</p>
+                            <p><strong>{tOperador("details.camionAsignado")}:</strong> {shipment.camionPatente}</p>
+                            <p><strong>{tOperador("details.acopladoAsignado")}:</strong> {shipment.acopladoPatente}</p>
+                            <p><strong>{tOperador("details.litrosCargados")}</strong> {shipment.litrosCargados} Lts.</p>
+                            <p><strong>{tOperador("details.cot")}:</strong> {shipment.cot}</p>
+                            <p><strong>{tOperador("details.numeroRemito")}</strong> {shipment.numeroRemito}</p>
                             {shipment.motivoRechazo && (
                               <div className="motivo-rechazo">
                                 <h3>{tOperador("historial.expanded.rejectionReason")}</h3>
@@ -717,7 +716,7 @@ export default function HistorialOperador( { user } ) {
       </main>
       {showModal && selectedShipment && (
       <div className="modal-overlay">
-        <div className="modal-content">  {/*LUEGO REVISAR QUE DATOS NO SE PODRAN EDITAR */}
+        <div className="modal-content">
 
           {/* 01 - Unidad & Chofer */}
         <section className="form-section">
@@ -930,7 +929,7 @@ export default function HistorialOperador( { user } ) {
           </div>
 
           {/* PERSISTENT MAP GRID BLOCK WITH UPDATED LOADING STATE */}
-          <div className="map-integration-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "20px", marginBottom: "20px", height: "40vh" }}>
+          <div className="map-integration-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "20px", marginBottom: "20px", height: "40vh"}}>
             <div style={{ position: "relative" }}>
               <RouteMap geometry={routeData.geometria} />
 
@@ -948,50 +947,36 @@ export default function HistorialOperador( { user } ) {
               )}
             </div>
 
-            <div className="route-telemetry-panel" style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "24px", borderRadius: "8px", background: "#1a2332", color: "#fff", position: "relative" }}>
+            <div className="route-telemetry-panel">
+                {isRouteLoading ? (
+                            <div className="route-telemetry-loading">
+                              <div className="route-telemetry-spinner" />
+                              <span className="route-telemetry-loading-text">
+                                {tForm("newOrder.route.calculating")}
+                              </span>
+                            </div>
+                          ) : (
+                            <>
+                              <h3 className="route-telemetry-title">
+                                {tForm("newOrder.route.title")}
+                              </h3>
+                              <p className="route-telemetry-row">
+                                <strong>{tForm("newOrder.route.distance")}:</strong>{" "}
+                                {routeData.distanciaKm ? `${Number(routeData.distanciaKm).toFixed(1)} km` : "--"}
+                              </p>
+                              <p className="route-telemetry-row">
+                                <strong>{tForm("newOrder.route.time")}:</strong>{" "}
+                                {routeData.tiempoEstimadoHoras ? formatRouteTime(routeData.tiempoEstimadoHoras) : "--"}
+                              </p>
 
-              {/* LIVE REFINERY BUFFERING INDICATOR */}
-              {isRouteLoading ? (
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "12px", height: "100%" }}>
-                  {/* CSS Inline Animated Spinner */}
-                  <div style={{
-                    width: "36px",
-                    height: "36px",
-                    border: "3px solid rgba(59, 130, 246, 0.2)",
-                    borderTop: "3px solid #3b82f6",
-                    borderRadius: "50%",
-                    animation: "spin 0.8s linear infinite"
-                  }} />
-                  <style>{`
-                    @keyframes spin {
-                      0% { transform: rotate(0deg); }
-                      100% { transform: rotate(360deg); }
-                    }
-                  `}</style>
-                  <span style={{ fontSize: "14px", color: "#var(--text-muted)", fontWeight: "500", letterSpacing: "0.3px" }}>
-                    {tForm("newOrder.route.calculating")}
-                  </span>
-                </div>
-              ) : (
-                <>
-                  <h3 style={{ margin: "0 0 16px 0", fontSize: "16px", color: "#3b82f6", letterSpacing: "0.5px", textTransform: "uppercase" }}>
-                    {tForm("newOrder.route.title")}
-                  </h3>
-                  <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
-                    <strong style={{ color: "#fff" }}>{tForm("newOrder.route.distance")}:</strong> {routeData.distanciaKm ? `${Number(routeData.distanciaKm).toFixed(1)} km` : "--"}
-                  </p>
-                  <p style={{ margin: "6px 0", fontSize: "15px", color: "#cbd5e1" }}>
-                    <strong style={{ color: "#fff" }}>{tForm("newOrder.route.time")}:</strong> {routeData.tiempoEstimadoHoras ? formatRouteTime(routeData.tiempoEstimadoHoras) : "--"}
-                  </p>
-
-                  {(!formData.refineriaOrigen || !formData.estacionDestino) && (
-                    <span style={{ fontSize: "12px", color: "#var(--text-muted)", marginTop: "12px", fontStyle: "italic" }}>
-                      {tForm("newOrder.route.incomplete")}
-                    </span>
-                  )}
-                </>
-              )}
-            </div>
+                              {(!formData.refineriaOrigen || !formData.estacionDestino) && (
+                                <span className="route-telemetry-warning">
+                                  {tForm("newOrder.route.incomplete")}
+                                </span>
+                              )}
+                            </>
+                          )}
+              </div>
           </div>
         </section>
 
@@ -1023,7 +1008,11 @@ export default function HistorialOperador( { user } ) {
                 <option value="">{tForm("newOrder.placeholders.selectTransport")}</option>
                 {transportistas.map((trans) => (
                   <option key={trans.id} value={trans.id}>
-                    {trans.nombre} {trans.apellido} 🔸 {trans.probabilidadExito}
+                    {trans.nombre} {trans.apellido} 🔸 {" "}
+                    {trans.probabilidadExito === "-1%"
+                      ? tForm("newOrder.fields.novato")
+                      : trans.probabilidadExito
+                    }
                   </option>
                 ))}
               </select>
@@ -1064,7 +1053,7 @@ export default function HistorialOperador( { user } ) {
                     })}
                   </div>
                 ) : (
-                  <p style={{ marginTop: "10px" }}>
+                  <p style={{ marginTop: "10px", color:"var(--text-primary)" }}>
                     {tTransportista("details.noDocuments")}
                   </p>
                 )}

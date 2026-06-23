@@ -26,10 +26,6 @@
   font-weight: 700;
 }
 
-.back-link:hover {
-  color: var(--accent-hover);
-}
-
 .iniciar-viaje-hero {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.8fr);
@@ -145,7 +141,7 @@
 }
 
 .primary-action:hover:not(:disabled) {
-  background: var(--accent-hover);
+  transform: scale(1.02);
 }
 
 .primary-action--alt {
@@ -240,4 +236,78 @@
   font-size: 13px;
   line-height: 1.6;
   margin: 0 0 24px;
+}
+
+@media (max-width: 360px) {
+  .iniciar-viaje-shell {
+    padding: 12px;
+  }
+
+  .back-link {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .iniciar-viaje-hero {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .iniciar-viaje-hero h1 {
+    font-size: 25px;
+  }
+
+  .iniciar-viaje-hero p {
+    font-size: 13px;
+  }
+
+  .status-card {
+    width: 100%;
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .status-card .status-label,
+  .status-card strong,
+  .status-card small {
+    margin-left: 10px;
+  }
+
+  .iniciar-viaje-card {
+    padding: 12px;
+  }
+
+  /* 🔹 Grid pasa a 1 columna */
+  .route-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .route-grid span {
+    font-size: 12px;
+  }
+
+  .route-grid strong {
+    font-size: 14px;
+  }
+
+  .action-panel {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .primary-action {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .action-panel p {
+    font-size: 12px;
+    text-align: center;
+  }
 }

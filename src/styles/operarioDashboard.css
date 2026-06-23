@@ -24,8 +24,8 @@
 .dashboard-loader {
   width: 70px;
   height: 70px;
-  border: 6px solid rgba(255, 255, 255, 0.2);
-  border-top: 6px solid orange;
+  border: 6px solid var(--text-primary);
+  border-top: 6px solid var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -221,7 +221,6 @@ a {
   .dashboard-header {
     flex-direction: column;
     gap: 15px;
-    align-items: flex-start;
     margin-bottom: 20px;
   }
 
@@ -242,7 +241,6 @@ a {
     flex-direction: column;
     gap: 12px;
     align-items: stretch;
-    align-items: flex-start;
   }
 
   .table-top h2 {
@@ -281,8 +279,8 @@ a {
     display: grid;
     grid-template-columns: 1fr;
     gap: 10px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--bg-primary);
+    border: 1px solid var(--text-primary);
     border-radius: 18px;
     padding: 16px;
     margin-bottom: 14px;
@@ -296,7 +294,7 @@ a {
     padding: 0;
     border: none;
     font-size: 0.96rem;
-    color: #e5e7eb;
+    color: var(--text-primary);
 
     min-width: 0;
     overflow-wrap: anywhere;
@@ -314,20 +312,11 @@ a {
 
   tbody tr td::before {
     content: attr(data-label);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: 0.82rem;
 
     flex: 0 0 auto;
     white-space: nowrap;
-  }
-
-  tbody tr td:nth-child(5),
-  tbody tr td:nth-child(6) {
-    display: none;
-  }
-
-  tbody tr td:nth-child(7) {
-    justify-content: flex-end;
   }
 
   tbody tr td a {
@@ -355,15 +344,9 @@ a {
     font-size: 0.75rem;
   }
 
-  .pagination {
-    justify-content: center;
-    gap: 5px;
-    margin-top: 20px;
-  }
-
-  .pagination button {
-    padding: 8px 10px;
-    font-size: 0.8rem;
+  .detalle-button-container {
+    border-radius: 8px;
+    border: 2px solid var(--text-primary);
   }
 }
 
@@ -414,18 +397,21 @@ a {
 
   tbody tr td::before {
     flex-shrink: 0;
-    margin-right: 12px;
   }
 
   tbody tr td strong,
   tbody tr td span,
   tbody tr td div {
     min-width: 0;
-    max-width: 60%;
-    text-align: right;
+    max-width: 90%;
 
     overflow-wrap: break-word;
     word-break: break-word;
+  }
+
+  tbody tr td strong, 
+  tbody tr td {
+    color: var(--text-primary);
   }
 
   .tracking {
@@ -434,9 +420,7 @@ a {
   }
 
   tbody tr td.tracking::before {
-    content: "ID #";
     display: block;
-    color: var(--text-muted);
     font-size: 0.8rem;
     margin-bottom: 4px;
   }

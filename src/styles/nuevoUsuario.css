@@ -68,12 +68,13 @@
 .role-tab:hover {
   border-color: #fb923c;
   background: var(--accent);
+  color: white;
 }
 
 /* activo */
 .role-tab.active {
   background: var(--accent);
-  color: var(--text-primary);
+  color: white;
   border-color: #fb923c;
   box-shadow: 0 4px 12px rgba(251, 146, 60, 0.3);
 }
@@ -101,15 +102,7 @@
 
 @media (max-width: 768px) and (orientation: portrait) {
 
-  .nuevo-usuario-layout {
-    min-height: calc(100vh - 56px);
-    background: #0B1120;
-  }
-
   .nuevo-usuario-content {
-    min-height: 100%;
-    background: #0B1120;
-
     padding-top: 20px;
     padding-left: 5px;
     padding-right: 5px;
@@ -163,14 +156,7 @@
 
 @media (max-width: 900px) and (orientation: landscape) {
 
-  .nuevo-usuario-layout {
-    min-height: calc(100vh - 50px);
-    background: #0B1120;
-  }
-
   .nuevo-usuario-content {
-    background: #0B1120;
-
     padding-top: 15px;
     padding-left: 25px;
     padding-right: 25px;

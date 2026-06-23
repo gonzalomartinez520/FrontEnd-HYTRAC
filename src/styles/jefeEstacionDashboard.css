@@ -130,8 +130,8 @@ th {
 .loader {
   width: 70px;
   height: 70px;
-  border: 6px solid rgba(255, 255, 255, 0.2);
-  border-top: 6px solid orange;
+  border: 6px solid var(--text-primary);
+  border-top: 6px solid var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -199,9 +199,9 @@ a {
 
     width: 100%;
 
-    background: rgba(255,255,255,0.04);
+    background: var(--bg-primary);
 
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid var(--text-primary);
 
     border-radius: 16px;
 
@@ -211,7 +211,6 @@ a {
   tbody tr td {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
 
     gap: 12px;
 
@@ -226,10 +225,8 @@ a {
 
   tbody tr td::before {
     content: attr(data-label);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: 0.82rem;
-
-    color: #94a3b8;
 
     font-weight: 600;
 
@@ -254,11 +251,12 @@ a {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+  }
+}
+
 @media (max-width: 768px) and (orientation: portrait) {
   tbody tr td.tracking::before {
-    content: "ID #";
     display: block;
-    color: var(--text-muted);
     font-size: 0.8rem;
     margin-bottom: 4px;
   }
@@ -291,7 +289,7 @@ a {
   height: 40px;
   cursor: pointer;
 }
-
+}
 
 @media (max-width: 768px) and (orientation: landscape) {
 
