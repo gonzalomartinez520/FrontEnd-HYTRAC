@@ -55,6 +55,7 @@ export default function TransportistaDashboard({ user }) {
   
   // 🔹 3. Instanciamos i18n para saber el idioma actual
   const { t: tTransportista, i18n } = useTranslation("transportista");
+  const { t: tCommon } = useTranslation("common");
   const currentLocale = i18n.language || "es-AR";
 
   const [fullRoute, setFullRoute] = useState(null);

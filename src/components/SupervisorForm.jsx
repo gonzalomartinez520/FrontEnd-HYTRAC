@@ -83,7 +83,7 @@ export default function SupervisorForm() {
         <div className="supervisor-container">
             <header className="supervisor-header">
                 <div>
-                    <h2>{tCommon('roles.SUPERVISOR')} - {tForm('newOrder.new')}</h2>
+                    <h2>{tCommon('roles.SUPERVISOR')} - {tForm('newOrder.users.eyebrow')}</h2>
                     <p>{tForm("newOrder.users.descriptions.SUPERVISOR")}</p>
                 </div>
             </header>

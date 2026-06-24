@@ -24,15 +24,10 @@
 .back-link {
   border: none;
   background: transparent;
-  color: var(--accent);
   font-size: 0.95rem;
   cursor: pointer;
   margin-bottom: 20px;
   font-weight: 700;
-}
-
-.back-link:hover {
-  color: var(--accent-hover);
 }
 
 .incidencia-header {
@@ -196,7 +191,7 @@
 }
 
 .ghost-btn {
-  background: transparent;
+  background: var(--bg-primary);
   color: var(--text-primary);
   border: 1px solid var(--border-color);
 }

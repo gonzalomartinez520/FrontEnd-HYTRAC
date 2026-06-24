@@ -186,16 +186,16 @@ export default function ConfirmarEntregas( { user } ) {
                                     
                                     {/* FILA PRINCIPAL */}
                                     <tr>
-                                        <td className="tracking">{shipment.trackingId}</td>
-                                        <td>
+                                        <td className="tracking" data-label={t("confirmarEntregas.table.id")}>{shipment.trackingId}</td>
+                                        <td data-label={t("confirmarEntregas.table.route")}>
                                             <strong>{shipment.plantaDespacho} - {shipment.estacionDestino}</strong>
                                         </td>
-                                        <td>
+                                        <td data-label={t("confirmarEntregas.table.responsible")}>
                                             {shipment.transportista}
                                         </td>
-                                        <td>{formatearFecha(shipment.fechaCreacion)}</td>
-                                        <td><StatusBadge estado={shipment.estado}/></td>
-                                        <td>
+                                        <td data-label={t("confirmarEntregas.table.requestDate")}>{formatearFecha(shipment.fechaCreacion)}</td>
+                                        <td data-label={t("confirmarEntregas.table.status")}><StatusBadge estado={shipment.estado}/></td>
+                                        <td data-label={t("confirmarEntregas.table.actions")}>
                                             <div className="edicion-actions-table">
                                             <button
                                                 className="edicion-detalles"

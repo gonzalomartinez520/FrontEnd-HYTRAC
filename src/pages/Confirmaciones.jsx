@@ -53,7 +53,7 @@ export default function Confirmaciones({ user }) {
   const isPendienteEntrega = (shipment) =>
     (shipment.estado || "")
       .toLowerCase()
-      .trim() === "pendiente de confirmacion de entrega" && shipment.litrosCargados > 0;
+      .trim() === "pendiente de confirmacion de entrega" && shipment.litrosEntregados > 0;
 
   // 📊 calcular contadores envíos
   useEffect(() => {
@@ -90,43 +90,43 @@ export default function Confirmaciones({ user }) {
                 </section>
                 {/* LUEGO AGREGAR UNA IMAGEN EN CADA CARD PARA REPRESENTARLOS*/}
                 <section className="confirmaciones-card">
-                    <div className="pendientes" onClick={() => navigate("/confirmar-envio")}>
+                    <button className="pendientes" onClick={() => navigate("/confirmar-envio")}>
                         <div className="icon-confirmaciones">🧾</div>
                         <div className="badge-cantidad ordenes">{noConfirmados}</div>
                         <h2>{t("confirmaciones.cards.newOrders.title")}</h2>
                         <p>
                             {t("confirmaciones.cards.newOrders.description")}
                         </p>
-                    </div>
+                    </button>
 
-                    <div className="cambios-estado" onClick={() => navigate("/confirmar-inicio-viaje")}>
+                    <button className="cambios-estado" onClick={() => navigate("/confirmar-inicio-viaje")}>
                         <div className="icon-confirmaciones">🚚</div>
                         <div className="badge-cantidad inicio">{pendienteInicio}</div>
                         <h2>{t("confirmaciones.cards.tripStarts.title")}</h2>
                         <p>
                             {t("confirmaciones.cards.tripStarts.description")}
                         </p>
-                    </div>
+                    </button>
                 </section>
 
                 <section className="confirmaciones-card">
-                    <div className="entregas" onClick={() => navigate("/confirmar-entregas")}>
+                    <button className="entregas" onClick={() => navigate("/confirmar-entregas")}>
                         <div className="icon-confirmaciones">📦</div>
                         <div className="badge-cantidad entregas">{pendienteEntrega}</div>
                         <h2>{t("confirmaciones.cards.deliveries.title")}</h2>
                         <p>
                             {t("confirmaciones.cards.deliveries.description")}
                         </p>
-                    </div>
+                    </button>
 
-                    <div className="incidencias" onClick={() => navigate("/confirmar-incidencias")}>
+                    <button className="incidencias" onClick={() => navigate("/confirmar-incidencias")}>
                         <div className="icon-confirmaciones">⚠️</div>
                         <div className="badge-cantidad incidencias">{incidencias}</div>
                         <h2>{t("confirmaciones.cards.incidents.title")}</h2>
                         <p>
                             {t("confirmaciones.cards.incidents.description")}
                         </p>
-                    </div>
+                    </button>
                 </section>
             </main>
         </div>

@@ -15,15 +15,16 @@ export default function Navbar({ user, onLogout }) {
   const { theme, toggleTheme } = useTheme();
 
   const languages = [
-    { code: "es", label: "Español", flag: "🇦🇷" },
-    { code: "en", label: "English", flag: "🇺🇸" },
-    { code: "pt", label: "Português", flag: "🇧🇷" }
+    { code: "es", short: "AR" },
+    { code: "en", short: "US" },
+    { code: "pt", short: "BR" }
   ];
 
 
   const [notificaciones, setNotificaciones] = useState([]);
   const [openNotif, setOpenNotif] = useState(false);
   const [closing, setClosing] = useState(false);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
 
   const handleToggle = () => {
     if (openNotif) {
@@ -70,7 +71,7 @@ export default function Navbar({ user, onLogout }) {
   const BellNormal = () => (
     <svg width="20" height="20" viewBox="0 0 24 24">
       <path
-        fill="#var(--accent-hover)"
+        fill="#ff7a00"
         d="M12 2a6 6 0 0 0-6 6v4.5l-1.7 2.6A1 1 0 0 0 5 17h14a1 1 0 0 0 .8-1.6L18 12.5V8a6 6 0 0 0-6-6zm0 20a2.5 2.5 0 0 0 2.45-2h-4.9A2.5 2.5 0 0 0 12 22z"
       />
     </svg>
@@ -251,6 +252,12 @@ useEffect(() => {
       icon: "📈",
       label: t("reportes"),
     },
+    TRANSPORTISTA: {
+      title: t("documentos"),
+      to: "/transportista/documentos",
+      icon: "📄",
+      label: t("documentos"),
+    },
   };
 
   const config = roleConfig[role];
@@ -285,7 +292,8 @@ useEffect(() => {
               </>
             ) : role === "JEFE_ESTACION" ? (
               <>
-                <span className="icon">⛽</span> {t("panelEstacion")}
+                <span className="icon">⛽</span>
+                 <span className="nav-text">{t("panelEstacion")}</span> 
               </>
             ) : role === "ADMIN" ? (
               <>
@@ -299,11 +307,14 @@ useEffect(() => {
               >
                 <path d="M16 11c1.66 0 3-1.57 3-3.5S17.66 4 16 4s-3 1.57-3 3.5S14.34 11 16 11zm-8 0c1.66 0 3-1.57 3-3.5S9.66 4 8 4 5 5.57 5 7.5 6.34 11 8 11zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C15 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
               </svg> 
-                <span>{t("gestionUsuarios")}</span>
+                <span className="nav-text">
+                {t("gestionUsuarios")}
+                </span>
               </>
             ) : (
               <>
-                <span className="icon">📊</span> {t("panelControl")}
+                <span className="icon">📊</span>
+                <span className="nav-text">{t("panelControl")}</span>
               </>
             )}
           </Link>
@@ -314,7 +325,8 @@ useEffect(() => {
               to={action.to}
               onClick={() => setMenuOpen(false)}
             >
-              <span className="icon">{action.icon}</span> {action.label}
+              <span className="icon">{action.icon}</span> 
+              <span className="nav-text">{action.label}</span>
             </Link>
           )}
 
@@ -324,7 +336,8 @@ useEffect(() => {
               to={config.to}
               onClick={() => setMenuOpen(false)}
             >
-              <span className="icon">{config.icon}</span> {config.label}
+              <span className="icon">{config.icon}</span> 
+              <span className="nav-text">{config.label}</span>
             </Link>
           )}
 
@@ -360,7 +373,7 @@ useEffect(() => {
         <select className="language-select" onChange={handleChangeLanguage} value={i18n.language}>
           {languages.map((lang) => (
             <option key={lang.code} value={lang.code}>
-              {lang.flag} {lang.label}
+              {lang.short}
             </option>
           ))}
         </select>
@@ -392,7 +405,7 @@ useEffect(() => {
                   <span className="empty">{t("sinNotificaciones")}</span>
                 ) : (
                   notificaciones.map((n) => (
-                    <div
+                    <button
                       key={n.id}
                       className={`notif-item ${n.visto ? "" : "unread"}`}
                       onClick={() => !n.visto && marcarLeida(n.id)}
@@ -407,7 +420,7 @@ useEffect(() => {
                           {formatearFecha(n.fechaCreacion)}
                         </div>
                       </div>
-                    </div>
+                    </button>
                   ))
                 )}
               </div>
@@ -417,29 +430,64 @@ useEffect(() => {
           )}
         </div>
 
-        <div className="user-profile">
-          <span className="user-icon">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="orange"
-            >
-              <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/>
-            </svg>
-          </span>
-          <div className="user-info">
-            <strong>
-              {user?.nombre || "Usuario"} {user?.apellido || ""}
-            </strong>
-            <span>
-              {tCommon(`roles.${(user?.normalizedRole || user?.role || "OPERADOR").toUpperCase()}`)}
+        <div className="user-profile-container">
+          <button
+            className="user-profile"
+            onClick={() => setOpenUserMenu(!openUserMenu)}
+          >
+            <span className="user-icon">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="orange"
+              >
+                <path d="M12 12c2.76 0 5-2.24 5-5S14.76 2 12 2 7 4.24 7 7s2.24 5 5 5zm0 2c-3.33 0-10 1.67-10 5v3h20v-3c0-3.33-6.67-5-10-5z"/>
+              </svg>
             </span>
-          </div>
+
+            <div className="user-info">
+              <strong>
+                {user?.nombre || "Usuario"} {user?.apellido || ""}
+              </strong>
+
+              <span>
+                {tCommon(
+                  `roles.${(
+                    user?.normalizedRole ||
+                    user?.role ||
+                    "OPERADOR"
+                  ).toUpperCase()}`
+                )}
+              </span>
+            </div>
+          </button>
+
+          {openUserMenu && (
+            <div className="user-dropdown">
+              <strong>
+                {user?.nombre || "Usuario"} {user?.apellido || ""}
+              </strong>
+
+              <span>
+                {tCommon(
+                  `roles.${(
+                    user?.normalizedRole ||
+                    user?.role ||
+                    "OPERADOR"
+                  ).toUpperCase()}`
+                )}
+              </span>
+            </div>
+          )}
         </div>
 
-        <button className="logout-btn" onClick={handleLogout}>
-          {t("salir")}
+        <button
+          className="logout-btn"
+          onClick={handleLogout}
+          title={t("salir")}
+        >
+          ↪
         </button>
       </div>
     </nav>

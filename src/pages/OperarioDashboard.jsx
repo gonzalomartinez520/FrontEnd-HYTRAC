@@ -107,7 +107,6 @@ export default function OperarioDashboard({ user }) {
                 onChange={(e) => setSearch(e.target.value)}
               />
 
-              <button>⏷</button>
             </div>
           </div>
 

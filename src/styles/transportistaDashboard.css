@@ -250,7 +250,7 @@
 }
 
 .action-btn--secondary {
-  background: transparent;
+  background: var(--bg-primary);
   color: var(--text-primary);
   border: 1px solid var(--border-color);
 }
@@ -275,7 +275,7 @@
    ====================================================== */
 @media (max-width: 900px) {
   .transportista-hero { flex-direction: column; }
-  .route-status { width: 100%; }
+  .route-status {justify-content: center;}
   .map-header, .action-row { grid-template-columns: 1fr; }
   .envio-detail-grid { grid-template-columns: 1fr; }
 }
@@ -284,4 +284,16 @@
   .transportista-screen { padding: 20px 14px 28px; }
   .map-card { padding: 16px; border-radius: 20px; }
   .envio-detail-top { flex-direction: column; }
+}
+
+@media (max-width: 360px) and (orientation: portrait) {
+  .map-placeholder {
+    height: auto;
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .map-placeholder {
+    height: auto;
+  }
 }

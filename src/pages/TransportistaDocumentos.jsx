@@ -219,7 +219,7 @@ export default function TransportistaDocumentos( { user } ) {
                                             <svg viewBox="0 0 24 24" width="22" height="22">
                                                 <path
                                                     d="M12 6V3L8 7l4 4V8c2.76 0 5 2.24 5 5a5 5 0 1 1-9.9-1h-2.02A7 7 0 1 0 12 6z"
-                                                    fill="#f39c12"
+                                                    fill="var(--accent)"
                                                 />
                                             </svg>
                                         </button>

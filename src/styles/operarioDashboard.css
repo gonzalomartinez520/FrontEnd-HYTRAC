@@ -24,8 +24,8 @@
 .dashboard-loader {
   width: 70px;
   height: 70px;
-  border: 6px solid rgba(255, 255, 255, 0.2);
-  border-top: 6px solid orange;
+  border: 6px solid var(--text-primary);
+  border-top: 6px solid var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -210,74 +210,8 @@ a {
   }
 }
 
-@media (max-width: 1366px) {
-  .dashboard-content {
-    padding: 35px 50px;
-  }
 
-  .dashboard-header h1 {
-    font-size: 2.2rem;
-  }
-
-  .dashboard-header p {
-    font-size: 1rem;
-  }
-
-  .table-actions input {
-    width: 220px;
-  }
-
-  th,
-  td {
-    padding: 15px;
-    font-size: 0.95rem;
-  }
-}
-
-@media (max-width: 1100px) {
-  .dashboard-content {
-    padding: 25px 35px;
-  }
-
-  .dashboard-header h1 {
-    font-size: 2rem;
-  }
-
-  .dashboard-header p {
-    font-size: 0.95rem;
-  }
-
-  .table-card {
-    padding: 20px;
-  }
-
-  .table-top {
-    gap: 15px;
-  }
-
-  .table-top h2 {
-    font-size: 1.1rem;
-  }
-
-  .table-actions input {
-    width: 180px;
-    padding: 10px 12px;
-  }
-
-  .table-actions button {
-    width: 44px;
-  }
-
-  th,
-  td {
-    padding: 12px 10px;
-    font-size: 0.9rem;
-  }
-
-  th {
-    font-size: 0.85rem;
-  }
-}
+/* responsive horizontal s8 */
 
 @media (max-width: 768px) {
   .dashboard-content {
@@ -287,7 +221,6 @@ a {
   .dashboard-header {
     flex-direction: column;
     gap: 15px;
-    align-items: flex-start;
     margin-bottom: 20px;
   }
 
@@ -308,7 +241,6 @@ a {
     flex-direction: column;
     gap: 12px;
     align-items: stretch;
-    align-items: flex-start;
   }
 
   .table-top h2 {
@@ -347,8 +279,8 @@ a {
     display: grid;
     grid-template-columns: 1fr;
     gap: 10px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--bg-primary);
+    border: 1px solid var(--text-primary);
     border-radius: 18px;
     padding: 16px;
     margin-bottom: 14px;
@@ -362,24 +294,29 @@ a {
     padding: 0;
     border: none;
     font-size: 0.96rem;
-    color: #e5e7eb;
+    color: var(--text-primary);
+
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  tbody tr {
+  width: 100%;
+  max-width: 100%;
+  }
+
+  tbody tr {
+  width: 100%;
+  max-width: 100%;
   }
 
   tbody tr td::before {
     content: attr(data-label);
-    color: var(--text-muted);
+    color: var(--text-secondary);
     font-size: 0.82rem;
-    flex: 1 0 auto;
+
+    flex: 0 0 auto;
     white-space: nowrap;
-  }
-
-  tbody tr td:nth-child(5),
-  tbody tr td:nth-child(6) {
-    display: none;
-  }
-
-  tbody tr td:nth-child(7) {
-    justify-content: flex-end;
   }
 
   tbody tr td a {
@@ -407,23 +344,83 @@ a {
     font-size: 0.75rem;
   }
 
-  .pagination {
-    justify-content: center;
-    gap: 5px;
-    margin-top: 20px;
-  }
-
-  .pagination button {
-    padding: 8px 10px;
-    font-size: 0.8rem;
+  .detalle-button-container {
+    border-radius: 8px;
+    border: 2px solid var(--text-primary);
   }
 }
 
+
+/* ========================================= */
+/* GALAXY S8 VERTICAL */
+/* ========================================= */
 @media (max-width: 768px) and (orientation: portrait) {
+
+  .dashboard-content {
+    padding: 12px;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .table-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    overflow-x: hidden;
+  }
+
+  table,
+  tbody,
+  tr {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  tbody tr {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+  }
+
+  tbody tr td {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  tbody tr td::before {
+    flex-shrink: 0;
+  }
+
+  tbody tr td strong,
+  tbody tr td span,
+  tbody tr td div {
+    min-width: 0;
+    max-width: 90%;
+
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  tbody tr td strong, 
+  tbody tr td {
+    color: var(--text-primary);
+  }
+
+  .tracking {
+    width: 100%;
+    max-width: 100%;
+  }
+
   tbody tr td.tracking::before {
-    content: "ID #";
     display: block;
-    color: var(--text-muted);
     font-size: 0.8rem;
     margin-bottom: 4px;
   }

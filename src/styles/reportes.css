@@ -17,12 +17,12 @@
 .reportes-header h1 {
   margin: 0;
   font-size: 2.5rem;
-  color: white;
+  color: var(--text-primary);
 }
 
 .reportes-header p {
   margin-top: 8px;
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .btn-exportar {
@@ -41,72 +41,6 @@
   box-shadow: 0 10px 20px rgba(249, 115, 22, 0.25);
 }
 
-.kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.kpi-card {
-  background: #111827;
-  border: 1px solid var(--bg-secondary);
-  border-radius: 16px;
-  padding: 20px;
-  transition: 0.3s;
-}
-
-.kpi-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-}
-
-.kpi-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.kpi-icon {
-  font-size: 1.8rem;
-}
-
-.kpi-title {
-  color: var(--text-muted);
-  font-size: 0.9rem;
-  margin-top: 10px;
-}
-
-.kpi-value {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-top: 8px;
-}
-
-.kpi-total {
-  border-left: 4px solid #3B82F6;
-}
-
-.kpi-transito {
-  border-left: 4px solid #F59E0B;
-}
-
-.kpi-entregado {
-  border-left: 4px solid #10B981;
-}
-
-.kpi-demorado {
-  border-left: 4px solid var(--danger);
-}
-
-.kpi-alta {
-  border-left: 4px solid var(--accent);
-}
-
-.kpi-critica {
-  border-left: 4px solid #DC2626;
-}
-
 .graficos-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -114,7 +48,7 @@
 }
 
 .chart-card {
-  background: #111827;
+  background: var(--bg-secondary);
   border: 1px solid var(--bg-secondary);
   border-radius: 18px;
   padding: 20px;
@@ -136,7 +70,7 @@
 .chart-card h2 {
   margin-top: 0;
   margin-bottom: 20px;
-  color: white;
+  color: var(--text-primary);
 }
 
 .chart-card.full-width {
@@ -150,7 +84,7 @@
 
 .ranking-table th {
   background: var(--bg-secondary);
-  color: white;
+  color: var(--text-primary);
   padding: 12px;
   text-align: left;
 }
@@ -158,7 +92,7 @@
 .ranking-table td {
   padding: 12px;
   border-bottom: 1px solid #334155;
-  color: #CBD5E1;
+  color: var(--text-secondary);
 }
 
 .ranking-table tr:hover {
@@ -177,6 +111,10 @@
   height: 100%;
   background: linear-gradient(90deg, var(--accent), #FB923C);
   border-radius: 50px;
+}
+
+.porcentaje {
+  color: var(--accent);
 }
 
 
@@ -198,8 +136,8 @@
 .reportes-loader {
   width: 70px;
   height: 70px;
-  border: 6px solid rgba(255, 255, 255, 0.2);
-  border-top: 6px solid orange;
+  border: 6px solid var(--text-primary);
+  border-top: 6px solid var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
@@ -214,68 +152,305 @@
   }
 }
 
-/* ==========================
-   TABLET
-========================== */
 
-@media (max-width: 1200px) {
 
-  .kpi-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
 
-  .graficos-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .chart-card.full-width {
-    grid-column: span 1;
-  }
-
-  .reportes-grid-cuadrado {
-    grid-template-columns: 1fr 1fr;
-  }
-
-}
 
 /* ==========================
-   MOBILE
+   SAMSUNG S8 VERTICAL
+   360x740 aprox
 ========================== */
 
-@media (max-width: 768px) {
+@media screen and (max-width: 380px) {
 
   .reportes-layout {
-    padding: 15px;
+    padding: 12px;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .reportes-header {
     flex-direction: column;
     align-items: stretch;
+    gap: 15px;
+  }
+
+  .reportes-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .reportes-header p {
+    font-size: 0.9rem;
   }
 
   .btn-exportar {
     width: 100%;
   }
 
-  .kpi-grid {
-    grid-template-columns: 1fr;
+  /* TODOS LOS BLOQUES EN COLUMNA */
+  .reportes-grid-cuadrado,
+  .graficos-grid,
+  .charts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 
-  .graficos-grid {
-    grid-template-columns: 1fr;
+  .chart-card,
+  .square-card,
+  .chart-card.full-width {
+    width: 100%;
+    min-height: auto;
+    padding: 15px;
   }
 
+  .chart-card h2 {
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  /* PIE CHARTS */
+  /* SOLO TORTAS */
+  .square-card .recharts-responsive-container {
+    width: 225% !important;    
+  }
+
+  /* EVOLUCIÓN MENSUAL */
+  .chart-card.full-width .recharts-responsive-container {
+    width: 100% !important;
+  }
+
+  /* ==========================
+    RANKINGS MOBILE
+  ========================== */
+
+  .reportes-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 0.72rem;
+  }
+
+  /* FORZAR TABLA REAL */
+  .reportes-table thead {
+    display: table-header-group;
+  }
+
+  .reportes-table tbody {
+    display: table-row-group;
+  }
+
+  .reportes-table tr {
+    display: table-row;
+  }
+
+  .reportes-table th,
+  .reportes-table td {
+    display: table-cell;
+
+    padding: 6px 4px;
+
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+
+    vertical-align: middle;
+  }
+
+  /* elimina posibles etiquetas responsive */
+  .reportes-table td::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  /* # */
+  .reportes-table th:nth-child(1),
+  .reportes-table td:nth-child(1) {
+    width: 12%;
+    text-align: center;
+  }
+
+  /* Sucursal / Tipo */
+  .reportes-table th:nth-child(2),
+  .reportes-table td:nth-child(2) {
+    width: 58%;
+    text-align: left;
+  }
+
+  /* Envíos / Cantidad */
+  .reportes-table th:nth-child(3),
+  .reportes-table td:nth-child(3) {
+    width: 15%;
+    text-align: center;
+  }
+
+  /* % */
+  .reportes-table th:nth-child(4),
+  .reportes-table td:nth-child(4) {
+    width: 15%;
+    text-align: center;
+  }
+
+  /* EVITA SCROLL HORIZONTAL */
   .chart-card {
-    overflow-x: auto;
+    overflow-x: hidden;
+    overflow-y: hidden;
   }
 
-  .ranking-table,
-  .rutas-table {
-    min-width: 600px;
+  /* LINE CHART */
+  .chart-card.full-width {
+    min-height: 300px;
   }
 
-  .reportes-grid-cuadrado {
-    grid-template-columns: 1fr;
+  /* LEYENDAS DE RECHARTS */
+  .recharts-legend-wrapper {
+    position: relative !important;
+    width: 45% !important;
+    right: auto !important;
+    left: auto !important;
+    top: auto !important;
+    margin-top: -10px;
+    text-align: center;
   }
 
+
+  .recharts-default-legend {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 6px;
+  }
+
+  .square-card {
+    height: 420px;
+  }
+}
+
+
+
+/* ==========================
+   SAMSUNG S8 HORIZONTAL
+   740x360 aprox
+========================== */
+
+@media screen and (max-height: 420px) and (orientation: landscape) {
+
+  .reportes-layout {
+    padding: 16px;
+  }
+
+  .reportes-header {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  /* TODOS LOS GRÁFICOS EN COLUMNA */
+  .reportes-grid-cuadrado,
+  .graficos-grid,
+  .charts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .chart-card,
+  .square-card,
+  .chart-card.full-width {
+    width: 100%;
+  }
+
+  /* ALTURA SIMILAR A DESKTOP */
+  .square-card {
+    min-height: 420px;
+    height: auto;
+  }
+
+  /* TORTAS COMO DESKTOP */
+  .square-card .recharts-responsive-container {
+    width: 100% !important;
+  }
+
+  /* EVOLUCIÓN MENSUAL COMO DESKTOP */
+  .chart-card.full-width .recharts-responsive-container {
+    width: 100% !important;
+  }
+
+  /* ==========================
+    RANKINGS HORIZONTAL
+  ========================== */
+
+  .reportes-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 0.9rem;
+  }
+
+  /* Fuerza estructura de tabla */
+  .reportes-table thead {
+    display: table-header-group;
+  }
+
+  .reportes-table tbody {
+    display: table-row-group;
+  }
+
+  .reportes-table tr {
+    display: table-row !important;
+  }
+
+  .reportes-table th,
+  .reportes-table td {
+    display: table-cell !important;
+    padding: 10px;
+    vertical-align: middle;
+  }
+
+  /* Elimina etiquetas responsive */
+  .reportes-table td::before {
+    content: none !important;
+    display: none !important;
+  }
+
+  /* Columnas */
+  .reportes-table th:nth-child(1),
+  .reportes-table td:nth-child(1) {
+    width: 10%;
+    text-align: center;
+  }
+
+  .reportes-table th:nth-child(2),
+  .reportes-table td:nth-child(2) {
+    width: 60%;
+    text-align: left;
+  }
+
+  .reportes-table th:nth-child(3),
+  .reportes-table td:nth-child(3) {
+    width: 15%;
+    text-align: center;
+  }
+
+  .reportes-table th:nth-child(4),
+  .reportes-table td:nth-child(4) {
+    width: 15%;
+    text-align: center;
+  }
+
+  /* LEYENDAS COMO DESKTOP */
+  .recharts-legend-wrapper {
+    position: absolute !important;
+    width: auto !important;
+    text-align: left;
+  }
+
+  .recharts-default-legend {
+    display: block !important;
+  }
+
+  /* EVITA RECORTES */
+  .chart-card {
+    overflow: visible;
+  }
 }

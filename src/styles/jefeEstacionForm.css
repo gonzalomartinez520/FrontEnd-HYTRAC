@@ -92,3 +92,124 @@
   color: red;
   margin-top: 4px;
 }
+
+/* ===================================
+   MOBILE VERTICAL
+   Galaxy S8 360x740
+=================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .jefeEstacion-container {
+    width: 95%;
+    max-width: 100%;
+    margin: 15px auto;
+    padding: 16px;
+  }
+
+  .jefeEstacion-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .jefeEstacion-header p {
+    font-size: 0.9rem;
+  }
+
+  .jefeEstacion-form {
+    width: 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .form-group {
+    width: 100%;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .form-section h3 {
+    font-size: 0.95rem;
+    flex-wrap: wrap;
+  }
+
+  .admin-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .form-actions {
+    justify-content: center;
+  }
+}
+
+
+/* ===================================
+   MOBILE LANDSCAPE
+=================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+  .jefeEstacion-container {
+    width: 95%;
+    max-width: 100%;
+    margin: 10px auto;
+    padding: 16px;
+  }
+
+  .jefeEstacion-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .jefeEstacion-header p {
+    font-size: 0.85rem;
+  }
+
+  .jefeEstacion-form {
+    width: 100%;
+  }
+
+  .form-row {
+    gap: 12px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+  }
+
+  .form-actions {
+    justify-content: center;
+  }
+}
+
+
+/* ===================================
+   PREVENCIÓN DE SCROLL HORIZONTAL
+=================================== */
+
+@media (max-width: 900px) {
+
+  .jefeEstacion-container,
+  .jefeEstacion-form,
+  .form-section,
+  .form-row,
+  .form-group {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    box-sizing: border-box;
+  }
+}

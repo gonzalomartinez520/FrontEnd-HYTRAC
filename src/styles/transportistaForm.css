@@ -68,8 +68,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .btn-documento {
-  background: var(--accent);
-  border: 2px solid var(--bg-secondary);
+  background: linear-gradient(135deg, #4fd1a0 0%, #1f9a72 10%);
+  border: none;
   color: white;
   flex: 1;
   padding: 10px;
@@ -80,7 +80,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .btn-documento:hover {
-  background: var(--accent-hover);
+  background: linear-gradient(135deg, #4fd1a0 0%, #1f9a72 100%);
 }
 
 .documentos-list {
@@ -90,15 +90,15 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   margin-top: 10px;
 }
 
-.documento-card {
-  background: var(--bg-card);
+.docForm-card {
+  background: var(--bg-primary);
   border: 1px solid var(--accent-hover);
   border-radius: 10px;
   padding: 12px 16px;
   transition: 0.2s ease;
 }
 
-.documento-card:hover {
+.docForm-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 122, 0, 0.2);
 }
@@ -153,4 +153,115 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .label {
   color: var(--text-muted);
+}
+
+/* ===================================
+   MOBILE VERTICAL
+   Galaxy S8 360x740
+=================================== */
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+  .transportista-container {
+    width: 95%;
+    max-width: 100%;
+    margin: 15px auto;
+    padding: 16px;
+  }
+
+  .transportista-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .transportista-header p {
+    font-size: 0.9rem;
+  }
+
+  .transportista-form {
+    width: 100%;
+  }
+
+  .btn-documento {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .doc-body {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .doc-field {
+    flex-wrap: wrap;
+  }
+
+  .docForm-card {
+    width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  .custom-date-picker {
+    width: 100%;
+  }
+}
+
+
+/* ===================================
+   MOBILE LANDSCAPE
+=================================== */
+
+@media (max-width: 900px) and (orientation: landscape) {
+
+  .transportista-container {
+    width: 95%;
+    max-width: 100%;
+    margin: 10px auto;
+    padding: 16px;
+  }
+
+  .transportista-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .transportista-header p {
+    font-size: 0.85rem;
+  }
+
+  .transportista-form {
+    width: 100%;
+  }
+
+  .btn-documento {
+    min-height: 44px;
+  }
+
+  .doc-body {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .ddocForm-card {
+    width: 100%;
+  }
+}
+
+
+/* ===================================
+   PREVENCIÓN DE SCROLL HORIZONTAL
+=================================== */
+
+@media (max-width: 900px) {
+
+  .transportista-container,
+  .transportista-form,
+  .documentos-list,
+  .docForm-card,
+  .custom-date-picker {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .doc-title {
+    word-break: break-word;
+  }
 }

@@ -65,35 +65,35 @@ export default function Administrador({ user }) {
         </section>
         
         <section className="gestion-usuarios-card">
-          <div className="operarios" onClick={() => navigate("/gestion-operarios")}>
+          <button className="operarios" onClick={() => navigate("/gestion-operarios")}>
             <div className="icon-gestion-usuarios">🛠️</div>
             <div className="badge-cantidad operarios">{operarios}</div>
             <h2>{t("roles.OPERADOR")}</h2>
             <p>{t("admin.cards.operators.description")}</p>
-          </div>
+          </button>
 
-          <div className="supervisores" onClick={() => navigate("/gestion-supervisores")}>
+          <button className="supervisores" onClick={() => navigate("/gestion-supervisores")}>
             <div className="icon-gestion-usuarios">✔️</div>
             <div className="badge-cantidad supervisores">{supervisores}</div>
             <h2>{t("roles.SUPERVISOR")}</h2>
             <p>{t("admin.cards.supervisors.description")}</p>
-          </div>
+          </button>
         </section>
 
         <section className="gestion-usuarios-card">
-          <div className="transportistas" onClick={() => navigate("/gestion-transportistas")}>
+          <button className="transportistas" onClick={() => navigate("/gestion-transportistas")}>
             <div className="icon-gestion-usuarios">🚚</div>
             <div className="badge-cantidad transportistas">{transportistas}</div>
             <h2>{t("roles.TRANSPORTISTA")}</h2>
             <p>{t("admin.cards.carriers.description")}</p>
-          </div>
+          </button>
 
-          <div className="jefe-estacion" onClick={() => navigate("/gestion-jefe-estacion")}>
+          <button className="jefe-estacion" onClick={() => navigate("/gestion-jefe-estacion")}>
             <div className="icon-gestion-usuarios">⛽</div>
             <div className="badge-cantidad jefe-estacion">{jefesEstacion}</div>
             <h2>{t("roles.JEFE_ESTACION")}</h2>
             <p>{t("admin.cards.stationManagers.description")}</p>
-          </div>
+          </button>
         </section>
       </main>
     </div>
