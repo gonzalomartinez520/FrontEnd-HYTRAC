@@ -56,8 +56,6 @@
       "destinationCity": "Localidad de destino",
       "destinationStation": "Ubicación de entrega",
 
-      "remito": "Remito #",
-      "cot": "COT (ARBA)",
       "nombre": "Nombre",
       "apellido": "Apellido",
       "dni": "Documento Nacional de Identidad (DNI)",
@@ -67,7 +65,13 @@
       "confirmPassword": "Confirmar Contraseña",
       "telefono": "Teléfono",
 
-      "novato": "Novato"
+      "novato": "Novato",
+
+      "cotLabel": "Código de Operación de Traslado",
+      "cotSublabel": "Requerido por ARBA — Ley 11.904",
+      "cotGenerado": "COT Generado",
+      "generarCot": "Generar COT",
+      "generandoCot": "Generando COT..."
     },
 
     "placeholders": {
