@@ -22,6 +22,10 @@ export default function NuevoEnvio({ user }) {
   const [plantasOrigen, setPlantasOrigen] = useState([]);
   const [estacionesDestino, setEstacionesDestino] = useState([]);
 
+  // COT
+  const [cotEstado, setCotEstado] = useState("idle"); 
+  const [cotNumero, setCotNumero] = useState(null);
+
   const [documentos, setDocumentos] = useState({});
 
   const [loading, setLoading] = useState(false);
@@ -209,6 +213,19 @@ export default function NuevoEnvio({ user }) {
     const hours = Math.floor(decimalHours);
     const minutes = Math.round((decimalHours - hours) * 60);
     return `${hours}h ${minutes.toString().padStart(2, "0")}m`;
+  };
+
+
+  const simularGeneracionCot = async () => {
+    if (cotEstado !== "idle") return;
+    setCotEstado("generando");
+
+    await new Promise(resolve => setTimeout(resolve, 2200));
+
+    const año = new Date().getFullYear();
+    const random = Math.random().toString(36).substring(2, 10).toUpperCase();
+    setCotNumero(`COT-${año}-${random}`);
+    setCotEstado("generado");
   };
 
   const fetchDocumentosTransportista = async (transportistaId) => {
@@ -687,6 +704,62 @@ export default function NuevoEnvio({ user }) {
                             </>
                           )}
               </div>
+          </div>
+          {/* COT Simulado */}
+          <div className="cot-block">
+              <div className="cot-left">
+                  <div className="cot-info">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                          <polyline points="14 2 14 8 20 8"/>
+                          <line x1="16" y1="13" x2="8" y2="13"/>
+                          <line x1="16" y1="17" x2="8" y2="17"/>
+                          <polyline points="10 9 9 9 8 9"/>
+                      </svg>
+                      <div>
+                          <p className="cot-label">Código de Operación de Traslado</p>
+                          <p className="cot-sublabel">Requerido por ARBA — Ley 11.904 </p>
+                      </div>
+                  </div>
+
+                  {cotEstado === "generado" && cotNumero && (
+                      <div className="cot-numero">
+                          <span className="cot-numero-label">COT Generado</span>
+                          <span className="cot-numero-value">{cotNumero}</span>
+                      </div>
+                  )}
+              </div>
+
+              <button
+                  type="button"
+                  className={`cot-btn cot-btn--${cotEstado}`}
+                  onClick={simularGeneracionCot}
+                  disabled={cotEstado !== "idle" || !formData.refineriaOrigen || !formData.estacionDestino}
+              >
+                  {cotEstado === "idle" && (
+                      <>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="13 17 18 12 13 7"/>
+                              <polyline points="6 17 11 12 6 7"/>
+                          </svg>
+                          Generar COT
+                      </>
+                  )}
+                  {cotEstado === "generando" && (
+                      <>
+                          <span className="cot-spinner" />
+                          Generando COT...
+                      </>
+                  )}
+                  {cotEstado === "generado" && (
+                      <>
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                          COT Generado
+                      </>
+                  )}
+              </button>
           </div>
         </section>
 
