@@ -67,7 +67,14 @@
       "confirmPassword": "Confirmar Senha",
       "telefono": "Telefone",
 
-      "novato": "Novato"
+      "novato": "Novato",
+
+      
+      "cotLabel": "Código de Operação de Transferência",
+      "cotSublabel": "Exigido pela ARBA — Lei 11.904",
+      "cotGenerado": "COT Gerado",
+      "generarCot": "Gerar COT",
+      "generandoCot": "Gerando COT..."
     },
 
     "placeholders": {

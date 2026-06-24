@@ -396,7 +396,7 @@ small {
   justify-content: center;
   padding: 24px;
   border-radius: 12px;
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow);
   color: var(--text-primary);
@@ -436,7 +436,7 @@ small {
 .route-telemetry-title {
   margin: 0 0 16px 0;
   font-size: 16px;
-  color: #3b82f6;
+  color: var(--accent) !important;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -457,6 +457,151 @@ small {
   color: var(--text-muted);
   margin-top: 12px;
   font-style: italic;
+}
+
+.cot-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 20px;
+    margin-top: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    flex-wrap: wrap;
+}
+
+.cot-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.cot-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--bg-primary);
+}
+
+.cot-label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.cot-sublabel {
+    margin: 2px 0 0;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+}
+
+.cot-numero {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: var(--accent-light);
+    border: 1px solid var(--accent);
+    width: fit-content;
+}
+
+.cot-numero-label {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.cot-numero-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    font-family: monospace;
+    letter-spacing: 0.05em;
+}
+
+/* ─── Botón COT ──────────────────────────────────────────────── */
+
+.cot-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cot-btn--idle {
+    background: var(--accent);
+    color: #fff;
+}
+
+.cot-btn--idle:hover:not(:disabled) {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+.cot-btn--idle:disabled {
+    background: var(--bg-input);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    border: 1px solid var(--accent);
+}
+
+.cot-btn--generando {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    cursor: wait;
+}
+
+.cot-btn--generado {
+    background: #16a34a;
+    color: #fff;
+    cursor: default;
+}
+
+.cot-spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-top: 2px solid var(--accent);
+    border-radius: 50%;
+    animation: cot-spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+.cot-btn--generando .cot-spinner {
+    border: 2px solid var(--border-color);
+    border-top: 2px solid var(--accent);
+}
+
+@keyframes cot-spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .cot-block {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .cot-btn {
+        width: 100%;
+        justify-content: center;
+    }
 }
 
 /* Media Queries for Responsive Design */

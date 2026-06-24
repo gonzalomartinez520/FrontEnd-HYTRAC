@@ -67,7 +67,13 @@
       "passwordTemporal": "Password",
       "telefono": "Phone",
 
-      "novato": "Rookie"
+      "novato": "Rookie",
+
+      "cotLabel": "Transfer Operation Code",
+      "cotSublabel": "Required by ARBA — Law 11,904",
+      "cotGenerado": "Generated TOC",
+      "generarCot": "Generate TOC",
+      "generandoCot": "Generating TOC..."
     },
 
     "placeholders": {
